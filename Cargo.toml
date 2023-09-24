@@ -1,0 +1,21 @@
+[workspace]
+members = [
+  "opensearch-client",
+  "xtask",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+# rust-version = "1.68.0"
+edition = "2021"
+authors = ["QScala Team"]
+documentation = "https://sidrai.com/"
+license = "Private"
+repository = "https://sidrai.com/"
+keywords = ["opensearch"]
+readme = "README.md"
+
+[workspace.metadata.precommit]
+fmt = "cargo fmt"
+sort = "cargo sort -w"

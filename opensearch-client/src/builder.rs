@@ -1,4 +1,6 @@
 
+use serde::de::DeserializeOwned;
+
 use super::types;
 #[allow(unused_imports)]
 use super::{
@@ -23257,7 +23259,7 @@ impl<'a> SearchGet<'a> {
   }
 
   ///Sends a `GET` request to `/_search`
-  pub async fn send(self) -> Result<ResponseValue<types::SearchGetResponseContent>, Error<()>> {
+  pub async fn send<T: DeserializeOwned + std::default::Default>(self) -> Result<ResponseValue<types::SearchGetResponseContent<T>>, Error<()>> {
     let Self {
       client,
       source,
@@ -24030,7 +24032,7 @@ impl<'a> SearchPost<'a> {
   }
 
   ///Sends a `POST` request to `/_search`
-  pub async fn send(self) -> Result<ResponseValue<types::SearchPostResponseContent>, Error<()>> {
+  pub async fn send<T: DeserializeOwned + std::default::Default>(self) -> Result<ResponseValue<types::SearchPostResponseContent<T>>, Error<()>> {
     let Self {
       client,
       source,
@@ -41328,7 +41330,7 @@ impl<'a> SearchGetWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_search`
-  pub async fn send(self) -> Result<ResponseValue<types::SearchGetWithIndexResponseContent>, Error<()>> {
+  pub async fn send<T: DeserializeOwned + std::default::Default>(self) -> Result<ResponseValue<types::SearchGetWithIndexResponseContent<T>>, Error<()>> {
     let Self {
       client,
       index,
@@ -42114,7 +42116,7 @@ impl<'a> SearchPostWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_search`
-  pub async fn send(self) -> Result<ResponseValue<types::SearchPostWithIndexResponseContent>, Error<()>> {
+  pub async fn send<T: DeserializeOwned + std::default::Default>(self) -> Result<ResponseValue<types::SearchPostWithIndexResponseContent<T>>, Error<()>> {
     let Self {
       client,
       index,

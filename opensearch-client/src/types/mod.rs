@@ -13852,6 +13852,8 @@ pub struct Hits<T> {
   pub source: Option<T>,
   #[serde(rename = "_type", default, skip_serializing_if = "Option::is_none")]
   pub type_: Option<String>,
+  #[serde(rename = "sort", default, skip_serializing_if = "Option::is_none")]
+  pub sort: Option<serde_json::Value>,
 }
 
 impl<T> From<&Hits<T>> for Hits<T> {
@@ -50902,6 +50904,8 @@ pub mod builder {
     score: Result<Option<f64>, String>,
     source: Result<Option<T>, String>,
     type_: Result<Option<String>, String>,
+    sort: Result<Option<serde_json::Value>,String>,
+
   }
 
   impl<T> Default for Hits<T> {
@@ -50913,6 +50917,7 @@ pub mod builder {
         score: Ok(Default::default()),
         source: Ok(Default::default()),
         type_: Ok(Default::default()),
+        sort: Ok(Default::default()),
       }
     }
   }
@@ -50990,6 +50995,7 @@ pub mod builder {
         score: value.score?,
         source: value.source?,
         type_: value.type_?,
+        sort: value.sort?,
       })
     }
   }
@@ -51003,6 +51009,7 @@ pub mod builder {
         score: Ok(value.score),
         source: Ok(value.source),
         type_: Ok(value.type_),
+        sort: Ok(value.sort),
       }
     }
   }

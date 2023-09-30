@@ -112,7 +112,22 @@ impl ResponseValue<()> {
       headers,
     }
   }
+  
 }
+
+impl ResponseValue<String> {
+  #[doc(hidden)]
+  pub async fn text<E: std::fmt::Debug>(response: reqwest::Response) -> Result<Self, Error<E>> {
+    let status = response.status();
+    let headers = response.headers().clone();
+    let inner = response.text().await.map_err(Error::InvalidResponsePayload)?;
+    // TODO is there anything we want to do to confirm that there is no
+    // content?
+    Ok(Self { inner, status, headers })
+  }
+}
+
+
 
 impl<T> ResponseValue<T> {
   /// Creates a [`ResponseValue`] from the inner type, status, and headers.

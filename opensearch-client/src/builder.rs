@@ -614,221 +614,6 @@ impl<'a> IndicesAnalyzePost<'a> {
   }
 }
 
-///Builder for [`Client::bulk_put`]
-///
-///[`Client::bulk_put`]: super::Client::bulk_put
-#[derive(Debug, Clone)]
-pub struct BulkPut<'a> {
-  client: &'a super::Client,
-  source: Result<Option<Vec<String>>, String>,
-  source_excludes: Result<Option<Vec<String>>, String>,
-  source_includes: Result<Option<Vec<String>>, String>,
-  pipeline: Result<Option<String>, String>,
-  refresh: Result<Option<types::RefreshEnum>, String>,
-  require_alias: Result<Option<bool>, String>,
-  routing: Result<Option<String>, String>,
-  timeout: Result<Option<types::BulkPutTimeout>, String>,
-  type_: Result<Option<String>, String>,
-  wait_for_active_shards: Result<Option<String>, String>,
-  body: Result<types::BulkBodyParams, String>,
-}
-
-impl<'a> BulkPut<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
-    Self {
-      client,
-      source: Ok(None),
-      source_excludes: Ok(None),
-      source_includes: Ok(None),
-      pipeline: Ok(None),
-      refresh: Ok(None),
-      require_alias: Ok(None),
-      routing: Ok(None),
-      timeout: Ok(None),
-      type_: Ok(None),
-      wait_for_active_shards: Ok(None),
-      body: Err("body was not initialized".to_string()),
-    }
-  }
-
-  pub fn source<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Vec<String>>, {
-    self.source = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Vec < String >` for source failed".to_string());
-    self
-  }
-
-  pub fn source_excludes<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Vec<String>>, {
-    self.source_excludes = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Vec < String >` for source_excludes failed".to_string());
-    self
-  }
-
-  pub fn source_includes<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Vec<String>>, {
-    self.source_includes = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Vec < String >` for source_includes failed".to_string());
-    self
-  }
-
-  pub fn pipeline<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.pipeline = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for pipeline failed".to_string());
-    self
-  }
-
-  pub fn refresh<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::RefreshEnum>, {
-    self.refresh = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `RefreshEnum` for refresh failed".to_string());
-    self
-  }
-
-  pub fn require_alias<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.require_alias = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for require_alias failed".to_string());
-    self
-  }
-
-  pub fn routing<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.routing = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for routing failed".to_string());
-    self
-  }
-
-  pub fn timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::BulkPutTimeout>, {
-    self.timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `BulkPutTimeout` for timeout failed".to_string());
-    self
-  }
-
-  pub fn type_<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.type_ = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for type_ failed".to_string());
-    self
-  }
-
-  pub fn wait_for_active_shards<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.wait_for_active_shards = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for wait_for_active_shards failed".to_string());
-    self
-  }
-
-  pub fn body<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::BulkBodyParams>, {
-    self.body = value
-      .try_into()
-      .map_err(|_| "conversion to `BulkBodyParams` for body failed".to_string());
-    self
-  }
-
-  ///Sends a `PUT` request to `/_bulk`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
-    let Self {
-      client,
-      source,
-      source_excludes,
-      source_includes,
-      pipeline,
-      refresh,
-      require_alias,
-      routing,
-      timeout,
-      type_,
-      wait_for_active_shards,
-      body,
-    } = self;
-    let source = source.map_err(Error::InvalidRequest)?;
-    let source_excludes = source_excludes.map_err(Error::InvalidRequest)?;
-    let source_includes = source_includes.map_err(Error::InvalidRequest)?;
-    let pipeline = pipeline.map_err(Error::InvalidRequest)?;
-    let refresh = refresh.map_err(Error::InvalidRequest)?;
-    let require_alias = require_alias.map_err(Error::InvalidRequest)?;
-    let routing = routing.map_err(Error::InvalidRequest)?;
-    let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let type_ = type_.map_err(Error::InvalidRequest)?;
-    let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
-    let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_bulk", client.baseurl,);
-    let mut query = Vec::with_capacity(10usize);
-    if let Some(v) = &source {
-      query.push(("_source", v.join(",")));
-    }
-    if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.join(",")));
-    }
-    if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.join(",")));
-    }
-    if let Some(v) = &pipeline {
-      query.push(("pipeline", v.to_string()));
-    }
-    if let Some(v) = &refresh {
-      query.push(("refresh", v.to_string()));
-    }
-    if let Some(v) = &require_alias {
-      query.push(("require_alias", v.to_string()));
-    }
-    if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
-    }
-    if let Some(v) = &timeout {
-      query.push(("timeout", v.to_string()));
-    }
-    if let Some(v) = &type_ {
-      query.push(("type", v.to_string()));
-    }
-    if let Some(v) = &wait_for_active_shards {
-      query.push(("wait_for_active_shards", v.to_string()));
-    }
-    let request = client.client.put(url).json(&body).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
-    }
-  }
-}
-
 ///Builder for [`Client::bulk_post`]
 ///
 ///[`Client::bulk_post`]: super::Client::bulk_post
@@ -1252,7 +1037,7 @@ impl<'a> CatHelp<'a> {
   }
 
   ///Sends a `GET` request to `/_cat`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self { client, help, s } = self;
     let help = help.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
@@ -1268,7 +1053,7 @@ impl<'a> CatHelp<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -1374,7 +1159,7 @@ impl<'a> CatAliases<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/aliases`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       expand_wildcards,
@@ -1419,7 +1204,7 @@ impl<'a> CatAliases<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -1536,7 +1321,7 @@ impl<'a> CatAliasesWithName<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/aliases/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       name,
@@ -1583,7 +1368,7 @@ impl<'a> CatAliasesWithName<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -1713,7 +1498,7 @@ impl<'a> CatAllocation<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/allocation`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       bytes,
@@ -1768,7 +1553,7 @@ impl<'a> CatAllocation<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -1908,7 +1693,7 @@ impl<'a> CatAllocationWithNodeId<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/allocation/{node_id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       node_id,
@@ -1969,7 +1754,7 @@ impl<'a> CatAllocationWithNodeId<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -2086,7 +1871,7 @@ impl<'a> CatClusterManager<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/cluster_manager`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -2136,7 +1921,7 @@ impl<'a> CatClusterManager<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -2218,7 +2003,7 @@ impl<'a> CatCount<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/count`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       format,
@@ -2253,7 +2038,7 @@ impl<'a> CatCount<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -2346,7 +2131,7 @@ impl<'a> CatCountWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/count/{index}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       index,
@@ -2383,7 +2168,7 @@ impl<'a> CatCountWithIndex<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -2489,7 +2274,7 @@ impl<'a> CatFielddata<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/fielddata`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       bytes,
@@ -2534,7 +2319,7 @@ impl<'a> CatFielddata<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -2640,7 +2425,7 @@ impl<'a> CatFielddataWithFields<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/fielddata/{fields}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       bytes,
@@ -2689,7 +2474,7 @@ impl<'a> CatFielddataWithFields<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -2795,7 +2580,7 @@ impl<'a> CatHealth<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/health`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       format,
@@ -2840,7 +2625,7 @@ impl<'a> CatHealth<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -3030,7 +2815,7 @@ impl<'a> CatIndices<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/indices`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       bytes,
@@ -3110,7 +2895,7 @@ impl<'a> CatIndices<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -3310,7 +3095,7 @@ impl<'a> CatIndicesWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/indices/{index}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       index,
@@ -3392,7 +3177,7 @@ impl<'a> CatIndicesWithIndex<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -3510,7 +3295,7 @@ impl<'a> CatMaster<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/master`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -3560,7 +3345,7 @@ impl<'a> CatMaster<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -3678,7 +3463,7 @@ impl<'a> CatNodeattrs<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/nodeattrs`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -3728,7 +3513,7 @@ impl<'a> CatNodeattrs<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -3882,7 +3667,7 @@ impl<'a> CatNodes<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/nodes`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       bytes,
@@ -3947,7 +3732,7 @@ impl<'a> CatNodes<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -4076,7 +3861,7 @@ impl<'a> CatPendingTasks<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/pending_tasks`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -4131,7 +3916,7 @@ impl<'a> CatPendingTasks<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -4342,7 +4127,7 @@ impl<'a> CatPlugins<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/plugins`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -4392,7 +4177,7 @@ impl<'a> CatPlugins<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -4534,7 +4319,7 @@ impl<'a> CatRecovery<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/recovery`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       active_only,
@@ -4594,7 +4379,7 @@ impl<'a> CatRecovery<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -4736,7 +4521,7 @@ impl<'a> CatRecoveryWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/recovery/{index}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       active_only,
@@ -4805,7 +4590,7 @@ impl<'a> CatRecoveryWithIndex<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -4922,7 +4707,7 @@ impl<'a> CatRepositories<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/repositories`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -4972,7 +4757,7 @@ impl<'a> CatRepositories<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -5138,7 +4923,7 @@ impl<'a> CatSegmentReplication<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/segment_replication`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       active_only,
@@ -5208,7 +4993,7 @@ impl<'a> CatSegmentReplication<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -5374,7 +5159,7 @@ impl<'a> CatSegmentReplicationWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/segment_replication/{index}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       active_only,
@@ -5454,7 +5239,7 @@ impl<'a> CatSegmentReplicationWithIndex<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -5572,7 +5357,7 @@ impl<'a> CatSegments<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/segments`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       bytes,
@@ -5622,7 +5407,7 @@ impl<'a> CatSegments<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -5750,7 +5535,7 @@ impl<'a> CatSegmentsWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/segments/{index}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       index,
@@ -5803,7 +5588,7 @@ impl<'a> CatSegmentsWithIndex<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -5945,7 +5730,7 @@ impl<'a> CatShards<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/shards`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       bytes,
@@ -6005,7 +5790,7 @@ impl<'a> CatShards<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -6157,7 +5942,7 @@ impl<'a> CatShardsWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/shards/{index}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       index,
@@ -6219,7 +6004,7 @@ impl<'a> CatShardsWithIndex<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -6349,7 +6134,7 @@ impl<'a> CatSnapshots<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/snapshots`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -6404,7 +6189,7 @@ impl<'a> CatSnapshots<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -6544,7 +6329,7 @@ impl<'a> CatSnapshotsWithRepository<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/snapshots/{repository}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       repository,
@@ -6605,7 +6390,7 @@ impl<'a> CatSnapshotsWithRepository<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -6747,7 +6532,7 @@ impl<'a> CatTasks<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/tasks`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       actions,
@@ -6807,7 +6592,7 @@ impl<'a> CatTasks<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -6925,7 +6710,7 @@ impl<'a> CatTemplates<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/templates`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -6975,7 +6760,7 @@ impl<'a> CatTemplates<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -7103,7 +6888,7 @@ impl<'a> CatTemplatesWithName<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/templates/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       name,
@@ -7155,7 +6940,7 @@ impl<'a> CatTemplatesWithName<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -7285,7 +7070,7 @@ impl<'a> CatThreadPool<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/thread_pool`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -7340,7 +7125,7 @@ impl<'a> CatThreadPool<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -7481,7 +7266,7 @@ impl<'a> CatThreadPoolWithThreadPoolPatterns<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/thread_pool/{thread_pool_patterns}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
     let Self {
       client,
       thread_pool_patterns,
@@ -7542,7 +7327,7 @@ impl<'a> CatThreadPoolWithThreadPoolPatterns<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::text(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -31887,463 +31672,6 @@ impl<'a> IndicesAddBlock<'a> {
     }
   }
 }
-
-///Builder for [`Client::bulk_put_with_index`]
-///
-///[`Client::bulk_put_with_index`]: super::Client::bulk_put_with_index
-#[derive(Debug, Clone)]
-pub struct BulkPutWithIndex<'a> {
-  client: &'a super::Client,
-  index: Result<types::BulkPutWithIndexIndex, String>,
-  source: Result<Option<Vec<String>>, String>,
-  source_excludes: Result<Option<Vec<String>>, String>,
-  source_includes: Result<Option<Vec<String>>, String>,
-  pipeline: Result<Option<String>, String>,
-  refresh: Result<Option<types::RefreshEnum>, String>,
-  require_alias: Result<Option<bool>, String>,
-  routing: Result<Option<String>, String>,
-  timeout: Result<Option<types::BulkPutWithIndexTimeout>, String>,
-  type_: Result<Option<String>, String>,
-  wait_for_active_shards: Result<Option<String>, String>,
-  body: Result<types::BulkBodyParams, String>,
-}
-
-impl<'a> BulkPutWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
-    Self {
-      client,
-      index: Err("index was not initialized".to_string()),
-      source: Ok(None),
-      source_excludes: Ok(None),
-      source_includes: Ok(None),
-      pipeline: Ok(None),
-      refresh: Ok(None),
-      require_alias: Ok(None),
-      routing: Ok(None),
-      timeout: Ok(None),
-      type_: Ok(None),
-      wait_for_active_shards: Ok(None),
-      body: Err("body was not initialized".to_string()),
-    }
-  }
-
-  pub fn index<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::BulkPutWithIndexIndex>, {
-    self.index = value
-      .try_into()
-      .map_err(|_| "conversion to `BulkPutWithIndexIndex` for index failed".to_string());
-    self
-  }
-
-  pub fn source<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Vec<String>>, {
-    self.source = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Vec < String >` for source failed".to_string());
-    self
-  }
-
-  pub fn source_excludes<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Vec<String>>, {
-    self.source_excludes = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Vec < String >` for source_excludes failed".to_string());
-    self
-  }
-
-  pub fn source_includes<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Vec<String>>, {
-    self.source_includes = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Vec < String >` for source_includes failed".to_string());
-    self
-  }
-
-  pub fn pipeline<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.pipeline = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for pipeline failed".to_string());
-    self
-  }
-
-  pub fn refresh<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::RefreshEnum>, {
-    self.refresh = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `RefreshEnum` for refresh failed".to_string());
-    self
-  }
-
-  pub fn require_alias<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.require_alias = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for require_alias failed".to_string());
-    self
-  }
-
-  pub fn routing<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.routing = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for routing failed".to_string());
-    self
-  }
-
-  pub fn timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::BulkPutWithIndexTimeout>, {
-    self.timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `BulkPutWithIndexTimeout` for timeout failed".to_string());
-    self
-  }
-
-  pub fn type_<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.type_ = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for type_ failed".to_string());
-    self
-  }
-
-  pub fn wait_for_active_shards<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.wait_for_active_shards = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for wait_for_active_shards failed".to_string());
-    self
-  }
-
-  pub fn body<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::BulkBodyParams>, {
-    self.body = value
-      .try_into()
-      .map_err(|_| "conversion to `BulkBodyParams` for body failed".to_string());
-    self
-  }
-
-  ///Sends a `PUT` request to `/{index}/_bulk`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
-    let Self {
-      client,
-      index,
-      source,
-      source_excludes,
-      source_includes,
-      pipeline,
-      refresh,
-      require_alias,
-      routing,
-      timeout,
-      type_,
-      wait_for_active_shards,
-      body,
-    } = self;
-    let index = index.map_err(Error::InvalidRequest)?;
-    let source = source.map_err(Error::InvalidRequest)?;
-    let source_excludes = source_excludes.map_err(Error::InvalidRequest)?;
-    let source_includes = source_includes.map_err(Error::InvalidRequest)?;
-    let pipeline = pipeline.map_err(Error::InvalidRequest)?;
-    let refresh = refresh.map_err(Error::InvalidRequest)?;
-    let require_alias = require_alias.map_err(Error::InvalidRequest)?;
-    let routing = routing.map_err(Error::InvalidRequest)?;
-    let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let type_ = type_.map_err(Error::InvalidRequest)?;
-    let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
-    let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_bulk", client.baseurl, encode_path(&index.to_string()),);
-    let mut query = Vec::with_capacity(10usize);
-    if let Some(v) = &source {
-      query.push(("_source", v.join(",")));
-    }
-    if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.join(",")));
-    }
-    if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.join(",")));
-    }
-    if let Some(v) = &pipeline {
-      query.push(("pipeline", v.to_string()));
-    }
-    if let Some(v) = &refresh {
-      query.push(("refresh", v.to_string()));
-    }
-    if let Some(v) = &require_alias {
-      query.push(("require_alias", v.to_string()));
-    }
-    if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
-    }
-    if let Some(v) = &timeout {
-      query.push(("timeout", v.to_string()));
-    }
-    if let Some(v) = &type_ {
-      query.push(("type", v.to_string()));
-    }
-    if let Some(v) = &wait_for_active_shards {
-      query.push(("wait_for_active_shards", v.to_string()));
-    }
-    let request = client.client.put(url).json(&body).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
-    }
-  }
-}
-
-///Builder for [`Client::bulk_post_with_index`]
-///
-///[`Client::bulk_post_with_index`]: super::Client::bulk_post_with_index
-#[derive(Debug, Clone)]
-pub struct BulkPostWithIndex<'a> {
-  client: &'a super::Client,
-  index: Result<types::BulkPostWithIndexIndex, String>,
-  source: Result<Option<Vec<String>>, String>,
-  source_excludes: Result<Option<Vec<String>>, String>,
-  source_includes: Result<Option<Vec<String>>, String>,
-  pipeline: Result<Option<String>, String>,
-  refresh: Result<Option<types::RefreshEnum>, String>,
-  require_alias: Result<Option<bool>, String>,
-  routing: Result<Option<String>, String>,
-  timeout: Result<Option<types::BulkPostWithIndexTimeout>, String>,
-  type_: Result<Option<String>, String>,
-  wait_for_active_shards: Result<Option<String>, String>,
-  body: Result<types::BulkBodyParams, String>,
-}
-
-impl<'a> BulkPostWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
-    Self {
-      client,
-      index: Err("index was not initialized".to_string()),
-      source: Ok(None),
-      source_excludes: Ok(None),
-      source_includes: Ok(None),
-      pipeline: Ok(None),
-      refresh: Ok(None),
-      require_alias: Ok(None),
-      routing: Ok(None),
-      timeout: Ok(None),
-      type_: Ok(None),
-      wait_for_active_shards: Ok(None),
-      body: Err("body was not initialized".to_string()),
-    }
-  }
-
-  pub fn index<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::BulkPostWithIndexIndex>, {
-    self.index = value
-      .try_into()
-      .map_err(|_| "conversion to `BulkPostWithIndexIndex` for index failed".to_string());
-    self
-  }
-
-  pub fn source<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Vec<String>>, {
-    self.source = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Vec < String >` for source failed".to_string());
-    self
-  }
-
-  pub fn source_excludes<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Vec<String>>, {
-    self.source_excludes = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Vec < String >` for source_excludes failed".to_string());
-    self
-  }
-
-  pub fn source_includes<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Vec<String>>, {
-    self.source_includes = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Vec < String >` for source_includes failed".to_string());
-    self
-  }
-
-  pub fn pipeline<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.pipeline = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for pipeline failed".to_string());
-    self
-  }
-
-  pub fn refresh<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::RefreshEnum>, {
-    self.refresh = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `RefreshEnum` for refresh failed".to_string());
-    self
-  }
-
-  pub fn require_alias<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.require_alias = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for require_alias failed".to_string());
-    self
-  }
-
-  pub fn routing<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.routing = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for routing failed".to_string());
-    self
-  }
-
-  pub fn timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::BulkPostWithIndexTimeout>, {
-    self.timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `BulkPostWithIndexTimeout` for timeout failed".to_string());
-    self
-  }
-
-  pub fn type_<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.type_ = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for type_ failed".to_string());
-    self
-  }
-
-  pub fn wait_for_active_shards<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.wait_for_active_shards = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for wait_for_active_shards failed".to_string());
-    self
-  }
-
-  pub fn body<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::BulkBodyParams>, {
-    self.body = value
-      .try_into()
-      .map_err(|_| "conversion to `BulkBodyParams` for body failed".to_string());
-    self
-  }
-
-  ///Sends a `POST` request to `/{index}/_bulk`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
-    let Self {
-      client,
-      index,
-      source,
-      source_excludes,
-      source_includes,
-      pipeline,
-      refresh,
-      require_alias,
-      routing,
-      timeout,
-      type_,
-      wait_for_active_shards,
-      body,
-    } = self;
-    let index = index.map_err(Error::InvalidRequest)?;
-    let source = source.map_err(Error::InvalidRequest)?;
-    let source_excludes = source_excludes.map_err(Error::InvalidRequest)?;
-    let source_includes = source_includes.map_err(Error::InvalidRequest)?;
-    let pipeline = pipeline.map_err(Error::InvalidRequest)?;
-    let refresh = refresh.map_err(Error::InvalidRequest)?;
-    let require_alias = require_alias.map_err(Error::InvalidRequest)?;
-    let routing = routing.map_err(Error::InvalidRequest)?;
-    let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let type_ = type_.map_err(Error::InvalidRequest)?;
-    let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
-    let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_bulk", client.baseurl, encode_path(&index.to_string()),);
-    let mut query = Vec::with_capacity(10usize);
-    if let Some(v) = &source {
-      query.push(("_source", v.join(",")));
-    }
-    if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.join(",")));
-    }
-    if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.join(",")));
-    }
-    if let Some(v) = &pipeline {
-      query.push(("pipeline", v.to_string()));
-    }
-    if let Some(v) = &refresh {
-      query.push(("refresh", v.to_string()));
-    }
-    if let Some(v) = &require_alias {
-      query.push(("require_alias", v.to_string()));
-    }
-    if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
-    }
-    if let Some(v) = &timeout {
-      query.push(("timeout", v.to_string()));
-    }
-    if let Some(v) = &type_ {
-      query.push(("type", v.to_string()));
-    }
-    if let Some(v) = &wait_for_active_shards {
-      query.push(("wait_for_active_shards", v.to_string()));
-    }
-    let request = client.client.post(url).json(&body).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
-    }
-  }
-}
-
 ///Builder for [`Client::indices_clear_cache_with_index`]
 ///
 ///[`Client::indices_clear_cache_with_index`]: super::Client::indices_clear_cache_with_index

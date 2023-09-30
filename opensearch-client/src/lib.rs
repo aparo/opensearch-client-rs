@@ -248,53 +248,6 @@ impl Client {
   ///Allows to perform multiple index/update/delete operations in a single
   /// request.
   ///
-  ///Sends a `PUT` request to `/_bulk`
-  ///
-  ///Arguments:
-  /// - `source`: True or false to return the _source field or not, or default
-  ///   list of fields to return, can be overridden on each sub-request.
-  /// - `source_excludes`: Default list of fields to exclude from the returned
-  ///   _source field, can be overridden on each sub-request.
-  /// - `source_includes`: Default list of fields to extract and return from the
-  ///   _source field, can be overridden on each sub-request.
-  /// - `pipeline`: The pipeline id to preprocess incoming documents with.
-  /// - `refresh`: If `true` then refresh the affected shards to make this
-  ///   operation visible to search, if `wait_for` then wait for a refresh to
-  ///   make this operation visible to search, if `false` (the default) then do
-  ///   nothing with refreshes.
-  /// - `require_alias`: Sets require_alias for all incoming documents.
-  /// - `routing`: Routing value.
-  /// - `timeout`: Operation timeout.
-  /// - `type_`: Default document type for items which don't provide one.
-  /// - `wait_for_active_shards`: Sets the number of shard copies that must be
-  ///   active before proceeding with the operation. Defaults to 1, meaning the
-  ///   primary shard only. Set to `all` for all shard copies, otherwise set to
-  ///   any non-negative value less than or equal to the total number of copies
-  ///   for the shard (number of replicas + 1).
-  /// - `body`
-  ///```ignore
-  /// let response = client.bulk_put()
-  ///    .source(source)
-  ///    .source_excludes(source_excludes)
-  ///    .source_includes(source_includes)
-  ///    .pipeline(pipeline)
-  ///    .refresh(refresh)
-  ///    .require_alias(require_alias)
-  ///    .routing(routing)
-  ///    .timeout(timeout)
-  ///    .type_(type_)
-  ///    .wait_for_active_shards(wait_for_active_shards)
-  ///    .body(body)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn bulk_put(&self) -> builder::BulkPut {
-    builder::BulkPut::new(self)
-  }
-
-  ///Allows to perform multiple index/update/delete operations in a single
-  /// request.
-  ///
   ///Sends a `POST` request to `/_bulk`
   ///
   ///Arguments:
@@ -335,7 +288,7 @@ impl Client {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn bulk_post(&self) -> builder::BulkPost {
+  pub fn bulk(&self) -> builder::BulkPost {
     builder::BulkPost::new(self)
   }
 
@@ -7517,103 +7470,6 @@ impl Client {
     builder::IndicesAddBlock::new(self)
   }
 
-  ///Allows to perform multiple index/update/delete operations in a single
-  /// request.
-  ///
-  ///Sends a `PUT` request to `/{index}/_bulk`
-  ///
-  ///Arguments:
-  /// - `index`: Default index for items which don't provide one.
-  /// - `source`: True or false to return the _source field or not, or default
-  ///   list of fields to return, can be overridden on each sub-request.
-  /// - `source_excludes`: Default list of fields to exclude from the returned
-  ///   _source field, can be overridden on each sub-request.
-  /// - `source_includes`: Default list of fields to extract and return from the
-  ///   _source field, can be overridden on each sub-request.
-  /// - `pipeline`: The pipeline id to preprocess incoming documents with.
-  /// - `refresh`: If `true` then refresh the affected shards to make this
-  ///   operation visible to search, if `wait_for` then wait for a refresh to
-  ///   make this operation visible to search, if `false` (the default) then do
-  ///   nothing with refreshes.
-  /// - `require_alias`: Sets require_alias for all incoming documents.
-  /// - `routing`: Routing value.
-  /// - `timeout`: Operation timeout.
-  /// - `type_`: Default document type for items which don't provide one.
-  /// - `wait_for_active_shards`: Sets the number of shard copies that must be
-  ///   active before proceeding with the operation. Defaults to 1, meaning the
-  ///   primary shard only. Set to `all` for all shard copies, otherwise set to
-  ///   any non-negative value less than or equal to the total number of copies
-  ///   for the shard (number of replicas + 1).
-  /// - `body`
-  ///```ignore
-  /// let response = client.bulk_put_with_index()
-  ///    .index(index)
-  ///    .source(source)
-  ///    .source_excludes(source_excludes)
-  ///    .source_includes(source_includes)
-  ///    .pipeline(pipeline)
-  ///    .refresh(refresh)
-  ///    .require_alias(require_alias)
-  ///    .routing(routing)
-  ///    .timeout(timeout)
-  ///    .type_(type_)
-  ///    .wait_for_active_shards(wait_for_active_shards)
-  ///    .body(body)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn bulk_put_with_index(&self) -> builder::BulkPutWithIndex {
-    builder::BulkPutWithIndex::new(self)
-  }
-
-  ///Allows to perform multiple index/update/delete operations in a single
-  /// request.
-  ///
-  ///Sends a `POST` request to `/{index}/_bulk`
-  ///
-  ///Arguments:
-  /// - `index`: Default index for items which don't provide one.
-  /// - `source`: True or false to return the _source field or not, or default
-  ///   list of fields to return, can be overridden on each sub-request.
-  /// - `source_excludes`: Default list of fields to exclude from the returned
-  ///   _source field, can be overridden on each sub-request.
-  /// - `source_includes`: Default list of fields to extract and return from the
-  ///   _source field, can be overridden on each sub-request.
-  /// - `pipeline`: The pipeline id to preprocess incoming documents with.
-  /// - `refresh`: If `true` then refresh the affected shards to make this
-  ///   operation visible to search, if `wait_for` then wait for a refresh to
-  ///   make this operation visible to search, if `false` (the default) then do
-  ///   nothing with refreshes.
-  /// - `require_alias`: Sets require_alias for all incoming documents.
-  /// - `routing`: Routing value.
-  /// - `timeout`: Operation timeout.
-  /// - `type_`: Default document type for items which don't provide one.
-  /// - `wait_for_active_shards`: Sets the number of shard copies that must be
-  ///   active before proceeding with the operation. Defaults to 1, meaning the
-  ///   primary shard only. Set to `all` for all shard copies, otherwise set to
-  ///   any non-negative value less than or equal to the total number of copies
-  ///   for the shard (number of replicas + 1).
-  /// - `body`
-  ///```ignore
-  /// let response = client.bulk_post_with_index()
-  ///    .index(index)
-  ///    .source(source)
-  ///    .source_excludes(source_excludes)
-  ///    .source_includes(source_includes)
-  ///    .pipeline(pipeline)
-  ///    .refresh(refresh)
-  ///    .require_alias(require_alias)
-  ///    .routing(routing)
-  ///    .timeout(timeout)
-  ///    .type_(type_)
-  ///    .wait_for_active_shards(wait_for_active_shards)
-  ///    .body(body)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn bulk_post_with_index(&self) -> builder::BulkPostWithIndex {
-    builder::BulkPostWithIndex::new(self)
-  }
 
   ///Clears all or specific caches for one or more indices.
   ///
@@ -9434,7 +9290,7 @@ impl Client {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn search_post_with_index(&self) -> builder::SearchPostWithIndex {
+  pub fn search(&self) -> builder::SearchPostWithIndex {
     builder::SearchPostWithIndex::new(self)
   }
 
@@ -10658,6 +10514,30 @@ impl Client {
   pub fn indices_validate_query_post_with_index(&self) -> builder::IndicesValidateQueryPostWithIndex {
     builder::IndicesValidateQueryPostWithIndex::new(self)
   }
+
+  // pub async fn list_indices(&self) -> Result<Vec<String>, Error> {
+  //   let request_url = self.cat_indices().send().await?;
+  //   format!("{}/_cat/indices", self.server);
+  //   let response = self
+  //     .client
+  //     .get(request_url)
+  //     .query(&[("s", "i")])
+  //     .basic_auth(self.user.as_str(), Some(self.password.as_str()))
+  //     .send()
+  //     .await?;
+  //   let cat_result = response.text().await?;
+  //   let values: Vec<String> = cat_result
+  //     .split('\n')
+  //     .filter(|x| !x.is_empty())
+  //     .map(|x| {
+  //       let mut iterator = x.split_ascii_whitespace();
+  //       iterator.nth(2).unwrap().to_owned()
+  //     })
+  //     .collect();
+  //   Ok(values)
+  // }
+
+
 }
 
 pub mod prelude {

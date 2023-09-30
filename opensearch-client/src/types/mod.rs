@@ -39494,32 +39494,6 @@ impl<'de> serde::Deserialize<'de> for SearchGetWithIndexIndex {
   }
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct SearchGetWithIndexResponseContent<T> {
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub hits: Option<HitsMetadata<T>>,
-  #[serde(rename = "_scroll_id", default, skip_serializing_if = "Option::is_none")]
-  pub scroll_id: Option<String>,
-  #[serde(rename = "_shards", default, skip_serializing_if = "Option::is_none")]
-  pub shards: Option<ShardStatistics>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub timed_out: Option<bool>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub took: Option<i64>,
-}
-
-impl<T> From<&SearchGetWithIndexResponseContent<T>> for SearchGetWithIndexResponseContent<T> {
-  fn from(value: &SearchGetWithIndexResponseContent<T>) -> Self {
-    value.clone().into()
-  }
-}
-
-impl<T> SearchGetWithIndexResponseContent<T> {
-  pub fn builder() -> builder::SearchGetWithIndexResponseContent<T> {
-    builder::SearchGetWithIndexResponseContent::default()
-  }
-}
-
 ///Specify how long a consistent view of the index should be maintained for
 /// scrolled search.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -53770,105 +53744,6 @@ pub mod builder {
 
   impl<T2> From<super::SearchGetResponseContent<T2>> for SearchGetResponseContent<T2> {
     fn from(value: super::SearchGetResponseContent<T2>) -> Self {
-      Self {
-        hits: Ok(value.hits),
-        scroll_id: Ok(value.scroll_id),
-        shards: Ok(value.shards),
-        timed_out: Ok(value.timed_out),
-        took: Ok(value.took),
-      }
-    }
-  }
-
-  #[derive(Clone, Debug)]
-  pub struct SearchGetWithIndexResponseContent<T> {
-    hits: Result<Option<super::HitsMetadata<T>>, String>,
-    scroll_id: Result<Option<String>, String>,
-    shards: Result<Option<super::ShardStatistics>, String>,
-    timed_out: Result<Option<bool>, String>,
-    took: Result<Option<i64>, String>,
-  }
-
-  impl<T> Default for SearchGetWithIndexResponseContent<T> {
-    fn default() -> Self {
-      Self {
-        hits: Ok(Default::default()),
-        scroll_id: Ok(Default::default()),
-        shards: Ok(Default::default()),
-        timed_out: Ok(Default::default()),
-        took: Ok(Default::default()),
-      }
-    }
-  }
-
-  impl<T2> SearchGetWithIndexResponseContent<T2> {
-    pub fn hits<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<super::HitsMetadata<T2>>>,
-      T::Error: std::fmt::Display, {
-      self.hits = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for hits: {}", e));
-      self
-    }
-
-    pub fn scroll_id<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<String>>,
-      T::Error: std::fmt::Display, {
-      self.scroll_id = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for scroll_id: {}", e));
-      self
-    }
-
-    pub fn shards<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<super::ShardStatistics>>,
-      T::Error: std::fmt::Display, {
-      self.shards = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for shards: {}", e));
-      self
-    }
-
-    pub fn timed_out<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<bool>>,
-      T::Error: std::fmt::Display, {
-      self.timed_out = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for timed_out: {}", e));
-      self
-    }
-
-    pub fn took<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<i64>>,
-      T::Error: std::fmt::Display, {
-      self.took = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for took: {}", e));
-      self
-    }
-  }
-
-  impl<T2> std::convert::TryFrom<SearchGetWithIndexResponseContent<T2>> for super::SearchGetWithIndexResponseContent<T2> {
-    type Error = String;
-
-    fn try_from(value: SearchGetWithIndexResponseContent<T2>) -> Result<Self, String> {
-      Ok(Self {
-        hits: value.hits?,
-        scroll_id: value.scroll_id?,
-        shards: value.shards?,
-        timed_out: value.timed_out?,
-        took: value.took?,
-      })
-    }
-  }
-
-  impl<T2> From<super::SearchGetWithIndexResponseContent<T2>> for SearchGetWithIndexResponseContent<T2> {
-    fn from(value: super::SearchGetWithIndexResponseContent<T2>) -> Self {
       Self {
         hits: Ok(value.hits),
         scroll_id: Ok(value.scroll_id),

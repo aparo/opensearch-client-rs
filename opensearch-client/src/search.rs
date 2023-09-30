@@ -10,127 +10,127 @@ use futures::{
 };
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use serde_json::{json, Value};
-use tracing::{debug, info};
-use thiserror::Error;
+// use tracing::{debug, info};
+// use thiserror::Error;
 
-#[derive(Error, Debug)]
-pub enum OpenSearchError {
-  #[error("Fetching error: {0}")]
-  FetchingError(String),
-  #[error("Authentication error: {0}")]
-  Authentication(String),
-  #[error(transparent)]
-  IOError(#[from] std::io::Error),
-  #[error(transparent)]
-  RequestError(#[from] reqwest::Error),
-  #[error(transparent)]
-  JsonRequestError(#[from] serde_json::Error),
-  #[error(transparent)]
-  Other(#[from] anyhow::Error),
-}
+// #[derive(Error, Debug)]
+// pub enum OpenSearchError {
+//   #[error("Fetching error: {0}")]
+//   FetchingError(String),
+//   #[error("Authentication error: {0}")]
+//   Authentication(String),
+//   #[error(transparent)]
+//   IOError(#[from] std::io::Error),
+//   #[error(transparent)]
+//   RequestError(#[from] reqwest::Error),
+//   #[error(transparent)]
+//   JsonRequestError(#[from] serde_json::Error),
+//   #[error(transparent)]
+//   Other(#[from] anyhow::Error),
+// }
+
+// #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+// #[serde(rename_all = "camelCase")]
+// pub struct IndexResponse {
+//   #[serde(rename = "_index")]
+//   pub index: String,
+//   #[serde(rename = "_id")]
+//   pub id: String,
+//   #[serde(rename = "_version")]
+//   pub version: u64,
+//   pub result: String,
+//   #[serde(rename = "_shards")]
+//   pub shards: Shards,
+//   #[serde(rename = "_seq_no")]
+//   pub seq_no: u64,
+//   #[serde(rename = "_primary_term")]
+//   pub primary_term: u64,
+// }
+
+// #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+// #[serde(rename_all = "camelCase")]
+// pub struct GetResponse<T> {
+//   #[serde(rename = "_index")]
+//   pub index: String,
+//   #[serde(rename = "_id")]
+//   pub id: String,
+//   #[serde(rename = "_version")]
+//   pub version: u64,
+//   #[serde(rename = "_seq_no")]
+//   pub seq_no: u64,
+//   #[serde(rename = "_primary_term")]
+//   pub primary_term: u64,
+//   pub found: bool,
+//   #[serde(rename = "_source")]
+//   pub source: Option<T>,
+// }
+
+// #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+// #[serde(rename_all = "camelCase")]
+// pub struct SearchResult<T> {
+//   pub took: u64,
+//   #[serde(rename = "timed_out")]
+//   pub timed_out: bool,
+//   #[serde(rename = "_shards")]
+//   pub shards: Shards,
+//   pub hits: Hits<T>,
+//   pub aggregations: Option<Aggregations>,
+// }
+
+// #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+// #[serde(rename_all = "camelCase")]
+// pub struct Shards {
+//   pub total: u64,
+//   pub successful: u64,
+//   pub skipped: Option<u64>,
+//   pub failed: u64,
+// }
+
+// #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+// #[serde(rename_all = "camelCase")]
+// pub struct Hits<T> {
+//   pub total: Total,
+//   #[serde(rename = "max_score")]
+//   pub max_score: Option<f64>,
+//   pub hits: Vec<Hit<T>>,
+// }
+
+// #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+// #[serde(rename_all = "camelCase")]
+// pub struct Total {
+//   pub value: u64,
+//   pub relation: String,
+// }
+
+// #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+// #[serde(rename_all = "camelCase")]
+// pub struct Hit<T> {
+//   #[serde(rename = "_index")]
+//   pub index: String,
+//   #[serde(rename = "_id")]
+//   pub id: String,
+//   #[serde(rename = "_score")]
+//   pub score: Option<f64>,
+//   #[serde(rename = "_source")]
+//   pub source: T,
+//   #[serde(rename = "sort")]
+//   pub sort: Option<Value>,
+// }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct IndexResponse {
-  #[serde(rename = "_index")]
-  pub index: String,
-  #[serde(rename = "_id")]
-  pub id: String,
-  #[serde(rename = "_version")]
-  pub version: u64,
-  pub result: String,
-  #[serde(rename = "_shards")]
-  pub shards: Shards,
-  #[serde(rename = "_seq_no")]
-  pub seq_no: u64,
-  #[serde(rename = "_primary_term")]
-  pub primary_term: u64,
-}
+// #[serde(rename_all = "camelCase")]
+// pub struct Aggregations {}
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct GetResponse<T> {
-  #[serde(rename = "_index")]
-  pub index: String,
-  #[serde(rename = "_id")]
-  pub id: String,
-  #[serde(rename = "_version")]
-  pub version: u64,
-  #[serde(rename = "_seq_no")]
-  pub seq_no: u64,
-  #[serde(rename = "_primary_term")]
-  pub primary_term: u64,
-  pub found: bool,
-  #[serde(rename = "_source")]
-  pub source: Option<T>,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct SearchResult<T> {
-  pub took: u64,
-  #[serde(rename = "timed_out")]
-  pub timed_out: bool,
-  #[serde(rename = "_shards")]
-  pub shards: Shards,
-  pub hits: Hits<T>,
-  pub aggregations: Option<Aggregations>,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Shards {
-  pub total: u64,
-  pub successful: u64,
-  pub skipped: Option<u64>,
-  pub failed: u64,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Hits<T> {
-  pub total: Total,
-  #[serde(rename = "max_score")]
-  pub max_score: Option<f64>,
-  pub hits: Vec<Hit<T>>,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Total {
-  pub value: u64,
-  pub relation: String,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Hit<T> {
-  #[serde(rename = "_index")]
-  pub index: String,
-  #[serde(rename = "_id")]
-  pub id: String,
-  #[serde(rename = "_score")]
-  pub score: Option<f64>,
-  #[serde(rename = "_source")]
-  pub source: T,
-  #[serde(rename = "sort")]
-  pub sort: Option<Value>,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Aggregations {}
-
-#[derive(Debug, Clone)]
-pub struct OpenSearch {
-  pub client: Client,
-  server: String,
-  user: String,
-  password: String,
-  pub bulker: Arc<Mutex<String>>,
-  pub bulker_size: Arc<Mutex<u32>>,
-  pub max_bulk_size: u32,
-}
+// #[derive(Debug, Clone)]
+// pub struct OpenSearch {
+//   pub client: Client,
+//   server: String,
+//   user: String,
+//   password: String,
+//   pub bulker: Arc<Mutex<String>>,
+//   pub bulker_size: Arc<Mutex<u32>>,
+//   pub max_bulk_size: u32,
+// }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
 pub struct Script {

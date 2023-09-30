@@ -1,5 +1,7 @@
 mod progenitor_client;
 
+use std::sync::{Arc, Mutex};
+
 #[allow(unused_imports)]
 use progenitor_client::{encode_path, encode_path_option_vec_string, RequestBuilderExt};
 pub use progenitor_client::{ByteStream, Error, ResponseValue};
@@ -7,6 +9,7 @@ pub use progenitor_client::{ByteStream, Error, ResponseValue};
 use reqwest::header::{HeaderMap, HeaderValue};
 pub mod types;
 pub mod builder;
+// pub mod search;
 #[derive(Clone, Debug)]
 ///Client for OpenSearch
 ///
@@ -14,6 +17,9 @@ pub mod builder;
 pub struct Client {
   pub(crate) baseurl: String,
   pub(crate) client: reqwest::Client,
+  pub(crate) bulker: Arc<Mutex<String>>,
+  pub(crate) bulker_size: Arc<Mutex<u32>>,
+  pub(crate) max_bulk_size: u32,
 }
 
 impl Client {
@@ -43,6 +49,9 @@ impl Client {
     Self {
       baseurl: baseurl.to_string(),
       client,
+      bulker: Arc::new(Mutex::new(String::new())),
+      bulker_size: Arc::new(Mutex::new(0)),
+      max_bulk_size: 1000,
     }
   }
 
@@ -5409,143 +5418,6 @@ impl Client {
 
   ///Returns results matching a query.
   ///
-  ///Sends a `GET` request to `/_search`
-  ///
-  ///Arguments:
-  /// - `source`: True or false to return the _source field or not, or a list of
-  ///   fields to return.
-  /// - `source_excludes`: List of fields to exclude from the returned _source
-  ///   field.
-  /// - `source_includes`: List of fields to extract and return from the _source
-  ///   field.
-  /// - `allow_no_indices`: Whether to ignore if a wildcard indices expression
-  ///   resolves into no concrete indices. (This includes `_all` string or when
-  ///   no indices have been specified).
-  /// - `allow_partial_search_results`: Indicate if an error should be returned
-  ///   if there is a partial search failure or timeout.
-  /// - `analyze_wildcard`: Specify whether wildcard and prefix queries should
-  ///   be analyzed.
-  /// - `analyzer`: The analyzer to use for the query string.
-  /// - `batched_reduce_size`: The number of shard results that should be
-  ///   reduced at once on the coordinating node. This value should be used as a
-  ///   protection mechanism to reduce the memory overhead per search request if
-  ///   the potential number of shards in the request can be large.
-  /// - `ccs_minimize_roundtrips`: Indicates whether network round-trips should
-  ///   be minimized as part of cross-cluster search requests execution.
-  /// - `default_operator`: The default operator for query string query (AND or
-  ///   OR).
-  /// - `df`: The field to use as default where no field prefix is given in the
-  ///   query string.
-  /// - `docvalue_fields`: Comma-separated list of fields to return as the
-  ///   docvalue representation of a field for each hit.
-  /// - `expand_wildcards`: Whether to expand wildcard expression to concrete
-  ///   indices that are open, closed or both.
-  /// - `explain`: Specify whether to return detailed information about score
-  ///   computation as part of a hit.
-  /// - `from`: Starting offset.
-  /// - `ignore_throttled`: Whether specified concrete, expanded or aliased
-  ///   indices should be ignored when throttled.
-  /// - `ignore_unavailable`: Whether specified concrete indices should be
-  ///   ignored when unavailable (missing or closed).
-  /// - `lenient`: Specify whether format-based query failures (such as
-  ///   providing text to a numeric field) should be ignored.
-  /// - `max_concurrent_shard_requests`: The number of concurrent shard requests
-  ///   per node this search executes concurrently. This value should be used to
-  ///   limit the impact of the search on the cluster in order to limit the
-  ///   number of concurrent shard requests.
-  /// - `pre_filter_shard_size`: Threshold that enforces a pre-filter round-trip
-  ///   to prefilter search shards based on query rewriting if the number of
-  ///   shards the search request expands to exceeds the threshold. This filter
-  ///   round-trip can limit the number of shards significantly if for instance
-  ///   a shard can not match any documents based on its rewrite method ie. if
-  ///   date filters are mandatory to match but the shard bounds and the query
-  ///   are disjoint.
-  /// - `preference`: Specify the node or shard the operation should be
-  ///   performed on.
-  /// - `q`: Query in the Lucene query string syntax.
-  /// - `request_cache`: Specify if request cache should be used for this
-  ///   request or not, defaults to index level setting.
-  /// - `rest_total_hits_as_int`: Indicates whether hits.total should be
-  ///   rendered as an integer or an object in the rest search response.
-  /// - `routing`: Comma-separated list of specific routing values.
-  /// - `scroll`: Specify how long a consistent view of the index should be
-  ///   maintained for scrolled search.
-  /// - `search_type`: Search operation type.
-  /// - `seq_no_primary_term`: Specify whether to return sequence number and
-  ///   primary term of the last modification of each hit.
-  /// - `size`: Number of hits to return.
-  /// - `sort`: Comma-separated list of <field>:<direction> pairs.
-  /// - `stats`: Specific 'tag' of the request for logging and statistical
-  ///   purposes.
-  /// - `stored_fields`: Comma-separated list of stored fields to return.
-  /// - `suggest_field`: Specify which field to use for suggestions.
-  /// - `suggest_mode`: Specify suggest mode.
-  /// - `suggest_size`: How many suggestions to return in response.
-  /// - `suggest_text`: The source text for which the suggestions should be
-  ///   returned.
-  /// - `terminate_after`: The maximum number of documents to collect for each
-  ///   shard, upon reaching which the query execution will terminate early.
-  /// - `timeout`: Operation timeout.
-  /// - `track_scores`: Whether to calculate and return scores even if they are
-  ///   not used for sorting.
-  /// - `track_total_hits`: Indicate if the number of documents that match the
-  ///   query should be tracked.
-  /// - `typed_keys`: Specify whether aggregation and suggester names should be
-  ///   prefixed by their respective types in the response.
-  /// - `version`: Whether to return document version as part of a hit.
-  ///```ignore
-  /// let response = client.search_get()
-  ///    .source(source)
-  ///    .source_excludes(source_excludes)
-  ///    .source_includes(source_includes)
-  ///    .allow_no_indices(allow_no_indices)
-  ///    .allow_partial_search_results(allow_partial_search_results)
-  ///    .analyze_wildcard(analyze_wildcard)
-  ///    .analyzer(analyzer)
-  ///    .batched_reduce_size(batched_reduce_size)
-  ///    .ccs_minimize_roundtrips(ccs_minimize_roundtrips)
-  ///    .default_operator(default_operator)
-  ///    .df(df)
-  ///    .docvalue_fields(docvalue_fields)
-  ///    .expand_wildcards(expand_wildcards)
-  ///    .explain(explain)
-  ///    .from(from)
-  ///    .ignore_throttled(ignore_throttled)
-  ///    .ignore_unavailable(ignore_unavailable)
-  ///    .lenient(lenient)
-  ///    .max_concurrent_shard_requests(max_concurrent_shard_requests)
-  ///    .pre_filter_shard_size(pre_filter_shard_size)
-  ///    .preference(preference)
-  ///    .q(q)
-  ///    .request_cache(request_cache)
-  ///    .rest_total_hits_as_int(rest_total_hits_as_int)
-  ///    .routing(routing)
-  ///    .scroll(scroll)
-  ///    .search_type(search_type)
-  ///    .seq_no_primary_term(seq_no_primary_term)
-  ///    .size(size)
-  ///    .sort(sort)
-  ///    .stats(stats)
-  ///    .stored_fields(stored_fields)
-  ///    .suggest_field(suggest_field)
-  ///    .suggest_mode(suggest_mode)
-  ///    .suggest_size(suggest_size)
-  ///    .suggest_text(suggest_text)
-  ///    .terminate_after(terminate_after)
-  ///    .timeout(timeout)
-  ///    .track_scores(track_scores)
-  ///    .track_total_hits(track_total_hits)
-  ///    .typed_keys(typed_keys)
-  ///    .version(version)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn search_get(&self) -> builder::SearchGet {
-    builder::SearchGet::new(self)
-  }
-
-  ///Returns results matching a query.
-  ///
   ///Sends a `POST` request to `/_search`
   ///
   ///Arguments:
@@ -9423,145 +9295,6 @@ impl Client {
     builder::IndicesRefreshPostWithIndex::new(self)
   }
 
-  ///Returns results matching a query.
-  ///
-  ///Sends a `GET` request to `/{index}/_search`
-  ///
-  ///Arguments:
-  /// - `index`: Comma-separated list of indices; use `_all` or empty string to
-  ///   perform the operation on all indices.
-  /// - `source`: True or false to return the _source field or not, or a list of
-  ///   fields to return.
-  /// - `source_excludes`: List of fields to exclude from the returned _source
-  ///   field.
-  /// - `source_includes`: List of fields to extract and return from the _source
-  ///   field.
-  /// - `allow_no_indices`: Whether to ignore if a wildcard indices expression
-  ///   resolves into no concrete indices. (This includes `_all` string or when
-  ///   no indices have been specified).
-  /// - `allow_partial_search_results`: Indicate if an error should be returned
-  ///   if there is a partial search failure or timeout.
-  /// - `analyze_wildcard`: Specify whether wildcard and prefix queries should
-  ///   be analyzed.
-  /// - `analyzer`: The analyzer to use for the query string.
-  /// - `batched_reduce_size`: The number of shard results that should be
-  ///   reduced at once on the coordinating node. This value should be used as a
-  ///   protection mechanism to reduce the memory overhead per search request if
-  ///   the potential number of shards in the request can be large.
-  /// - `ccs_minimize_roundtrips`: Indicates whether network round-trips should
-  ///   be minimized as part of cross-cluster search requests execution.
-  /// - `default_operator`: The default operator for query string query (AND or
-  ///   OR).
-  /// - `df`: The field to use as default where no field prefix is given in the
-  ///   query string.
-  /// - `docvalue_fields`: Comma-separated list of fields to return as the
-  ///   docvalue representation of a field for each hit.
-  /// - `expand_wildcards`: Whether to expand wildcard expression to concrete
-  ///   indices that are open, closed or both.
-  /// - `explain`: Specify whether to return detailed information about score
-  ///   computation as part of a hit.
-  /// - `from`: Starting offset.
-  /// - `ignore_throttled`: Whether specified concrete, expanded or aliased
-  ///   indices should be ignored when throttled.
-  /// - `ignore_unavailable`: Whether specified concrete indices should be
-  ///   ignored when unavailable (missing or closed).
-  /// - `lenient`: Specify whether format-based query failures (such as
-  ///   providing text to a numeric field) should be ignored.
-  /// - `max_concurrent_shard_requests`: The number of concurrent shard requests
-  ///   per node this search executes concurrently. This value should be used to
-  ///   limit the impact of the search on the cluster in order to limit the
-  ///   number of concurrent shard requests.
-  /// - `pre_filter_shard_size`: Threshold that enforces a pre-filter round-trip
-  ///   to prefilter search shards based on query rewriting if the number of
-  ///   shards the search request expands to exceeds the threshold. This filter
-  ///   round-trip can limit the number of shards significantly if for instance
-  ///   a shard can not match any documents based on its rewrite method ie. if
-  ///   date filters are mandatory to match but the shard bounds and the query
-  ///   are disjoint.
-  /// - `preference`: Specify the node or shard the operation should be
-  ///   performed on.
-  /// - `q`: Query in the Lucene query string syntax.
-  /// - `request_cache`: Specify if request cache should be used for this
-  ///   request or not, defaults to index level setting.
-  /// - `rest_total_hits_as_int`: Indicates whether hits.total should be
-  ///   rendered as an integer or an object in the rest search response.
-  /// - `routing`: Comma-separated list of specific routing values.
-  /// - `scroll`: Specify how long a consistent view of the index should be
-  ///   maintained for scrolled search.
-  /// - `search_type`: Search operation type.
-  /// - `seq_no_primary_term`: Specify whether to return sequence number and
-  ///   primary term of the last modification of each hit.
-  /// - `size`: Number of hits to return.
-  /// - `sort`: Comma-separated list of <field>:<direction> pairs.
-  /// - `stats`: Specific 'tag' of the request for logging and statistical
-  ///   purposes.
-  /// - `stored_fields`: Comma-separated list of stored fields to return.
-  /// - `suggest_field`: Specify which field to use for suggestions.
-  /// - `suggest_mode`: Specify suggest mode.
-  /// - `suggest_size`: How many suggestions to return in response.
-  /// - `suggest_text`: The source text for which the suggestions should be
-  ///   returned.
-  /// - `terminate_after`: The maximum number of documents to collect for each
-  ///   shard, upon reaching which the query execution will terminate early.
-  /// - `timeout`: Operation timeout.
-  /// - `track_scores`: Whether to calculate and return scores even if they are
-  ///   not used for sorting.
-  /// - `track_total_hits`: Indicate if the number of documents that match the
-  ///   query should be tracked.
-  /// - `typed_keys`: Specify whether aggregation and suggester names should be
-  ///   prefixed by their respective types in the response.
-  /// - `version`: Whether to return document version as part of a hit.
-  ///```ignore
-  /// let response = client.search_get_with_index()
-  ///    .index(index)
-  ///    .source(source)
-  ///    .source_excludes(source_excludes)
-  ///    .source_includes(source_includes)
-  ///    .allow_no_indices(allow_no_indices)
-  ///    .allow_partial_search_results(allow_partial_search_results)
-  ///    .analyze_wildcard(analyze_wildcard)
-  ///    .analyzer(analyzer)
-  ///    .batched_reduce_size(batched_reduce_size)
-  ///    .ccs_minimize_roundtrips(ccs_minimize_roundtrips)
-  ///    .default_operator(default_operator)
-  ///    .df(df)
-  ///    .docvalue_fields(docvalue_fields)
-  ///    .expand_wildcards(expand_wildcards)
-  ///    .explain(explain)
-  ///    .from(from)
-  ///    .ignore_throttled(ignore_throttled)
-  ///    .ignore_unavailable(ignore_unavailable)
-  ///    .lenient(lenient)
-  ///    .max_concurrent_shard_requests(max_concurrent_shard_requests)
-  ///    .pre_filter_shard_size(pre_filter_shard_size)
-  ///    .preference(preference)
-  ///    .q(q)
-  ///    .request_cache(request_cache)
-  ///    .rest_total_hits_as_int(rest_total_hits_as_int)
-  ///    .routing(routing)
-  ///    .scroll(scroll)
-  ///    .search_type(search_type)
-  ///    .seq_no_primary_term(seq_no_primary_term)
-  ///    .size(size)
-  ///    .sort(sort)
-  ///    .stats(stats)
-  ///    .stored_fields(stored_fields)
-  ///    .suggest_field(suggest_field)
-  ///    .suggest_mode(suggest_mode)
-  ///    .suggest_size(suggest_size)
-  ///    .suggest_text(suggest_text)
-  ///    .terminate_after(terminate_after)
-  ///    .timeout(timeout)
-  ///    .track_scores(track_scores)
-  ///    .track_total_hits(track_total_hits)
-  ///    .typed_keys(typed_keys)
-  ///    .version(version)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn search_get_with_index(&self) -> builder::SearchGetWithIndex {
-    builder::SearchGetWithIndex::new(self)
-  }
 
   ///Returns results matching a query.
   ///

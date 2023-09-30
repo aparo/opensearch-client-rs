@@ -6181,7 +6181,7 @@ impl<'a> CatShardsWithIndex<'a> {
     let s = s.map_err(Error::InvalidRequest)?;
     let time = time.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/shards/{}", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/_cat/shards/{}", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(10usize);
     if let Some(v) = &bytes {
       query.push(("bytes", v.to_string()));
@@ -6772,7 +6772,7 @@ impl<'a> CatTasks<'a> {
     let url = format!("{}/_cat/tasks", client.baseurl,);
     let mut query = Vec::with_capacity(10usize);
     if let Some(v) = &actions {
-      query.push(("actions", v.to_string()));
+      query.push(("actions", v.join(",")));
     }
     if let Some(v) = &detailed {
       query.push(("detailed", v.to_string()));
@@ -6787,7 +6787,7 @@ impl<'a> CatTasks<'a> {
       query.push(("help", v.to_string()));
     }
     if let Some(v) = &nodes {
-      query.push(("nodes", v.to_string()));
+      query.push(("nodes", v.join(",")));
     }
     if let Some(v) = &parent_task_id {
       query.push(("parent_task_id", v.to_string()));
@@ -8333,7 +8333,7 @@ impl<'a> ClusterHealthWithIndex<'a> {
     let wait_for_no_relocating_shards = wait_for_no_relocating_shards.map_err(Error::InvalidRequest)?;
     let wait_for_nodes = wait_for_nodes.map_err(Error::InvalidRequest)?;
     let wait_for_status = wait_for_status.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cluster/health/{}", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/_cluster/health/{}", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(14usize);
     if let Some(v) = &awareness_attribute {
       query.push(("awareness_attribute", v.to_string()));
@@ -9183,9 +9183,9 @@ impl<'a> ClusterReroute<'a> {
     if let Some(v) = &master_timeout {
       query.push(("master_timeout", v.to_string()));
     }
-    if let Some(v) = &metric {
-      query.push(("metric", v.to_string()));
-    }
+    // if let Some(v) = &metric {
+    //   query.push(("metric", v.into_iter().map(|p| p.to_string()).collect().join(",")));
+    // }
     if let Some(v) = &retry_failed {
       query.push(("retry_failed", v.to_string()));
     }
@@ -10134,7 +10134,7 @@ impl<'a> ClusterStateWithIndexMetric<'a> {
       "{}/_cluster/state/{}/{}",
       client.baseurl,
       encode_path(&metric.to_string()),
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
     );
     let mut query = Vec::with_capacity(9usize);
     if let Some(v) = &allow_no_indices {
@@ -11333,7 +11333,7 @@ impl<'a> CountGet<'a> {
       query.push(("q", v.to_string()));
     }
     if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
+      query.push(("routing", v.join(",")));
     }
     if let Some(v) = &terminate_after {
       query.push(("terminate_after", v.to_string()));
@@ -11616,7 +11616,7 @@ impl<'a> CountPost<'a> {
       query.push(("q", v.to_string()));
     }
     if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
+      query.push(("routing", v.join(",")));
     }
     if let Some(v) = &terminate_after {
       query.push(("terminate_after", v.to_string()));
@@ -12307,7 +12307,7 @@ impl<'a> FieldCapsGet<'a> {
       query.push(("expand_wildcards", v.to_string()));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &ignore_unavailable {
       query.push(("ignore_unavailable", v.to_string()));
@@ -12437,7 +12437,7 @@ impl<'a> FieldCapsPost<'a> {
       query.push(("expand_wildcards", v.to_string()));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &ignore_unavailable {
       query.push(("ignore_unavailable", v.to_string()));
@@ -14861,13 +14861,13 @@ impl<'a> MgetGet<'a> {
     let url = format!("{}/_mget", client.baseurl,);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &preference {
       query.push(("preference", v.to_string()));
@@ -14882,7 +14882,7 @@ impl<'a> MgetGet<'a> {
       query.push(("routing", v.to_string()));
     }
     if let Some(v) = &stored_fields {
-      query.push(("stored_fields", v.to_string()));
+      query.push(("stored_fields", v.join(",")));
     }
     let request = client.client.get(url).query(&query).build()?;
     let result = client.client.execute(request).await;
@@ -15042,13 +15042,13 @@ impl<'a> MgetPost<'a> {
     let url = format!("{}/_mget", client.baseurl,);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &preference {
       query.push(("preference", v.to_string()));
@@ -15063,7 +15063,7 @@ impl<'a> MgetPost<'a> {
       query.push(("routing", v.to_string()));
     }
     if let Some(v) = &stored_fields {
-      query.push(("stored_fields", v.to_string()));
+      query.push(("stored_fields", v.join(",")));
     }
     let request = client.client.post(url).json(&body).query(&query).build()?;
     let result = client.client.execute(request).await;
@@ -15831,10 +15831,10 @@ impl<'a> MtermvectorsGet<'a> {
       query.push(("field_statistics", v.to_string()));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &ids {
-      query.push(("ids", v.to_string()));
+      query.push(("ids", v.join(",")));
     }
     if let Some(v) = &offsets {
       query.push(("offsets", v.to_string()));
@@ -16080,10 +16080,10 @@ impl<'a> MtermvectorsPost<'a> {
       query.push(("field_statistics", v.to_string()));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &ids {
-      query.push(("ids", v.to_string()));
+      query.push(("ids", v.join(",")));
     }
     if let Some(v) = &offsets {
       query.push(("offsets", v.to_string()));
@@ -16649,16 +16649,16 @@ impl<'a> NodesStats<'a> {
     let url = format!("{}/_nodes/stats", client.baseurl,);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &completion_fields {
-      query.push(("completion_fields", v.to_string()));
+      query.push(("completion_fields", v.join(",")));
     }
     if let Some(v) = &fielddata_fields {
-      query.push(("fielddata_fields", v.to_string()));
+      query.push(("fielddata_fields", v.join(",")));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &groups {
-      query.push(("groups", v.to_string()));
+      query.push(("groups", v.join(",")));
     }
     if let Some(v) = &include_segment_file_sizes {
       query.push(("include_segment_file_sizes", v.to_string()));
@@ -16670,7 +16670,7 @@ impl<'a> NodesStats<'a> {
       query.push(("timeout", v.to_string()));
     }
     if let Some(v) = &types {
-      query.push(("types", v.to_string()));
+      query.push(("types", v.join(",")));
     }
     let request = client.client.get(url).query(&query).build()?;
     let result = client.client.execute(request).await;
@@ -16830,16 +16830,16 @@ impl<'a> NodesStatsWithMetric<'a> {
     let url = format!("{}/_nodes/stats/{}", client.baseurl, encode_path(&metric.to_string()),);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &completion_fields {
-      query.push(("completion_fields", v.to_string()));
+      query.push(("completion_fields", v.join(",")));
     }
     if let Some(v) = &fielddata_fields {
-      query.push(("fielddata_fields", v.to_string()));
+      query.push(("fielddata_fields", v.join(",")));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &groups {
-      query.push(("groups", v.to_string()));
+      query.push(("groups", v.join(",")));
     }
     if let Some(v) = &include_segment_file_sizes {
       query.push(("include_segment_file_sizes", v.to_string()));
@@ -16851,7 +16851,7 @@ impl<'a> NodesStatsWithMetric<'a> {
       query.push(("timeout", v.to_string()));
     }
     if let Some(v) = &types {
-      query.push(("types", v.to_string()));
+      query.push(("types", v.join(",")));
     }
     let request = client.client.get(url).query(&query).build()?;
     let result = client.client.execute(request).await;
@@ -17029,16 +17029,16 @@ impl<'a> NodesStatsWithIndexMetricMetric<'a> {
     );
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &completion_fields {
-      query.push(("completion_fields", v.to_string()));
+      query.push(("completion_fields", v.join(",")));
     }
     if let Some(v) = &fielddata_fields {
-      query.push(("fielddata_fields", v.to_string()));
+      query.push(("fielddata_fields", v.join(",")));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &groups {
-      query.push(("groups", v.to_string()));
+      query.push(("groups", v.join(",")));
     }
     if let Some(v) = &include_segment_file_sizes {
       query.push(("include_segment_file_sizes", v.to_string()));
@@ -17050,7 +17050,7 @@ impl<'a> NodesStatsWithIndexMetricMetric<'a> {
       query.push(("timeout", v.to_string()));
     }
     if let Some(v) = &types {
-      query.push(("types", v.to_string()));
+      query.push(("types", v.join(",")));
     }
     let request = client.client.get(url).query(&query).build()?;
     let result = client.client.execute(request).await;
@@ -17778,16 +17778,16 @@ impl<'a> NodesStatsWithNodeId<'a> {
     let url = format!("{}/_nodes/{}/stats", client.baseurl, encode_path(&node_id.to_string()),);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &completion_fields {
-      query.push(("completion_fields", v.to_string()));
+      query.push(("completion_fields", v.join(",")));
     }
     if let Some(v) = &fielddata_fields {
-      query.push(("fielddata_fields", v.to_string()));
+      query.push(("fielddata_fields", v.join(",")));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &groups {
-      query.push(("groups", v.to_string()));
+      query.push(("groups", v.join(",")));
     }
     if let Some(v) = &include_segment_file_sizes {
       query.push(("include_segment_file_sizes", v.to_string()));
@@ -17799,7 +17799,7 @@ impl<'a> NodesStatsWithNodeId<'a> {
       query.push(("timeout", v.to_string()));
     }
     if let Some(v) = &types {
-      query.push(("types", v.to_string()));
+      query.push(("types", v.join(",")));
     }
     let request = client.client.get(url).query(&query).build()?;
     let result = client.client.execute(request).await;
@@ -17977,16 +17977,16 @@ impl<'a> NodesStatsWithMetricNodeId<'a> {
     );
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &completion_fields {
-      query.push(("completion_fields", v.to_string()));
+      query.push(("completion_fields", v.join(",")));
     }
     if let Some(v) = &fielddata_fields {
-      query.push(("fielddata_fields", v.to_string()));
+      query.push(("fielddata_fields", v.join(",")));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &groups {
-      query.push(("groups", v.to_string()));
+      query.push(("groups", v.join(",")));
     }
     if let Some(v) = &include_segment_file_sizes {
       query.push(("include_segment_file_sizes", v.to_string()));
@@ -17998,7 +17998,7 @@ impl<'a> NodesStatsWithMetricNodeId<'a> {
       query.push(("timeout", v.to_string()));
     }
     if let Some(v) = &types {
-      query.push(("types", v.to_string()));
+      query.push(("types", v.join(",")));
     }
     let request = client.client.get(url).query(&query).build()?;
     let result = client.client.execute(request).await;
@@ -18191,16 +18191,16 @@ impl<'a> NodesStatsWithIndexMetricMetricNodeId<'a> {
     );
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &completion_fields {
-      query.push(("completion_fields", v.to_string()));
+      query.push(("completion_fields", v.join(",")));
     }
     if let Some(v) = &fielddata_fields {
-      query.push(("fielddata_fields", v.to_string()));
+      query.push(("fielddata_fields", v.join(",")));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &groups {
-      query.push(("groups", v.to_string()));
+      query.push(("groups", v.join(",")));
     }
     if let Some(v) = &include_segment_file_sizes {
       query.push(("include_segment_file_sizes", v.to_string()));
@@ -18212,7 +18212,7 @@ impl<'a> NodesStatsWithIndexMetricMetricNodeId<'a> {
       query.push(("timeout", v.to_string()));
     }
     if let Some(v) = &types {
-      query.push(("types", v.to_string()));
+      query.push(("types", v.join(",")));
     }
     let request = client.client.get(url).query(&query).build()?;
     let result = client.client.execute(request).await;
@@ -23348,13 +23348,13 @@ impl<'a> SearchGet<'a> {
     let url = format!("{}/_search", client.baseurl,);
     let mut query = Vec::with_capacity(42usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -23381,7 +23381,7 @@ impl<'a> SearchGet<'a> {
       query.push(("df", v.to_string()));
     }
     if let Some(v) = &docvalue_fields {
-      query.push(("docvalue_fields", v.to_string()));
+      query.push(("docvalue_fields", v.join(",")));
     }
     if let Some(v) = &expand_wildcards {
       query.push(("expand_wildcards", v.to_string()));
@@ -23420,7 +23420,7 @@ impl<'a> SearchGet<'a> {
       query.push(("rest_total_hits_as_int", v.to_string()));
     }
     if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
+      query.push(("routing", v.join(",")));
     }
     if let Some(v) = &scroll {
       query.push(("scroll", v.to_string()));
@@ -23435,13 +23435,13 @@ impl<'a> SearchGet<'a> {
       query.push(("size", v.to_string()));
     }
     if let Some(v) = &sort {
-      query.push(("sort", v.to_string()));
+      query.push(("sort", v.join(",")));
     }
     if let Some(v) = &stats {
-      query.push(("stats", v.to_string()));
+      query.push(("stats", v.join(",")));
     }
     if let Some(v) = &stored_fields {
-      query.push(("stored_fields", v.to_string()));
+      query.push(("stored_fields", v.join(",")));
     }
     if let Some(v) = &suggest_field {
       query.push(("suggest_field", v.to_string()));
@@ -24125,13 +24125,13 @@ impl<'a> SearchPost<'a> {
     let url = format!("{}/_search", client.baseurl,);
     let mut query = Vec::with_capacity(42usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -24158,7 +24158,7 @@ impl<'a> SearchPost<'a> {
       query.push(("df", v.to_string()));
     }
     if let Some(v) = &docvalue_fields {
-      query.push(("docvalue_fields", v.to_string()));
+      query.push(("docvalue_fields", v.join(",")));
     }
     if let Some(v) = &expand_wildcards {
       query.push(("expand_wildcards", v.to_string()));
@@ -24197,7 +24197,7 @@ impl<'a> SearchPost<'a> {
       query.push(("rest_total_hits_as_int", v.to_string()));
     }
     if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
+      query.push(("routing", v.join(",")));
     }
     if let Some(v) = &scroll {
       query.push(("scroll", v.to_string()));
@@ -24212,13 +24212,13 @@ impl<'a> SearchPost<'a> {
       query.push(("size", v.to_string()));
     }
     if let Some(v) = &sort {
-      query.push(("sort", v.to_string()));
+      query.push(("sort", v.join(",")));
     }
     if let Some(v) = &stats {
-      query.push(("stats", v.to_string()));
+      query.push(("stats", v.join(",")));
     }
     if let Some(v) = &stored_fields {
-      query.push(("stored_fields", v.to_string()));
+      query.push(("stored_fields", v.join(",")));
     }
     if let Some(v) = &suggest_field {
       query.push(("suggest_field", v.to_string()));
@@ -24681,7 +24681,7 @@ impl<'a> ScrollGetWithScrollId<'a> {
     let url = format!(
       "{}/_search/scroll/{}",
       client.baseurl,
-      encode_path(&scroll_id.to_string()),
+      encode_path(&scroll_id.clone().unwrap_or(String::from("")).to_string()),
     );
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &rest_total_hits_as_int {
@@ -24781,7 +24781,7 @@ impl<'a> ScrollPostWithScrollId<'a> {
     let url = format!(
       "{}/_search/scroll/{}",
       client.baseurl,
-      encode_path(&scroll_id.to_string()),
+      encode_path(&scroll_id.clone().unwrap_or(String::from(""))),
     );
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &rest_total_hits_as_int {
@@ -25096,7 +25096,7 @@ impl<'a> SearchTemplateGet<'a> {
       query.push(("rest_total_hits_as_int", v.to_string()));
     }
     if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
+      query.push(("routing", v.join(",")));
     }
     if let Some(v) = &scroll {
       query.push(("scroll", v.to_string()));
@@ -25362,7 +25362,7 @@ impl<'a> SearchTemplatePost<'a> {
       query.push(("rest_total_hits_as_int", v.to_string()));
     }
     if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
+      query.push(("routing", v.join(",")));
     }
     if let Some(v) = &scroll {
       query.push(("scroll", v.to_string()));
@@ -26365,9 +26365,9 @@ impl<'a> IndicesShardStores<'a> {
     if let Some(v) = &ignore_unavailable {
       query.push(("ignore_unavailable", v.to_string()));
     }
-    if let Some(v) = &status {
-      query.push(("status", v.to_string()));
-    }
+    // if let Some(v) = &status {
+    //   query.push(("status", v.to_string()));
+    // }
     let request = client.client.get(url).query(&query).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
@@ -28273,22 +28273,22 @@ impl<'a> IndicesStats<'a> {
     let url = format!("{}/_stats", client.baseurl,);
     let mut query = Vec::with_capacity(9usize);
     if let Some(v) = &completion_fields {
-      query.push(("completion_fields", v.to_string()));
+      query.push(("completion_fields", v.join(",")));
     }
     if let Some(v) = &expand_wildcards {
       query.push(("expand_wildcards", v.to_string()));
     }
     if let Some(v) = &fielddata_fields {
-      query.push(("fielddata_fields", v.to_string()));
+      query.push(("fielddata_fields", v.join(",")));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &forbid_closed_indices {
       query.push(("forbid_closed_indices", v.to_string()));
     }
     if let Some(v) = &groups {
-      query.push(("groups", v.to_string()));
+      query.push(("groups", v.join(",")));
     }
     if let Some(v) = &include_segment_file_sizes {
       query.push(("include_segment_file_sizes", v.to_string()));
@@ -28471,22 +28471,22 @@ impl<'a> IndicesStatsWithMetric<'a> {
     let url = format!("{}/_stats/{}", client.baseurl, encode_path(&metric.to_string()),);
     let mut query = Vec::with_capacity(9usize);
     if let Some(v) = &completion_fields {
-      query.push(("completion_fields", v.to_string()));
+      query.push(("completion_fields", v.join(",")));
     }
     if let Some(v) = &expand_wildcards {
       query.push(("expand_wildcards", v.to_string()));
     }
     if let Some(v) = &fielddata_fields {
-      query.push(("fielddata_fields", v.to_string()));
+      query.push(("fielddata_fields", v.join(",")));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &forbid_closed_indices {
       query.push(("forbid_closed_indices", v.to_string()));
     }
     if let Some(v) = &groups {
-      query.push(("groups", v.to_string()));
+      query.push(("groups", v.join(",")));
     }
     if let Some(v) = &include_segment_file_sizes {
       query.push(("include_segment_file_sizes", v.to_string()));
@@ -28628,7 +28628,7 @@ impl<'a> TasksList<'a> {
     let url = format!("{}/_tasks", client.baseurl,);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &actions {
-      query.push(("actions", v.to_string()));
+      query.push(("actions", v.join(",")));
     }
     if let Some(v) = &detailed {
       query.push(("detailed", v.to_string()));
@@ -28637,7 +28637,7 @@ impl<'a> TasksList<'a> {
       query.push(("group_by", v.to_string()));
     }
     if let Some(v) = &nodes {
-      query.push(("nodes", v.to_string()));
+      query.push(("nodes", v.join(",")));
     }
     if let Some(v) = &parent_task_id {
       query.push(("parent_task_id", v.to_string()));
@@ -28737,10 +28737,10 @@ impl<'a> TasksCancel<'a> {
     let url = format!("{}/_tasks/_cancel", client.baseurl,);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &actions {
-      query.push(("actions", v.to_string()));
+      query.push(("actions", v.join(",")));
     }
     if let Some(v) = &nodes {
-      query.push(("nodes", v.to_string()));
+      query.push(("nodes", v.join(",")));
     }
     if let Some(v) = &parent_task_id {
       query.push(("parent_task_id", v.to_string()));
@@ -28933,10 +28933,10 @@ impl<'a> TasksCancelWithTaskId<'a> {
     );
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &actions {
-      query.push(("actions", v.to_string()));
+      query.push(("actions", v.join(",")));
     }
     if let Some(v) = &nodes {
-      query.push(("nodes", v.to_string()));
+      query.push(("nodes", v.join(",")));
     }
     if let Some(v) = &parent_task_id {
       query.push(("parent_task_id", v.to_string()));
@@ -30801,7 +30801,7 @@ impl<'a> IndicesGet<'a> {
     let include_defaults = include_defaults.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -30949,7 +30949,7 @@ impl<'a> IndicesCreate<'a> {
     let body = body
       .and_then(std::convert::TryInto::<types::IndicesCreateBodyParams>::try_into)
       .map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -31085,7 +31085,7 @@ impl<'a> IndicesDelete<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -31237,7 +31237,7 @@ impl<'a> IndicesExists<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let include_defaults = include_defaults.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -31356,7 +31356,7 @@ impl<'a> IndicesGetAliasWithIndex<'a> {
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_alias", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_alias", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -31485,7 +31485,7 @@ impl<'a> IndicesGetAliasWithIndexName<'a> {
     let url = format!(
       "{}/{}/_alias/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&name.to_string()),
     );
     let mut query = Vec::with_capacity(4usize);
@@ -31614,7 +31614,7 @@ impl<'a> IndicesPutAliasPut<'a> {
     let url = format!(
       "{}/{}/_alias/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&name.to_string()),
     );
     let mut query = Vec::with_capacity(3usize);
@@ -31740,7 +31740,7 @@ impl<'a> IndicesPutAliasPost<'a> {
     let url = format!(
       "{}/{}/_alias/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&name.to_string()),
     );
     let mut query = Vec::with_capacity(3usize);
@@ -31853,7 +31853,7 @@ impl<'a> IndicesDeleteAlias<'a> {
     let url = format!(
       "{}/{}/_alias/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&name.to_string()),
     );
     let mut query = Vec::with_capacity(3usize);
@@ -31981,7 +31981,7 @@ impl<'a> IndicesExistsAliasWithIndex<'a> {
     let url = format!(
       "{}/{}/_alias/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&name.to_string()),
     );
     let mut query = Vec::with_capacity(4usize);
@@ -32110,7 +32110,7 @@ impl<'a> IndicesPutAliasPutPlural<'a> {
     let url = format!(
       "{}/{}/_aliases/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&name.to_string()),
     );
     let mut query = Vec::with_capacity(3usize);
@@ -32236,7 +32236,7 @@ impl<'a> IndicesPutAliasPostPlural<'a> {
     let url = format!(
       "{}/{}/_aliases/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&name.to_string()),
     );
     let mut query = Vec::with_capacity(3usize);
@@ -32349,7 +32349,7 @@ impl<'a> IndicesDeleteAliasPlural<'a> {
     let url = format!(
       "{}/{}/_aliases/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&name.to_string()),
     );
     let mut query = Vec::with_capacity(3usize);
@@ -32403,7 +32403,7 @@ impl<'a> IndicesAnalyzeGetWithIndex<'a> {
   pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
     let Self { client, index } = self;
     let index = index.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_analyze", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_analyze", client.baseurl, encode_path(&index.clone().unwrap_or(String::from("_all"))),);
     let mut query = Vec::with_capacity(1usize);
     if let Some(v) = &index {
       query.push(("index", v.to_string()));
@@ -32461,7 +32461,7 @@ impl<'a> IndicesAnalyzePostWithIndex<'a> {
     let Self { client, index, body } = self;
     let index = index.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_analyze", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/_analyze", client.baseurl);
     let mut query = Vec::with_capacity(1usize);
     if let Some(v) = &index {
       query.push(("index", v.to_string()));
@@ -32608,7 +32608,7 @@ impl<'a> IndicesAddBlock<'a> {
     let url = format!(
       "{}/{}/_block/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&block.to_string()),
     );
     let mut query = Vec::with_capacity(6usize);
@@ -32826,16 +32826,16 @@ impl<'a> BulkPutWithIndex<'a> {
     let type_ = type_.map_err(Error::InvalidRequest)?;
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_bulk", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_bulk", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(10usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &pipeline {
       query.push(("pipeline", v.to_string()));
@@ -33054,16 +33054,16 @@ impl<'a> BulkPostWithIndex<'a> {
     let type_ = type_.map_err(Error::InvalidRequest)?;
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_bulk", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_bulk", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(10usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &pipeline {
       query.push(("pipeline", v.to_string()));
@@ -33226,9 +33226,12 @@ impl<'a> IndicesClearCacheWithIndex<'a> {
     let fields = fields.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let index = index.map_err(Error::InvalidRequest)?;
-    let query = query.map_err(Error::InvalidRequest)?;
+    let query_opt = query.map_err(Error::InvalidRequest)?;
     let request = request.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_cache/clear", client.baseurl, encode_path(&index.join(",")),);
+    let url = match &index {
+        Some(idx) => format!("{}/{}/_cache/clear", client.baseurl, encode_path(&index.clone().unwrap().join(",")),),
+        None => format!("{}/_cache/clear", client.baseurl),
+    };
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -33240,15 +33243,15 @@ impl<'a> IndicesClearCacheWithIndex<'a> {
       query.push(("fielddata", v.to_string()));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &ignore_unavailable {
       query.push(("ignore_unavailable", v.to_string()));
     }
     if let Some(v) = &index {
-      query.push(("index", v.to_string()));
+      query.push(("index", v.join(",")));
     }
-    if let Some(v) = &query {
+    if let Some(v) = &query_opt {
       query.push(("query", v.to_string()));
     }
     if let Some(v) = &request {
@@ -33381,7 +33384,7 @@ impl<'a> IndicesClonePut<'a> {
     let url = format!(
       "{}/{}/_clone/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&target.to_string()),
     );
     let mut query = Vec::with_capacity(4usize);
@@ -33524,7 +33527,7 @@ impl<'a> IndicesClonePost<'a> {
     let url = format!(
       "{}/{}/_clone/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&target.to_string()),
     );
     let mut query = Vec::with_capacity(4usize);
@@ -33681,7 +33684,7 @@ impl<'a> IndicesClose<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_close", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_close", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -33943,7 +33946,7 @@ impl<'a> CountGetWithIndex<'a> {
     let q = q.map_err(Error::InvalidRequest)?;
     let routing = routing.map_err(Error::InvalidRequest)?;
     let terminate_after = terminate_after.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_count", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_count", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(14usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -33982,7 +33985,7 @@ impl<'a> CountGetWithIndex<'a> {
       query.push(("q", v.to_string()));
     }
     if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
+      query.push(("routing", v.join(",")));
     }
     if let Some(v) = &terminate_after {
       query.push(("terminate_after", v.to_string()));
@@ -34239,7 +34242,7 @@ impl<'a> CountPostWithIndex<'a> {
     let routing = routing.map_err(Error::InvalidRequest)?;
     let terminate_after = terminate_after.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_count", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_count", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(14usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -34278,7 +34281,7 @@ impl<'a> CountPostWithIndex<'a> {
       query.push(("q", v.to_string()));
     }
     if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
+      query.push(("routing", v.join(",")));
     }
     if let Some(v) = &terminate_after {
       query.push(("terminate_after", v.to_string()));
@@ -34453,7 +34456,7 @@ impl<'a> CreatePut<'a> {
     let url = format!(
       "{}/{}/_create/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&id.to_string()),
     );
     let mut query = Vec::with_capacity(7usize);
@@ -34648,7 +34651,7 @@ impl<'a> CreatePost<'a> {
     let url = format!(
       "{}/{}/_create/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&id.to_string()),
     );
     let mut query = Vec::with_capacity(7usize);
@@ -35191,16 +35194,16 @@ impl<'a> DeleteByQuery<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let wait_for_completion = wait_for_completion.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_delete_by_query", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_delete_by_query", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(33usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -35251,7 +35254,7 @@ impl<'a> DeleteByQuery<'a> {
       query.push(("requests_per_second", v.to_string()));
     }
     if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
+      query.push(("routing", v.join(",")));
     }
     if let Some(v) = &scroll {
       query.push(("scroll", v.to_string()));
@@ -35272,10 +35275,10 @@ impl<'a> DeleteByQuery<'a> {
       query.push(("slices", v.to_string()));
     }
     if let Some(v) = &sort {
-      query.push(("sort", v.to_string()));
+      query.push(("sort", v.join(",")));
     }
     if let Some(v) = &stats {
-      query.push(("stats", v.to_string()));
+      query.push(("stats", v.join(",")));
     }
     if let Some(v) = &terminate_after {
       query.push(("terminate_after", v.to_string()));
@@ -35502,7 +35505,7 @@ impl<'a> IndexPost<'a> {
     let version_type = version_type.map_err(Error::InvalidRequest)?;
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_doc", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_doc", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(11usize);
     if let Some(v) = &if_primary_term {
       query.push(("if_primary_term", v.to_string()));
@@ -35736,18 +35739,18 @@ impl<'a> Get<'a> {
     let url = format!(
       "{}/{}/_doc/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&id.to_string()),
     );
     let mut query = Vec::with_capacity(10usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &preference {
       query.push(("preference", v.to_string()));
@@ -35762,7 +35765,7 @@ impl<'a> Get<'a> {
       query.push(("routing", v.to_string()));
     }
     if let Some(v) = &stored_fields {
-      query.push(("stored_fields", v.to_string()));
+      query.push(("stored_fields", v.join(",")));
     }
     if let Some(v) = &version {
       query.push(("version", v.to_string()));
@@ -36004,7 +36007,7 @@ impl<'a> IndexPutWithId<'a> {
     let url = format!(
       "{}/{}/_doc/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&id.to_string()),
     );
     let mut query = Vec::with_capacity(11usize);
@@ -36267,7 +36270,7 @@ impl<'a> IndexPostWithId<'a> {
     let url = format!(
       "{}/{}/_doc/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&id.to_string()),
     );
     let mut query = Vec::with_capacity(11usize);
@@ -36475,7 +36478,7 @@ impl<'a> Delete<'a> {
     let url = format!(
       "{}/{}/_doc/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&id.to_string()),
     );
     let mut query = Vec::with_capacity(8usize);
@@ -36702,18 +36705,18 @@ impl<'a> Exists<'a> {
     let url = format!(
       "{}/{}/_doc/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&id.to_string()),
     );
     let mut query = Vec::with_capacity(10usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &preference {
       query.push(("preference", v.to_string()));
@@ -36728,7 +36731,7 @@ impl<'a> Exists<'a> {
       query.push(("routing", v.to_string()));
     }
     if let Some(v) = &stored_fields {
-      query.push(("stored_fields", v.to_string()));
+      query.push(("stored_fields", v.join(",")));
     }
     if let Some(v) = &version {
       query.push(("version", v.to_string()));
@@ -36963,18 +36966,18 @@ impl<'a> ExplainGet<'a> {
     let url = format!(
       "{}/{}/_explain/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&id.to_string()),
     );
     let mut query = Vec::with_capacity(12usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &analyze_wildcard {
       query.push(("analyze_wildcard", v.to_string()));
@@ -37001,7 +37004,7 @@ impl<'a> ExplainGet<'a> {
       query.push(("routing", v.to_string()));
     }
     if let Some(v) = &stored_fields {
-      query.push(("stored_fields", v.to_string()));
+      query.push(("stored_fields", v.join(",")));
     }
     let request = client.client.get(url).query(&query).build()?;
     let result = client.client.execute(request).await;
@@ -37243,18 +37246,18 @@ impl<'a> ExplainPost<'a> {
     let url = format!(
       "{}/{}/_explain/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&id.to_string()),
     );
     let mut query = Vec::with_capacity(12usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &analyze_wildcard {
       query.push(("analyze_wildcard", v.to_string()));
@@ -37281,7 +37284,7 @@ impl<'a> ExplainPost<'a> {
       query.push(("routing", v.to_string()));
     }
     if let Some(v) = &stored_fields {
-      query.push(("stored_fields", v.to_string()));
+      query.push(("stored_fields", v.join(",")));
     }
     let request = client.client.post(url).json(&body).query(&query).build()?;
     let result = client.client.execute(request).await;
@@ -37396,7 +37399,7 @@ impl<'a> FieldCapsGetWithIndex<'a> {
     let fields = fields.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let include_unmapped = include_unmapped.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_field_caps", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_field_caps", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -37405,7 +37408,7 @@ impl<'a> FieldCapsGetWithIndex<'a> {
       query.push(("expand_wildcards", v.to_string()));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &ignore_unavailable {
       query.push(("ignore_unavailable", v.to_string()));
@@ -37539,7 +37542,7 @@ impl<'a> FieldCapsPostWithIndex<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let include_unmapped = include_unmapped.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_field_caps", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_field_caps", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -37548,7 +37551,7 @@ impl<'a> FieldCapsPostWithIndex<'a> {
       query.push(("expand_wildcards", v.to_string()));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &ignore_unavailable {
       query.push(("ignore_unavailable", v.to_string()));
@@ -37669,7 +37672,7 @@ impl<'a> IndicesFlushGetWithIndex<'a> {
     let force = force.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let wait_if_ongoing = wait_if_ongoing.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_flush", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_flush", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -37799,7 +37802,7 @@ impl<'a> IndicesFlushPostWithIndex<'a> {
     let force = force.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let wait_if_ongoing = wait_if_ongoing.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_flush", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_flush", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -37943,7 +37946,7 @@ impl<'a> IndicesForcemergeWithIndex<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let max_num_segments = max_num_segments.map_err(Error::InvalidRequest)?;
     let only_expunge_deletes = only_expunge_deletes.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_forcemerge", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_forcemerge", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -38089,7 +38092,7 @@ impl<'a> IndicesGetMappingWithIndex<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_mapping", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_mapping", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -38262,7 +38265,7 @@ impl<'a> IndicesPutMappingPut<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let write_index_only = write_index_only.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_mapping", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_mapping", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -38447,7 +38450,7 @@ impl<'a> IndicesPutMappingPost<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let write_index_only = write_index_only.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_mapping", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_mapping", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -38608,7 +38611,7 @@ impl<'a> IndicesGetFieldMappingWithIndex<'a> {
     let url = format!(
       "{}/{}/_mapping/field/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&fields.to_string()),
     );
     let mut query = Vec::with_capacity(5usize);
@@ -38782,16 +38785,16 @@ impl<'a> MgetGetWithIndex<'a> {
     let refresh = refresh.map_err(Error::InvalidRequest)?;
     let routing = routing.map_err(Error::InvalidRequest)?;
     let stored_fields = stored_fields.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_mget", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_mget", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &preference {
       query.push(("preference", v.to_string()));
@@ -38806,7 +38809,7 @@ impl<'a> MgetGetWithIndex<'a> {
       query.push(("routing", v.to_string()));
     }
     if let Some(v) = &stored_fields {
-      query.push(("stored_fields", v.to_string()));
+      query.push(("stored_fields", v.join(",")));
     }
     let request = client.client.get(url).query(&query).build()?;
     let result = client.client.execute(request).await;
@@ -38976,16 +38979,16 @@ impl<'a> MgetPostWithIndex<'a> {
     let routing = routing.map_err(Error::InvalidRequest)?;
     let stored_fields = stored_fields.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_mget", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_mget", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &preference {
       query.push(("preference", v.to_string()));
@@ -39000,7 +39003,7 @@ impl<'a> MgetPostWithIndex<'a> {
       query.push(("routing", v.to_string()));
     }
     if let Some(v) = &stored_fields {
-      query.push(("stored_fields", v.to_string()));
+      query.push(("stored_fields", v.join(",")));
     }
     let request = client.client.post(url).json(&body).query(&query).build()?;
     let result = client.client.execute(request).await;
@@ -39143,7 +39146,7 @@ impl<'a> MsearchGetWithIndex<'a> {
     let rest_total_hits_as_int = rest_total_hits_as_int.map_err(Error::InvalidRequest)?;
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_msearch", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_msearch", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &ccs_minimize_roundtrips {
       query.push(("ccs_minimize_roundtrips", v.to_string()));
@@ -39320,7 +39323,7 @@ impl<'a> MsearchPostWithIndex<'a> {
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_msearch", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_msearch", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &ccs_minimize_roundtrips {
       query.push(("ccs_minimize_roundtrips", v.to_string()));
@@ -39456,7 +39459,7 @@ impl<'a> MsearchTemplateGetWithIndex<'a> {
     let rest_total_hits_as_int = rest_total_hits_as_int.map_err(Error::InvalidRequest)?;
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_msearch/template", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_msearch/template", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &ccs_minimize_roundtrips {
       query.push(("ccs_minimize_roundtrips", v.to_string()));
@@ -39599,7 +39602,7 @@ impl<'a> MsearchTemplatePostWithIndex<'a> {
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_msearch/template", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_msearch/template", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &ccs_minimize_roundtrips {
       query.push(("ccs_minimize_roundtrips", v.to_string()));
@@ -39827,16 +39830,16 @@ impl<'a> MtermvectorsGetWithIndex<'a> {
     let term_statistics = term_statistics.map_err(Error::InvalidRequest)?;
     let version = version.map_err(Error::InvalidRequest)?;
     let version_type = version_type.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_mtermvectors", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_mtermvectors", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(12usize);
     if let Some(v) = &field_statistics {
       query.push(("field_statistics", v.to_string()));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &ids {
-      query.push(("ids", v.to_string()));
+      query.push(("ids", v.join(",")));
     }
     if let Some(v) = &offsets {
       query.push(("offsets", v.to_string()));
@@ -40089,16 +40092,16 @@ impl<'a> MtermvectorsPostWithIndex<'a> {
     let version = version.map_err(Error::InvalidRequest)?;
     let version_type = version_type.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_mtermvectors", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_mtermvectors", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(12usize);
     if let Some(v) = &field_statistics {
       query.push(("field_statistics", v.to_string()));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &ids {
-      query.push(("ids", v.to_string()));
+      query.push(("ids", v.join(",")));
     }
     if let Some(v) = &offsets {
       query.push(("offsets", v.to_string()));
@@ -40254,7 +40257,7 @@ impl<'a> IndicesOpen<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_open", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_open", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -40373,7 +40376,7 @@ impl<'a> RankEvalGetWithIndex<'a> {
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let search_type = search_type.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_rank_eval", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_rank_eval", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -40499,7 +40502,7 @@ impl<'a> RankEvalPostWithIndex<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_rank_eval", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_rank_eval", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -40584,7 +40587,7 @@ impl<'a> IndicesRecoveryWithIndex<'a> {
     let index = index.map_err(Error::InvalidRequest)?;
     let active_only = active_only.map_err(Error::InvalidRequest)?;
     let detailed = detailed.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_recovery", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_recovery", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(2usize);
     if let Some(v) = &active_only {
       query.push(("active_only", v.to_string()));
@@ -40677,7 +40680,7 @@ impl<'a> IndicesRefreshGetWithIndex<'a> {
     let allow_no_indices = allow_no_indices.map_err(Error::InvalidRequest)?;
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_refresh", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_refresh", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -40773,7 +40776,7 @@ impl<'a> IndicesRefreshPostWithIndex<'a> {
     let allow_no_indices = allow_no_indices.map_err(Error::InvalidRequest)?;
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_refresh", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_refresh", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -41415,16 +41418,16 @@ impl<'a> SearchGetWithIndex<'a> {
     let track_total_hits = track_total_hits.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
     let version = version.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_search", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_search", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(42usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -41451,7 +41454,7 @@ impl<'a> SearchGetWithIndex<'a> {
       query.push(("df", v.to_string()));
     }
     if let Some(v) = &docvalue_fields {
-      query.push(("docvalue_fields", v.to_string()));
+      query.push(("docvalue_fields", v.join(",")));
     }
     if let Some(v) = &expand_wildcards {
       query.push(("expand_wildcards", v.to_string()));
@@ -41490,7 +41493,7 @@ impl<'a> SearchGetWithIndex<'a> {
       query.push(("rest_total_hits_as_int", v.to_string()));
     }
     if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
+      query.push(("routing", v.join(",")));
     }
     if let Some(v) = &scroll {
       query.push(("scroll", v.to_string()));
@@ -41505,13 +41508,13 @@ impl<'a> SearchGetWithIndex<'a> {
       query.push(("size", v.to_string()));
     }
     if let Some(v) = &sort {
-      query.push(("sort", v.to_string()));
+      query.push(("sort", v.join(",")));
     }
     if let Some(v) = &stats {
-      query.push(("stats", v.to_string()));
+      query.push(("stats", v.join(",")));
     }
     if let Some(v) = &stored_fields {
-      query.push(("stored_fields", v.to_string()));
+      query.push(("stored_fields", v.join(",")));
     }
     if let Some(v) = &suggest_field {
       query.push(("suggest_field", v.to_string()));
@@ -42205,16 +42208,16 @@ impl<'a> SearchPostWithIndex<'a> {
     let body = body
       .and_then(std::convert::TryInto::<types::SearchBodyParams>::try_into)
       .map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_search", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_search", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(42usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -42241,7 +42244,7 @@ impl<'a> SearchPostWithIndex<'a> {
       query.push(("df", v.to_string()));
     }
     if let Some(v) = &docvalue_fields {
-      query.push(("docvalue_fields", v.to_string()));
+      query.push(("docvalue_fields", v.join(",")));
     }
     if let Some(v) = &expand_wildcards {
       query.push(("expand_wildcards", v.to_string()));
@@ -42280,7 +42283,7 @@ impl<'a> SearchPostWithIndex<'a> {
       query.push(("rest_total_hits_as_int", v.to_string()));
     }
     if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
+      query.push(("routing", v.join(",")));
     }
     if let Some(v) = &scroll {
       query.push(("scroll", v.to_string()));
@@ -42295,13 +42298,13 @@ impl<'a> SearchPostWithIndex<'a> {
       query.push(("size", v.to_string()));
     }
     if let Some(v) = &sort {
-      query.push(("sort", v.to_string()));
+      query.push(("sort", v.join(",")));
     }
     if let Some(v) = &stats {
-      query.push(("stats", v.to_string()));
+      query.push(("stats", v.join(",")));
     }
     if let Some(v) = &stored_fields {
-      query.push(("stored_fields", v.to_string()));
+      query.push(("stored_fields", v.join(",")));
     }
     if let Some(v) = &suggest_field {
       query.push(("suggest_field", v.to_string()));
@@ -42458,7 +42461,7 @@ impl<'a> CreatePit<'a> {
     let url = format!(
       "{}/{}/_search/point_in_time",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
     );
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_partial_pit_creation {
@@ -42474,7 +42477,7 @@ impl<'a> CreatePit<'a> {
       query.push(("preference", v.to_string()));
     }
     if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
+      query.push(("routing", v.join(",")));
     }
     let request = client
       .client
@@ -42709,7 +42712,7 @@ impl<'a> SearchTemplateGetWithIndex<'a> {
     let scroll = scroll.map_err(Error::InvalidRequest)?;
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_search/template", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_search/template", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(13usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -42739,7 +42742,7 @@ impl<'a> SearchTemplateGetWithIndex<'a> {
       query.push(("rest_total_hits_as_int", v.to_string()));
     }
     if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
+      query.push(("routing", v.join(",")));
     }
     if let Some(v) = &scroll {
       query.push(("scroll", v.to_string()));
@@ -42988,7 +42991,7 @@ impl<'a> SearchTemplatePostWithIndex<'a> {
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_search/template", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_search/template", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(13usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -43018,7 +43021,7 @@ impl<'a> SearchTemplatePostWithIndex<'a> {
       query.push(("rest_total_hits_as_int", v.to_string()));
     }
     if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
+      query.push(("routing", v.join(",")));
     }
     if let Some(v) = &scroll {
       query.push(("scroll", v.to_string()));
@@ -43156,7 +43159,7 @@ impl<'a> SearchShardsGetWithIndex<'a> {
     let local = local.map_err(Error::InvalidRequest)?;
     let preference = preference.map_err(Error::InvalidRequest)?;
     let routing = routing.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_search_shards", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_search_shards", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -43303,7 +43306,7 @@ impl<'a> SearchShardsPostWithIndex<'a> {
     let local = local.map_err(Error::InvalidRequest)?;
     let preference = preference.map_err(Error::InvalidRequest)?;
     let routing = routing.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_search_shards", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_search_shards", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -43422,7 +43425,7 @@ impl<'a> IndicesSegmentsWithIndex<'a> {
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let verbose = verbose.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_segments", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_segments", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -43590,7 +43593,7 @@ impl<'a> IndicesGetSettingsWithIndex<'a> {
     let include_defaults = include_defaults.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_settings", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_settings", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -43783,7 +43786,7 @@ impl<'a> IndicesPutSettingsWithIndex<'a> {
     let preserve_existing = preserve_existing.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_settings", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_settings", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -43979,7 +43982,7 @@ impl<'a> IndicesGetSettingsWithIndexName<'a> {
     let url = format!(
       "{}/{}/_settings/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&name.to_string()),
     );
     let mut query = Vec::with_capacity(8usize);
@@ -44106,7 +44109,7 @@ impl<'a> IndicesShardStoresWithIndex<'a> {
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let status = status.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_shard_stores", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_shard_stores", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -44117,9 +44120,9 @@ impl<'a> IndicesShardStoresWithIndex<'a> {
     if let Some(v) = &ignore_unavailable {
       query.push(("ignore_unavailable", v.to_string()));
     }
-    if let Some(v) = &status {
-      query.push(("status", v.to_string()));
-    }
+    // if let Some(v) = &status {
+    //   query.push(("status", v.to_string()));
+    // }
     let request = client.client.get(url).query(&query).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
@@ -44261,7 +44264,7 @@ impl<'a> IndicesShrinkPut<'a> {
     let url = format!(
       "{}/{}/_shrink/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&target.to_string()),
     );
     let mut query = Vec::with_capacity(5usize);
@@ -44421,7 +44424,7 @@ impl<'a> IndicesShrinkPost<'a> {
     let url = format!(
       "{}/{}/_shrink/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&target.to_string()),
     );
     let mut query = Vec::with_capacity(5usize);
@@ -44625,18 +44628,18 @@ impl<'a> GetSource<'a> {
     let url = format!(
       "{}/{}/_source/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&id.to_string()),
     );
     let mut query = Vec::with_capacity(9usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &preference {
       query.push(("preference", v.to_string()));
@@ -44841,18 +44844,18 @@ impl<'a> ExistsSource<'a> {
     let url = format!(
       "{}/{}/_source/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&id.to_string()),
     );
     let mut query = Vec::with_capacity(9usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &preference {
       query.push(("preference", v.to_string()));
@@ -45013,7 +45016,7 @@ impl<'a> IndicesSplitPut<'a> {
     let url = format!(
       "{}/{}/_split/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&target.to_string()),
     );
     let mut query = Vec::with_capacity(5usize);
@@ -45173,7 +45176,7 @@ impl<'a> IndicesSplitPost<'a> {
     let url = format!(
       "{}/{}/_split/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&target.to_string()),
     );
     let mut query = Vec::with_capacity(5usize);
@@ -45361,25 +45364,25 @@ impl<'a> IndicesStatsWithIndex<'a> {
     let include_segment_file_sizes = include_segment_file_sizes.map_err(Error::InvalidRequest)?;
     let include_unloaded_segments = include_unloaded_segments.map_err(Error::InvalidRequest)?;
     let level = level.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_stats", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_stats", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(9usize);
     if let Some(v) = &completion_fields {
-      query.push(("completion_fields", v.to_string()));
+      query.push(("completion_fields", v.join(",")));
     }
     if let Some(v) = &expand_wildcards {
       query.push(("expand_wildcards", v.to_string()));
     }
     if let Some(v) = &fielddata_fields {
-      query.push(("fielddata_fields", v.to_string()));
+      query.push(("fielddata_fields", v.join(",")));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &forbid_closed_indices {
       query.push(("forbid_closed_indices", v.to_string()));
     }
     if let Some(v) = &groups {
-      query.push(("groups", v.to_string()));
+      query.push(("groups", v.join(",")));
     }
     if let Some(v) = &include_segment_file_sizes {
       query.push(("include_segment_file_sizes", v.to_string()));
@@ -45575,27 +45578,27 @@ impl<'a> IndicesStatsWithIndexMetric<'a> {
     let url = format!(
       "{}/{}/_stats/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&metric.to_string()),
     );
     let mut query = Vec::with_capacity(9usize);
     if let Some(v) = &completion_fields {
-      query.push(("completion_fields", v.to_string()));
+      query.push(("completion_fields", v.join(",")));
     }
     if let Some(v) = &expand_wildcards {
       query.push(("expand_wildcards", v.to_string()));
     }
     if let Some(v) = &fielddata_fields {
-      query.push(("fielddata_fields", v.to_string()));
+      query.push(("fielddata_fields", v.join(",")));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &forbid_closed_indices {
       query.push(("forbid_closed_indices", v.to_string()));
     }
     if let Some(v) = &groups {
-      query.push(("groups", v.to_string()));
+      query.push(("groups", v.join(",")));
     }
     if let Some(v) = &include_segment_file_sizes {
       query.push(("include_segment_file_sizes", v.to_string()));
@@ -45803,13 +45806,13 @@ impl<'a> TermvectorsGet<'a> {
     let term_statistics = term_statistics.map_err(Error::InvalidRequest)?;
     let version = version.map_err(Error::InvalidRequest)?;
     let version_type = version_type.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_termvectors", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_termvectors", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(11usize);
     if let Some(v) = &field_statistics {
       query.push(("field_statistics", v.to_string()));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &offsets {
       query.push(("offsets", v.to_string()));
@@ -46048,13 +46051,13 @@ impl<'a> TermvectorsPost<'a> {
     let version = version.map_err(Error::InvalidRequest)?;
     let version_type = version_type.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_termvectors", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_termvectors", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(11usize);
     if let Some(v) = &field_statistics {
       query.push(("field_statistics", v.to_string()));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &offsets {
       query.push(("offsets", v.to_string()));
@@ -46296,7 +46299,7 @@ impl<'a> TermvectorsGetWithId<'a> {
     let url = format!(
       "{}/{}/_termvectors/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&id.to_string()),
     );
     let mut query = Vec::with_capacity(11usize);
@@ -46304,7 +46307,7 @@ impl<'a> TermvectorsGetWithId<'a> {
       query.push(("field_statistics", v.to_string()));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &offsets {
       query.push(("offsets", v.to_string()));
@@ -46559,7 +46562,7 @@ impl<'a> TermvectorsPostWithId<'a> {
     let url = format!(
       "{}/{}/_termvectors/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&id.to_string()),
     );
     let mut query = Vec::with_capacity(11usize);
@@ -46567,7 +46570,7 @@ impl<'a> TermvectorsPostWithId<'a> {
       query.push(("field_statistics", v.to_string()));
     }
     if let Some(v) = &fields {
-      query.push(("fields", v.to_string()));
+      query.push(("fields", v.join(",")));
     }
     if let Some(v) = &offsets {
       query.push(("offsets", v.to_string()));
@@ -46836,18 +46839,18 @@ impl<'a> Update<'a> {
     let url = format!(
       "{}/{}/_update/{}",
       client.baseurl,
-      encode_path(&index.join(",")),
+      encode_path(&index.to_string()),
       encode_path(&id.to_string()),
     );
     let mut query = Vec::with_capacity(12usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &if_primary_term {
       query.push(("if_primary_term", v.to_string()));
@@ -47408,16 +47411,16 @@ impl<'a> UpdateByQuery<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let wait_for_completion = wait_for_completion.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_update_by_query", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_update_by_query", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(34usize);
     if let Some(v) = &source {
-      query.push(("_source", v.to_string()));
+      query.push(("_source", v.join(",")));
     }
     if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.to_string()));
+      query.push(("_source_excludes", v.join(",")));
     }
     if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.to_string()));
+      query.push(("_source_includes", v.join(",")));
     }
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -47471,7 +47474,7 @@ impl<'a> UpdateByQuery<'a> {
       query.push(("requests_per_second", v.to_string()));
     }
     if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
+      query.push(("routing", v.join(",")));
     }
     if let Some(v) = &scroll {
       query.push(("scroll", v.to_string()));
@@ -47492,10 +47495,10 @@ impl<'a> UpdateByQuery<'a> {
       query.push(("slices", v.to_string()));
     }
     if let Some(v) = &sort {
-      query.push(("sort", v.to_string()));
+      query.push(("sort", v.join(",")));
     }
     if let Some(v) = &stats {
-      query.push(("stats", v.to_string()));
+      query.push(("stats", v.join(",")));
     }
     if let Some(v) = &terminate_after {
       query.push(("terminate_after", v.to_string()));
@@ -47597,7 +47600,7 @@ impl<'a> IndicesGetUpgradeWithIndex<'a> {
     let allow_no_indices = allow_no_indices.map_err(Error::InvalidRequest)?;
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_upgrade", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_upgrade", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -47721,7 +47724,7 @@ impl<'a> IndicesUpgradeWithIndex<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let only_ancient_segments = only_ancient_segments.map_err(Error::InvalidRequest)?;
     let wait_for_completion = wait_for_completion.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_upgrade", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_upgrade", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -47949,7 +47952,7 @@ impl<'a> IndicesValidateQueryGetWithIndex<'a> {
     let lenient = lenient.map_err(Error::InvalidRequest)?;
     let q = q.map_err(Error::InvalidRequest)?;
     let rewrite = rewrite.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_validate/query", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_validate/query", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(12usize);
     if let Some(v) = &all_shards {
       query.push(("all_shards", v.to_string()));
@@ -48211,7 +48214,7 @@ impl<'a> IndicesValidateQueryPostWithIndex<'a> {
     let q = q.map_err(Error::InvalidRequest)?;
     let rewrite = rewrite.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_validate/query", client.baseurl, encode_path(&index.join(",")),);
+    let url = format!("{}/{}/_validate/query", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(12usize);
     if let Some(v) = &all_shards {
       query.push(("all_shards", v.to_string()));

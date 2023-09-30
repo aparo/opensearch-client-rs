@@ -1,53 +1,16 @@
 [package]
-name = "opensearch-client"
-version = { workspace = true }
-edition = { workspace = true }
-authors = { workspace = true }
-documentation = { workspace = true }
-license = { workspace = true }
-repository = { workspace = true }
-keywords = { workspace = true }
-readme = { workspace = true }
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+name = "opensearch"
+version = "0.1.0"
+edition = "2021"
+license = "SPECIFY A LICENSE BEFORE PUBLISHING"
 
 [dependencies]
-# request
-tracing-opentelemetry = "0.21.0"
-opentelemetry = "0.20.0"
-http-cache-reqwest = "0.11.1"
-reqwest = { version = "0.11.20", features = ["json", "multipart"] }
-reqwest-middleware = "0.2.3"
-reqwest-retry = "0.3.0"
-reqwest-tracing = { version = "0.4.6", features = ["opentelemetry_0_19"] }
-# async
-futures-util = "0.3.28"
-futures = "0.3.28"
-
-# general
-chrono = { version = "0.4.26", features = ["serde"] }
-derive_builder = "0.12.0"
-strum = { version = "0.25.0", features = ["derive"] }
-rayon = { version = "1.7.0" }
-url = "2.4.1"
-uuid = { version = "1.4.1", features = ["serde", "v4"] }
-
-# tracing
-tracing = "0.1.37"
-tracing-subscriber = { version = "0.3", features = [
-  "json",
-  "time",
-  "env-filter",
-] }
-# json
+bytes = "1.5.0"
+futures-core = "0.3.28"
+percent-encoding = "2.3.0"
+regress = "0.7.1"
+reqwest = { version = "0.11.20", default-features=false, features = ["json", "stream"] }
 serde = { version = "1.0.188", features = ["derive"] }
 serde_json = "1.0.107"
-serde_derive="*"
-serde_with = "3.3.0"
-# error
-thiserror = "1.0.40"
-anyhow="*"
+serde_urlencoded = "0.7.1"
 
-[dev-dependencies]
-# test
-testcontainers = "0.14.0"

@@ -1,5 +1,8 @@
 
+use reqwest::Body;
 use serde::de::DeserializeOwned;
+
+use crate::types::bulk::BulkResponse;
 
 use super::types;
 #[allow(unused_imports)]
@@ -620,7 +623,7 @@ impl<'a> IndicesAnalyzePost<'a> {
 #[derive(Debug, Clone)]
 pub struct BulkPost<'a> {
   client: &'a super::Client,
-  source: Result<Option<Vec<String>>, String>,
+  source: Result<Option<String>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
   pipeline: Result<Option<String>, String>,
@@ -630,7 +633,7 @@ pub struct BulkPost<'a> {
   timeout: Result<Option<types::BulkPostTimeout>, String>,
   type_: Result<Option<String>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
-  body: Result<types::BulkBodyParams, String>,
+  body: Result<String, String>,
 }
 
 impl<'a> BulkPost<'a> {
@@ -653,7 +656,7 @@ impl<'a> BulkPost<'a> {
 
   pub fn source<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<Vec<String>>, {
+    V: std::convert::TryInto<String>, {
     self.source = value
       .try_into()
       .map(Some)
@@ -753,7 +756,7 @@ impl<'a> BulkPost<'a> {
 
   pub fn body<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::BulkBodyParams>, {
+    V: std::convert::TryInto<String>{
     self.body = value
       .try_into()
       .map_err(|_| "conversion to `BulkBodyParams` for body failed".to_string());
@@ -761,7 +764,7 @@ impl<'a> BulkPost<'a> {
   }
 
   ///Sends a `POST` request to `/_bulk`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<BulkResponse>, Error<()>> {
     let Self {
       client,
       source,
@@ -789,9 +792,6 @@ impl<'a> BulkPost<'a> {
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_bulk", client.baseurl,);
     let mut query = Vec::with_capacity(10usize);
-    if let Some(v) = &source {
-      query.push(("_source", v.join(",")));
-    }
     if let Some(v) = &source_excludes {
       query.push(("_source_excludes", v.join(",")));
     }
@@ -819,11 +819,13 @@ impl<'a> BulkPost<'a> {
     if let Some(v) = &wait_for_active_shards {
       query.push(("wait_for_active_shards", v.to_string()));
     }
-    let request = client.client.post(url).json(&body).query(&query).build()?;
+    let request = client.client.post(url).body(Body::from(body))
+            .header("Content-Type", "application/x-ndjson")
+      .query(&query).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::from_response(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }

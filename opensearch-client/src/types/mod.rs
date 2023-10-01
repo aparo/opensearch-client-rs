@@ -3,6 +3,8 @@
 use std::convert::TryFrom;
 
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
+pub mod bulk;
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct AccountDetails {
   #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -195,33 +197,33 @@ impl AuditLogsConfig {
 
 ///The operation definition and data (action-data pairs), separated by
 /// newlines
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct BulkBodyParams(pub serde_json::Map<String, serde_json::Value>);
-impl std::ops::Deref for BulkBodyParams {
-  type Target = serde_json::Map<String, serde_json::Value>;
+// #[derive(Clone, Debug, Deserialize, Serialize)]
+// pub struct BulkBodyParams(String);
+// // impl std::ops::Deref for BulkBodyParams {
+// //   type Target = serde_json::Map<String, serde_json::Value>;
 
-  fn deref(&self) -> &serde_json::Map<String, serde_json::Value> {
-    &self.0
-  }
-}
+// //   fn deref(&self) -> &serde_json::Map<String, serde_json::Value> {
+// //     &self.0
+// //   }
+// // }
 
-impl From<BulkBodyParams> for serde_json::Map<String, serde_json::Value> {
-  fn from(value: BulkBodyParams) -> Self {
-    value.0
-  }
-}
+// // impl From<BulkBodyParams> for serde_json::Map<String, serde_json::Value> {
+// //   fn from(value: BulkBodyParams) -> Self {
+// //     value.0
+// //   }
+// // }
 
-impl From<&BulkBodyParams> for BulkBodyParams {
-  fn from(value: &BulkBodyParams) -> Self {
-    value.clone()
-  }
-}
+// impl From<&BulkBodyParams> for BulkBodyParams {
+//   fn from(value: &BulkBodyParams) -> Self {
+//     value.clone()
+//   }
+// }
 
-impl From<serde_json::Map<String, serde_json::Value>> for BulkBodyParams {
-  fn from(value: serde_json::Map<String, serde_json::Value>) -> Self {
-    Self(value)
-  }
-}
+// impl From<serde_json::Map<String, serde_json::Value>> for BulkBodyParams {
+//   fn from(value: serde_json::Map<String, serde_json::Value>) -> Self {
+//     Self(value)
+//   }
+// }
 
 ///Operation timeout.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]

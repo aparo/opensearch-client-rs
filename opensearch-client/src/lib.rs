@@ -7,6 +7,9 @@ use progenitor_client::{encode_path, encode_path_option_vec_string, RequestBuild
 pub use progenitor_client::{ByteStream, Error, ResponseValue};
 #[allow(unused_imports)]
 use reqwest::header::{HeaderMap, HeaderValue};
+use serde::Serialize;
+use tracing::info;
+use types::bulk::{BulkAction, BulkResponse, UpdateAction};
 pub mod types;
 pub mod builder;
 // pub mod search;
@@ -10515,27 +10518,151 @@ impl Client {
     builder::IndicesValidateQueryPostWithIndex::new(self)
   }
 
-  // pub async fn list_indices(&self) -> Result<Vec<String>, Error> {
-  //   let request_url = self.cat_indices().send().await?;
-  //   format!("{}/_cat/indices", self.server);
-  //   let response = self
-  //     .client
-  //     .get(request_url)
-  //     .query(&[("s", "i")])
-  //     .basic_auth(self.user.as_str(), Some(self.password.as_str()))
-  //     .send()
-  //     .await?;
-  //   let cat_result = response.text().await?;
-  //   let values: Vec<String> = cat_result
-  //     .split('\n')
-  //     .filter(|x| !x.is_empty())
-  //     .map(|x| {
-  //       let mut iterator = x.split_ascii_whitespace();
-  //       iterator.nth(2).unwrap().to_owned()
-  //     })
-  //     .collect();
-  //   Ok(values)
-  // }
+  pub async fn list_indices(&self) -> Result<Vec<String>, Error> {
+    let response = self.cat_indices().s(vec!("i".to_owned())).send().await?;
+    let cat_result = response.into_inner();
+    let values: Vec<String> = cat_result
+      .split('\n')
+      .filter(|x| !x.is_empty())
+      .map(|x| {
+        let mut iterator = x.split_ascii_whitespace();
+        iterator.nth(2).unwrap().to_owned()
+      })
+      .collect();
+    Ok(values)
+  }
+
+  pub async fn bulk_index_document<T: Serialize>(
+    &self,
+    index: &String,
+    id: Option<String>,
+    body: &T,
+  ) -> Result<serde_json::Value, Error> {
+    let body_json = serde_json::to_value(body)?;
+    let action = BulkAction {
+      index: index.clone(),
+      id: id.clone(),
+      pipeline: None,
+    };
+    self.bulk_action("index", action, Some(&body_json)).await
+  }
+
+  pub async fn bulk_action(
+    &self,
+    command: &str,
+    action: BulkAction,
+    body: Option<&serde_json::Value>,
+  ) -> Result<serde_json::Value, Error> {
+    let mut m: serde_json::Map<String, serde_json::Value> = serde_json::Map::new();
+    m.insert(command.to_owned(), serde_json::json!(action));
+    let j = serde_json::to_string(&serde_json::Value::Object(m.clone()))?;
+    let bulker_arc = Arc::clone(&self.bulker);
+    let mut bulker = bulker_arc.lock().unwrap();
+    bulker.push_str(j.as_str());
+    bulker.push('\n');
+    match body {
+      None => {}
+      Some(js) => {
+        let j = serde_json::to_string(js)?;
+        bulker.push_str(j.as_str());
+        bulker.push('\n');
+      }
+    }
+
+    let bulker_size_arc = Arc::clone(&self.bulker_size);
+    let mut bulker_size = bulker_size_arc.lock().unwrap();
+    *bulker_size += 1;
+    if *bulker_size >= self.max_bulk_size {
+      drop(bulker_size);
+      drop(bulker);
+      self.flush_bulk().await?;
+    }
+    Ok(serde_json::Value::Object(m))
+  }
+
+
+  pub async fn bulk_create_document<T: Serialize>(
+    &self,
+    index: &String,
+    id: &String,
+    body: &T,
+  ) -> Result<serde_json::Value, Error> {
+    let body_json = serde_json::to_value(body)?;
+
+    let action = BulkAction {
+      index: index.clone(),
+      id: Some(id.clone()),
+      pipeline: None,
+    };
+
+    self.bulk_action("create", action, Some(&body_json)).await
+  }
+
+  pub async fn bulk_update_document(
+    &self,
+    index: &String,
+    id: &String,
+    body: &UpdateAction,
+  ) -> Result<serde_json::Value, Error> {
+    let action = BulkAction {
+      index: index.clone(),
+      id: Some(id.clone()),
+      pipeline: None,
+    };
+    let j = serde_json::to_value(body)?;
+    self.bulk_action("update", action, Some(&j)).await
+  }
+
+  pub async fn flush_bulk(&self) -> Result<BulkResponse, Error> {
+    let bulker_size_arc = Arc::clone(&self.bulker_size);
+    let mut bulker_size = bulker_size_arc.lock().unwrap();
+    if *bulker_size > 0 {
+      let bulker_arc = Arc::clone(&self.bulker);
+      let mut bulker = bulker_arc.lock().unwrap();
+
+      // let request_url = format!("{}/_bulk", self.server);
+
+      match self.bulk().source(bulker.to_owned()).send().await
+        // .client
+        // .post(request_url)
+        // .basic_auth(self.user.as_str(), Some(self.password.as_str()))
+        // .body()
+        // .header("Content-Type", "application/x-ndjson")
+        // .send()
+        // .await
+      {
+        Ok(response) => {
+          let result: BulkResponse = response.into_inner();
+          *bulker = String::new();
+          *bulker_size = 0;
+          // debug!("{:?}", &result);
+          if result.errors {
+            for map in &result.items {
+              for (_, value) in map.iter() {
+                if let Some(error) = &value.error {
+                  if !error.kind.eq_ignore_ascii_case("version_conflict_engine_exception") {
+                    info!("{:?}", &value);
+                  }
+                }
+              }
+            }
+          }
+
+          Ok(result)
+        }
+        Err(err) => {
+          println!("{:?}", &err);
+          Err(err)
+        }
+      }
+    } else {
+      Ok(BulkResponse {
+        took: 0,
+        errors: false,
+        items: vec![],
+      })
+    }
+  }
 
 
 }

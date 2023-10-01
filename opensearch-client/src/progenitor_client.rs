@@ -214,6 +214,9 @@ pub enum Error<E = ()> {
   /// The request did not conform to API requirements.
   InvalidRequest(String),
 
+  /// The request did not conform to API requirements.
+  JsonExceptionError(serde_json::Error),
+
   /// A server error either due to the data, or with the connection.
   CommunicationError(reqwest::Error),
 
@@ -234,6 +237,7 @@ impl<E> Error<E> {
   pub fn status(&self) -> Option<reqwest::StatusCode> {
     match self {
       Error::InvalidRequest(_) => None,
+      Error::JsonExceptionError(_) => None,
       Error::CommunicationError(e) => e.status(),
       Error::ErrorResponse(rv) => Some(rv.status()),
       Error::InvalidResponsePayload(e) => e.status(),
@@ -249,6 +253,7 @@ impl<E> Error<E> {
     match self {
       Error::InvalidRequest(s) => Error::InvalidRequest(s),
       Error::CommunicationError(e) => Error::CommunicationError(e),
+      Error::JsonExceptionError(e) => Error::JsonExceptionError(e),
       Error::ErrorResponse(ResponseValue {
         inner: _,
         status,
@@ -272,6 +277,12 @@ impl<E> From<reqwest::Error> for Error<E> {
   }
 }
 
+impl<E> From<serde_json::Error> for Error<E> {
+  fn from(e: serde_json::Error) -> Self {
+    Self::JsonExceptionError(e)
+  }
+}
+
 impl<E> From<reqwest::header::InvalidHeaderValue> for Error<E> {
   fn from(e: reqwest::header::InvalidHeaderValue) -> Self {
     Self::InvalidRequest(e.to_string())
@@ -287,6 +298,10 @@ where
       Error::InvalidRequest(s) => {
         write!(f, "Invalid Request: {}", s)
       }
+      Error::JsonExceptionError(s) => {
+        write!(f, "Invalid Foramt for Json: {}", s)
+      }
+      
       Error::CommunicationError(e) => {
         write!(f, "Communication Error: {}", e)
       }

@@ -117,7 +117,7 @@ use serde_json::{json, Value};
 //   pub sort: Option<Value>,
 // }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+// #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 // #[serde(rename_all = "camelCase")]
 // pub struct Aggregations {}
 
@@ -132,32 +132,6 @@ use serde_json::{json, Value};
 //   pub max_bulk_size: u32,
 // }
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
-pub struct Script {
-  #[serde(default)]
-  pub source: String,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub params: Option<Value>,
-}
-
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
-pub struct UpdateAction {
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub doc: Option<Value>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub doc_as_upsert: Option<bool>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub script: Option<Script>,
-}
-
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
-pub struct BulkAction {
-  #[serde(rename = "_id")]
-  pub id: Option<String>,
-  #[serde(rename = "_index")]
-  pub index: String,
-  pub pipeline: Option<String>,
-}
 
 struct SearchAfterState {
   os: OpenSearch,
@@ -167,50 +141,6 @@ struct SearchAfterState {
   query: serde_json::Value,
   sort: serde_json::Value,
   search_after: Option<Value>,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct BulkResponse {
-  took: u64,
-  errors: bool,
-  items: Vec<HashMap<String, BulkItemResponse>>,
-}
-
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
-pub struct BulkError {
-  #[serde(rename = "_index")]
-  pub index: Option<String>,
-  #[serde(default)]
-  pub index_uuid: Option<String>,
-  #[serde(default)]
-  pub reason: String,
-  #[serde(default)]
-  pub shard: Option<String>,
-  #[serde(rename = "type")]
-  pub kind: String,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-struct BulkItemResponse {
-  #[serde(rename = "_id")]
-  id: String,
-  #[serde(rename = "_index")]
-  index: String,
-  #[serde(rename = "_version")]
-  version: Option<u32>,
-  #[serde(default)]
-  status: u16,
-  found: Option<bool>,
-  #[serde(rename = "_shards")]
-  shards: Option<Shards>,
-  #[serde(default)]
-  error: Option<BulkError>,
-  #[serde(default, rename = "_primary_term")]
-  primary_term: Option<u32>,
-  #[serde(default, rename = "_seq_no")]
-  seq_no: Option<u32>,
 }
 // fn serialize_to<W: Write, T: ?Sized + Serialize>(mut writer: W, value: &T) ->
 // Result<(), std::io::Error> {     serde_json::to_writer(&mut writer, value)?;
@@ -251,26 +181,6 @@ impl OpenSearch {
     })
   }
 
-  pub async fn list_indices(&self) -> Result<Vec<String>, OpenSearchError> {
-    let request_url = format!("{}/_cat/indices", self.server);
-    let response = self
-      .client
-      .get(request_url)
-      .query(&[("s", "i")])
-      .basic_auth(self.user.as_str(), Some(self.password.as_str()))
-      .send()
-      .await?;
-    let cat_result = response.text().await?;
-    let values: Vec<String> = cat_result
-      .split('\n')
-      .filter(|x| !x.is_empty())
-      .map(|x| {
-        let mut iterator = x.split_ascii_whitespace();
-        iterator.nth(2).unwrap().to_owned()
-      })
-      .collect();
-    Ok(values)
-  }
 
   // async fn execute_call(&self, response:&Response) -> Result<Vec<String>,
   // OpenSearchError> {     match response.status() {
@@ -290,136 +200,7 @@ impl OpenSearch {
   //     };
   // }
 
-  pub async fn bulk_index_document<T: Serialize>(
-    &self,
-    index: &String,
-    id: Option<String>,
-    body: &T,
-  ) -> Result<serde_json::Value, OpenSearchError> {
-    let body_json = serde_json::to_value(body)?;
-    let action = BulkAction {
-      index: index.clone(),
-      id: id.clone(),
-      pipeline: None,
-    };
-    self.bulk_action("index", action, Some(&body_json)).await
-  }
 
-  pub async fn bulk_action(
-    &self,
-    command: &str,
-    action: BulkAction,
-    body: Option<&serde_json::Value>,
-  ) -> Result<serde_json::Value, OpenSearchError> {
-    let mut m: serde_json::Map<String, Value> = serde_json::Map::new();
-    m.insert(command.to_owned(), json!(action));
-    let j = serde_json::to_string(&Value::Object(m.clone()))?;
-    let bulker_arc = Arc::clone(&self.bulker);
-    let mut bulker = bulker_arc.lock().unwrap();
-    bulker.push_str(j.as_str());
-    bulker.push('\n');
-    match body {
-      None => {}
-      Some(js) => {
-        let j = serde_json::to_string(js)?;
-        bulker.push_str(j.as_str());
-        bulker.push('\n');
-      }
-    }
-
-    let bulker_size_arc = Arc::clone(&self.bulker_size);
-    let mut bulker_size = bulker_size_arc.lock().unwrap();
-    *bulker_size += 1;
-    if *bulker_size >= self.max_bulk_size {
-      drop(bulker_size);
-      drop(bulker);
-      self.flush_bulk().await?;
-    }
-    Ok(Value::Object(m))
-  }
-
-  pub async fn bulk_create_document<T: Serialize>(
-    &self,
-    index: &String,
-    id: &String,
-    body: &T,
-  ) -> Result<serde_json::Value, OpenSearchError> {
-    let body_json = serde_json::to_value(body)?;
-
-    let action = BulkAction {
-      index: index.clone(),
-      id: Some(id.clone()),
-      pipeline: None,
-    };
-
-    self.bulk_action("create", action, Some(&body_json)).await
-  }
-
-  pub async fn bulk_update_document(
-    &self,
-    index: &String,
-    id: &String,
-    body: &UpdateAction,
-  ) -> Result<serde_json::Value, OpenSearchError> {
-    let action = BulkAction {
-      index: index.clone(),
-      id: Some(id.clone()),
-      pipeline: None,
-    };
-    let j = serde_json::to_value(body)?;
-    self.bulk_action("update", action, Some(&j)).await
-  }
-
-  pub async fn flush_bulk(&self) -> Result<BulkResponse, OpenSearchError> {
-    let bulker_size_arc = Arc::clone(&self.bulker_size);
-    let mut bulker_size = bulker_size_arc.lock().unwrap();
-    if *bulker_size > 0 {
-      let bulker_arc = Arc::clone(&self.bulker);
-      let mut bulker = bulker_arc.lock().unwrap();
-
-      let request_url = format!("{}/_bulk", self.server);
-
-      match self
-        .client
-        .post(request_url)
-        .basic_auth(self.user.as_str(), Some(self.password.as_str()))
-        .body(bulker.to_owned())
-        .header("Content-Type", "application/x-ndjson")
-        .send()
-        .await
-      {
-        Ok(response) => {
-          let result: BulkResponse = response.json().await?;
-          *bulker = String::new();
-          *bulker_size = 0;
-          debug!("{:?}", &result);
-          if result.errors {
-            for map in &result.items {
-              for (_, value) in map.iter() {
-                if let Some(error) = &value.error {
-                  if !error.kind.eq_ignore_ascii_case("version_conflict_engine_exception") {
-                    info!("{:?}", &value);
-                  }
-                }
-              }
-            }
-          }
-
-          Ok(result)
-        }
-        Err(err) => {
-          println!("{:?}", &err);
-          Err(OpenSearchError::RequestError(err))
-        }
-      }
-    } else {
-      Ok(BulkResponse {
-        took: 0,
-        errors: false,
-        items: vec![],
-      })
-    }
-  }
 
   pub async fn index_document<T: Serialize>(
     &self,

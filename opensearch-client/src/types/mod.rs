@@ -4,6 +4,7 @@ use std::convert::TryFrom;
 
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 pub mod bulk;
+pub use bulk::{BulkAction, BulkError, BulkItemResponse, BulkResponse, IndexResponse, UpdateAction};
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct AccountDetails {
@@ -12950,7 +12951,7 @@ impl<'de> serde::Deserialize<'de> for GetIndex {
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct GetResponseContent {
+pub struct GetResponseContent<T> {
   #[serde(rename = "_fields", default, skip_serializing_if = "Option::is_none")]
   pub fields: Option<UserDefinedValueMap>,
   pub found: bool,
@@ -12965,21 +12966,21 @@ pub struct GetResponseContent {
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub seq_no: Option<i64>,
   #[serde(rename = "_source", default, skip_serializing_if = "Option::is_none")]
-  pub source: Option<UserDefinedValueMap>,
+  pub source: Option<T>,
   #[serde(rename = "_type", default, skip_serializing_if = "Option::is_none")]
   pub type_: Option<String>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub version: Option<i32>,
 }
 
-impl From<&GetResponseContent> for GetResponseContent {
-  fn from(value: &GetResponseContent) -> Self {
-    value.clone()
+impl<T> From<&GetResponseContent<T>> for GetResponseContent<T> {
+  fn from(value: &GetResponseContent<T>) -> Self {
+    value.clone().into()
   }
 }
 
-impl GetResponseContent {
-  pub fn builder() -> builder::GetResponseContent {
+impl<T> GetResponseContent<T> {
+  pub fn builder() -> builder::GetResponseContent<T> {
     builder::GetResponseContent::default()
   }
 }
@@ -40337,7 +40338,7 @@ impl SecurityHealthResponseContent {
   }
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
 pub struct ShardStatistics {
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub failed: Option<i32>,
@@ -45847,16 +45848,16 @@ impl UpdateAuditConfigurationResponseContent {
 
 ///The request definition requires either `script` or partial `doc`
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct UpdateBodyParams(pub serde_json::Map<String, serde_json::Value>);
+pub struct UpdateBodyParams(pub serde_json::Value);
 impl std::ops::Deref for UpdateBodyParams {
-  type Target = serde_json::Map<String, serde_json::Value>;
+  type Target = serde_json::Value;
 
-  fn deref(&self) -> &serde_json::Map<String, serde_json::Value> {
+  fn deref(&self) -> &serde_json::Value {
     &self.0
   }
 }
 
-impl From<UpdateBodyParams> for serde_json::Map<String, serde_json::Value> {
+impl From<UpdateBodyParams> for serde_json::Value {
   fn from(value: UpdateBodyParams) -> Self {
     value.0
   }
@@ -45868,8 +45869,8 @@ impl From<&UpdateBodyParams> for UpdateBodyParams {
   }
 }
 
-impl From<serde_json::Map<String, serde_json::Value>> for UpdateBodyParams {
-  fn from(value: serde_json::Map<String, serde_json::Value>) -> Self {
+impl From<serde_json::Value> for UpdateBodyParams {
+  fn from(value: serde_json::Value) -> Self {
     Self(value)
   }
 }
@@ -50205,7 +50206,7 @@ pub mod builder {
   }
 
   #[derive(Clone, Debug)]
-  pub struct GetResponseContent {
+  pub struct GetResponseContent<T> {
     fields: Result<Option<super::UserDefinedValueMap>, String>,
     found: Result<bool, String>,
     id: Result<String, String>,
@@ -50213,12 +50214,12 @@ pub mod builder {
     primary_term: Result<Option<i64>, String>,
     routing: Result<Option<String>, String>,
     seq_no: Result<Option<i64>, String>,
-    source: Result<Option<super::UserDefinedValueMap>, String>,
+    source: Result<Option<T>, String>,
     type_: Result<Option<String>, String>,
     version: Result<Option<i32>, String>,
   }
 
-  impl Default for GetResponseContent {
+  impl<T> Default for GetResponseContent<T> {
     fn default() -> Self {
       Self {
         fields: Ok(Default::default()),
@@ -50235,7 +50236,7 @@ pub mod builder {
     }
   }
 
-  impl GetResponseContent {
+  impl<T3> GetResponseContent<T3> {
     pub fn fields<T>(mut self, value: T) -> Self
     where
       T: std::convert::TryInto<Option<super::UserDefinedValueMap>>,
@@ -50306,10 +50307,10 @@ pub mod builder {
       self
     }
 
-    pub fn source<T>(mut self, value: T) -> Self
+    pub fn source(mut self, value: T3) -> Self
     where
-      T: std::convert::TryInto<Option<super::UserDefinedValueMap>>,
-      T::Error: std::fmt::Display, {
+      T3: std::convert::TryInto<Option<T3>>,
+      T3::Error: std::fmt::Display, {
       self.source = value
         .try_into()
         .map_err(|e| format!("error converting supplied value for source: {}", e));
@@ -50337,10 +50338,10 @@ pub mod builder {
     }
   }
 
-  impl std::convert::TryFrom<GetResponseContent> for super::GetResponseContent {
+  impl<T2> std::convert::TryFrom<GetResponseContent<T2>> for super::GetResponseContent<T2> {
     type Error = String;
 
-    fn try_from(value: GetResponseContent) -> Result<Self, String> {
+    fn try_from(value: GetResponseContent<T2>) -> Result<Self, String> {
       Ok(Self {
         fields: value.fields?,
         found: value.found?,
@@ -50356,8 +50357,8 @@ pub mod builder {
     }
   }
 
-  impl From<super::GetResponseContent> for GetResponseContent {
-    fn from(value: super::GetResponseContent) -> Self {
+  impl<T2> From<super::GetResponseContent<T2>> for GetResponseContent<T2> {
+    fn from(value: super::GetResponseContent<T2>) -> Self {
       Self {
         fields: Ok(value.fields),
         found: Ok(value.found),

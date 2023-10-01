@@ -7,7 +7,7 @@ use progenitor_client::{encode_path, encode_path_option_vec_string, RequestBuild
 pub use progenitor_client::{ByteStream, Error, ResponseValue};
 #[allow(unused_imports)]
 use reqwest::header::{HeaderMap, HeaderValue};
-use serde::Serialize;
+use serde::{Serialize, de::DeserializeOwned};
 use tracing::info;
 use types::bulk::{BulkAction, BulkResponse, UpdateAction};
 pub mod types;
@@ -10619,21 +10619,14 @@ impl Client {
     index: &String,
     body: &T,
     id: Option<String>,
-  ) -> Result<serde_json::Value, Error> {
-    let mut request=self.index_post().index(index);
-    let request_url = match id {
-      Some(real_id) => request=request.id(real_id),
-      None => (),
-    };
+  ) -> Result<types::IndexResponse, Error> {
 
     let body_json = serde_json::to_value(body)?;
-
-    let response = request
+    let response=self.index_post().index(index)
       .body(body_json)
       .send()
       .await?;
-    let result: serde_json::Value = response.into_inner();
-    Ok(result)
+    Ok(response.into_inner())
   }
 
   pub async fn create_document<T: Serialize>(
@@ -10641,7 +10634,7 @@ impl Client {
     index: &String,
     id: &String,
     body: &T,
-  ) -> Result<serde_json::Value, Error> {
+  ) -> Result<types::IndexResponse, Error> {
     let body_json = serde_json::to_value(body)?;
 
     let response = self.create_put().index(index).id(id).body(body_json)
@@ -10650,6 +10643,26 @@ impl Client {
     let result = response.into_inner(); 
 
     Ok(result)
+  }
+
+  pub async fn get_typed<T: DeserializeOwned + std::default::Default>(&self, index: &String, id: &String) -> Result<types::GetResponseContent<T>, Error> {
+
+    let response = self.get().index(index).id(id).send::<T>().await?;
+    let result = response.into_inner();
+
+    Ok(result)
+  }
+
+  pub async fn update_document(
+    &self,
+    index: &String,
+    id: &String,
+    action: &UpdateAction,
+  ) -> Result<types::IndexResponse, Error> {
+    let body = serde_json::to_value(&action)?;
+
+    let response = self.update().body(body).index(index).id(id).send().await?;
+    Ok(response.into_inner())
   }
 
 

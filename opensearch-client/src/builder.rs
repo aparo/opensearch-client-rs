@@ -33007,7 +33007,7 @@ impl<'a> CreatePut<'a> {
   }
 
   ///Sends a `PUT` request to `/{index}/_create/{id}`
-  pub async fn send(self) -> Result<ResponseValue<serde_json::Value>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::IndexResponse>, Error<()>> {
     let Self {
       client,
       index,
@@ -34041,7 +34041,7 @@ impl<'a> Get<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_doc/{id}`
-  pub async fn send(self) -> Result<ResponseValue<types::GetResponseContent>, Error<()>> {
+  pub async fn send<T:DeserializeOwned + std::default::Default>(self) -> Result<ResponseValue<types::GetResponseContent<T>>, Error<()>> {
     let Self {
       client,
       index,
@@ -34568,7 +34568,7 @@ impl<'a> IndexPost<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_doc/{id}`
-  pub async fn send(self) -> Result<ResponseValue<serde_json::Value>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::IndexResponse>, Error<()>> {
     let Self {
       client,
       index,
@@ -44375,7 +44375,7 @@ impl<'a> Update<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_update/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::IndexResponse>, Error<()>> {
     let Self {
       client,
       index,
@@ -44456,7 +44456,7 @@ impl<'a> Update<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::from_response(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }

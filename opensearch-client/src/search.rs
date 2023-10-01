@@ -202,51 +202,8 @@ impl OpenSearch {
 
 
 
-  pub async fn index_document<T: Serialize>(
-    &self,
-    index: &String,
-    body: &T,
-    id: Option<String>,
-  ) -> Result<serde_json::Value, OpenSearchError> {
-    let request_url = match id {
-      Some(real_id) => format!("{}/{}/_doc/{}", self.server, index, real_id),
-      None => format!("{}/{}/_doc", self.server, index),
-    };
 
-    let body_json = serde_json::to_value(body)?;
 
-    let response = self
-      .client
-      .post(request_url)
-      .basic_auth(self.user.as_str(), Some(self.password.as_str()))
-      .json(&body_json)
-      .send()
-      .await?;
-    let result = response.json().await?;
-
-    Ok(result)
-  }
-
-  pub async fn create_document<T: Serialize>(
-    &self,
-    index: &String,
-    id: &String,
-    body: &T,
-  ) -> Result<serde_json::Value, OpenSearchError> {
-    let request_url = format!("{}/{}/_doc/{}", self.server, index, id);
-    let body_json = serde_json::to_value(body)?;
-
-    let response = self
-      .client
-      .put(request_url)
-      .basic_auth(self.user.as_str(), Some(self.password.as_str()))
-      .json(&body_json)
-      .send()
-      .await?;
-    let result = response.json().await?;
-
-    Ok(result)
-  }
 
   pub async fn search<T: DeserializeOwned>(
     &self,

@@ -10614,6 +10614,44 @@ impl Client {
     }
   }
 
+  pub async fn index_document<T: Serialize>(
+    &self,
+    index: &String,
+    body: &T,
+    id: Option<String>,
+  ) -> Result<serde_json::Value, Error> {
+    let mut request=self.index_post().index(index);
+    let request_url = match id {
+      Some(real_id) => request=request.id(real_id),
+      None => (),
+    };
+
+    let body_json = serde_json::to_value(body)?;
+
+    let response = request
+      .body(body_json)
+      .send()
+      .await?;
+    let result: serde_json::Value = response.into_inner();
+    Ok(result)
+  }
+
+  pub async fn create_document<T: Serialize>(
+    &self,
+    index: &String,
+    id: &String,
+    body: &T,
+  ) -> Result<serde_json::Value, Error> {
+    let body_json = serde_json::to_value(body)?;
+
+    let response = self.create_put().index(index).id(id).body(body_json)
+      .send()
+      .await?;
+    let result = response.into_inner(); 
+
+    Ok(result)
+  }
+
 
 }
 

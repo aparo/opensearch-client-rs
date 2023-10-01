@@ -9188,16 +9188,16 @@ impl CreateActionGroupResponseContent {
 
 ///The document
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct CreateBodyParams(pub serde_json::Map<String, serde_json::Value>);
+pub struct CreateBodyParams(pub serde_json::Value);
 impl std::ops::Deref for CreateBodyParams {
-  type Target = serde_json::Map<String, serde_json::Value>;
+  type Target = serde_json::Value;
 
-  fn deref(&self) -> &serde_json::Map<String, serde_json::Value> {
+  fn deref(&self) -> &serde_json::Value {
     &self.0
   }
 }
 
-impl From<CreateBodyParams> for serde_json::Map<String, serde_json::Value> {
+impl From<CreateBodyParams> for serde_json::Value {
   fn from(value: CreateBodyParams) -> Self {
     value.0
   }
@@ -9209,11 +9209,13 @@ impl From<&CreateBodyParams> for CreateBodyParams {
   }
 }
 
-impl From<serde_json::Map<String, serde_json::Value>> for CreateBodyParams {
-  fn from(value: serde_json::Map<String, serde_json::Value>) -> Self {
+impl From<serde_json::Value> for CreateBodyParams {
+  fn from(value: serde_json::Value) -> Self {
     Self(value)
   }
 }
+
+
 
 ///Comma-separated list of indices; use `_all` or empty string to perform
 /// the operation on all indices.
@@ -13531,16 +13533,16 @@ impl<T> HitsMetadata<T> {
 
 ///The document
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct IndexBodyParams(pub serde_json::Map<String, serde_json::Value>);
+pub struct IndexBodyParams(pub serde_json::Value);
 impl std::ops::Deref for IndexBodyParams {
-  type Target = serde_json::Map<String, serde_json::Value>;
+  type Target = serde_json::Value;
 
-  fn deref(&self) -> &serde_json::Map<String, serde_json::Value> {
+  fn deref(&self) -> &serde_json::Value {
     &self.0
   }
 }
 
-impl From<IndexBodyParams> for serde_json::Map<String, serde_json::Value> {
+impl From<IndexBodyParams> for serde_json::Value {
   fn from(value: IndexBodyParams) -> Self {
     value.0
   }
@@ -13552,11 +13554,18 @@ impl From<&IndexBodyParams> for IndexBodyParams {
   }
 }
 
-impl From<serde_json::Map<String, serde_json::Value>> for IndexBodyParams {
-  fn from(value: serde_json::Map<String, serde_json::Value>) -> Self {
+impl From<serde_json::Value> for IndexBodyParams {
+  fn from(value: serde_json::Value) -> Self {
     Self(value)
   }
 }
+
+// impl<T: Serialize> From<T> for IndexBodyParams {
+//   fn from(value: T) -> Self {
+//     Self(serde_json::to_value(value).unwrap())
+//   }
+// }
+
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct IndexPermission {

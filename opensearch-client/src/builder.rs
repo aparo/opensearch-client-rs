@@ -1,6 +1,6 @@
 
 use reqwest::Body;
-use serde::de::DeserializeOwned;
+use serde::{de::DeserializeOwned, Serialize};
 
 use crate::types::bulk::BulkResponse;
 
@@ -33007,7 +33007,7 @@ impl<'a> CreatePut<'a> {
   }
 
   ///Sends a `PUT` request to `/{index}/_create/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<serde_json::Value>, Error<()>> {
     let Self {
       client,
       index,
@@ -33063,7 +33063,7 @@ impl<'a> CreatePut<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::from_response(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }
@@ -34406,7 +34406,7 @@ pub struct IndexPost<'a> {
   version: Result<Option<i32>, String>,
   version_type: Result<Option<types::VersionType>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
-  body: Result<types::IndexBodyParams, String>,
+  body: Result<serde_json::Value, String>,
 }
 
 impl<'a> IndexPost<'a> {
@@ -34559,17 +34559,16 @@ impl<'a> IndexPost<'a> {
     self
   }
 
-  pub fn body<V>(mut self, value: V) -> Self
+  pub fn body<V: Serialize>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexBodyParams>, {
-    self.body = value
-      .try_into()
-      .map_err(|_| "conversion to `IndexBodyParams` for body failed".to_string());
+    V: std::convert::TryInto<serde_json::Value>, {
+    self.body = serde_json::to_value(value)
+      .map_err(|_| "conversion to `serde_json:Value` for body failed".to_string());
     self
   }
 
   ///Sends a `POST` request to `/{index}/_doc/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<serde_json::Value>, Error<()>> {
     let Self {
       client,
       index,
@@ -34652,7 +34651,7 @@ impl<'a> IndexPost<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::from_response(response).await,
       _ => Err(Error::UnexpectedResponse(response)),
     }
   }

@@ -33883,251 +33883,6 @@ impl<'a> DeleteByQuery<'a> {
   }
 }
 
-///Builder for [`Client::index_post`]
-///
-///[`Client::index_post`]: super::Client::index_post
-#[derive(Debug, Clone)]
-pub struct IndexPost<'a> {
-  client: &'a super::Client,
-  index: Result<types::IndexPostIndex, String>,
-  if_primary_term: Result<Option<i32>, String>,
-  if_seq_no: Result<Option<i32>, String>,
-  op_type: Result<Option<types::OpType>, String>,
-  pipeline: Result<Option<String>, String>,
-  refresh: Result<Option<types::RefreshEnum>, String>,
-  require_alias: Result<Option<bool>, String>,
-  routing: Result<Option<String>, String>,
-  timeout: Result<Option<types::IndexPostTimeout>, String>,
-  version: Result<Option<i32>, String>,
-  version_type: Result<Option<types::VersionType>, String>,
-  wait_for_active_shards: Result<Option<String>, String>,
-  body: Result<types::IndexBodyParams, String>,
-}
-
-impl<'a> IndexPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
-    Self {
-      client,
-      index: Err("index was not initialized".to_string()),
-      if_primary_term: Ok(None),
-      if_seq_no: Ok(None),
-      op_type: Ok(None),
-      pipeline: Ok(None),
-      refresh: Ok(None),
-      require_alias: Ok(None),
-      routing: Ok(None),
-      timeout: Ok(None),
-      version: Ok(None),
-      version_type: Ok(None),
-      wait_for_active_shards: Ok(None),
-      body: Err("body was not initialized".to_string()),
-    }
-  }
-
-  pub fn index<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::IndexPostIndex>, {
-    self.index = value
-      .try_into()
-      .map_err(|_| "conversion to `IndexPostIndex` for index failed".to_string());
-    self
-  }
-
-  pub fn if_primary_term<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<i32>, {
-    self.if_primary_term = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `i32` for if_primary_term failed".to_string());
-    self
-  }
-
-  pub fn if_seq_no<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<i32>, {
-    self.if_seq_no = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `i32` for if_seq_no failed".to_string());
-    self
-  }
-
-  pub fn op_type<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::OpType>, {
-    self.op_type = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `OpType` for op_type failed".to_string());
-    self
-  }
-
-  pub fn pipeline<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.pipeline = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for pipeline failed".to_string());
-    self
-  }
-
-  pub fn refresh<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::RefreshEnum>, {
-    self.refresh = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `RefreshEnum` for refresh failed".to_string());
-    self
-  }
-
-  pub fn require_alias<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.require_alias = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for require_alias failed".to_string());
-    self
-  }
-
-  pub fn routing<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.routing = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for routing failed".to_string());
-    self
-  }
-
-  pub fn timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::IndexPostTimeout>, {
-    self.timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `IndexPostTimeout` for timeout failed".to_string());
-    self
-  }
-
-  pub fn version<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<i32>, {
-    self.version = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `i32` for version failed".to_string());
-    self
-  }
-
-  pub fn version_type<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::VersionType>, {
-    self.version_type = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `VersionType` for version_type failed".to_string());
-    self
-  }
-
-  pub fn wait_for_active_shards<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.wait_for_active_shards = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for wait_for_active_shards failed".to_string());
-    self
-  }
-
-  pub fn body<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::IndexBodyParams>, {
-    self.body = value
-      .try_into()
-      .map_err(|_| "conversion to `IndexBodyParams` for body failed".to_string());
-    self
-  }
-
-  ///Sends a `POST` request to `/{index}/_doc`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
-    let Self {
-      client,
-      index,
-      if_primary_term,
-      if_seq_no,
-      op_type,
-      pipeline,
-      refresh,
-      require_alias,
-      routing,
-      timeout,
-      version,
-      version_type,
-      wait_for_active_shards,
-      body,
-    } = self;
-    let index = index.map_err(Error::InvalidRequest)?;
-    let if_primary_term = if_primary_term.map_err(Error::InvalidRequest)?;
-    let if_seq_no = if_seq_no.map_err(Error::InvalidRequest)?;
-    let op_type = op_type.map_err(Error::InvalidRequest)?;
-    let pipeline = pipeline.map_err(Error::InvalidRequest)?;
-    let refresh = refresh.map_err(Error::InvalidRequest)?;
-    let require_alias = require_alias.map_err(Error::InvalidRequest)?;
-    let routing = routing.map_err(Error::InvalidRequest)?;
-    let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let version = version.map_err(Error::InvalidRequest)?;
-    let version_type = version_type.map_err(Error::InvalidRequest)?;
-    let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
-    let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_doc", client.baseurl, encode_path(&index.to_string()),);
-    let mut query = Vec::with_capacity(11usize);
-    if let Some(v) = &if_primary_term {
-      query.push(("if_primary_term", v.to_string()));
-    }
-    if let Some(v) = &if_seq_no {
-      query.push(("if_seq_no", v.to_string()));
-    }
-    if let Some(v) = &op_type {
-      query.push(("op_type", v.to_string()));
-    }
-    if let Some(v) = &pipeline {
-      query.push(("pipeline", v.to_string()));
-    }
-    if let Some(v) = &refresh {
-      query.push(("refresh", v.to_string()));
-    }
-    if let Some(v) = &require_alias {
-      query.push(("require_alias", v.to_string()));
-    }
-    if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
-    }
-    if let Some(v) = &timeout {
-      query.push(("timeout", v.to_string()));
-    }
-    if let Some(v) = &version {
-      query.push(("version", v.to_string()));
-    }
-    if let Some(v) = &version_type {
-      query.push(("version_type", v.to_string()));
-    }
-    if let Some(v) = &wait_for_active_shards {
-      query.push(("wait_for_active_shards", v.to_string()));
-    }
-    let request = client.client.post(url).json(&body).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
-    }
-  }
-}
-
 ///Builder for [`Client::get`]
 ///
 ///[`Client::get`]: super::Client::get
@@ -34636,10 +34391,10 @@ impl<'a> IndexPutWithId<'a> {
 ///
 ///[`Client::index_post_with_id`]: super::Client::index_post_with_id
 #[derive(Debug, Clone)]
-pub struct IndexPostWithId<'a> {
+pub struct IndexPost<'a> {
   client: &'a super::Client,
-  index: Result<types::IndexPostWithIdIndex, String>,
-  id: Result<types::IndexPostWithIdId, String>,
+  index: Result<types::IndexPostIndex, String>,
+  id: Result<Option<String>, String>,
   if_primary_term: Result<Option<i32>, String>,
   if_seq_no: Result<Option<i32>, String>,
   op_type: Result<Option<types::OpType>, String>,
@@ -34647,19 +34402,19 @@ pub struct IndexPostWithId<'a> {
   refresh: Result<Option<types::RefreshEnum>, String>,
   require_alias: Result<Option<bool>, String>,
   routing: Result<Option<String>, String>,
-  timeout: Result<Option<types::IndexPostWithIdTimeout>, String>,
+  timeout: Result<Option<types::IndexPostTimeout>, String>,
   version: Result<Option<i32>, String>,
   version_type: Result<Option<types::VersionType>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
   body: Result<types::IndexBodyParams, String>,
 }
 
-impl<'a> IndexPostWithId<'a> {
+impl<'a> IndexPost<'a> {
   pub fn new(client: &'a super::Client) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
-      id: Err("id was not initialized".to_string()),
+      id: Ok(None),
       if_primary_term: Ok(None),
       if_seq_no: Ok(None),
       op_type: Ok(None),
@@ -34677,19 +34432,20 @@ impl<'a> IndexPostWithId<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexPostWithIdIndex>, {
+    V: std::convert::TryInto<types::IndexPostIndex>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexPostWithIdIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexPostIndex` for index failed".to_string());
     self
   }
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexPostWithIdId>, {
+    V: std::convert::TryInto<String>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `IndexPostWithIdId` for id failed".to_string());
+      .map(Some)
+      .map_err(|_| "conversion to `String` for id failed".to_string());
     self
   }
 
@@ -34765,11 +34521,11 @@ impl<'a> IndexPostWithId<'a> {
 
   pub fn timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexPostWithIdTimeout>, {
+    V: std::convert::TryInto<types::IndexPostTimeout>, {
     self.timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndexPostWithIdTimeout` for timeout failed".to_string());
+      .map_err(|_| "conversion to `IndexPostTimeout` for timeout failed".to_string());
     self
   }
 
@@ -34845,12 +34601,19 @@ impl<'a> IndexPostWithId<'a> {
     let version_type = version_type.map_err(Error::InvalidRequest)?;
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!(
-      "{}/{}/_doc/{}",
-      client.baseurl,
-      encode_path(&index.to_string()),
-      encode_path(&id.to_string()),
-    );
+    let url = match &id {
+      Some(id) => format!(
+        "{}/{}/_doc/{}",
+        client.baseurl,
+        encode_path(&index.to_string()),
+        encode_path(&id.to_string()),
+      ),
+      None => format!(
+        "{}/{}/_doc",
+        client.baseurl,
+        encode_path(&index.to_string()),
+      ),
+    };
     let mut query = Vec::with_capacity(11usize);
     if let Some(v) = &if_primary_term {
       query.push(("if_primary_term", v.to_string()));

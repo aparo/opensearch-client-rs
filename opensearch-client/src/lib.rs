@@ -7922,56 +7922,6 @@ impl Client {
     builder::DeleteByQuery::new(self)
   }
 
-  ///Creates or updates a document in an index.
-  ///
-  ///Sends a `POST` request to `/{index}/_doc`
-  ///
-  ///Arguments:
-  /// - `index`: Index name.
-  /// - `if_primary_term`: only perform the operation if the last operation that
-  ///   has changed the document has the specified primary term.
-  /// - `if_seq_no`: only perform the operation if the last operation that has
-  ///   changed the document has the specified sequence number.
-  /// - `op_type`: Explicit operation type. Defaults to `index` for requests
-  ///   with an explicit document ID, and to `create`for requests without an
-  ///   explicit document ID.
-  /// - `pipeline`: The pipeline id to preprocess incoming documents with.
-  /// - `refresh`: If `true` then refresh the affected shards to make this
-  ///   operation visible to search, if `wait_for` then wait for a refresh to
-  ///   make this operation visible to search, if `false` (the default) then do
-  ///   nothing with refreshes.
-  /// - `require_alias`: When true, requires destination to be an alias.
-  /// - `routing`: Routing value.
-  /// - `timeout`: Operation timeout.
-  /// - `version`: Explicit version number for concurrency control.
-  /// - `version_type`: Specific version type.
-  /// - `wait_for_active_shards`: Sets the number of shard copies that must be
-  ///   active before proceeding with the operation. Defaults to 1, meaning the
-  ///   primary shard only. Set to `all` for all shard copies, otherwise set to
-  ///   any non-negative value less than or equal to the total number of copies
-  ///   for the shard (number of replicas + 1).
-  /// - `body`
-  ///```ignore
-  /// let response = client.index_post()
-  ///    .index(index)
-  ///    .if_primary_term(if_primary_term)
-  ///    .if_seq_no(if_seq_no)
-  ///    .op_type(op_type)
-  ///    .pipeline(pipeline)
-  ///    .refresh(refresh)
-  ///    .require_alias(require_alias)
-  ///    .routing(routing)
-  ///    .timeout(timeout)
-  ///    .version(version)
-  ///    .version_type(version_type)
-  ///    .wait_for_active_shards(wait_for_active_shards)
-  ///    .body(body)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn index_post(&self) -> builder::IndexPost {
-    builder::IndexPost::new(self)
-  }
 
   ///Returns a document.
   ///
@@ -8119,8 +8069,8 @@ impl Client {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn index_post_with_id(&self) -> builder::IndexPostWithId {
-    builder::IndexPostWithId::new(self)
+  pub fn index_post(&self) -> builder::IndexPost {
+    builder::IndexPost::new(self)
   }
 
   ///Removes a document from the index.

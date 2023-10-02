@@ -1,10 +1,11 @@
-mod progenitor_client;
+mod client;
 
 use std::sync::{Arc, Mutex};
 
+use opensearch_dsl::{Search, Sort, Terms};
 #[allow(unused_imports)]
-use progenitor_client::{encode_path, encode_path_option_vec_string, RequestBuilderExt};
-pub use progenitor_client::{ByteStream, Error, ResponseValue};
+use client::{encode_path, encode_path_option_vec_string, RequestBuilderExt};
+pub use client::{ByteStream, Error, ResponseValue};
 #[allow(unused_imports)]
 use reqwest::header::{HeaderMap, HeaderValue};
 use serde::{de::DeserializeOwned, Serialize};
@@ -16,8 +17,6 @@ use futures::{
 };
 pub mod types;
 pub mod builder;
-pub mod query;
-// pub mod search;
 #[derive(Clone, Debug)]
 ///Client for OpenSearch
 ///
@@ -10667,8 +10666,8 @@ impl Client {
     &self,
     index: &String,
     query: &serde_json::Value,
-    sort: &serde_json::Value,
-    size: u32,
+    sort: Vec<Sort>,
+    size: u64,
   ) -> Result<impl Stream<Item = types::Hit<T>> + 'static, Error> {
     let start_state = SearchAfterState {
       client: Arc::new(self.clone()),
@@ -10683,33 +10682,29 @@ impl Client {
     async fn stream_next<T: DeserializeOwned + std::default::Default>(
       state: SearchAfterState,
     ) -> Result<(Vec<types::Hit<T>>, SearchAfterState), Error> {
-      let sort = {
-        let mut values: Vec<serde_json::Value> = match state.sort.clone() {
-          serde_json::Value::Null => vec![],
-          serde_json::Value::Bool(_) => vec![],
-          serde_json::Value::Number(_) => vec![],
-          serde_json::Value::String(_) => vec![],
-          serde_json::Value::Array(values) => values,
-          serde_json::Value::Object(x) => vec![serde_json::Value::Object(x)],
-        };
-        values.push(serde_json::json!({"_doc":{"order":"asc"}}));
-        serde_json::Value::Array(values)
-      };
+      // let sort = {
+      //   let mut values: Vec<serde_json::Value> = match state.sort.clone() {
+      //     serde_json::Value::Null => vec![],
+      //     serde_json::Value::Bool(_) => vec![],
+      //     serde_json::Value::Number(_) => vec![],
+      //     serde_json::Value::String(_) => vec![],
+      //     serde_json::Value::Array(values) => values,
+      //     serde_json::Value::Object(x) => vec![serde_json::Value::Object(x)],
+      //   };
+      //   values.push(serde_json::json!({"_doc":{"order":"asc"}}));
+      //   serde_json::Value::Array(values)
+      // };
 
-      let mut body: types::SearchBodyParams = types::SearchBodyParams {
-        query: state.query.clone(),
-        size: Some(state.size),
-        sort: Some(sort.clone()),
-        ..Default::default()
-      };
-
+      let mut body: Search = Search::new().size(state.size).query(state.query.clone()).sort(state.sort.clone());
+      
+      
       // let mut body = serde_json::json!({
       //     "query": state.query,
       //     "size": state.size,
       //     "sort": sort
       // });
       if let Some(search_after) = state.search_after.clone() {
-        body.search_after = Some(search_after.clone());
+        body=body.search_after(search_after.clone());
       }
 
       let response = state
@@ -10717,13 +10712,13 @@ impl Client {
         .clone()
         .search()
         .index(&state.index)
-        .body(&body)
+        .body(body)
         .send::<T>()
         .await?;
-      let hits = response.hits.unwrap().hits;
+      let hits = response.into_inner().hits.unwrap().hits;
       let next_state = SearchAfterState {
-        stop: (hits.len() as u32) < state.size,
-        search_after: hits.iter().last().and_then(|f| f.sort.clone()),
+        stop: (hits.len() as u64) < state.size,
+        search_after: hits.iter().last().and_then(|f| Some(Terms::from(f.sort.clone()))),
         ..state
       };
 
@@ -10752,10 +10747,10 @@ struct SearchAfterState {
   client: Arc<Client>,
   index: String,
   stop: bool,
-  size: u32,
+  size: u64,
   query: serde_json::Value,
-  sort: serde_json::Value,
-  search_after: Option<serde_json::Value>,
+  sort: Vec<Sort>,
+  search_after: Option<Terms>,
 }
 
 pub mod prelude {

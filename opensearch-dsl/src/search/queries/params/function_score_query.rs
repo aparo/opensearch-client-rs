@@ -157,10 +157,10 @@ impl Function {
   /// Creates an instance of script
   ///
   /// - `source` - script source
-  pub fn script<T>(source: T) -> Script
+  pub fn script<T>(source: T) -> FunctionScoreScript
   where
     T: ToString, {
-    Script::new(source)
+      FunctionScoreScript::new(source)
   }
 }
 
@@ -620,7 +620,7 @@ pub enum DecayFunction {
 /// scoring of it optionally with a computation derived from other numeric field
 /// values in the doc using a script expression
 #[derive(Debug, Clone, PartialEq, Serialize)]
-pub struct Script {
+pub struct FunctionScoreScript {
   script_score: ScriptInnerWrapper,
 }
 
@@ -637,8 +637,8 @@ struct ScriptInner {
   params: Option<serde_json::Value>,
 }
 
-impl Script {
-  /// Creates an instance of [Script]
+impl FunctionScoreScript {
+  /// Creates an instance of [FunctionScoreScript]
   ///
   /// - `source` - script source
   pub fn new<T>(source: T) -> Self

@@ -38701,77 +38701,77 @@ impl<'de> serde::Deserialize<'de> for ScrollPostWithScrollIdScroll {
   }
 }
 
-///The search definition using the Query DSL
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct SearchBodyParams {
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub docvalue_fields: Option<String>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub explain: Option<bool>,
-  #[serde(default, skip_serializing_if = "Vec::is_empty")]
-  pub fields: Vec<String>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub from: Option<u32>,
-  #[serde(default, skip_serializing_if = "Vec::is_empty")]
-  pub indices_boost: Vec<serde_json::Value>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub min_score: Option<u32>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub query: Option<UserDefinedObjectStructure>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub seq_no_primary_term: Option<bool>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub size: Option<u32>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub source: Option<String>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub stats: Option<String>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub terminate_after: Option<u32>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub timeout: Option<Time>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub version: Option<bool>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub search_after: Option<serde_json::Value>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub sort: Option<serde_json::Value>,
-}
+// ///The search definition using the Query DSL
+// #[derive(Clone, Debug, Deserialize, Serialize)]
+// pub struct SearchBodyParams {
+//   #[serde(default, skip_serializing_if = "Option::is_none")]
+//   pub docvalue_fields: Option<String>,
+//   #[serde(default, skip_serializing_if = "Option::is_none")]
+//   pub explain: Option<bool>,
+//   #[serde(default, skip_serializing_if = "Vec::is_empty")]
+//   pub fields: Vec<String>,
+//   #[serde(default, skip_serializing_if = "Option::is_none")]
+//   pub from: Option<u32>,
+//   #[serde(default, skip_serializing_if = "Vec::is_empty")]
+//   pub indices_boost: Vec<serde_json::Value>,
+//   #[serde(default, skip_serializing_if = "Option::is_none")]
+//   pub min_score: Option<u32>,
+//   #[serde(default, skip_serializing_if = "Option::is_none")]
+//   pub query: Option<UserDefinedObjectStructure>,
+//   #[serde(default, skip_serializing_if = "Option::is_none")]
+//   pub seq_no_primary_term: Option<bool>,
+//   #[serde(default, skip_serializing_if = "Option::is_none")]
+//   pub size: Option<u32>,
+//   #[serde(default, skip_serializing_if = "Option::is_none")]
+//   pub source: Option<String>,
+//   #[serde(default, skip_serializing_if = "Option::is_none")]
+//   pub stats: Option<String>,
+//   #[serde(default, skip_serializing_if = "Option::is_none")]
+//   pub terminate_after: Option<u32>,
+//   #[serde(default, skip_serializing_if = "Option::is_none")]
+//   pub timeout: Option<Time>,
+//   #[serde(default, skip_serializing_if = "Option::is_none")]
+//   pub version: Option<bool>,
+//   #[serde(default, skip_serializing_if = "Option::is_none")]
+//   pub search_after: Option<serde_json::Value>,
+//   #[serde(default, skip_serializing_if = "Option::is_none")]
+//   pub sort: Option<serde_json::Value>,
+// }
 
-impl Default for SearchBodyParams {
-  fn default() -> Self {
-    Self {
-      docvalue_fields: None,
-      explain: None,
-      fields: Vec::new(),
-      from: None,
-      indices_boost: Vec::new(),
-      min_score: None,
-      query: None,
-      seq_no_primary_term: None,
-      size: None,
-      source: None,
-      stats: None,
-      terminate_after: None,
-      timeout: None,
-      version: None,
-      search_after: None,
-      sort: None,
-    }
-  }
-}
+// impl Default for SearchBodyParams {
+//   fn default() -> Self {
+//     Self {
+//       docvalue_fields: None,
+//       explain: None,
+//       fields: Vec::new(),
+//       from: None,
+//       indices_boost: Vec::new(),
+//       min_score: None,
+//       query: None,
+//       seq_no_primary_term: None,
+//       size: None,
+//       source: None,
+//       stats: None,
+//       terminate_after: None,
+//       timeout: None,
+//       version: None,
+//       search_after: None,
+//       sort: None,
+//     }
+//   }
+// }
 
-impl From<&SearchBodyParams> for SearchBodyParams {
-  fn from(value: &SearchBodyParams) -> Self {
-    value.clone()
-  }
-}
+// impl From<&SearchBodyParams> for SearchBodyParams {
+//   fn from(value: &SearchBodyParams) -> Self {
+//     value.clone()
+//   }
+// }
 
-impl SearchBodyParams {
-  pub fn builder() -> builder::SearchBodyParams {
-    builder::SearchBodyParams::default()
-  }
-}
+// impl SearchBodyParams {
+//   pub fn builder() -> builder::SearchBodyParams {
+//     builder::SearchBodyParams::default()
+//   }
+// }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct SearchGetResponseContent<T> {
@@ -52953,238 +52953,238 @@ pub mod builder {
     }
   }
 
-  #[derive(Clone, Debug)]
-  pub struct SearchBodyParams {
-    docvalue_fields: Result<Option<String>, String>,
-    explain: Result<Option<bool>, String>,
-    fields: Result<Vec<String>, String>,
-    from: Result<Option<u32>, String>,
-    indices_boost: Result<Vec<serde_json::Value>, String>,
-    min_score: Result<Option<u32>, String>,
-    query: Result<Option<super::UserDefinedObjectStructure>, String>,
-    seq_no_primary_term: Result<Option<bool>, String>,
-    size: Result<Option<u32>, String>,
-    source: Result<Option<String>, String>,
-    stats: Result<Option<String>, String>,
-    terminate_after: Result<Option<u32>, String>,
-    timeout: Result<Option<super::Time>, String>,
-    version: Result<Option<bool>, String>,
-    search_after: Result<Option<serde_json::Value>, String>,
-    sort: Result<Option<serde_json::Value>, String>,
-  }
+  // #[derive(Clone, Debug)]
+  // pub struct SearchBodyParams {
+  //   docvalue_fields: Result<Option<String>, String>,
+  //   explain: Result<Option<bool>, String>,
+  //   fields: Result<Vec<String>, String>,
+  //   from: Result<Option<u32>, String>,
+  //   indices_boost: Result<Vec<serde_json::Value>, String>,
+  //   min_score: Result<Option<u32>, String>,
+  //   query: Result<Option<super::UserDefinedObjectStructure>, String>,
+  //   seq_no_primary_term: Result<Option<bool>, String>,
+  //   size: Result<Option<u32>, String>,
+  //   source: Result<Option<String>, String>,
+  //   stats: Result<Option<String>, String>,
+  //   terminate_after: Result<Option<u32>, String>,
+  //   timeout: Result<Option<super::Time>, String>,
+  //   version: Result<Option<bool>, String>,
+  //   search_after: Result<Option<serde_json::Value>, String>,
+  //   sort: Result<Option<serde_json::Value>, String>,
+  // }
 
-  impl Default for SearchBodyParams {
-    fn default() -> Self {
-      Self {
-        docvalue_fields: Ok(Default::default()),
-        explain: Ok(Default::default()),
-        fields: Ok(Default::default()),
-        from: Ok(Default::default()),
-        indices_boost: Ok(Default::default()),
-        min_score: Ok(Default::default()),
-        query: Ok(Default::default()),
-        seq_no_primary_term: Ok(Default::default()),
-        size: Ok(Default::default()),
-        source: Ok(Default::default()),
-        stats: Ok(Default::default()),
-        terminate_after: Ok(Default::default()),
-        timeout: Ok(Default::default()),
-        version: Ok(Default::default()),
-        search_after: Ok(Default::default()),
-        sort: Ok(Default::default()),
-      }
-    }
-  }
+  // impl Default for SearchBodyParams {
+  //   fn default() -> Self {
+  //     Self {
+  //       docvalue_fields: Ok(Default::default()),
+  //       explain: Ok(Default::default()),
+  //       fields: Ok(Default::default()),
+  //       from: Ok(Default::default()),
+  //       indices_boost: Ok(Default::default()),
+  //       min_score: Ok(Default::default()),
+  //       query: Ok(Default::default()),
+  //       seq_no_primary_term: Ok(Default::default()),
+  //       size: Ok(Default::default()),
+  //       source: Ok(Default::default()),
+  //       stats: Ok(Default::default()),
+  //       terminate_after: Ok(Default::default()),
+  //       timeout: Ok(Default::default()),
+  //       version: Ok(Default::default()),
+  //       search_after: Ok(Default::default()),
+  //       sort: Ok(Default::default()),
+  //     }
+  //   }
+  // }
 
-  impl SearchBodyParams {
-    pub fn docvalue_fields<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<String>>,
-      T::Error: std::fmt::Display, {
-      self.docvalue_fields = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for docvalue_fields: {}", e));
-      self
-    }
+  // impl SearchBodyParams {
+  //   pub fn docvalue_fields<T>(mut self, value: T) -> Self
+  //   where
+  //     T: std::convert::TryInto<Option<String>>,
+  //     T::Error: std::fmt::Display, {
+  //     self.docvalue_fields = value
+  //       .try_into()
+  //       .map_err(|e| format!("error converting supplied value for docvalue_fields: {}", e));
+  //     self
+  //   }
 
-    pub fn explain<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<bool>>,
-      T::Error: std::fmt::Display, {
-      self.explain = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for explain: {}", e));
-      self
-    }
+  //   pub fn explain<T>(mut self, value: T) -> Self
+  //   where
+  //     T: std::convert::TryInto<Option<bool>>,
+  //     T::Error: std::fmt::Display, {
+  //     self.explain = value
+  //       .try_into()
+  //       .map_err(|e| format!("error converting supplied value for explain: {}", e));
+  //     self
+  //   }
 
-    pub fn fields<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Vec<String>>,
-      T::Error: std::fmt::Display, {
-      self.fields = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for fields: {}", e));
-      self
-    }
+  //   pub fn fields<T>(mut self, value: T) -> Self
+  //   where
+  //     T: std::convert::TryInto<Vec<String>>,
+  //     T::Error: std::fmt::Display, {
+  //     self.fields = value
+  //       .try_into()
+  //       .map_err(|e| format!("error converting supplied value for fields: {}", e));
+  //     self
+  //   }
 
-    pub fn from<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<u32>>,
-      T::Error: std::fmt::Display, {
-      self.from = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for from: {}", e));
-      self
-    }
+  //   pub fn from<T>(mut self, value: T) -> Self
+  //   where
+  //     T: std::convert::TryInto<Option<u32>>,
+  //     T::Error: std::fmt::Display, {
+  //     self.from = value
+  //       .try_into()
+  //       .map_err(|e| format!("error converting supplied value for from: {}", e));
+  //     self
+  //   }
 
-    pub fn indices_boost<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Vec<serde_json::Value>>,
-      T::Error: std::fmt::Display, {
-      self.indices_boost = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for indices_boost: {}", e));
-      self
-    }
+  //   pub fn indices_boost<T>(mut self, value: T) -> Self
+  //   where
+  //     T: std::convert::TryInto<Vec<serde_json::Value>>,
+  //     T::Error: std::fmt::Display, {
+  //     self.indices_boost = value
+  //       .try_into()
+  //       .map_err(|e| format!("error converting supplied value for indices_boost: {}", e));
+  //     self
+  //   }
 
-    pub fn min_score<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<u32>>,
-      T::Error: std::fmt::Display, {
-      self.min_score = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for min_score: {}", e));
-      self
-    }
+  //   pub fn min_score<T>(mut self, value: T) -> Self
+  //   where
+  //     T: std::convert::TryInto<Option<u32>>,
+  //     T::Error: std::fmt::Display, {
+  //     self.min_score = value
+  //       .try_into()
+  //       .map_err(|e| format!("error converting supplied value for min_score: {}", e));
+  //     self
+  //   }
 
-    pub fn query<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<super::UserDefinedObjectStructure>>,
-      T::Error: std::fmt::Display, {
-      self.query = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for query: {}", e));
-      self
-    }
+  //   pub fn query<T>(mut self, value: T) -> Self
+  //   where
+  //     T: std::convert::TryInto<Option<super::UserDefinedObjectStructure>>,
+  //     T::Error: std::fmt::Display, {
+  //     self.query = value
+  //       .try_into()
+  //       .map_err(|e| format!("error converting supplied value for query: {}", e));
+  //     self
+  //   }
 
-    pub fn seq_no_primary_term<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<bool>>,
-      T::Error: std::fmt::Display, {
-      self.seq_no_primary_term = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for seq_no_primary_term: {}", e));
-      self
-    }
+  //   pub fn seq_no_primary_term<T>(mut self, value: T) -> Self
+  //   where
+  //     T: std::convert::TryInto<Option<bool>>,
+  //     T::Error: std::fmt::Display, {
+  //     self.seq_no_primary_term = value
+  //       .try_into()
+  //       .map_err(|e| format!("error converting supplied value for seq_no_primary_term: {}", e));
+  //     self
+  //   }
 
-    pub fn size<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<u32>>,
-      T::Error: std::fmt::Display, {
-      self.size = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for size: {}", e));
-      self
-    }
+  //   pub fn size<T>(mut self, value: T) -> Self
+  //   where
+  //     T: std::convert::TryInto<Option<u32>>,
+  //     T::Error: std::fmt::Display, {
+  //     self.size = value
+  //       .try_into()
+  //       .map_err(|e| format!("error converting supplied value for size: {}", e));
+  //     self
+  //   }
 
-    pub fn source<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<String>>,
-      T::Error: std::fmt::Display, {
-      self.source = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for source: {}", e));
-      self
-    }
+  //   pub fn source<T>(mut self, value: T) -> Self
+  //   where
+  //     T: std::convert::TryInto<Option<String>>,
+  //     T::Error: std::fmt::Display, {
+  //     self.source = value
+  //       .try_into()
+  //       .map_err(|e| format!("error converting supplied value for source: {}", e));
+  //     self
+  //   }
 
-    pub fn stats<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<String>>,
-      T::Error: std::fmt::Display, {
-      self.stats = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for stats: {}", e));
-      self
-    }
+  //   pub fn stats<T>(mut self, value: T) -> Self
+  //   where
+  //     T: std::convert::TryInto<Option<String>>,
+  //     T::Error: std::fmt::Display, {
+  //     self.stats = value
+  //       .try_into()
+  //       .map_err(|e| format!("error converting supplied value for stats: {}", e));
+  //     self
+  //   }
 
-    pub fn terminate_after<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<u32>>,
-      T::Error: std::fmt::Display, {
-      self.terminate_after = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for terminate_after: {}", e));
-      self
-    }
+  //   pub fn terminate_after<T>(mut self, value: T) -> Self
+  //   where
+  //     T: std::convert::TryInto<Option<u32>>,
+  //     T::Error: std::fmt::Display, {
+  //     self.terminate_after = value
+  //       .try_into()
+  //       .map_err(|e| format!("error converting supplied value for terminate_after: {}", e));
+  //     self
+  //   }
 
-    pub fn timeout<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<super::Time>>,
-      T::Error: std::fmt::Display, {
-      self.timeout = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for timeout: {}", e));
-      self
-    }
+  //   pub fn timeout<T>(mut self, value: T) -> Self
+  //   where
+  //     T: std::convert::TryInto<Option<super::Time>>,
+  //     T::Error: std::fmt::Display, {
+  //     self.timeout = value
+  //       .try_into()
+  //       .map_err(|e| format!("error converting supplied value for timeout: {}", e));
+  //     self
+  //   }
 
-    pub fn version<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<bool>>,
-      T::Error: std::fmt::Display, {
-      self.version = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for version: {}", e));
-      self
-    }
-  }
+  //   pub fn version<T>(mut self, value: T) -> Self
+  //   where
+  //     T: std::convert::TryInto<Option<bool>>,
+  //     T::Error: std::fmt::Display, {
+  //     self.version = value
+  //       .try_into()
+  //       .map_err(|e| format!("error converting supplied value for version: {}", e));
+  //     self
+  //   }
+  // }
 
-  impl std::convert::TryFrom<SearchBodyParams> for super::SearchBodyParams {
-    type Error = String;
+  // impl std::convert::TryFrom<SearchBodyParams> for super::SearchBodyParams {
+  //   type Error = String;
 
-    fn try_from(value: SearchBodyParams) -> Result<Self, String> {
-      Ok(Self {
-        docvalue_fields: value.docvalue_fields?,
-        explain: value.explain?,
-        fields: value.fields?,
-        from: value.from?,
-        indices_boost: value.indices_boost?,
-        min_score: value.min_score?,
-        query: value.query?,
-        seq_no_primary_term: value.seq_no_primary_term?,
-        size: value.size?,
-        source: value.source?,
-        stats: value.stats?,
-        terminate_after: value.terminate_after?,
-        timeout: value.timeout?,
-        version: value.version?,
-        search_after: value.search_after?,
-        sort: value.sort?,
-      })
-    }
-  }
+  //   fn try_from(value: SearchBodyParams) -> Result<Self, String> {
+  //     Ok(Self {
+  //       docvalue_fields: value.docvalue_fields?,
+  //       explain: value.explain?,
+  //       fields: value.fields?,
+  //       from: value.from?,
+  //       indices_boost: value.indices_boost?,
+  //       min_score: value.min_score?,
+  //       query: value.query?,
+  //       seq_no_primary_term: value.seq_no_primary_term?,
+  //       size: value.size?,
+  //       source: value.source?,
+  //       stats: value.stats?,
+  //       terminate_after: value.terminate_after?,
+  //       timeout: value.timeout?,
+  //       version: value.version?,
+  //       search_after: value.search_after?,
+  //       sort: value.sort?,
+  //     })
+  //   }
+  // }
 
-  impl From<super::SearchBodyParams> for SearchBodyParams {
-    fn from(value: super::SearchBodyParams) -> Self {
-      Self {
-        docvalue_fields: Ok(value.docvalue_fields),
-        explain: Ok(value.explain),
-        fields: Ok(value.fields),
-        from: Ok(value.from),
-        indices_boost: Ok(value.indices_boost),
-        min_score: Ok(value.min_score),
-        query: Ok(value.query),
-        seq_no_primary_term: Ok(value.seq_no_primary_term),
-        size: Ok(value.size),
-        source: Ok(value.source),
-        stats: Ok(value.stats),
-        terminate_after: Ok(value.terminate_after),
-        timeout: Ok(value.timeout),
-        version: Ok(value.version),
-        search_after: Ok(value.search_after),
-        sort: Ok(value.sort),
-      }
-    }
-  }
+  // impl From<super::SearchBodyParams> for SearchBodyParams {
+  //   fn from(value: super::SearchBodyParams) -> Self {
+  //     Self {
+  //       docvalue_fields: Ok(value.docvalue_fields),
+  //       explain: Ok(value.explain),
+  //       fields: Ok(value.fields),
+  //       from: Ok(value.from),
+  //       indices_boost: Ok(value.indices_boost),
+  //       min_score: Ok(value.min_score),
+  //       query: Ok(value.query),
+  //       seq_no_primary_term: Ok(value.seq_no_primary_term),
+  //       size: Ok(value.size),
+  //       source: Ok(value.source),
+  //       stats: Ok(value.stats),
+  //       terminate_after: Ok(value.terminate_after),
+  //       timeout: Ok(value.timeout),
+  //       version: Ok(value.version),
+  //       search_after: Ok(value.search_after),
+  //       sort: Ok(value.sort),
+  //     }
+  //   }
+  // }
 
   #[derive(Clone, Debug)]
   pub struct SearchGetResponseContent<T> {

@@ -1,6 +1,6 @@
 use reqwest::Body;
 use serde::{de::DeserializeOwned, Serialize};
-
+use opensearch_dsl::Search;
 use crate::types::bulk::BulkResponse;
 use super::types;
 #[allow(unused_imports)]
@@ -22576,7 +22576,7 @@ pub struct SearchPost<'a> {
   track_total_hits: Result<Option<bool>, String>,
   typed_keys: Result<Option<bool>, String>,
   version: Result<Option<bool>, String>,
-  body: Result<types::builder::SearchBodyParams, String>,
+  body: Result<Option<Search>, String>,
 }
 
 impl<'a> SearchPost<'a> {
@@ -22625,7 +22625,7 @@ impl<'a> SearchPost<'a> {
       track_total_hits: Ok(None),
       typed_keys: Ok(None),
       version: Ok(None),
-      body: Ok(types::builder::SearchBodyParams::default()),
+      body: Ok(Some(Search::new())),
     }
   }
 
@@ -23051,20 +23051,20 @@ impl<'a> SearchPost<'a> {
 
   pub fn body<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SearchBodyParams>, {
+    V: std::convert::TryInto<Search>, {
     self.body = value
       .try_into()
-      .map(From::from)
-      .map_err(|_| "conversion to `SearchBodyParams` for body failed".to_string());
+      .map(Some)
+      .map_err(|_| "conversion to `Search` for body failed".to_string());
     self
   }
 
-  pub fn body_map<F>(mut self, f: F) -> Self
-  where
-    F: std::ops::FnOnce(types::builder::SearchBodyParams) -> types::builder::SearchBodyParams, {
-    self.body = self.body.map(f);
-    self
-  }
+  // pub fn body_map<F>(mut self, f: F) -> Self
+  // where
+  //   F: std::ops::FnOnce(Search) -> Search, {
+  //   self.body = self.body.map(f);
+  //   self
+  // }
 
   ///Sends a `POST` request to `/_search`
   pub async fn send<T: DeserializeOwned + std::default::Default>(
@@ -23158,9 +23158,11 @@ impl<'a> SearchPost<'a> {
     let track_total_hits = track_total_hits.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
     let version = version.map_err(Error::InvalidRequest)?;
-    let body = body
-      .and_then(std::convert::TryInto::<types::SearchBodyParams>::try_into)
-      .map_err(Error::InvalidRequest)?;
+    let body = match body
+      .map_err(Error::InvalidRequest)? {
+        Some(_) => todo!(),
+        None => todo!(),
+    };
     let url = format!("{}/_search", client.baseurl,);
     let mut query = Vec::with_capacity(42usize);
     if let Some(v) = &source {
@@ -39211,7 +39213,7 @@ pub struct SearchPostWithIndex<'a> {
   track_total_hits: Result<Option<bool>, String>,
   typed_keys: Result<Option<bool>, String>,
   version: Result<Option<bool>, String>,
-  body: Result<types::builder::SearchBodyParams, String>,
+  body: Result<Option<Search>, String>,
 }
 
 impl<'a> SearchPostWithIndex<'a> {
@@ -39261,7 +39263,7 @@ impl<'a> SearchPostWithIndex<'a> {
       track_total_hits: Ok(None),
       typed_keys: Ok(None),
       version: Ok(None),
-      body: Ok(types::builder::SearchBodyParams::default()),
+      body: Ok(None),
     }
   }
 
@@ -39696,20 +39698,20 @@ impl<'a> SearchPostWithIndex<'a> {
 
   pub fn body<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SearchBodyParams>, {
+    V: std::convert::TryInto<Search>, {
     self.body = value
       .try_into()
-      .map(From::from)
+      .map(Some)
       .map_err(|_| "conversion to `SearchBodyParams` for body failed".to_string());
     self
   }
 
-  pub fn body_map<F>(mut self, f: F) -> Self
-  where
-    F: std::ops::FnOnce(types::builder::SearchBodyParams) -> types::builder::SearchBodyParams, {
-    self.body = self.body.map(f);
-    self
-  }
+  // pub fn body_map<F>(mut self, f: F) -> Self
+  // where
+  //   F: std::ops::FnOnce(Search) -> Search, {
+  //   self.body = self.body.map(f);
+  //   self
+  // }
 
   ///Sends a `POST` request to `/{index}/_search`
   pub async fn send<T: DeserializeOwned + std::default::Default>(
@@ -39805,9 +39807,11 @@ impl<'a> SearchPostWithIndex<'a> {
     let track_total_hits = track_total_hits.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
     let version = version.map_err(Error::InvalidRequest)?;
-    let body = body
-      .and_then(std::convert::TryInto::<types::SearchBodyParams>::try_into)
-      .map_err(Error::InvalidRequest)?;
+    let body = match body
+      .map_err(Error::InvalidRequest)? {
+        Some(body) => body,
+        None => Search::default(),
+      };
     let url = format!("{}/{}/_search", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(42usize);
     if let Some(v) = &source {

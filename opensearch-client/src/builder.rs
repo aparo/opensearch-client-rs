@@ -1,9 +1,7 @@
-
 use reqwest::Body;
 use serde::{de::DeserializeOwned, Serialize};
 
 use crate::types::bulk::BulkResponse;
-
 use super::types;
 #[allow(unused_imports)]
 use super::{
@@ -756,7 +754,7 @@ impl<'a> BulkPost<'a> {
 
   pub fn body<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<String>{
+    V: std::convert::TryInto<String>, {
     self.body = value
       .try_into()
       .map_err(|_| "conversion to `BulkBodyParams` for body failed".to_string());
@@ -819,9 +817,13 @@ impl<'a> BulkPost<'a> {
     if let Some(v) = &wait_for_active_shards {
       query.push(("wait_for_active_shards", v.to_string()));
     }
-    let request = client.client.post(url).body(Body::from(body))
-            .header("Content-Type", "application/x-ndjson")
-      .query(&query).build()?;
+    let request = client
+      .client
+      .post(url)
+      .body(Body::from(body))
+      .header("Content-Type", "application/x-ndjson")
+      .query(&query)
+      .build()?;
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
@@ -8973,8 +8975,8 @@ impl<'a> ClusterReroute<'a> {
       query.push(("master_timeout", v.to_string()));
     }
     // if let Some(v) = &metric {
-    //   query.push(("metric", v.into_iter().map(|p| p.to_string()).collect().join(",")));
-    // }
+    //   query.push(("metric", v.into_iter().map(|p|
+    // p.to_string()).collect().join(","))); }
     if let Some(v) = &retry_failed {
       query.push(("retry_failed", v.to_string()));
     }
@@ -23065,7 +23067,9 @@ impl<'a> SearchPost<'a> {
   }
 
   ///Sends a `POST` request to `/_search`
-  pub async fn send<T: DeserializeOwned + std::default::Default>(self) -> Result<ResponseValue<types::SearchPostResponseContent<T>>, Error<()>> {
+  pub async fn send<T: DeserializeOwned + std::default::Default>(
+    self,
+  ) -> Result<ResponseValue<types::SearchPostResponseContent<T>>, Error<()>> {
     let Self {
       client,
       source,
@@ -31438,7 +31442,11 @@ impl<'a> IndicesAnalyzeGetWithIndex<'a> {
   pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
     let Self { client, index } = self;
     let index = index.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_analyze", client.baseurl, encode_path(&index.clone().unwrap_or(String::from("_all"))),);
+    let url = format!(
+      "{}/{}/_analyze",
+      client.baseurl,
+      encode_path(&index.clone().unwrap_or(String::from("_all"))),
+    );
     let mut query = Vec::with_capacity(1usize);
     if let Some(v) = &index {
       query.push(("index", v.to_string()));
@@ -31807,8 +31815,14 @@ impl<'a> IndicesClearCacheWithIndex<'a> {
     let query_opt = query.map_err(Error::InvalidRequest)?;
     let request = request.map_err(Error::InvalidRequest)?;
     let url = match &index {
-        Some(idx) => format!("{}/{}/_cache/clear", client.baseurl, encode_path(&index.clone().unwrap().join(",")),),
-        None => format!("{}/_cache/clear", client.baseurl),
+      Some(idx) => {
+        format!(
+          "{}/{}/_cache/clear",
+          client.baseurl,
+          encode_path(&index.clone().unwrap().join(",")),
+        )
+      }
+      None => format!("{}/_cache/clear", client.baseurl),
     };
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &allow_no_indices {
@@ -33772,7 +33786,11 @@ impl<'a> DeleteByQuery<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let wait_for_completion = wait_for_completion.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_delete_by_query", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!(
+      "{}/{}/_delete_by_query",
+      client.baseurl,
+      encode_path(&index.to_string()),
+    );
     let mut query = Vec::with_capacity(33usize);
     if let Some(v) = &source {
       query.push(("_source", v.join(",")));
@@ -34041,7 +34059,9 @@ impl<'a> Get<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_doc/{id}`
-  pub async fn send<T:DeserializeOwned + std::default::Default>(self) -> Result<ResponseValue<types::GetResponseContent<T>>, Error<()>> {
+  pub async fn send<T: DeserializeOwned + std::default::Default>(
+    self,
+  ) -> Result<ResponseValue<types::GetResponseContent<T>>, Error<()>> {
     let Self {
       client,
       index,
@@ -34562,8 +34582,7 @@ impl<'a> IndexPost<'a> {
   pub fn body<V: Serialize>(mut self, value: V) -> Self
   where
     V: std::convert::TryInto<serde_json::Value>, {
-    self.body = serde_json::to_value(value)
-      .map_err(|_| "conversion to `serde_json:Value` for body failed".to_string());
+    self.body = serde_json::to_value(value).map_err(|_| "conversion to `serde_json:Value` for body failed".to_string());
     self
   }
 
@@ -34601,17 +34620,15 @@ impl<'a> IndexPost<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = match &id {
-      Some(id) => format!(
-        "{}/{}/_doc/{}",
-        client.baseurl,
-        encode_path(&index.to_string()),
-        encode_path(&id.to_string()),
-      ),
-      None => format!(
-        "{}/{}/_doc",
-        client.baseurl,
-        encode_path(&index.to_string()),
-      ),
+      Some(id) => {
+        format!(
+          "{}/{}/_doc/{}",
+          client.baseurl,
+          encode_path(&index.to_string()),
+          encode_path(&id.to_string()),
+        )
+      }
+      None => format!("{}/{}/_doc", client.baseurl, encode_path(&index.to_string()),),
     };
     let mut query = Vec::with_capacity(11usize);
     if let Some(v) = &if_primary_term {
@@ -37799,7 +37816,11 @@ impl<'a> MsearchTemplateGetWithIndex<'a> {
     let rest_total_hits_as_int = rest_total_hits_as_int.map_err(Error::InvalidRequest)?;
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_msearch/template", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!(
+      "{}/{}/_msearch/template",
+      client.baseurl,
+      encode_path(&index.to_string()),
+    );
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &ccs_minimize_roundtrips {
       query.push(("ccs_minimize_roundtrips", v.to_string()));
@@ -37942,7 +37963,11 @@ impl<'a> MsearchTemplatePostWithIndex<'a> {
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_msearch/template", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!(
+      "{}/{}/_msearch/template",
+      client.baseurl,
+      encode_path(&index.to_string()),
+    );
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &ccs_minimize_roundtrips {
       query.push(("ccs_minimize_roundtrips", v.to_string()));
@@ -39687,7 +39712,9 @@ impl<'a> SearchPostWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_search`
-  pub async fn send<T: DeserializeOwned + std::default::Default>(self) -> Result<ResponseValue<types::SearchPostWithIndexResponseContent<T>>, Error<()>> {
+  pub async fn send<T: DeserializeOwned + std::default::Default>(
+    self,
+  ) -> Result<ResponseValue<types::SearchPostWithIndexResponseContent<T>>, Error<()>> {
     let Self {
       client,
       index,
@@ -40285,7 +40312,11 @@ impl<'a> SearchTemplateGetWithIndex<'a> {
     let scroll = scroll.map_err(Error::InvalidRequest)?;
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_search/template", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!(
+      "{}/{}/_search/template",
+      client.baseurl,
+      encode_path(&index.to_string()),
+    );
     let mut query = Vec::with_capacity(13usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -40564,7 +40595,11 @@ impl<'a> SearchTemplatePostWithIndex<'a> {
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_search/template", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!(
+      "{}/{}/_search/template",
+      client.baseurl,
+      encode_path(&index.to_string()),
+    );
     let mut query = Vec::with_capacity(13usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -44984,7 +45019,11 @@ impl<'a> UpdateByQuery<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let wait_for_completion = wait_for_completion.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_update_by_query", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!(
+      "{}/{}/_update_by_query",
+      client.baseurl,
+      encode_path(&index.to_string()),
+    );
     let mut query = Vec::with_capacity(34usize);
     if let Some(v) = &source {
       query.push(("_source", v.join(",")));

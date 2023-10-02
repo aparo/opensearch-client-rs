@@ -7,11 +7,16 @@ use progenitor_client::{encode_path, encode_path_option_vec_string, RequestBuild
 pub use progenitor_client::{ByteStream, Error, ResponseValue};
 #[allow(unused_imports)]
 use reqwest::header::{HeaderMap, HeaderValue};
-use serde::{Serialize, de::DeserializeOwned};
+use serde::{de::DeserializeOwned, Serialize};
 use tracing::info;
 use types::bulk::{BulkAction, BulkResponse, UpdateAction};
+use futures::{
+  stream::{self, StreamExt},
+  Stream,
+};
 pub mod types;
 pub mod builder;
+pub mod query;
 // pub mod search;
 #[derive(Clone, Debug)]
 ///Client for OpenSearch
@@ -7473,7 +7478,6 @@ impl Client {
     builder::IndicesAddBlock::new(self)
   }
 
-
   ///Clears all or specific caches for one or more indices.
   ///
   ///Sends a `POST` request to `/{index}/_cache/clear`
@@ -7921,7 +7925,6 @@ impl Client {
   pub fn delete_by_query(&self) -> builder::DeleteByQuery {
     builder::DeleteByQuery::new(self)
   }
-
 
   ///Returns a document.
   ///
@@ -9103,7 +9106,6 @@ impl Client {
   pub fn indices_refresh_post_with_index(&self) -> builder::IndicesRefreshPostWithIndex {
     builder::IndicesRefreshPostWithIndex::new(self)
   }
-
 
   ///Returns results matching a query.
   ///
@@ -10469,7 +10471,7 @@ impl Client {
   }
 
   pub async fn list_indices(&self) -> Result<Vec<String>, Error> {
-    let response = self.cat_indices().s(vec!("i".to_owned())).send().await?;
+    let response = self.cat_indices().s(vec!["i".to_owned()]).send().await?;
     let cat_result = response.into_inner();
     let values: Vec<String> = cat_result
       .split('\n')
@@ -10529,7 +10531,6 @@ impl Client {
     }
     Ok(serde_json::Value::Object(m))
   }
-
 
   pub async fn bulk_create_document<T: Serialize>(
     &self,
@@ -10620,12 +10621,8 @@ impl Client {
     body: &T,
     id: Option<String>,
   ) -> Result<types::IndexResponse, Error> {
-
     let body_json = serde_json::to_value(body)?;
-    let response=self.index_post().index(index)
-      .body(body_json)
-      .send()
-      .await?;
+    let response = self.index_post().index(index).body(body_json).send().await?;
     Ok(response.into_inner())
   }
 
@@ -10637,16 +10634,17 @@ impl Client {
   ) -> Result<types::IndexResponse, Error> {
     let body_json = serde_json::to_value(body)?;
 
-    let response = self.create_put().index(index).id(id).body(body_json)
-      .send()
-      .await?;
-    let result = response.into_inner(); 
+    let response = self.create_put().index(index).id(id).body(body_json).send().await?;
+    let result = response.into_inner();
 
     Ok(result)
   }
 
-  pub async fn get_typed<T: DeserializeOwned + std::default::Default>(&self, index: &String, id: &String) -> Result<types::GetResponseContent<T>, Error> {
-
+  pub async fn get_typed<T: DeserializeOwned + std::default::Default>(
+    &self,
+    index: &String,
+    id: &String,
+  ) -> Result<types::GetResponseContent<T>, Error> {
     let response = self.get().index(index).id(id).send::<T>().await?;
     let result = response.into_inner();
 
@@ -10665,7 +10663,99 @@ impl Client {
     Ok(response.into_inner())
   }
 
+  pub async fn search_stream<T: DeserializeOwned + std::default::Default>(
+    &self,
+    index: &String,
+    query: &serde_json::Value,
+    sort: &serde_json::Value,
+    size: u32,
+  ) -> Result<impl Stream<Item = types::Hit<T>> + 'static, Error> {
+    let start_state = SearchAfterState {
+      client: Arc::new(self.clone()),
+      stop: false,
+      search_after: None,
+      index: index.clone(),
+      query: query.clone(),
+      sort: sort.clone(),
+      size,
+    };
 
+    async fn stream_next<T: DeserializeOwned + std::default::Default>(
+      state: SearchAfterState,
+    ) -> Result<(Vec<types::Hit<T>>, SearchAfterState), Error> {
+      let sort = {
+        let mut values: Vec<serde_json::Value> = match state.sort.clone() {
+          serde_json::Value::Null => vec![],
+          serde_json::Value::Bool(_) => vec![],
+          serde_json::Value::Number(_) => vec![],
+          serde_json::Value::String(_) => vec![],
+          serde_json::Value::Array(values) => values,
+          serde_json::Value::Object(x) => vec![serde_json::Value::Object(x)],
+        };
+        values.push(serde_json::json!({"_doc":{"order":"asc"}}));
+        serde_json::Value::Array(values)
+      };
+
+      let mut body: types::SearchBodyParams = types::SearchBodyParams {
+        query: state.query.clone(),
+        size: Some(state.size),
+        sort: Some(sort.clone()),
+        ..Default::default()
+      };
+
+      // let mut body = serde_json::json!({
+      //     "query": state.query,
+      //     "size": state.size,
+      //     "sort": sort
+      // });
+      if let Some(search_after) = state.search_after.clone() {
+        body.search_after = Some(search_after.clone());
+      }
+
+      let response = state
+        .client
+        .clone()
+        .search()
+        .index(&state.index)
+        .body(&body)
+        .send::<T>()
+        .await?;
+      let hits = response.hits.unwrap().hits;
+      let next_state = SearchAfterState {
+        stop: (hits.len() as u32) < state.size,
+        search_after: hits.iter().last().and_then(|f| f.sort.clone()),
+        ..state
+      };
+
+      Ok((hits, next_state))
+    }
+
+    let stream = stream::unfold(start_state, move |state| {
+      async move {
+        if state.stop {
+          None
+        } else {
+          let result = stream_next::<T>(state).await;
+          match result {
+            Ok((items, state)) => Some((stream::iter(items), state)),
+            Err(_err) => None,
+          }
+        }
+      }
+    });
+
+    Ok(stream.flatten())
+  }
+}
+
+struct SearchAfterState {
+  client: Arc<Client>,
+  index: String,
+  stop: bool,
+  size: u32,
+  query: serde_json::Value,
+  sort: serde_json::Value,
+  search_after: Option<serde_json::Value>,
 }
 
 pub mod prelude {

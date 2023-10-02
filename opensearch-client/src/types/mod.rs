@@ -1,8 +1,7 @@
-
 #[allow(unused_imports)]
 use std::convert::TryFrom;
 
-use serde::{Deserialize, Serialize, de::DeserializeOwned};
+use serde::{de::DeserializeOwned, Deserialize, Serialize};
 pub mod bulk;
 pub use bulk::{BulkAction, BulkError, BulkItemResponse, BulkResponse, IndexResponse, UpdateAction};
 
@@ -297,7 +296,6 @@ impl<'de> serde::Deserialize<'de> for BulkPostTimeout {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
 
 ///The unit in which to display byte values.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -9216,8 +9214,6 @@ impl From<serde_json::Value> for CreateBodyParams {
   }
 }
 
-
-
 ///Comma-separated list of indices; use `_all` or empty string to perform
 /// the operation on all indices.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -13481,7 +13477,7 @@ impl std::convert::TryFrom<String> for Health {
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
-pub struct Hits<T> {
+pub struct Hit<T> {
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub fields: Option<serde_json::Value>,
   #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
@@ -13498,22 +13494,22 @@ pub struct Hits<T> {
   pub sort: Option<serde_json::Value>,
 }
 
-impl<T> From<&Hits<T>> for Hits<T> {
-  fn from(value: &Hits<T>) -> Self {
+impl<T> From<&Hit<T>> for Hit<T> {
+  fn from(value: &Hit<T>) -> Self {
     value.clone().into()
   }
 }
 
-impl<T> Hits<T> {
-  pub fn builder() -> builder::Hits<T> {
-    builder::Hits::default()
+impl<T> Hit<T> {
+  pub fn builder() -> builder::Hit<T> {
+    builder::Hit::default()
   }
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct HitsMetadata<T> {
   #[serde(default, skip_serializing_if = "Vec::is_empty")]
-  pub hits: Vec<Hits<T>>,
+  pub hits: Vec<Hit<T>>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub max_score: Option<f64>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -13567,7 +13563,6 @@ impl From<serde_json::Value> for IndexBodyParams {
 //   }
 // }
 
-
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct IndexPermission {
   #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -13591,7 +13586,6 @@ impl IndexPermission {
     builder::IndexPermission::default()
   }
 }
-
 
 ///Document ID.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -38717,27 +38711,54 @@ pub struct SearchBodyParams {
   #[serde(default, skip_serializing_if = "Vec::is_empty")]
   pub fields: Vec<String>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub from: Option<i32>,
+  pub from: Option<u32>,
   #[serde(default, skip_serializing_if = "Vec::is_empty")]
   pub indices_boost: Vec<serde_json::Value>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub min_score: Option<i32>,
+  pub min_score: Option<u32>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub query: Option<UserDefinedObjectStructure>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub seq_no_primary_term: Option<bool>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub size: Option<i32>,
+  pub size: Option<u32>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub source: Option<String>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub stats: Option<String>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub terminate_after: Option<i32>,
+  pub terminate_after: Option<u32>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub timeout: Option<Time>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub version: Option<bool>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  pub search_after: Option<serde_json::Value>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  pub sort: Option<serde_json::Value>,
+}
+
+impl Default for SearchBodyParams {
+  fn default() -> Self {
+    Self {
+      docvalue_fields: None,
+      explain: None,
+      fields: Vec::new(),
+      from: None,
+      indices_boost: Vec::new(),
+      min_score: None,
+      query: None,
+      seq_no_primary_term: None,
+      size: None,
+      source: None,
+      stats: None,
+      terminate_after: None,
+      timeout: None,
+      version: None,
+      search_after: None,
+      sort: None,
+    }
+  }
 }
 
 impl From<&SearchBodyParams> for SearchBodyParams {
@@ -39161,7 +39182,6 @@ pub struct SearchPostResponseContent<T> {
   pub took: Option<i64>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub aggregations: Option<Aggregations>,
-
 }
 
 impl<T> From<&SearchPostResponseContent<T>> for SearchPostResponseContent<T> {
@@ -47049,7 +47069,7 @@ impl std::convert::TryFrom<String> for WaitForStatus {
 }
 
 pub mod builder {
-    use super::Aggregations;
+  use super::Aggregations;
 
   #[derive(Clone, Debug)]
   pub struct AccountDetails {
@@ -50375,18 +50395,17 @@ pub mod builder {
   }
 
   #[derive(Clone, Debug)]
-  pub struct Hits<T> {
+  pub struct Hit<T> {
     fields: Result<Option<serde_json::Value>, String>,
     id: Result<Option<String>, String>,
     index: Result<Option<String>, String>,
     score: Result<Option<f64>, String>,
     source: Result<Option<T>, String>,
     type_: Result<Option<String>, String>,
-    sort: Result<Option<serde_json::Value>,String>,
-
+    sort: Result<Option<serde_json::Value>, String>,
   }
 
-  impl<T> Default for Hits<T> {
+  impl<T> Default for Hit<T> {
     fn default() -> Self {
       Self {
         fields: Ok(Default::default()),
@@ -50400,7 +50419,7 @@ pub mod builder {
     }
   }
 
-  impl<T3> Hits<T3> {
+  impl<T3> Hit<T3> {
     pub fn fields<T>(mut self, value: T) -> Self
     where
       T: std::convert::TryInto<Option<serde_json::Value>>,
@@ -50447,8 +50466,8 @@ pub mod builder {
     //   T3::Error: std::fmt::Display, {
     //   self.source = value
     //     .try_into()
-    //     .map_err(|e| format!("error converting supplied value for source: {}", e));
-    //   self
+    //     .map_err(|e| format!("error converting supplied value for source: {}",
+    // e));   self
     // }
 
     pub fn type_<T>(mut self, value: T) -> Self
@@ -50462,10 +50481,10 @@ pub mod builder {
     }
   }
 
-  impl<T2> std::convert::TryFrom<Hits<T2>> for super::Hits<T2> {
+  impl<T2> std::convert::TryFrom<Hit<T2>> for super::Hit<T2> {
     type Error = String;
 
-    fn try_from(value: Hits<T2>) -> Result<Self, String> {
+    fn try_from(value: Hit<T2>) -> Result<Self, String> {
       Ok(Self {
         fields: value.fields?,
         id: value.id?,
@@ -50478,8 +50497,8 @@ pub mod builder {
     }
   }
 
-  impl<T2> From<super::Hits<T2>> for Hits<T2> {
-    fn from(value: super::Hits<T2>) -> Self {
+  impl<T2> From<super::Hit<T2>> for Hit<T2> {
+    fn from(value: super::Hit<T2>) -> Self {
       Self {
         fields: Ok(value.fields),
         id: Ok(value.id),
@@ -50494,7 +50513,7 @@ pub mod builder {
 
   #[derive(Clone, Debug)]
   pub struct HitsMetadata<T> {
-    hits: Result<Vec<super::Hits<T>>, String>,
+    hits: Result<Vec<super::Hit<T>>, String>,
     max_score: Result<Option<f64>, String>,
     total: Result<Option<super::Total>, String>,
   }
@@ -50512,7 +50531,7 @@ pub mod builder {
   impl<T2> HitsMetadata<T2> {
     pub fn hits<T>(mut self, value: T) -> Self
     where
-      T: std::convert::TryInto<Vec<super::Hits<T2>>>,
+      T: std::convert::TryInto<Vec<super::Hit<T2>>>,
       T::Error: std::fmt::Display, {
       self.hits = value
         .try_into()
@@ -52939,17 +52958,19 @@ pub mod builder {
     docvalue_fields: Result<Option<String>, String>,
     explain: Result<Option<bool>, String>,
     fields: Result<Vec<String>, String>,
-    from: Result<Option<i32>, String>,
+    from: Result<Option<u32>, String>,
     indices_boost: Result<Vec<serde_json::Value>, String>,
-    min_score: Result<Option<i32>, String>,
+    min_score: Result<Option<u32>, String>,
     query: Result<Option<super::UserDefinedObjectStructure>, String>,
     seq_no_primary_term: Result<Option<bool>, String>,
-    size: Result<Option<i32>, String>,
+    size: Result<Option<u32>, String>,
     source: Result<Option<String>, String>,
     stats: Result<Option<String>, String>,
-    terminate_after: Result<Option<i32>, String>,
+    terminate_after: Result<Option<u32>, String>,
     timeout: Result<Option<super::Time>, String>,
     version: Result<Option<bool>, String>,
+    search_after: Result<Option<serde_json::Value>, String>,
+    sort: Result<Option<serde_json::Value>, String>,
   }
 
   impl Default for SearchBodyParams {
@@ -52969,6 +52990,8 @@ pub mod builder {
         terminate_after: Ok(Default::default()),
         timeout: Ok(Default::default()),
         version: Ok(Default::default()),
+        search_after: Ok(Default::default()),
+        sort: Ok(Default::default()),
       }
     }
   }
@@ -53006,7 +53029,7 @@ pub mod builder {
 
     pub fn from<T>(mut self, value: T) -> Self
     where
-      T: std::convert::TryInto<Option<i32>>,
+      T: std::convert::TryInto<Option<u32>>,
       T::Error: std::fmt::Display, {
       self.from = value
         .try_into()
@@ -53026,7 +53049,7 @@ pub mod builder {
 
     pub fn min_score<T>(mut self, value: T) -> Self
     where
-      T: std::convert::TryInto<Option<i32>>,
+      T: std::convert::TryInto<Option<u32>>,
       T::Error: std::fmt::Display, {
       self.min_score = value
         .try_into()
@@ -53056,7 +53079,7 @@ pub mod builder {
 
     pub fn size<T>(mut self, value: T) -> Self
     where
-      T: std::convert::TryInto<Option<i32>>,
+      T: std::convert::TryInto<Option<u32>>,
       T::Error: std::fmt::Display, {
       self.size = value
         .try_into()
@@ -53086,7 +53109,7 @@ pub mod builder {
 
     pub fn terminate_after<T>(mut self, value: T) -> Self
     where
-      T: std::convert::TryInto<Option<i32>>,
+      T: std::convert::TryInto<Option<u32>>,
       T::Error: std::fmt::Display, {
       self.terminate_after = value
         .try_into()
@@ -53134,6 +53157,8 @@ pub mod builder {
         terminate_after: value.terminate_after?,
         timeout: value.timeout?,
         version: value.version?,
+        search_after: value.search_after?,
+        sort: value.sort?,
       })
     }
   }
@@ -53155,6 +53180,8 @@ pub mod builder {
         terminate_after: Ok(value.terminate_after),
         timeout: Ok(value.timeout),
         version: Ok(value.version),
+        search_after: Ok(value.search_after),
+        sort: Ok(value.sort),
       }
     }
   }
@@ -53356,7 +53383,7 @@ pub mod builder {
         shards: Ok(value.shards),
         timed_out: Ok(value.timed_out),
         took: Ok(value.took),
-        aggregations: Ok(value.aggregations)
+        aggregations: Ok(value.aggregations),
       }
     }
   }

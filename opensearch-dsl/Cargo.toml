@@ -1,0 +1,19 @@
+[package]
+name = "opensearch-dsl"
+version = { workspace = true }
+authors = { workspace = true }
+edition = { workspace = true }
+documentation = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+keywords = { workspace = true }
+readme = { workspace = true }
+
+[dependencies]
+chrono = { version = "0.4", default-features = false, features = ["std", "serde"] }
+num-traits = { version = "0.2" }
+serde = { version = "1", default-features = false, features = ["derive"] }
+serde_json = { version = "1", features = ["raw_value"] }
+
+[dev-dependencies]
+pretty_assertions = { version = "1" }

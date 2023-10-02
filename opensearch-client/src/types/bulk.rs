@@ -1,7 +1,8 @@
 use std::collections::HashMap;
 
-use serde::{Deserialize, Serialize, de::DeserializeOwned};
+use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use serde_json::Value;
+
 use super::ShardStatistics;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
@@ -26,12 +27,11 @@ pub struct IndexResponse {
   pub result: String,
   #[serde(rename = "_shards", default, skip_serializing_if = "Option::is_none")]
   pub shards: Option<ShardStatistics>,
-  #[serde(rename = "_seq_no",default)]
+  #[serde(rename = "_seq_no", default)]
   pub seq_no: i64,
-  #[serde(rename = "_primary_term",default)]
+  #[serde(rename = "_primary_term", default)]
   pub primary_term: i64,
 }
-
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
 pub struct BulkAction {
@@ -42,7 +42,7 @@ pub struct BulkAction {
   pub pipeline: Option<String>,
 }
 
-#[derive(Default, Debug, Clone, PartialEq,  Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct BulkResponse {
   pub took: u64,
   pub errors: bool,
@@ -92,4 +92,3 @@ pub struct Script {
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub params: Option<serde_json::Value>,
 }
-

@@ -73,7 +73,7 @@ use serde_json::{json, Value};
 //   pub timed_out: bool,
 //   #[serde(rename = "_shards")]
 //   pub shards: Shards,
-//   pub hits: Hits<T>,
+//   pub hits: Hit<T>,
 //   pub aggregations: Option<Aggregations>,
 // }
 
@@ -88,7 +88,7 @@ use serde_json::{json, Value};
 
 // #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 // #[serde(rename_all = "camelCase")]
-// pub struct Hits<T> {
+// pub struct Hit<T> {
 //   pub total: Total,
 //   #[serde(rename = "max_score")]
 //   pub max_score: Option<f64>,
@@ -250,128 +250,5 @@ impl OpenSearch {
     // Ok(result)
   }
 
-  pub async fn search_stream<T: DeserializeOwned>(
-    &self,
-    index: &String,
-    query: &serde_json::Value,
-    sort: &serde_json::Value,
-    size: u32,
-  ) -> Result<impl Stream<Item = Hit<T>> + 'static, OpenSearchError> {
-    let start_state = SearchAfterState {
-      os: self.clone(),
-      stop: false,
-      search_after: None,
-      index: index.clone(),
-      query: query.clone(),
-      sort: sort.clone(),
-      size,
-    };
 
-    async fn stream_next<T: DeserializeOwned>(
-      state: SearchAfterState,
-    ) -> Result<(Vec<Hit<T>>, SearchAfterState), OpenSearchError> {
-      let sort = {
-        let mut values: Vec<Value> = match state.sort.clone() {
-          Value::Null => vec![],
-          Value::Bool(_) => vec![],
-          Value::Number(_) => vec![],
-          Value::String(_) => vec![],
-          Value::Array(values) => values,
-          Value::Object(x) => vec![Value::Object(x)],
-        };
-        values.push(json!({"_doc":{"order":"asc"}}));
-        Value::Array(values)
-      };
-
-      let mut body = json!({
-          "query": state.query,
-          "size": state.size,
-          "sort": sort
-      });
-      if state.search_after.is_some() {
-        body["search_after"] = json!(state.search_after);
-      }
-
-      let response = state.os.search(&state.index, &body).await?;
-      let hits = response.hits.hits;
-      let next_state = SearchAfterState {
-        stop: (hits.len() as u32) < state.size,
-        search_after: hits.iter().last().and_then(|f| f.sort.clone()),
-        ..state
-      };
-
-      Ok((hits, next_state))
-    }
-
-    let stream = stream::unfold(start_state, move |state| {
-      async move {
-        if state.stop {
-          None
-        } else {
-          let result = stream_next::<T>(state).await;
-          match result {
-            Ok((items, state)) => Some((stream::iter(items), state)),
-            Err(_err) => None,
-          }
-        }
-      }
-    });
-
-    Ok(stream.flatten())
-  }
-
-  pub async fn get<T: DeserializeOwned>(&self, index: &String, id: &String) -> Result<GetResponse<T>, OpenSearchError> {
-    let request_url = format!("{}/{}/_doc/{id}", self.server, index);
-
-    let response = self
-      .client
-      .get(request_url)
-      .basic_auth(self.user.as_str(), Some(self.password.as_str()))
-      .send()
-      .await?;
-    let result = response.json::<GetResponse<T>>().await?;
-
-    Ok(result)
-  }
-
-  pub async fn update(
-    &self,
-    index: &String,
-    id: &String,
-    action: &UpdateAction,
-  ) -> Result<IndexResponse, OpenSearchError> {
-    let request_url = format!("{}/{}/_update/{}", self.server, index, id);
-    // let body = serde_json::to_string(&action).unwrap();
-    let response = self
-      .client
-      .post(request_url)
-      .basic_auth(self.user.as_str(), Some(self.password.as_str()))
-      .json(action)
-      .send()
-      .await?;
-    // let result=response.json::<IndexResponse>().await?;
-    let result = response.text().await?;
-    // println!("{:}", &result);
-    let p: IndexResponse = match serde_json::from_str(&result) {
-      Ok(idx) => idx,
-      Err(_) => {
-        println!("{:}", &result);
-        IndexResponse {
-          index: "".to_owned(),
-          id: "".to_owned(),
-          version: 1,
-          result: "".to_owned(),
-          shards: Shards {
-            total: 0,
-            successful: 0,
-            skipped: None,
-            failed: 0,
-          },
-          seq_no: 0,
-          primary_term: 0,
-        }
-      }
-    };
-    Ok(p)
-  }
 }

@@ -10,6 +10,8 @@ keywords = { workspace = true }
 readme = { workspace = true }
 
 [dependencies]
+opensearch-dsl = { path = "../opensearch-dsl/" }
+
 bytes = "1.5.0"
 futures-core = "0.3.28"
 futures="*"

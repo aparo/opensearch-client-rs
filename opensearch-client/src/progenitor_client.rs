@@ -112,7 +112,6 @@ impl ResponseValue<()> {
       headers,
     }
   }
-  
 }
 
 impl ResponseValue<String> {
@@ -126,8 +125,6 @@ impl ResponseValue<String> {
     Ok(Self { inner, status, headers })
   }
 }
-
-
 
 impl<T> ResponseValue<T> {
   /// Creates a [`ResponseValue`] from the inner type, status, and headers.
@@ -301,7 +298,7 @@ where
       Error::JsonExceptionError(s) => {
         write!(f, "Invalid Foramt for Json: {}", s)
       }
-      
+
       Error::CommunicationError(e) => {
         write!(f, "Communication Error: {}", e)
       }

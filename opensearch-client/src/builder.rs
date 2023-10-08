@@ -1,6 +1,7 @@
 use reqwest::Body;
 use serde::{de::DeserializeOwned, Serialize};
 use opensearch_dsl::Search;
+
 use crate::types::bulk::BulkResponse;
 use super::types;
 #[allow(unused_imports)]
@@ -23158,10 +23159,9 @@ impl<'a> SearchPost<'a> {
     let track_total_hits = track_total_hits.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
     let version = version.map_err(Error::InvalidRequest)?;
-    let body = match body
-      .map_err(Error::InvalidRequest)? {
-        Some(_) => todo!(),
-        None => todo!(),
+    let body = match body.map_err(Error::InvalidRequest)? {
+      Some(_) => todo!(),
+      None => todo!(),
     };
     let url = format!("{}/_search", client.baseurl,);
     let mut query = Vec::with_capacity(42usize);
@@ -39807,11 +39807,10 @@ impl<'a> SearchPostWithIndex<'a> {
     let track_total_hits = track_total_hits.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
     let version = version.map_err(Error::InvalidRequest)?;
-    let body = match body
-      .map_err(Error::InvalidRequest)? {
-        Some(body) => body,
-        None => Search::default(),
-      };
+    let body = match body.map_err(Error::InvalidRequest)? {
+      Some(body) => body,
+      None => Search::default(),
+    };
     let url = format!("{}/{}/_search", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(42usize);
     if let Some(v) = &source {

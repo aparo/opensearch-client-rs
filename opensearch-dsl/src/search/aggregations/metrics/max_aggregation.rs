@@ -1,5 +1,6 @@
-use crate::{search::*, util::*};
 use queries::params::Script;
+
+use crate::{search::*, util::*};
 
 /// A `single-value` metrics aggregation that keeps track and returns the
 /// maximum value among the numeric values extracted from the aggregated

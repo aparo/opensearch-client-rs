@@ -43,8 +43,8 @@ use crate::{search::*, util::*};
 /// # use opensearch_dsl::queries::*;
 /// # use opensearch_dsl::queries::params::*;
 /// # let query =
-/// Query::more_like_this([Like::from(Document::new("123")), Like::from("test")])
-///   .fields(["title", "description"])
+/// Query::more_like_this([Like::from(Document::new("123")),
+/// Like::from("test")])   .fields(["title", "description"])
 ///   .min_term_freq(1)
 ///   .max_query_terms(12)
 ///   .boost(1.2)

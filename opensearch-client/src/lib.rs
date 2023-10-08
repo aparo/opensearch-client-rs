@@ -10695,16 +10695,18 @@ impl Client {
       //   serde_json::Value::Array(values)
       // };
 
-      let mut body: Search = Search::new().size(state.size).query(state.query.clone()).sort(state.sort.clone());
-      
-      
+      let mut body: Search = Search::new()
+        .size(state.size)
+        .query(state.query.clone())
+        .sort(state.sort.clone());
+
       // let mut body = serde_json::json!({
       //     "query": state.query,
       //     "size": state.size,
       //     "sort": sort
       // });
       if let Some(search_after) = state.search_after.clone() {
-        body=body.search_after(search_after.clone());
+        body = body.search_after(search_after.clone());
       }
 
       let response = state

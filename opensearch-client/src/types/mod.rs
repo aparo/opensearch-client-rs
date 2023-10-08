@@ -53003,8 +53003,8 @@ pub mod builder {
   //     T::Error: std::fmt::Display, {
   //     self.docvalue_fields = value
   //       .try_into()
-  //       .map_err(|e| format!("error converting supplied value for docvalue_fields: {}", e));
-  //     self
+  //       .map_err(|e| format!("error converting supplied value for
+  // docvalue_fields: {}", e));     self
   //   }
 
   //   pub fn explain<T>(mut self, value: T) -> Self
@@ -53013,8 +53013,8 @@ pub mod builder {
   //     T::Error: std::fmt::Display, {
   //     self.explain = value
   //       .try_into()
-  //       .map_err(|e| format!("error converting supplied value for explain: {}", e));
-  //     self
+  //       .map_err(|e| format!("error converting supplied value for explain: {}",
+  // e));     self
   //   }
 
   //   pub fn fields<T>(mut self, value: T) -> Self
@@ -53023,8 +53023,8 @@ pub mod builder {
   //     T::Error: std::fmt::Display, {
   //     self.fields = value
   //       .try_into()
-  //       .map_err(|e| format!("error converting supplied value for fields: {}", e));
-  //     self
+  //       .map_err(|e| format!("error converting supplied value for fields: {}",
+  // e));     self
   //   }
 
   //   pub fn from<T>(mut self, value: T) -> Self
@@ -53033,8 +53033,8 @@ pub mod builder {
   //     T::Error: std::fmt::Display, {
   //     self.from = value
   //       .try_into()
-  //       .map_err(|e| format!("error converting supplied value for from: {}", e));
-  //     self
+  //       .map_err(|e| format!("error converting supplied value for from: {}",
+  // e));     self
   //   }
 
   //   pub fn indices_boost<T>(mut self, value: T) -> Self
@@ -53043,8 +53043,8 @@ pub mod builder {
   //     T::Error: std::fmt::Display, {
   //     self.indices_boost = value
   //       .try_into()
-  //       .map_err(|e| format!("error converting supplied value for indices_boost: {}", e));
-  //     self
+  //       .map_err(|e| format!("error converting supplied value for
+  // indices_boost: {}", e));     self
   //   }
 
   //   pub fn min_score<T>(mut self, value: T) -> Self
@@ -53053,8 +53053,8 @@ pub mod builder {
   //     T::Error: std::fmt::Display, {
   //     self.min_score = value
   //       .try_into()
-  //       .map_err(|e| format!("error converting supplied value for min_score: {}", e));
-  //     self
+  //       .map_err(|e| format!("error converting supplied value for min_score:
+  // {}", e));     self
   //   }
 
   //   pub fn query<T>(mut self, value: T) -> Self
@@ -53063,8 +53063,8 @@ pub mod builder {
   //     T::Error: std::fmt::Display, {
   //     self.query = value
   //       .try_into()
-  //       .map_err(|e| format!("error converting supplied value for query: {}", e));
-  //     self
+  //       .map_err(|e| format!("error converting supplied value for query: {}",
+  // e));     self
   //   }
 
   //   pub fn seq_no_primary_term<T>(mut self, value: T) -> Self
@@ -53073,8 +53073,8 @@ pub mod builder {
   //     T::Error: std::fmt::Display, {
   //     self.seq_no_primary_term = value
   //       .try_into()
-  //       .map_err(|e| format!("error converting supplied value for seq_no_primary_term: {}", e));
-  //     self
+  //       .map_err(|e| format!("error converting supplied value for
+  // seq_no_primary_term: {}", e));     self
   //   }
 
   //   pub fn size<T>(mut self, value: T) -> Self
@@ -53083,8 +53083,8 @@ pub mod builder {
   //     T::Error: std::fmt::Display, {
   //     self.size = value
   //       .try_into()
-  //       .map_err(|e| format!("error converting supplied value for size: {}", e));
-  //     self
+  //       .map_err(|e| format!("error converting supplied value for size: {}",
+  // e));     self
   //   }
 
   //   pub fn source<T>(mut self, value: T) -> Self
@@ -53093,8 +53093,8 @@ pub mod builder {
   //     T::Error: std::fmt::Display, {
   //     self.source = value
   //       .try_into()
-  //       .map_err(|e| format!("error converting supplied value for source: {}", e));
-  //     self
+  //       .map_err(|e| format!("error converting supplied value for source: {}",
+  // e));     self
   //   }
 
   //   pub fn stats<T>(mut self, value: T) -> Self
@@ -53103,8 +53103,8 @@ pub mod builder {
   //     T::Error: std::fmt::Display, {
   //     self.stats = value
   //       .try_into()
-  //       .map_err(|e| format!("error converting supplied value for stats: {}", e));
-  //     self
+  //       .map_err(|e| format!("error converting supplied value for stats: {}",
+  // e));     self
   //   }
 
   //   pub fn terminate_after<T>(mut self, value: T) -> Self
@@ -53113,8 +53113,8 @@ pub mod builder {
   //     T::Error: std::fmt::Display, {
   //     self.terminate_after = value
   //       .try_into()
-  //       .map_err(|e| format!("error converting supplied value for terminate_after: {}", e));
-  //     self
+  //       .map_err(|e| format!("error converting supplied value for
+  // terminate_after: {}", e));     self
   //   }
 
   //   pub fn timeout<T>(mut self, value: T) -> Self
@@ -53123,8 +53123,8 @@ pub mod builder {
   //     T::Error: std::fmt::Display, {
   //     self.timeout = value
   //       .try_into()
-  //       .map_err(|e| format!("error converting supplied value for timeout: {}", e));
-  //     self
+  //       .map_err(|e| format!("error converting supplied value for timeout: {}",
+  // e));     self
   //   }
 
   //   pub fn version<T>(mut self, value: T) -> Self
@@ -53133,8 +53133,8 @@ pub mod builder {
   //     T::Error: std::fmt::Display, {
   //     self.version = value
   //       .try_into()
-  //       .map_err(|e| format!("error converting supplied value for version: {}", e));
-  //     self
+  //       .map_err(|e| format!("error converting supplied value for version: {}",
+  // e));     self
   //   }
   // }
 

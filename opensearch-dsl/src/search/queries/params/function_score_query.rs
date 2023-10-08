@@ -160,7 +160,7 @@ impl Function {
   pub fn script<T>(source: T) -> FunctionScoreScript
   where
     T: ToString, {
-      FunctionScoreScript::new(source)
+    FunctionScoreScript::new(source)
   }
 }
 

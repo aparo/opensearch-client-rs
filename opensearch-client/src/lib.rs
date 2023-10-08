@@ -2,7 +2,7 @@ mod client;
 
 use std::sync::{Arc, Mutex};
 
-use opensearch_dsl::{Search, Sort, Terms};
+use opensearch_dsl::{Search, Sort, Terms, Query, SortCollection};
 #[allow(unused_imports)]
 use client::{encode_path, encode_path_option_vec_string, RequestBuilderExt};
 pub use client::{ByteStream, Error, ResponseValue};
@@ -10665,8 +10665,8 @@ impl Client {
   pub async fn search_stream<T: DeserializeOwned + std::default::Default>(
     &self,
     index: &String,
-    query: &serde_json::Value,
-    sort: Vec<Sort>,
+    query: &Query,
+    sort: &SortCollection,
     size: u64,
   ) -> Result<impl Stream<Item = types::Hit<T>> + 'static, Error> {
     let start_state = SearchAfterState {
@@ -10750,8 +10750,8 @@ struct SearchAfterState {
   index: String,
   stop: bool,
   size: u64,
-  query: serde_json::Value,
-  sort: Vec<Sort>,
+  query: Query,
+  sort: SortCollection,
   search_after: Option<Terms>,
 }
 

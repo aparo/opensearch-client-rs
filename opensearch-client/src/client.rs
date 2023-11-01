@@ -213,7 +213,7 @@ impl<T: std::fmt::Debug> std::fmt::Debug for ResponseValue<T> {
 }
 
 #[derive(Debug)]
-struct DocumentedResponseValue {}
+pub struct DocumentedResponseValue {}
 impl DocumentedResponseValue {
   fn new() -> Self {
     Self {}
@@ -268,7 +268,7 @@ pub enum Error {
   /// An invalid URL was provided.
   #[error(transparent)]
   // #[diagnostic(code(oro_client::url_parse_error), url(docsrs))]
-  UrlParseError(url::ParseError),
+  UrlParseError(#[from] url::ParseError),
   /// There is an error in provided credentials.
   #[error("Credential error: {0}")]
   CredentialsConfigError(String),

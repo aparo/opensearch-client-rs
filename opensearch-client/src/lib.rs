@@ -44,6 +44,8 @@ pub struct OsClientBuilder {
   baseurl: Url,
   retries: u32,
   credentials: HashMap<String, Credentials>,
+  accept_invalid_certificates: bool,
+  max_bulk_size: u32,
   #[cfg(not(target_arch = "wasm32"))]
   cache: Option<PathBuf>,
   #[cfg(not(target_arch = "wasm32"))]
@@ -59,6 +61,8 @@ impl Default for OsClientBuilder {
     Self {
       baseurl: Url::parse("http://localhost:9200").unwrap(),
       credentials: HashMap::new(),
+      accept_invalid_certificates: false,
+      max_bulk_size: 200,
       #[cfg(not(target_arch = "wasm32"))]
       cache: None,
       #[cfg(not(target_arch = "wasm32"))]
@@ -82,6 +86,16 @@ impl OsClientBuilder {
 
   pub fn base_url(mut self, baseurl: Url) -> Self {
     self.baseurl = baseurl;
+    self
+  }
+
+  pub fn accept_invalid_certificates(mut self, accept_invalid_certificates: bool) -> Self {
+    self.accept_invalid_certificates = accept_invalid_certificates;
+    self
+  }
+
+  pub fn max_bulk_size(mut self, max_bulk_size: u32) -> Self {
+    self.max_bulk_size = max_bulk_size;
     self
   }
 
@@ -154,7 +168,16 @@ impl OsClientBuilder {
 
   pub fn build(self) -> OsClient {
     #[cfg(target_arch = "wasm32")]
-    let client_raw = Client::new();
+    let client_raw = {
+      let mut client_core = ClientBuilder::new();
+      if self.accept_invalid_certificates {
+        let mut builder = client_raw.clone().builder();
+        builder = builder.danger_accept_invalid_certs(true);
+        builder = builder.danger_accept_invalid_hostnames(true);
+        client_raw = builder.build().unwrap();
+      }
+      client_core.build().expect("Fail to build HTTP client.")
+    };
 
     #[cfg(not(target_arch = "wasm32"))]
     let client_raw = {
@@ -169,6 +192,10 @@ impl OsClientBuilder {
 
       if !self.proxy {
         client_core = client_core.no_proxy();
+      }
+      if self.accept_invalid_certificates {
+        client_core = client_core.danger_accept_invalid_certs(true);
+        client_core = client_core.danger_accept_invalid_hostnames(true);
       }
 
       client_core.build().expect("Fail to build HTTP client.")
@@ -205,7 +232,7 @@ impl OsClientBuilder {
       client_uncached: client_uncached_builder.build(),
       bulker: Arc::new(Mutex::new(String::new())),
       bulker_size: Arc::new(Mutex::new(0)),
-      max_bulk_size: 1000,
+      max_bulk_size: self.max_bulk_size,
     }
   }
 
@@ -245,21 +272,40 @@ impl OsClient {
     builder.build()
   }
 
-  // /// Construct a new client with an existing `reqwest::Client`,
-  // /// allowing more control over its configuration.
-  // ///
-  // /// `baseurl` is the base URL provided to the internal
-  // /// `reqwest::Client`, and should include a scheme and hostname,
-  // /// as well as port and a path stem if applicable.
-  // pub fn new_with_client(baseurl: &str, client: reqwest::Client) -> Self {
-  //   Self {
-  //     baseurl: baseurl.to_string(),
-  //     client,
-  //     bulker: Arc::new(Mutex::new(String::new())),
-  //     bulker_size: Arc::new(Mutex::new(0)),
-  //     max_bulk_size: 1000,
-  //   }
-  // }
+  pub fn new_from_environment() -> Result<OsClient, Error> {
+    let accept_invalid_certificates: bool = match std::env::var("OPENSEARCH_SSL_VERIFY") {
+      Ok(value) => value.eq_ignore_ascii_case("false"),
+      Err(_) => false,
+    };
+    let user: String = match std::env::var("OPENSEARCH_USER") {
+      Ok(user) => user,
+      Err(_) => "admin".into(),
+    };
+    let password: String = match std::env::var("OPENSEARCH_PASSWORD") {
+      Ok(password) => password,
+      Err(_) => "admin".into(),
+    };
+
+    let server = match std::env::var("OPENSEARCH_URL") {
+      Ok(server) => server,
+      Err(_) => "https://localhost:9200".into(),
+    };
+
+    let mut builder = OsClientBuilder::new().base_url(Url::parse(&server)?);
+    if accept_invalid_certificates {
+      builder = builder.accept_invalid_certificates(true);
+    }
+    builder = builder.basic_auth(Url::parse(&server)?, user, Some(password));
+
+    if let Ok(max_bulk_size) = std::env::var("OPENSEARCH_MAX_BULK_SIZE") {
+      match max_bulk_size.parse::<u32>() {
+        Ok(max_bulk_size) => builder = builder.max_bulk_size(max_bulk_size),
+        Err(_) => info!("Invalid value for OPENSEARCH_MAX_BULK_SIZE, using default"),
+      }
+    };
+
+    Ok(builder.build())
+  }
 
   /// Get the base URL to which requests are made.
   pub fn baseurl(&self) -> &Url {

@@ -1,5 +1,6 @@
 mod client;
-
+mod credentials;
+mod auth_middleware;
 use std::sync::{Arc, Mutex};
 
 use opensearch_dsl::{Query, Search, Sort, SortCollection, Terms};
@@ -17,58 +18,257 @@ use futures::{
 };
 pub mod types;
 pub mod builder;
+
+#[cfg(not(target_arch = "wasm32"))]
+use std::path::{Path, PathBuf};
+use std::collections::HashMap;
+
+#[cfg(not(target_arch = "wasm32"))]
+use http_cache_reqwest::{CACacheManager, Cache, CacheMode, HttpCache, HttpCacheOptions};
+#[cfg(target_arch = "wasm32")]
+use reqwest::Client;
+#[cfg(not(target_arch = "wasm32"))]
+use reqwest::ClientBuilder;
+#[cfg(not(target_arch = "wasm32"))]
+use reqwest::{NoProxy, Proxy};
+use reqwest_middleware::ClientWithMiddleware;
+use reqwest_retry::{policies::ExponentialBackoff, RetryTransientMiddleware};
+use url::Url;
+use client::ReqwestResponse;
+
+#[cfg(not(target_arch = "wasm32"))]
+use crate::{auth_middleware::AuthMiddleware, credentials::Credentials};
+
 #[derive(Clone, Debug)]
-///Client for OpenSearch
-///
-///Version: 2021-11-23
-pub struct Client {
-  pub(crate) baseurl: String,
-  pub(crate) client: reqwest::Client,
-  pub(crate) bulker: Arc<Mutex<String>>,
-  pub(crate) bulker_size: Arc<Mutex<u32>>,
-  pub(crate) max_bulk_size: u32,
+pub struct OsClientBuilder {
+  baseurl: Url,
+  retries: u32,
+  credentials: HashMap<String, Credentials>,
+  #[cfg(not(target_arch = "wasm32"))]
+  cache: Option<PathBuf>,
+  #[cfg(not(target_arch = "wasm32"))]
+  proxy: bool,
+  #[cfg(not(target_arch = "wasm32"))]
+  proxy_url: Option<Proxy>,
+  #[cfg(not(target_arch = "wasm32"))]
+  no_proxy_domain: Option<String>,
 }
 
-impl Client {
-  /// Create a new client.
-  ///
-  /// `baseurl` is the base URL provided to the internal
-  /// `reqwest::Client`, and should include a scheme and hostname,
-  /// as well as port and a path stem if applicable.
-  pub fn new(baseurl: &str) -> Self {
-    #[cfg(not(target_arch = "wasm32"))]
-    let client = {
-      let dur = std::time::Duration::from_secs(15);
-      reqwest::ClientBuilder::new().connect_timeout(dur).timeout(dur)
-    };
-    #[cfg(target_arch = "wasm32")]
-    let client = reqwest::ClientBuilder::new();
-    Self::new_with_client(baseurl, client.build().unwrap())
+impl Default for OsClientBuilder {
+  fn default() -> Self {
+    Self {
+      baseurl: Url::parse("http://localhost:9200").unwrap(),
+      credentials: HashMap::new(),
+      #[cfg(not(target_arch = "wasm32"))]
+      cache: None,
+      #[cfg(not(target_arch = "wasm32"))]
+      proxy: false,
+      #[cfg(not(target_arch = "wasm32"))]
+      proxy_url: None,
+      #[cfg(not(target_arch = "wasm32"))]
+      no_proxy_domain: None,
+      #[cfg(not(test))]
+      retries: 2,
+      #[cfg(test)]
+      retries: 0,
+    }
+  }
+}
+
+impl OsClientBuilder {
+  pub fn new() -> Self {
+    Default::default()
   }
 
-  /// Construct a new client with an existing `reqwest::Client`,
-  /// allowing more control over its configuration.
-  ///
-  /// `baseurl` is the base URL provided to the internal
-  /// `reqwest::Client`, and should include a scheme and hostname,
-  /// as well as port and a path stem if applicable.
-  pub fn new_with_client(baseurl: &str, client: reqwest::Client) -> Self {
-    Self {
-      baseurl: baseurl.to_string(),
-      client,
+  pub fn base_url(mut self, baseurl: Url) -> Self {
+    self.baseurl = baseurl;
+    self
+  }
+
+  pub fn basic_auth(mut self, baseurl: Url, username: String, password: Option<String>) -> Self {
+    self.credentials.insert(
+      auth_middleware::nerf_dart(&baseurl),
+      Credentials::Basic { username, password },
+    );
+    self
+  }
+
+  pub fn token_auth(mut self, baseurl: Url, token: String) -> Self {
+    self
+      .credentials
+      .insert(auth_middleware::nerf_dart(&baseurl), Credentials::Token(token));
+    self
+  }
+
+  pub fn legacy_auth(mut self, baseurl: Url, legacy_auth_token: String) -> Self {
+    self.credentials.insert(
+      auth_middleware::nerf_dart(&baseurl),
+      Credentials::EncodedBasic(legacy_auth_token),
+    );
+    self
+  }
+
+  pub fn retries(mut self, retries: u32) -> Self {
+    self.retries = retries;
+    self
+  }
+
+  #[cfg(not(target_arch = "wasm32"))]
+  pub fn cache(mut self, cache: impl AsRef<Path>) -> Self {
+    self.cache = Some(PathBuf::from(cache.as_ref()));
+    self
+  }
+
+  #[cfg(not(target_arch = "wasm32"))]
+  pub fn proxy(mut self, proxy: bool) -> Self {
+    self.proxy = proxy;
+    self
+  }
+
+  #[cfg(not(target_arch = "wasm32"))]
+  pub fn proxy_url(mut self, proxy_url: impl AsRef<str>) -> Result<Self, Error> {
+    match Url::parse(proxy_url.as_ref()) {
+      Ok(url_info) => {
+        let username = url_info.username();
+        let password = url_info.password();
+        let mut proxy = Proxy::all(url_info.as_ref())?;
+
+        if let Some(password_str) = password {
+          proxy = proxy.basic_auth(username, password_str);
+        }
+
+        proxy = proxy.no_proxy(self.get_no_proxy_domain());
+        self.proxy_url = Some(proxy);
+        self.proxy = true;
+        Ok(self)
+      }
+      Err(e) => Err(Error::UrlParseError(e)),
+    }
+  }
+
+  #[cfg(not(target_arch = "wasm32"))]
+  pub fn no_proxy_domain(mut self, no_proxy_domain: impl AsRef<str>) -> Self {
+    self.no_proxy_domain = Some(no_proxy_domain.as_ref().into());
+    self
+  }
+
+  pub fn build(self) -> OsClient {
+    #[cfg(target_arch = "wasm32")]
+    let client_raw = Client::new();
+
+    #[cfg(not(target_arch = "wasm32"))]
+    let client_raw = {
+      let mut client_core = ClientBuilder::new()
+        .user_agent("opensearch-client/0.1.0")
+        .pool_max_idle_per_host(20)
+        .timeout(std::time::Duration::from_secs(60 * 5));
+
+      if let Some(url) = self.proxy_url {
+        client_core = client_core.proxy(url);
+      }
+
+      if !self.proxy {
+        client_core = client_core.no_proxy();
+      }
+
+      client_core.build().expect("Fail to build HTTP client.")
+    };
+
+    let retry_policy = ExponentialBackoff::builder().build_with_max_retries(self.retries);
+    let retry_strategy = RetryTransientMiddleware::new_with_policy(retry_policy);
+    let credentials = Arc::new(self.credentials);
+
+    #[allow(unused_mut)]
+    let mut client_builder = reqwest_middleware::ClientBuilder::new(client_raw.clone())
+      .with(retry_strategy)
+      .with(AuthMiddleware(credentials.clone()));
+
+    #[cfg(not(target_arch = "wasm32"))]
+    if let Some(cache_loc) = self.cache {
+      client_builder = client_builder.with(Cache(HttpCache {
+        mode: CacheMode::Default,
+        manager: CACacheManager { path: cache_loc },
+        options: HttpCacheOptions::default(),
+      }));
+    }
+
+    let retry_policy = ExponentialBackoff::builder().build_with_max_retries(self.retries);
+    let retry_strategy = RetryTransientMiddleware::new_with_policy(retry_policy);
+
+    let client_uncached_builder = reqwest_middleware::ClientBuilder::new(client_raw)
+      .with(retry_strategy)
+      .with(AuthMiddleware(credentials));
+
+    OsClient {
+      baseurl: Arc::new(self.baseurl),
+      client: client_builder.build(),
+      client_uncached: client_uncached_builder.build(),
       bulker: Arc::new(Mutex::new(String::new())),
       bulker_size: Arc::new(Mutex::new(0)),
       max_bulk_size: 1000,
     }
   }
 
+  #[cfg(not(target_arch = "wasm32"))]
+  fn get_no_proxy_domain(&self) -> Option<NoProxy> {
+    if let Some(ref no_proxy_conf) = self.no_proxy_domain {
+      if !no_proxy_conf.is_empty() {
+        return NoProxy::from_string(no_proxy_conf);
+      }
+    }
+
+    NoProxy::from_env().or(None)
+  }
+}
+
+#[derive(Clone, Debug)]
+///Client for OpenSearch
+///
+///Version: 2021-11-23
+pub struct OsClient {
+  pub(crate) baseurl: Arc<Url>,
+  pub(crate) client: ClientWithMiddleware,
+  pub(crate) client_uncached: ClientWithMiddleware,
+  pub(crate) bulker: Arc<Mutex<String>>,
+  pub(crate) bulker_size: Arc<Mutex<u32>>,
+  pub(crate) max_bulk_size: u32,
+}
+
+impl OsClient {
+  /// Create a new client.
+  ///
+  /// `baseurl` is the base URL provided to the internal
+  /// `reqwest::Client`, and should include a scheme and hostname,
+  /// as well as port and a path stem if applicable.
+  pub fn new(baseurl: Url) -> Self {
+    let builder = OsClientBuilder::new().base_url(baseurl);
+    builder.build()
+  }
+
+  // /// Construct a new client with an existing `reqwest::Client`,
+  // /// allowing more control over its configuration.
+  // ///
+  // /// `baseurl` is the base URL provided to the internal
+  // /// `reqwest::Client`, and should include a scheme and hostname,
+  // /// as well as port and a path stem if applicable.
+  // pub fn new_with_client(baseurl: &str, client: reqwest::Client) -> Self {
+  //   Self {
+  //     baseurl: baseurl.to_string(),
+  //     client,
+  //     bulker: Arc::new(Mutex::new(String::new())),
+  //     bulker_size: Arc::new(Mutex::new(0)),
+  //     max_bulk_size: 1000,
+  //   }
+  // }
+
   /// Get the base URL to which requests are made.
-  pub fn baseurl(&self) -> &String {
+  pub fn baseurl(&self) -> &Url {
     &self.baseurl
   }
 
-  /// Get the internal `reqwest::Client` used to make requests.
-  pub fn client(&self) -> &reqwest::Client {
+  /// Get the internal `reqwest_middleware::ClientWithMiddleware` used to make
+  /// requests.
+  pub fn client(&self) -> &reqwest_middleware::ClientWithMiddleware {
     &self.client
   }
 
@@ -81,7 +281,7 @@ impl Client {
   }
 }
 
-impl Client {
+impl OsClient {
   ///Returns basic information about the cluster.
   ///
   ///Sends a `GET` request to `/`
@@ -10495,7 +10695,8 @@ impl Client {
     Ok(values)
   }
 
-  /// Sends a bulk index request to OpenSearch with the specified index, id and document body.
+  /// Sends a bulk index request to OpenSearch with the specified index, id and
+  /// document body.
   ///
   /// # Arguments
   ///
@@ -10505,7 +10706,8 @@ impl Client {
   ///
   /// # Returns
   ///
-  /// Returns a Result containing a serde_json::Value representing the response from OpenSearch or an Error if the request fails.
+  /// Returns a Result containing a serde_json::Value representing the response
+  /// from OpenSearch or an Error if the request fails.
   ///
   /// # Example
   ///
@@ -10514,19 +10716,21 @@ impl Client {
   ///
   /// #[derive(Serialize)]
   /// struct MyDocument {
-  ///     title: String,
-  ///     content: String,
+  ///   title: String,
+  ///   content: String,
   /// }
   ///
   /// #[tokio::main]
   /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
-  ///     let client = OpenSearchClient::new("http://localhost:9200");
-  ///     let document = MyDocument {
-  ///         title: "My Title".to_string(),
-  ///         content: "My Content".to_string(),
-  ///     };
-  ///     let response = client.bulk_index_document("my_index", Some("my_id".to_string()), &document).await?;
-  ///     Ok(())
+  ///   let client = OpenSearchClient::new("http://localhost:9200");
+  ///   let document = MyDocument {
+  ///     title: "My Title".to_string(),
+  ///     content: "My Content".to_string(),
+  ///   };
+  ///   let response = client
+  ///     .bulk_index_document("my_index", Some("my_id".to_string()), &document)
+  ///     .await?;
+  ///   Ok(())
   /// }
   /// ```
   pub async fn bulk_index_document<T: Serialize>(
@@ -10554,24 +10758,23 @@ impl Client {
   ///
   /// # Returns
   ///
-  /// A `Result` containing a `serde_json::Value` object representing the response from the server,
-  /// or an `Error` if the request failed.
+  /// A `Result` containing a `serde_json::Value` object representing the
+  /// response from the server, or an `Error` if the request failed.
   ///
   /// # Examples
   ///
   /// ```
-  /// use opensearch_client::OpenSearchClient;
-  /// use opensearch_client::BulkAction;
+  /// use opensearch_client::{BulkAction, OpenSearchClient};
   ///
   /// #[tokio::main]
   /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
-  ///     let client = OpenSearchClient::new("http://localhost:9200")?;
-  ///     let action = BulkAction::Index {
-  ///         index: "my_index".to_string(),
-  ///         id: Some("1".to_string()),
-  ///     };
-  ///     let response = client.bulk_action("index", action, None).await?;
-  ///     Ok(())
+  ///   let client = OpenSearchClient::new("http://localhost:9200")?;
+  ///   let action = BulkAction::Index {
+  ///     index: "my_index".to_string(),
+  ///     id: Some("1".to_string()),
+  ///   };
+  ///   let response = client.bulk_action("index", action, None).await?;
+  ///   Ok(())
   /// }
   /// ```
   pub async fn bulk_action(
@@ -10607,17 +10810,20 @@ impl Client {
     Ok(serde_json::Value::Object(m))
   }
 
-  /// Sends a bulk create request to the OpenSearch cluster with the specified index, id and body.
-  /// 
+  /// Sends a bulk create request to the OpenSearch cluster with the specified
+  /// index, id and body.
+  ///
   /// # Arguments
-  /// 
+  ///
   /// * `index` - A string slice that holds the name of the index.
   /// * `id` - A string slice that holds the id of the document.
-  /// * `body` - A generic type `T` that holds the body of the document to be created.
-  /// 
+  /// * `body` - A generic type `T` that holds the body of the document to be
+  ///   created.
+  ///
   /// # Returns
-  /// 
-  /// Returns a `Result` containing a `serde_json::Value` on success, or an `Error` on failure.
+  ///
+  /// Returns a `Result` containing a `serde_json::Value` on success, or an
+  /// `Error` on failure.
   pub async fn bulk_create_document<T: Serialize>(
     &self,
     index: &String,
@@ -10641,12 +10847,13 @@ impl Client {
   ///
   /// * `index` - A string slice that holds the name of the index.
   /// * `id` - A string slice that holds the ID of the document to update.
-  /// * `body` - An `UpdateAction` struct that holds the update action to perform.
+  /// * `body` - An `UpdateAction` struct that holds the update action to
+  ///   perform.
   ///
   /// # Returns
   ///
-  /// Returns a `Result` containing a `serde_json::Value` on success, or an `Error` on failure.
-  ///
+  /// Returns a `Result` containing a `serde_json::Value` on success, or an
+  /// `Error` on failure.
   pub async fn bulk_update_document(
     &self,
     index: &String,
@@ -10662,9 +10869,10 @@ impl Client {
     self.bulk_action("update", action, Some(&j)).await
   }
 
-  /// Sends a bulk request to the OpenSearch server and returns a `BulkResponse`.
-  /// If the bulker size is 0, it returns an empty `BulkResponse`.
-  /// If the bulk request contains errors, it logs the errors and returns the `BulkResponse`.
+  /// Sends a bulk request to the OpenSearch server and returns a
+  /// `BulkResponse`. If the bulker size is 0, it returns an empty
+  /// `BulkResponse`. If the bulk request contains errors, it logs the errors
+  /// and returns the `BulkResponse`.
   ///
   /// # Examples
   ///
@@ -10673,10 +10881,10 @@ impl Client {
   ///
   /// #[tokio::main]
   /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
-  ///     let client = OpenSearchClient::new("http://localhost:9200", "user", "password");
-  ///     let response = client.flush_bulk().await?;
-  ///     println!("{:?}", response);
-  ///     Ok(())
+  ///   let client = OpenSearchClient::new("http://localhost:9200", "user", "password");
+  ///   let response = client.flush_bulk().await?;
+  ///   println!("{:?}", response);
+  ///   Ok(())
   /// }
   /// ```
   pub async fn flush_bulk(&self) -> Result<BulkResponse, Error> {
@@ -10730,17 +10938,22 @@ impl Client {
     }
   }
 
-  /// Indexes a document in the specified index with the given body and optional ID.
+  /// Indexes a document in the specified index with the given body and optional
+  /// ID.
   ///
   /// # Arguments
   ///
-  /// * `index` - A string slice that holds the name of the index to which the document will be added.
-  /// * `body` - A reference to a serializable object that represents the document to be added.
-  /// * `id` - An optional string slice that holds the ID of the document to be added. If not provided, a new ID will be generated.
+  /// * `index` - A string slice that holds the name of the index to which the
+  ///   document will be added.
+  /// * `body` - A reference to a serializable object that represents the
+  ///   document to be added.
+  /// * `id` - An optional string slice that holds the ID of the document to be
+  ///   added. If not provided, a new ID will be generated.
   ///
   /// # Returns
   ///
-  /// A `Result` containing an `IndexResponse` object if the operation was successful, or an `Error` if an error occurred.
+  /// A `Result` containing an `IndexResponse` object if the operation was
+  /// successful, or an `Error` if an error occurred.
   ///
   /// # Examples
   ///
@@ -10749,24 +10962,24 @@ impl Client {
   ///
   /// #[derive(Serialize)]
   /// struct MyDocument {
-  ///     title: String,
-  ///     content: String,
+  ///   title: String,
+  ///   content: String,
   /// }
   ///
   /// #[tokio::main]
   /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
-  ///     let client = Client::new("http://localhost:9200")?;
+  ///   let client = Client::new("http://localhost:9200")?;
   ///
-  ///     let document = MyDocument {
-  ///         title: "My Title".to_string(),
-  ///         content: "My Content".to_string(),
-  ///     };
+  ///   let document = MyDocument {
+  ///     title: "My Title".to_string(),
+  ///     content: "My Content".to_string(),
+  ///   };
   ///
-  ///     let response = client.index_document("my_index", &document, None).await?;
+  ///   let response = client.index_document("my_index", &document, None).await?;
   ///
-  ///     println!("Document ID: {}", response._id);
+  ///   println!("Document ID: {}", response._id);
   ///
-  ///     Ok(())
+  ///   Ok(())
   /// }
   /// ```
   pub async fn index_document<T: Serialize>(
@@ -10791,11 +11004,13 @@ impl Client {
   ///
   /// * `index` - A string slice that holds the name of the index.
   /// * `id` - A string slice that holds the ID of the document.
-  /// * `body` - A generic type `T` that holds the body of the document. The type `T` must implement the `Serialize` trait from the `serde` crate.
+  /// * `body` - A generic type `T` that holds the body of the document. The
+  ///   type `T` must implement the `Serialize` trait from the `serde` crate.
   ///
   /// # Returns
   ///
-  /// Returns a `Result` containing an `IndexResponse` on success, or an `Error` on failure.
+  /// Returns a `Result` containing an `IndexResponse` on success, or an `Error`
+  /// on failure.
   ///
   /// # Examples
   ///
@@ -10804,22 +11019,22 @@ impl Client {
   ///
   /// #[derive(Serialize)]
   /// struct MyDocument {
-  ///     title: String,
-  ///     content: String,
+  ///   title: String,
+  ///   content: String,
   /// }
   ///
   /// #[tokio::main]
   /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
-  ///     let client = OpenSearchClient::new("http://localhost:9200")?;
+  ///   let client = OpenSearchClient::new("http://localhost:9200")?;
   ///
-  ///     let document = MyDocument {
-  ///         title: "My Title".to_string(),
-  ///         content: "My Content".to_string(),
-  ///     };
+  ///   let document = MyDocument {
+  ///     title: "My Title".to_string(),
+  ///     content: "My Content".to_string(),
+  ///   };
   ///
-  ///     let response = client.create_document("my_index", "1", &document).await?;
+  ///   let response = client.create_document("my_index", "1", &document).await?;
   ///
-  ///     Ok(())
+  ///   Ok(())
   /// }
   /// ```
   pub async fn create_document<T: Serialize>(
@@ -10911,7 +11126,8 @@ impl Client {
     Ok(response.into_inner())
   }
 
-  /// Searches for documents in the specified index and returns a stream of hits.
+  /// Searches for documents in the specified index and returns a stream of
+  /// hits.
   ///
   /// # Arguments
   ///
@@ -10931,15 +11147,17 @@ impl Client {
   ///
   /// #[tokio::main]
   /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
-  ///     let client = Client::new("http://localhost:9200")?;
-  ///     let query = Query::match_all();
-  ///     let sort = SortCollection::new().add_field("_doc", "asc");
-  ///     let stream = client.search_stream("my_index", &query, &sort, 10).await?;
-  ///     stream.for_each(|hit| {
-  ///         println!("{:?}", hit);
-  ///         futures::future::ready(())
-  ///     }).await;
-  ///     Ok(())
+  ///   let client = Client::new("http://localhost:9200")?;
+  ///   let query = Query::match_all();
+  ///   let sort = SortCollection::new().add_field("_doc", "asc");
+  ///   let stream = client.search_stream("my_index", &query, &sort, 10).await?;
+  ///   stream
+  ///     .for_each(|hit| {
+  ///       println!("{:?}", hit);
+  ///       futures::future::ready(())
+  ///     })
+  ///     .await;
+  ///   Ok(())
   /// }
   /// ```
   pub async fn search_stream<T: DeserializeOwned + std::default::Default>(
@@ -11025,9 +11243,10 @@ impl Client {
   }
 }
 
-/// Represents the state of a search operation that uses the "search after" feature.
+/// Represents the state of a search operation that uses the "search after"
+/// feature.
 struct SearchAfterState {
-  client: Arc<Client>,
+  client: Arc<OsClient>,
   index: String,
   stop: bool,
   size: u64,
@@ -11037,5 +11256,5 @@ struct SearchAfterState {
 }
 
 pub mod prelude {
-  pub use self::super::Client;
+  pub use self::super::OsClient;
 }

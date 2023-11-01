@@ -7,23 +7,23 @@ use super::types;
 #[allow(unused_imports)]
 use super::{
   encode_path, encode_path_option_vec_string, ByteStream, Error, HeaderMap, HeaderValue, RequestBuilderExt,
-  ResponseValue,
+  ReqwestResponse, ResponseValue,
 };
 ///Builder for [`Client::info`]
 ///
-///[`Client::info`]: super::Client::info
+///[`Client::info`]: super::OsClient::info
 #[derive(Debug, Clone)]
 pub struct Info<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> Info<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/`
-  pub async fn send(self) -> Result<ResponseValue<types::InfoResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::InfoResponseContent>, Error> {
     let Self { client } = self;
     let url = format!("{}/", client.baseurl,);
     let request = client
@@ -38,26 +38,30 @@ impl<'a> Info<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::ping`]
 ///
-///[`Client::ping`]: super::Client::ping
+///[`Client::ping`]: super::OsClient::ping
 #[derive(Debug, Clone)]
 pub struct Ping<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> Ping<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `HEAD` request to `/`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
     let url = format!("{}/", client.baseurl,);
     let request = client.client.head(url).build()?;
@@ -65,17 +69,21 @@ impl<'a> Ping<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_alias`]
 ///
-///[`Client::indices_get_alias`]: super::Client::indices_get_alias
+///[`Client::indices_get_alias`]: super::OsClient::indices_get_alias
 #[derive(Debug, Clone)]
 pub struct IndicesGetAlias<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -83,7 +91,7 @@ pub struct IndicesGetAlias<'a> {
 }
 
 impl<'a> IndicesGetAlias<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -134,7 +142,7 @@ impl<'a> IndicesGetAlias<'a> {
   }
 
   ///Sends a `GET` request to `/_alias`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -165,17 +173,21 @@ impl<'a> IndicesGetAlias<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_alias_with_name`]
 ///
-///[`Client::indices_get_alias_with_name`]: super::Client::indices_get_alias_with_name
+///[`Client::indices_get_alias_with_name`]: super::OsClient::indices_get_alias_with_name
 #[derive(Debug, Clone)]
 pub struct IndicesGetAliasWithName<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesGetAliasWithNameName, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -184,7 +196,7 @@ pub struct IndicesGetAliasWithName<'a> {
 }
 
 impl<'a> IndicesGetAliasWithName<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -245,7 +257,7 @@ impl<'a> IndicesGetAliasWithName<'a> {
   }
 
   ///Sends a `GET` request to `/_alias/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -278,17 +290,21 @@ impl<'a> IndicesGetAliasWithName<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_exists_alias`]
 ///
-///[`Client::indices_exists_alias`]: super::Client::indices_exists_alias
+///[`Client::indices_exists_alias`]: super::OsClient::indices_exists_alias
 #[derive(Debug, Clone)]
 pub struct IndicesExistsAlias<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesExistsAliasName, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -297,7 +313,7 @@ pub struct IndicesExistsAlias<'a> {
 }
 
 impl<'a> IndicesExistsAlias<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -358,7 +374,7 @@ impl<'a> IndicesExistsAlias<'a> {
   }
 
   ///Sends a `HEAD` request to `/_alias/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -391,17 +407,21 @@ impl<'a> IndicesExistsAlias<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_update_aliases`]
 ///
-///[`Client::indices_update_aliases`]: super::Client::indices_update_aliases
+///[`Client::indices_update_aliases`]: super::OsClient::indices_update_aliases
 #[derive(Debug, Clone)]
 pub struct IndicesUpdateAliases<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::IndicesUpdateAliasesClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IndicesUpdateAliasesMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesUpdateAliasesTimeout>, String>,
@@ -409,7 +429,7 @@ pub struct IndicesUpdateAliases<'a> {
 }
 
 impl<'a> IndicesUpdateAliases<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -468,7 +488,7 @@ impl<'a> IndicesUpdateAliases<'a> {
   }
 
   ///Sends a `POST` request to `/_aliases`
-  pub async fn send(self) -> Result<ResponseValue<types::IndicesUpdateAliasesResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::IndicesUpdateAliasesResponseContent>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -507,22 +527,26 @@ impl<'a> IndicesUpdateAliases<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_analyze_get`]
 ///
-///[`Client::indices_analyze_get`]: super::Client::indices_analyze_get
+///[`Client::indices_analyze_get`]: super::OsClient::indices_analyze_get
 #[derive(Debug, Clone)]
 pub struct IndicesAnalyzeGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<Option<String>, String>,
 }
 
 impl<'a> IndicesAnalyzeGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Ok(None),
@@ -540,7 +564,7 @@ impl<'a> IndicesAnalyzeGet<'a> {
   }
 
   ///Sends a `GET` request to `/_analyze`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, index } = self;
     let index = index.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_analyze", client.baseurl,);
@@ -553,23 +577,27 @@ impl<'a> IndicesAnalyzeGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_analyze_post`]
 ///
-///[`Client::indices_analyze_post`]: super::Client::indices_analyze_post
+///[`Client::indices_analyze_post`]: super::OsClient::indices_analyze_post
 #[derive(Debug, Clone)]
 pub struct IndicesAnalyzePost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<Option<String>, String>,
   body: Result<types::IndicesAnalyzeBodyParams, String>,
 }
 
 impl<'a> IndicesAnalyzePost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Ok(None),
@@ -597,7 +625,7 @@ impl<'a> IndicesAnalyzePost<'a> {
   }
 
   ///Sends a `POST` request to `/_analyze`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, index, body } = self;
     let index = index.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
@@ -611,17 +639,21 @@ impl<'a> IndicesAnalyzePost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::bulk_post`]
 ///
-///[`Client::bulk_post`]: super::Client::bulk_post
+///[`Client::bulk_post`]: super::OsClient::bulk_post
 #[derive(Debug, Clone)]
 pub struct BulkPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   source: Result<Option<String>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -636,7 +668,7 @@ pub struct BulkPost<'a> {
 }
 
 impl<'a> BulkPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       source: Ok(None),
@@ -763,7 +795,7 @@ impl<'a> BulkPost<'a> {
   }
 
   ///Sends a `POST` request to `/_bulk`
-  pub async fn send(self) -> Result<ResponseValue<BulkResponse>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<BulkResponse>, Error> {
     let Self {
       client,
       source,
@@ -829,17 +861,21 @@ impl<'a> BulkPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_clear_cache`]
 ///
-///[`Client::indices_clear_cache`]: super::Client::indices_clear_cache
+///[`Client::indices_clear_cache`]: super::OsClient::indices_clear_cache
 #[derive(Debug, Clone)]
 pub struct IndicesClearCache<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   fielddata: Result<Option<bool>, String>,
@@ -851,7 +887,7 @@ pub struct IndicesClearCache<'a> {
 }
 
 impl<'a> IndicesClearCache<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -946,7 +982,7 @@ impl<'a> IndicesClearCache<'a> {
   }
 
   ///Sends a `POST` request to `/_cache/clear`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -997,23 +1033,27 @@ impl<'a> IndicesClearCache<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_help`]
 ///
-///[`Client::cat_help`]: super::Client::cat_help
+///[`Client::cat_help`]: super::OsClient::cat_help
 #[derive(Debug, Clone)]
 pub struct CatHelp<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   help: Result<Option<bool>, String>,
   s: Result<Option<Vec<String>>, String>,
 }
 
 impl<'a> CatHelp<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       help: Ok(None),
@@ -1042,7 +1082,7 @@ impl<'a> CatHelp<'a> {
   }
 
   ///Sends a `GET` request to `/_cat`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self { client, help, s } = self;
     let help = help.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
@@ -1059,17 +1099,21 @@ impl<'a> CatHelp<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_aliases`]
 ///
-///[`Client::cat_aliases`]: super::Client::cat_aliases
+///[`Client::cat_aliases`]: super::OsClient::cat_aliases
 #[derive(Debug, Clone)]
 pub struct CatAliases<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -1080,7 +1124,7 @@ pub struct CatAliases<'a> {
 }
 
 impl<'a> CatAliases<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       expand_wildcards: Ok(None),
@@ -1164,7 +1208,7 @@ impl<'a> CatAliases<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/aliases`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       expand_wildcards,
@@ -1210,17 +1254,21 @@ impl<'a> CatAliases<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_aliases_with_name`]
 ///
-///[`Client::cat_aliases_with_name`]: super::Client::cat_aliases_with_name
+///[`Client::cat_aliases_with_name`]: super::OsClient::cat_aliases_with_name
 #[derive(Debug, Clone)]
 pub struct CatAliasesWithName<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::CatAliasesWithNameName, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   format: Result<Option<String>, String>,
@@ -1232,7 +1280,7 @@ pub struct CatAliasesWithName<'a> {
 }
 
 impl<'a> CatAliasesWithName<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -1326,7 +1374,7 @@ impl<'a> CatAliasesWithName<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/aliases/{name}`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       name,
@@ -1374,17 +1422,21 @@ impl<'a> CatAliasesWithName<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_allocation`]
 ///
-///[`Client::cat_allocation`]: super::Client::cat_allocation
+///[`Client::cat_allocation`]: super::OsClient::cat_allocation
 #[derive(Debug, Clone)]
 pub struct CatAllocation<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   bytes: Result<Option<types::Bytes>, String>,
   cluster_manager_timeout: Result<Option<types::CatAllocationClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
@@ -1397,7 +1449,7 @@ pub struct CatAllocation<'a> {
 }
 
 impl<'a> CatAllocation<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       bytes: Ok(None),
@@ -1503,7 +1555,7 @@ impl<'a> CatAllocation<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/allocation`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       bytes,
@@ -1559,17 +1611,21 @@ impl<'a> CatAllocation<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_allocation_with_node_id`]
 ///
-///[`Client::cat_allocation_with_node_id`]: super::Client::cat_allocation_with_node_id
+///[`Client::cat_allocation_with_node_id`]: super::OsClient::cat_allocation_with_node_id
 #[derive(Debug, Clone)]
 pub struct CatAllocationWithNodeId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   node_id: Result<types::CatAllocationWithNodeIdNodeId, String>,
   bytes: Result<Option<types::Bytes>, String>,
   cluster_manager_timeout: Result<Option<types::CatAllocationWithNodeIdClusterManagerTimeout>, String>,
@@ -1583,7 +1639,7 @@ pub struct CatAllocationWithNodeId<'a> {
 }
 
 impl<'a> CatAllocationWithNodeId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       node_id: Err("node_id was not initialized".to_string()),
@@ -1698,7 +1754,7 @@ impl<'a> CatAllocationWithNodeId<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/allocation/{node_id}`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       node_id,
@@ -1760,17 +1816,21 @@ impl<'a> CatAllocationWithNodeId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_cluster_manager`]
 ///
-///[`Client::cat_cluster_manager`]: super::Client::cat_cluster_manager
+///[`Client::cat_cluster_manager`]: super::OsClient::cat_cluster_manager
 #[derive(Debug, Clone)]
 pub struct CatClusterManager<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::CatClusterManagerClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -1782,7 +1842,7 @@ pub struct CatClusterManager<'a> {
 }
 
 impl<'a> CatClusterManager<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -1876,7 +1936,7 @@ impl<'a> CatClusterManager<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/cluster_manager`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -1927,17 +1987,21 @@ impl<'a> CatClusterManager<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_count`]
 ///
-///[`Client::cat_count`]: super::Client::cat_count
+///[`Client::cat_count`]: super::OsClient::cat_count
 #[derive(Debug, Clone)]
 pub struct CatCount<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -1946,7 +2010,7 @@ pub struct CatCount<'a> {
 }
 
 impl<'a> CatCount<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       format: Ok(None),
@@ -2008,7 +2072,7 @@ impl<'a> CatCount<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/count`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       format,
@@ -2044,17 +2108,21 @@ impl<'a> CatCount<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_count_with_index`]
 ///
-///[`Client::cat_count_with_index`]: super::Client::cat_count_with_index
+///[`Client::cat_count_with_index`]: super::OsClient::cat_count_with_index
 #[derive(Debug, Clone)]
 pub struct CatCountWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::CatCountWithIndexIndex, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -2064,7 +2132,7 @@ pub struct CatCountWithIndex<'a> {
 }
 
 impl<'a> CatCountWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -2136,7 +2204,7 @@ impl<'a> CatCountWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/count/{index}`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       index,
@@ -2174,17 +2242,21 @@ impl<'a> CatCountWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_fielddata`]
 ///
-///[`Client::cat_fielddata`]: super::Client::cat_fielddata
+///[`Client::cat_fielddata`]: super::OsClient::cat_fielddata
 #[derive(Debug, Clone)]
 pub struct CatFielddata<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   bytes: Result<Option<types::Bytes>, String>,
   fields: Result<Option<Vec<String>>, String>,
   format: Result<Option<String>, String>,
@@ -2195,7 +2267,7 @@ pub struct CatFielddata<'a> {
 }
 
 impl<'a> CatFielddata<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       bytes: Ok(None),
@@ -2279,7 +2351,7 @@ impl<'a> CatFielddata<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/fielddata`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       bytes,
@@ -2325,17 +2397,21 @@ impl<'a> CatFielddata<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_fielddata_with_fields`]
 ///
-///[`Client::cat_fielddata_with_fields`]: super::Client::cat_fielddata_with_fields
+///[`Client::cat_fielddata_with_fields`]: super::OsClient::cat_fielddata_with_fields
 #[derive(Debug, Clone)]
 pub struct CatFielddataWithFields<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   bytes: Result<Option<types::Bytes>, String>,
   fields: Result<Option<Vec<String>>, String>,
   format: Result<Option<String>, String>,
@@ -2346,7 +2422,7 @@ pub struct CatFielddataWithFields<'a> {
 }
 
 impl<'a> CatFielddataWithFields<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       bytes: Ok(None),
@@ -2430,7 +2506,7 @@ impl<'a> CatFielddataWithFields<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/fielddata/{fields}`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       bytes,
@@ -2480,17 +2556,21 @@ impl<'a> CatFielddataWithFields<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_health`]
 ///
-///[`Client::cat_health`]: super::Client::cat_health
+///[`Client::cat_health`]: super::OsClient::cat_health
 #[derive(Debug, Clone)]
 pub struct CatHealth<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -2501,7 +2581,7 @@ pub struct CatHealth<'a> {
 }
 
 impl<'a> CatHealth<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       format: Ok(None),
@@ -2585,7 +2665,7 @@ impl<'a> CatHealth<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/health`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       format,
@@ -2631,17 +2711,21 @@ impl<'a> CatHealth<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_indices`]
 ///
-///[`Client::cat_indices`]: super::Client::cat_indices
+///[`Client::cat_indices`]: super::OsClient::cat_indices
 #[derive(Debug, Clone)]
 pub struct CatIndices<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   bytes: Result<Option<types::Bytes>, String>,
   cluster_manager_timeout: Result<Option<types::CatIndicesClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -2659,7 +2743,7 @@ pub struct CatIndices<'a> {
 }
 
 impl<'a> CatIndices<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       bytes: Ok(None),
@@ -2820,7 +2904,7 @@ impl<'a> CatIndices<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/indices`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       bytes,
@@ -2901,17 +2985,21 @@ impl<'a> CatIndices<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_indices_with_index`]
 ///
-///[`Client::cat_indices_with_index`]: super::Client::cat_indices_with_index
+///[`Client::cat_indices_with_index`]: super::OsClient::cat_indices_with_index
 #[derive(Debug, Clone)]
 pub struct CatIndicesWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::CatIndicesWithIndexIndex, String>,
   bytes: Result<Option<types::Bytes>, String>,
   cluster_manager_timeout: Result<Option<types::CatIndicesWithIndexClusterManagerTimeout>, String>,
@@ -2930,7 +3018,7 @@ pub struct CatIndicesWithIndex<'a> {
 }
 
 impl<'a> CatIndicesWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -3100,7 +3188,7 @@ impl<'a> CatIndicesWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/indices/{index}`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       index,
@@ -3183,17 +3271,21 @@ impl<'a> CatIndicesWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_master`]
 ///
-///[`Client::cat_master`]: super::Client::cat_master
+///[`Client::cat_master`]: super::OsClient::cat_master
 #[derive(Debug, Clone)]
 pub struct CatMaster<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::CatMasterClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -3205,7 +3297,7 @@ pub struct CatMaster<'a> {
 }
 
 impl<'a> CatMaster<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -3300,7 +3392,7 @@ impl<'a> CatMaster<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/master`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -3351,17 +3443,21 @@ impl<'a> CatMaster<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_nodeattrs`]
 ///
-///[`Client::cat_nodeattrs`]: super::Client::cat_nodeattrs
+///[`Client::cat_nodeattrs`]: super::OsClient::cat_nodeattrs
 #[derive(Debug, Clone)]
 pub struct CatNodeattrs<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::CatNodeattrsClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -3373,7 +3469,7 @@ pub struct CatNodeattrs<'a> {
 }
 
 impl<'a> CatNodeattrs<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -3468,7 +3564,7 @@ impl<'a> CatNodeattrs<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/nodeattrs`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -3519,17 +3615,21 @@ impl<'a> CatNodeattrs<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_nodes`]
 ///
-///[`Client::cat_nodes`]: super::Client::cat_nodes
+///[`Client::cat_nodes`]: super::OsClient::cat_nodes
 #[derive(Debug, Clone)]
 pub struct CatNodes<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   bytes: Result<Option<types::Bytes>, String>,
   cluster_manager_timeout: Result<Option<types::CatNodesClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
@@ -3544,7 +3644,7 @@ pub struct CatNodes<'a> {
 }
 
 impl<'a> CatNodes<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       bytes: Ok(None),
@@ -3672,7 +3772,7 @@ impl<'a> CatNodes<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/nodes`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       bytes,
@@ -3738,17 +3838,21 @@ impl<'a> CatNodes<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_pending_tasks`]
 ///
-///[`Client::cat_pending_tasks`]: super::Client::cat_pending_tasks
+///[`Client::cat_pending_tasks`]: super::OsClient::cat_pending_tasks
 #[derive(Debug, Clone)]
 pub struct CatPendingTasks<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::CatPendingTasksClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -3761,7 +3865,7 @@ pub struct CatPendingTasks<'a> {
 }
 
 impl<'a> CatPendingTasks<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -3866,7 +3970,7 @@ impl<'a> CatPendingTasks<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/pending_tasks`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -3922,22 +4026,26 @@ impl<'a> CatPendingTasks<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_pit_segments`]
 ///
-///[`Client::cat_pit_segments`]: super::Client::cat_pit_segments
+///[`Client::cat_pit_segments`]: super::OsClient::cat_pit_segments
 #[derive(Debug, Clone)]
 pub struct CatPitSegments<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   body: Result<types::builder::CatPitSegmentsBodyParams, String>,
 }
 
 impl<'a> CatPitSegments<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       body: Ok(types::builder::CatPitSegmentsBodyParams::default()),
@@ -3962,7 +4070,7 @@ impl<'a> CatPitSegments<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/pit_segments`
-  pub async fn send(self) -> Result<ResponseValue<types::CatPitSegmentsResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::CatPitSegmentsResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body
       .and_then(std::convert::TryInto::<types::CatPitSegmentsBodyParams>::try_into)
@@ -3981,26 +4089,30 @@ impl<'a> CatPitSegments<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_all_pit_segments`]
 ///
-///[`Client::cat_all_pit_segments`]: super::Client::cat_all_pit_segments
+///[`Client::cat_all_pit_segments`]: super::OsClient::cat_all_pit_segments
 #[derive(Debug, Clone)]
 pub struct CatAllPitSegments<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> CatAllPitSegments<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_cat/pit_segments/_all`
-  pub async fn send(self) -> Result<ResponseValue<types::CatAllPitSegmentsResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::CatAllPitSegmentsResponseContent>, Error> {
     let Self { client } = self;
     let url = format!("{}/_cat/pit_segments/_all", client.baseurl,);
     let request = client
@@ -4015,17 +4127,21 @@ impl<'a> CatAllPitSegments<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_plugins`]
 ///
-///[`Client::cat_plugins`]: super::Client::cat_plugins
+///[`Client::cat_plugins`]: super::OsClient::cat_plugins
 #[derive(Debug, Clone)]
 pub struct CatPlugins<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::CatPluginsClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -4037,7 +4153,7 @@ pub struct CatPlugins<'a> {
 }
 
 impl<'a> CatPlugins<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -4132,7 +4248,7 @@ impl<'a> CatPlugins<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/plugins`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -4183,17 +4299,21 @@ impl<'a> CatPlugins<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_recovery`]
 ///
-///[`Client::cat_recovery`]: super::Client::cat_recovery
+///[`Client::cat_recovery`]: super::OsClient::cat_recovery
 #[derive(Debug, Clone)]
 pub struct CatRecovery<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   active_only: Result<Option<bool>, String>,
   bytes: Result<Option<types::Bytes>, String>,
   detailed: Result<Option<bool>, String>,
@@ -4207,7 +4327,7 @@ pub struct CatRecovery<'a> {
 }
 
 impl<'a> CatRecovery<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       active_only: Ok(None),
@@ -4324,7 +4444,7 @@ impl<'a> CatRecovery<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/recovery`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       active_only,
@@ -4385,17 +4505,21 @@ impl<'a> CatRecovery<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_recovery_with_index`]
 ///
-///[`Client::cat_recovery_with_index`]: super::Client::cat_recovery_with_index
+///[`Client::cat_recovery_with_index`]: super::OsClient::cat_recovery_with_index
 #[derive(Debug, Clone)]
 pub struct CatRecoveryWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   active_only: Result<Option<bool>, String>,
   bytes: Result<Option<types::Bytes>, String>,
   detailed: Result<Option<bool>, String>,
@@ -4409,7 +4533,7 @@ pub struct CatRecoveryWithIndex<'a> {
 }
 
 impl<'a> CatRecoveryWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       active_only: Ok(None),
@@ -4526,7 +4650,7 @@ impl<'a> CatRecoveryWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/recovery/{index}`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       active_only,
@@ -4596,17 +4720,21 @@ impl<'a> CatRecoveryWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_repositories`]
 ///
-///[`Client::cat_repositories`]: super::Client::cat_repositories
+///[`Client::cat_repositories`]: super::OsClient::cat_repositories
 #[derive(Debug, Clone)]
 pub struct CatRepositories<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::CatRepositoriesClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -4618,7 +4746,7 @@ pub struct CatRepositories<'a> {
 }
 
 impl<'a> CatRepositories<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -4712,7 +4840,7 @@ impl<'a> CatRepositories<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/repositories`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -4763,17 +4891,21 @@ impl<'a> CatRepositories<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_segment_replication`]
 ///
-///[`Client::cat_segment_replication`]: super::Client::cat_segment_replication
+///[`Client::cat_segment_replication`]: super::OsClient::cat_segment_replication
 #[derive(Debug, Clone)]
 pub struct CatSegmentReplication<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   active_only: Result<Option<bool>, String>,
   bytes: Result<Option<types::Bytes>, String>,
   completed_only: Result<Option<bool>, String>,
@@ -4789,7 +4921,7 @@ pub struct CatSegmentReplication<'a> {
 }
 
 impl<'a> CatSegmentReplication<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       active_only: Ok(None),
@@ -4928,7 +5060,7 @@ impl<'a> CatSegmentReplication<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/segment_replication`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       active_only,
@@ -4999,17 +5131,21 @@ impl<'a> CatSegmentReplication<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_segment_replication_with_index`]
 ///
-///[`Client::cat_segment_replication_with_index`]: super::Client::cat_segment_replication_with_index
+///[`Client::cat_segment_replication_with_index`]: super::OsClient::cat_segment_replication_with_index
 #[derive(Debug, Clone)]
 pub struct CatSegmentReplicationWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   active_only: Result<Option<bool>, String>,
   bytes: Result<Option<types::Bytes>, String>,
   completed_only: Result<Option<bool>, String>,
@@ -5025,7 +5161,7 @@ pub struct CatSegmentReplicationWithIndex<'a> {
 }
 
 impl<'a> CatSegmentReplicationWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       active_only: Ok(None),
@@ -5164,7 +5300,7 @@ impl<'a> CatSegmentReplicationWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/segment_replication/{index}`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       active_only,
@@ -5245,17 +5381,21 @@ impl<'a> CatSegmentReplicationWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_segments`]
 ///
-///[`Client::cat_segments`]: super::Client::cat_segments
+///[`Client::cat_segments`]: super::OsClient::cat_segments
 #[derive(Debug, Clone)]
 pub struct CatSegments<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   bytes: Result<Option<types::Bytes>, String>,
   cluster_manager_timeout: Result<Option<types::CatSegmentsClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
@@ -5267,7 +5407,7 @@ pub struct CatSegments<'a> {
 }
 
 impl<'a> CatSegments<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       bytes: Ok(None),
@@ -5362,7 +5502,7 @@ impl<'a> CatSegments<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/segments`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       bytes,
@@ -5413,17 +5553,21 @@ impl<'a> CatSegments<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_segments_with_index`]
 ///
-///[`Client::cat_segments_with_index`]: super::Client::cat_segments_with_index
+///[`Client::cat_segments_with_index`]: super::OsClient::cat_segments_with_index
 #[derive(Debug, Clone)]
 pub struct CatSegmentsWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::CatSegmentsWithIndexIndex, String>,
   bytes: Result<Option<types::Bytes>, String>,
   cluster_manager_timeout: Result<Option<types::CatSegmentsWithIndexClusterManagerTimeout>, String>,
@@ -5436,7 +5580,7 @@ pub struct CatSegmentsWithIndex<'a> {
 }
 
 impl<'a> CatSegmentsWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -5540,7 +5684,7 @@ impl<'a> CatSegmentsWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/segments/{index}`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       index,
@@ -5594,17 +5738,21 @@ impl<'a> CatSegmentsWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_shards`]
 ///
-///[`Client::cat_shards`]: super::Client::cat_shards
+///[`Client::cat_shards`]: super::OsClient::cat_shards
 #[derive(Debug, Clone)]
 pub struct CatShards<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   bytes: Result<Option<types::Bytes>, String>,
   cluster_manager_timeout: Result<Option<types::CatShardsClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
@@ -5618,7 +5766,7 @@ pub struct CatShards<'a> {
 }
 
 impl<'a> CatShards<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       bytes: Ok(None),
@@ -5735,7 +5883,7 @@ impl<'a> CatShards<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/shards`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       bytes,
@@ -5796,17 +5944,21 @@ impl<'a> CatShards<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_shards_with_index`]
 ///
-///[`Client::cat_shards_with_index`]: super::Client::cat_shards_with_index
+///[`Client::cat_shards_with_index`]: super::OsClient::cat_shards_with_index
 #[derive(Debug, Clone)]
 pub struct CatShardsWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::CatShardsWithIndexIndex, String>,
   bytes: Result<Option<types::Bytes>, String>,
   cluster_manager_timeout: Result<Option<types::CatShardsWithIndexClusterManagerTimeout>, String>,
@@ -5821,7 +5973,7 @@ pub struct CatShardsWithIndex<'a> {
 }
 
 impl<'a> CatShardsWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -5947,7 +6099,7 @@ impl<'a> CatShardsWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/shards/{index}`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       index,
@@ -6010,17 +6162,21 @@ impl<'a> CatShardsWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_snapshots`]
 ///
-///[`Client::cat_snapshots`]: super::Client::cat_snapshots
+///[`Client::cat_snapshots`]: super::OsClient::cat_snapshots
 #[derive(Debug, Clone)]
 pub struct CatSnapshots<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::CatSnapshotsClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -6033,7 +6189,7 @@ pub struct CatSnapshots<'a> {
 }
 
 impl<'a> CatSnapshots<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -6139,7 +6295,7 @@ impl<'a> CatSnapshots<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/snapshots`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -6195,17 +6351,21 @@ impl<'a> CatSnapshots<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_snapshots_with_repository`]
 ///
-///[`Client::cat_snapshots_with_repository`]: super::Client::cat_snapshots_with_repository
+///[`Client::cat_snapshots_with_repository`]: super::OsClient::cat_snapshots_with_repository
 #[derive(Debug, Clone)]
 pub struct CatSnapshotsWithRepository<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   repository: Result<types::CatSnapshotsWithRepositoryRepository, String>,
   cluster_manager_timeout: Result<Option<types::CatSnapshotsWithRepositoryClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
@@ -6219,7 +6379,7 @@ pub struct CatSnapshotsWithRepository<'a> {
 }
 
 impl<'a> CatSnapshotsWithRepository<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       repository: Err("repository was not initialized".to_string()),
@@ -6334,7 +6494,7 @@ impl<'a> CatSnapshotsWithRepository<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/snapshots/{repository}`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       repository,
@@ -6396,17 +6556,21 @@ impl<'a> CatSnapshotsWithRepository<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_tasks`]
 ///
-///[`Client::cat_tasks`]: super::Client::cat_tasks
+///[`Client::cat_tasks`]: super::OsClient::cat_tasks
 #[derive(Debug, Clone)]
 pub struct CatTasks<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   actions: Result<Option<Vec<String>>, String>,
   detailed: Result<Option<bool>, String>,
   format: Result<Option<String>, String>,
@@ -6420,7 +6584,7 @@ pub struct CatTasks<'a> {
 }
 
 impl<'a> CatTasks<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       actions: Ok(None),
@@ -6537,7 +6701,7 @@ impl<'a> CatTasks<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/tasks`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       actions,
@@ -6598,17 +6762,21 @@ impl<'a> CatTasks<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_templates`]
 ///
-///[`Client::cat_templates`]: super::Client::cat_templates
+///[`Client::cat_templates`]: super::OsClient::cat_templates
 #[derive(Debug, Clone)]
 pub struct CatTemplates<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::CatTemplatesClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -6620,7 +6788,7 @@ pub struct CatTemplates<'a> {
 }
 
 impl<'a> CatTemplates<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -6715,7 +6883,7 @@ impl<'a> CatTemplates<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/templates`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -6766,17 +6934,21 @@ impl<'a> CatTemplates<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_templates_with_name`]
 ///
-///[`Client::cat_templates_with_name`]: super::Client::cat_templates_with_name
+///[`Client::cat_templates_with_name`]: super::OsClient::cat_templates_with_name
 #[derive(Debug, Clone)]
 pub struct CatTemplatesWithName<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::CatTemplatesWithNameName, String>,
   cluster_manager_timeout: Result<Option<types::CatTemplatesWithNameClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
@@ -6789,7 +6961,7 @@ pub struct CatTemplatesWithName<'a> {
 }
 
 impl<'a> CatTemplatesWithName<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -6893,7 +7065,7 @@ impl<'a> CatTemplatesWithName<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/templates/{name}`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       name,
@@ -6946,17 +7118,21 @@ impl<'a> CatTemplatesWithName<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_thread_pool`]
 ///
-///[`Client::cat_thread_pool`]: super::Client::cat_thread_pool
+///[`Client::cat_thread_pool`]: super::OsClient::cat_thread_pool
 #[derive(Debug, Clone)]
 pub struct CatThreadPool<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::CatThreadPoolClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -6969,7 +7145,7 @@ pub struct CatThreadPool<'a> {
 }
 
 impl<'a> CatThreadPool<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -7075,7 +7251,7 @@ impl<'a> CatThreadPool<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/thread_pool`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -7131,17 +7307,21 @@ impl<'a> CatThreadPool<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cat_thread_pool_with_thread_pool_patterns`]
 ///
-///[`Client::cat_thread_pool_with_thread_pool_patterns`]: super::Client::cat_thread_pool_with_thread_pool_patterns
+///[`Client::cat_thread_pool_with_thread_pool_patterns`]: super::OsClient::cat_thread_pool_with_thread_pool_patterns
 #[derive(Debug, Clone)]
 pub struct CatThreadPoolWithThreadPoolPatterns<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   thread_pool_patterns: Result<types::CatThreadPoolWithThreadPoolPatternsThreadPoolPatterns, String>,
   cluster_manager_timeout: Result<Option<types::CatThreadPoolWithThreadPoolPatternsClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
@@ -7155,7 +7335,7 @@ pub struct CatThreadPoolWithThreadPoolPatterns<'a> {
 }
 
 impl<'a> CatThreadPoolWithThreadPoolPatterns<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       thread_pool_patterns: Err("thread_pool_patterns was not initialized".to_string()),
@@ -7271,7 +7451,7 @@ impl<'a> CatThreadPoolWithThreadPoolPatterns<'a> {
   }
 
   ///Sends a `GET` request to `/_cat/thread_pool/{thread_pool_patterns}`
-  pub async fn send(self) -> Result<ResponseValue<String>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<String>, Error> {
     let Self {
       client,
       thread_pool_patterns,
@@ -7333,23 +7513,27 @@ impl<'a> CatThreadPoolWithThreadPoolPatterns<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::text(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_allocation_explain_get`]
 ///
-///[`Client::cluster_allocation_explain_get`]: super::Client::cluster_allocation_explain_get
+///[`Client::cluster_allocation_explain_get`]: super::OsClient::cluster_allocation_explain_get
 #[derive(Debug, Clone)]
 pub struct ClusterAllocationExplainGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   include_disk_info: Result<Option<bool>, String>,
   include_yes_decisions: Result<Option<bool>, String>,
 }
 
 impl<'a> ClusterAllocationExplainGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       include_disk_info: Ok(None),
@@ -7378,7 +7562,7 @@ impl<'a> ClusterAllocationExplainGet<'a> {
   }
 
   ///Sends a `GET` request to `/_cluster/allocation/explain`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       include_disk_info,
@@ -7399,24 +7583,28 @@ impl<'a> ClusterAllocationExplainGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_allocation_explain_post`]
 ///
-///[`Client::cluster_allocation_explain_post`]: super::Client::cluster_allocation_explain_post
+///[`Client::cluster_allocation_explain_post`]: super::OsClient::cluster_allocation_explain_post
 #[derive(Debug, Clone)]
 pub struct ClusterAllocationExplainPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   include_disk_info: Result<Option<bool>, String>,
   include_yes_decisions: Result<Option<bool>, String>,
   body: Result<types::ClusterAllocationExplainBodyParams, String>,
 }
 
 impl<'a> ClusterAllocationExplainPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       include_disk_info: Ok(None),
@@ -7455,7 +7643,7 @@ impl<'a> ClusterAllocationExplainPost<'a> {
   }
 
   ///Sends a `POST` request to `/_cluster/allocation/explain`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       include_disk_info,
@@ -7478,26 +7666,30 @@ impl<'a> ClusterAllocationExplainPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_delete_decommission_awareness`]
 ///
-///[`Client::cluster_delete_decommission_awareness`]: super::Client::cluster_delete_decommission_awareness
+///[`Client::cluster_delete_decommission_awareness`]: super::OsClient::cluster_delete_decommission_awareness
 #[derive(Debug, Clone)]
 pub struct ClusterDeleteDecommissionAwareness<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> ClusterDeleteDecommissionAwareness<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `DELETE` request to `/_cluster/decommission/awareness/`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
     let url = format!("{}/_cluster/decommission/awareness/", client.baseurl,);
     let request = client.client.delete(url).build()?;
@@ -7505,22 +7697,26 @@ impl<'a> ClusterDeleteDecommissionAwareness<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_get_decommission_awareness`]
 ///
-///[`Client::cluster_get_decommission_awareness`]: super::Client::cluster_get_decommission_awareness
+///[`Client::cluster_get_decommission_awareness`]: super::OsClient::cluster_get_decommission_awareness
 #[derive(Debug, Clone)]
 pub struct ClusterGetDecommissionAwareness<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   awareness_attribute_name: Result<types::ClusterGetDecommissionAwarenessAwarenessAttributeName, String>,
 }
 
 impl<'a> ClusterGetDecommissionAwareness<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       awareness_attribute_name: Err("awareness_attribute_name was not initialized".to_string()),
@@ -7540,7 +7736,7 @@ impl<'a> ClusterGetDecommissionAwareness<'a> {
   ///Sends a `GET` request to
   /// `/_cluster/decommission/awareness/{awareness_attribute_name}/
   /// _status`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       awareness_attribute_name,
@@ -7556,23 +7752,27 @@ impl<'a> ClusterGetDecommissionAwareness<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_put_decommission_awareness`]
 ///
-///[`Client::cluster_put_decommission_awareness`]: super::Client::cluster_put_decommission_awareness
+///[`Client::cluster_put_decommission_awareness`]: super::OsClient::cluster_put_decommission_awareness
 #[derive(Debug, Clone)]
 pub struct ClusterPutDecommissionAwareness<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   awareness_attribute_name: Result<types::ClusterPutDecommissionAwarenessAwarenessAttributeName, String>,
   awareness_attribute_value: Result<types::ClusterPutDecommissionAwarenessAwarenessAttributeValue, String>,
 }
 
 impl<'a> ClusterPutDecommissionAwareness<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       awareness_attribute_name: Err("awareness_attribute_name was not initialized".to_string()),
@@ -7603,7 +7803,7 @@ impl<'a> ClusterPutDecommissionAwareness<'a> {
   ///Sends a `PUT` request to
   /// `/_cluster/decommission/awareness/{awareness_attribute_name}/
   /// {awareness_attribute_value}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       awareness_attribute_name,
@@ -7622,17 +7822,21 @@ impl<'a> ClusterPutDecommissionAwareness<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_health`]
 ///
-///[`Client::cluster_health`]: super::Client::cluster_health
+///[`Client::cluster_health`]: super::OsClient::cluster_health
 #[derive(Debug, Clone)]
 pub struct ClusterHealth<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   awareness_attribute: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<types::ClusterHealthClusterManagerTimeout>, String>,
   ensure_node_commissioned: Result<Option<bool>, String>,
@@ -7650,7 +7854,7 @@ pub struct ClusterHealth<'a> {
 }
 
 impl<'a> ClusterHealth<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       awareness_attribute: Ok(None),
@@ -7811,7 +8015,7 @@ impl<'a> ClusterHealth<'a> {
   }
 
   ///Sends a `GET` request to `/_cluster/health`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       awareness_attribute,
@@ -7892,17 +8096,21 @@ impl<'a> ClusterHealth<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_health_with_index`]
 ///
-///[`Client::cluster_health_with_index`]: super::Client::cluster_health_with_index
+///[`Client::cluster_health_with_index`]: super::OsClient::cluster_health_with_index
 #[derive(Debug, Clone)]
 pub struct ClusterHealthWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::ClusterHealthWithIndexIndex, String>,
   awareness_attribute: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<types::ClusterHealthWithIndexClusterManagerTimeout>, String>,
@@ -7921,7 +8129,7 @@ pub struct ClusterHealthWithIndex<'a> {
 }
 
 impl<'a> ClusterHealthWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -8091,7 +8299,7 @@ impl<'a> ClusterHealthWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/_cluster/health/{index}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -8174,17 +8382,21 @@ impl<'a> ClusterHealthWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_hot_threads_deprecated_dash`]
 ///
-///[`Client::nodes_hot_threads_deprecated_dash`]: super::Client::nodes_hot_threads_deprecated_dash
+///[`Client::nodes_hot_threads_deprecated_dash`]: super::OsClient::nodes_hot_threads_deprecated_dash
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsDeprecatedDash<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   ignore_idle_threads: Result<Option<bool>, String>,
   interval: Result<Option<types::NodesHotThreadsDeprecatedDashInterval>, String>,
   snapshots: Result<Option<i32>, String>,
@@ -8194,7 +8406,7 @@ pub struct NodesHotThreadsDeprecatedDash<'a> {
 }
 
 impl<'a> NodesHotThreadsDeprecatedDash<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       ignore_idle_threads: Ok(None),
@@ -8267,7 +8479,7 @@ impl<'a> NodesHotThreadsDeprecatedDash<'a> {
   }
 
   ///Sends a `GET` request to `/_cluster/nodes/hot_threads`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       ignore_idle_threads,
@@ -8308,17 +8520,21 @@ impl<'a> NodesHotThreadsDeprecatedDash<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_hot_threads_deprecated_cluster`]
 ///
-///[`Client::nodes_hot_threads_deprecated_cluster`]: super::Client::nodes_hot_threads_deprecated_cluster
+///[`Client::nodes_hot_threads_deprecated_cluster`]: super::OsClient::nodes_hot_threads_deprecated_cluster
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsDeprecatedCluster<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   ignore_idle_threads: Result<Option<bool>, String>,
   interval: Result<Option<types::NodesHotThreadsDeprecatedClusterInterval>, String>,
   snapshots: Result<Option<i32>, String>,
@@ -8328,7 +8544,7 @@ pub struct NodesHotThreadsDeprecatedCluster<'a> {
 }
 
 impl<'a> NodesHotThreadsDeprecatedCluster<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       ignore_idle_threads: Ok(None),
@@ -8401,7 +8617,7 @@ impl<'a> NodesHotThreadsDeprecatedCluster<'a> {
   }
 
   ///Sends a `GET` request to `/_cluster/nodes/hotthreads`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       ignore_idle_threads,
@@ -8442,17 +8658,21 @@ impl<'a> NodesHotThreadsDeprecatedCluster<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_hot_threads_with_node_id_deprecated_dash`]
 ///
-///[`Client::nodes_hot_threads_with_node_id_deprecated_dash`]: super::Client::nodes_hot_threads_with_node_id_deprecated_dash
+///[`Client::nodes_hot_threads_with_node_id_deprecated_dash`]: super::OsClient::nodes_hot_threads_with_node_id_deprecated_dash
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsWithNodeIdDeprecatedDash<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   node_id: Result<types::NodesHotThreadsWithNodeIdDeprecatedDashNodeId, String>,
   ignore_idle_threads: Result<Option<bool>, String>,
   interval: Result<Option<types::NodesHotThreadsWithNodeIdDeprecatedDashInterval>, String>,
@@ -8463,7 +8683,7 @@ pub struct NodesHotThreadsWithNodeIdDeprecatedDash<'a> {
 }
 
 impl<'a> NodesHotThreadsWithNodeIdDeprecatedDash<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       node_id: Err("node_id was not initialized".to_string()),
@@ -8546,7 +8766,7 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecatedDash<'a> {
   }
 
   ///Sends a `GET` request to `/_cluster/nodes/{node_id}/hot_threads`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       node_id,
@@ -8593,7 +8813,11 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecatedDash<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
@@ -8601,10 +8825,10 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecatedDash<'a> {
 ///Builder for
 /// [`Client::nodes_hot_threads_with_node_id_deprecated_cluster`]
 ///
-///[`Client::nodes_hot_threads_with_node_id_deprecated_cluster`]: super::Client::nodes_hot_threads_with_node_id_deprecated_cluster
+///[`Client::nodes_hot_threads_with_node_id_deprecated_cluster`]: super::OsClient::nodes_hot_threads_with_node_id_deprecated_cluster
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsWithNodeIdDeprecatedCluster<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   node_id: Result<types::NodesHotThreadsWithNodeIdDeprecatedClusterNodeId, String>,
   ignore_idle_threads: Result<Option<bool>, String>,
   interval: Result<Option<types::NodesHotThreadsWithNodeIdDeprecatedClusterInterval>, String>,
@@ -8615,7 +8839,7 @@ pub struct NodesHotThreadsWithNodeIdDeprecatedCluster<'a> {
 }
 
 impl<'a> NodesHotThreadsWithNodeIdDeprecatedCluster<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       node_id: Err("node_id was not initialized".to_string()),
@@ -8697,7 +8921,7 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecatedCluster<'a> {
   }
 
   ///Sends a `GET` request to `/_cluster/nodes/{node_id}/hotthreads`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       node_id,
@@ -8744,24 +8968,28 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecatedCluster<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_pending_tasks`]
 ///
-///[`Client::cluster_pending_tasks`]: super::Client::cluster_pending_tasks
+///[`Client::cluster_pending_tasks`]: super::OsClient::cluster_pending_tasks
 #[derive(Debug, Clone)]
 pub struct ClusterPendingTasks<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::ClusterPendingTasksClusterManagerTimeout>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::ClusterPendingTasksMasterTimeout>, String>,
 }
 
 impl<'a> ClusterPendingTasks<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -8800,7 +9028,7 @@ impl<'a> ClusterPendingTasks<'a> {
   }
 
   ///Sends a `GET` request to `/_cluster/pending_tasks`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -8826,17 +9054,21 @@ impl<'a> ClusterPendingTasks<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_reroute`]
 ///
-///[`Client::cluster_reroute`]: super::Client::cluster_reroute
+///[`Client::cluster_reroute`]: super::OsClient::cluster_reroute
 #[derive(Debug, Clone)]
 pub struct ClusterReroute<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::ClusterRerouteClusterManagerTimeout>, String>,
   dry_run: Result<Option<bool>, String>,
   explain: Result<Option<bool>, String>,
@@ -8848,7 +9080,7 @@ pub struct ClusterReroute<'a> {
 }
 
 impl<'a> ClusterReroute<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -8941,7 +9173,7 @@ impl<'a> ClusterReroute<'a> {
   }
 
   ///Sends a `POST` request to `/_cluster/reroute`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -8989,26 +9221,30 @@ impl<'a> ClusterReroute<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_delete_weighted_routing`]
 ///
-///[`Client::cluster_delete_weighted_routing`]: super::Client::cluster_delete_weighted_routing
+///[`Client::cluster_delete_weighted_routing`]: super::OsClient::cluster_delete_weighted_routing
 #[derive(Debug, Clone)]
 pub struct ClusterDeleteWeightedRouting<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> ClusterDeleteWeightedRouting<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `DELETE` request to `/_cluster/routing/awareness/weights`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
     let url = format!("{}/_cluster/routing/awareness/weights", client.baseurl,);
     let request = client.client.delete(url).build()?;
@@ -9016,22 +9252,26 @@ impl<'a> ClusterDeleteWeightedRouting<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_get_weighted_routing`]
 ///
-///[`Client::cluster_get_weighted_routing`]: super::Client::cluster_get_weighted_routing
+///[`Client::cluster_get_weighted_routing`]: super::OsClient::cluster_get_weighted_routing
 #[derive(Debug, Clone)]
 pub struct ClusterGetWeightedRouting<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   attribute: Result<types::ClusterGetWeightedRoutingAttribute, String>,
 }
 
 impl<'a> ClusterGetWeightedRouting<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       attribute: Err("attribute was not initialized".to_string()),
@@ -9049,7 +9289,7 @@ impl<'a> ClusterGetWeightedRouting<'a> {
 
   ///Sends a `GET` request to
   /// `/_cluster/routing/awareness/{attribute}/weights`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, attribute } = self;
     let attribute = attribute.map_err(Error::InvalidRequest)?;
     let url = format!(
@@ -9062,22 +9302,26 @@ impl<'a> ClusterGetWeightedRouting<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_put_weighted_routing`]
 ///
-///[`Client::cluster_put_weighted_routing`]: super::Client::cluster_put_weighted_routing
+///[`Client::cluster_put_weighted_routing`]: super::OsClient::cluster_put_weighted_routing
 #[derive(Debug, Clone)]
 pub struct ClusterPutWeightedRouting<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   attribute: Result<types::ClusterPutWeightedRoutingAttribute, String>,
 }
 
 impl<'a> ClusterPutWeightedRouting<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       attribute: Err("attribute was not initialized".to_string()),
@@ -9095,7 +9339,7 @@ impl<'a> ClusterPutWeightedRouting<'a> {
 
   ///Sends a `PUT` request to
   /// `/_cluster/routing/awareness/{attribute}/weights`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, attribute } = self;
     let attribute = attribute.map_err(Error::InvalidRequest)?;
     let url = format!(
@@ -9108,17 +9352,21 @@ impl<'a> ClusterPutWeightedRouting<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_get_settings`]
 ///
-///[`Client::cluster_get_settings`]: super::Client::cluster_get_settings
+///[`Client::cluster_get_settings`]: super::OsClient::cluster_get_settings
 #[derive(Debug, Clone)]
 pub struct ClusterGetSettings<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::ClusterGetSettingsClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   include_defaults: Result<Option<bool>, String>,
@@ -9127,7 +9375,7 @@ pub struct ClusterGetSettings<'a> {
 }
 
 impl<'a> ClusterGetSettings<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -9188,7 +9436,7 @@ impl<'a> ClusterGetSettings<'a> {
   }
 
   ///Sends a `GET` request to `/_cluster/settings`
-  pub async fn send(self) -> Result<ResponseValue<types::ClusterGetSettingsResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::ClusterGetSettingsResponseContent>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -9232,17 +9480,21 @@ impl<'a> ClusterGetSettings<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_put_settings`]
 ///
-///[`Client::cluster_put_settings`]: super::Client::cluster_put_settings
+///[`Client::cluster_put_settings`]: super::OsClient::cluster_put_settings
 #[derive(Debug, Clone)]
 pub struct ClusterPutSettings<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::ClusterPutSettingsClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::ClusterPutSettingsMasterTimeout>, String>,
@@ -9251,7 +9503,7 @@ pub struct ClusterPutSettings<'a> {
 }
 
 impl<'a> ClusterPutSettings<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -9320,7 +9572,7 @@ impl<'a> ClusterPutSettings<'a> {
   }
 
   ///Sends a `PUT` request to `/_cluster/settings`
-  pub async fn send(self) -> Result<ResponseValue<types::ClusterPutSettingsResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::ClusterPutSettingsResponseContent>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -9364,17 +9616,21 @@ impl<'a> ClusterPutSettings<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_state`]
 ///
-///[`Client::cluster_state`]: super::Client::cluster_state
+///[`Client::cluster_state`]: super::OsClient::cluster_state
 #[derive(Debug, Clone)]
 pub struct ClusterState<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::ClusterStateClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -9387,7 +9643,7 @@ pub struct ClusterState<'a> {
 }
 
 impl<'a> ClusterState<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -9493,7 +9749,7 @@ impl<'a> ClusterState<'a> {
   }
 
   ///Sends a `GET` request to `/_cluster/state`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -9549,17 +9805,21 @@ impl<'a> ClusterState<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_state_with_metric`]
 ///
-///[`Client::cluster_state_with_metric`]: super::Client::cluster_state_with_metric
+///[`Client::cluster_state_with_metric`]: super::OsClient::cluster_state_with_metric
 #[derive(Debug, Clone)]
 pub struct ClusterStateWithMetric<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   metric: Result<types::ClusterStateWithMetricMetric, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::ClusterStateWithMetricClusterManagerTimeout>, String>,
@@ -9573,7 +9833,7 @@ pub struct ClusterStateWithMetric<'a> {
 }
 
 impl<'a> ClusterStateWithMetric<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       metric: Err("metric was not initialized".to_string()),
@@ -9688,7 +9948,7 @@ impl<'a> ClusterStateWithMetric<'a> {
   }
 
   ///Sends a `GET` request to `/_cluster/state/{metric}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       metric,
@@ -9746,17 +10006,21 @@ impl<'a> ClusterStateWithMetric<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_state_with_index_metric`]
 ///
-///[`Client::cluster_state_with_index_metric`]: super::Client::cluster_state_with_index_metric
+///[`Client::cluster_state_with_index_metric`]: super::OsClient::cluster_state_with_index_metric
 #[derive(Debug, Clone)]
 pub struct ClusterStateWithIndexMetric<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   metric: Result<types::ClusterStateWithIndexMetricMetric, String>,
   index: Result<types::ClusterStateWithIndexMetricIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
@@ -9771,7 +10035,7 @@ pub struct ClusterStateWithIndexMetric<'a> {
 }
 
 impl<'a> ClusterStateWithIndexMetric<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       metric: Err("metric was not initialized".to_string()),
@@ -9896,7 +10160,7 @@ impl<'a> ClusterStateWithIndexMetric<'a> {
   }
 
   ///Sends a `GET` request to `/_cluster/state/{metric}/{index}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       metric,
@@ -9961,23 +10225,27 @@ impl<'a> ClusterStateWithIndexMetric<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_stats`]
 ///
-///[`Client::cluster_stats`]: super::Client::cluster_stats
+///[`Client::cluster_stats`]: super::OsClient::cluster_stats
 #[derive(Debug, Clone)]
 pub struct ClusterStats<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   flat_settings: Result<Option<bool>, String>,
   timeout: Result<Option<types::ClusterStatsTimeout>, String>,
 }
 
 impl<'a> ClusterStats<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       flat_settings: Ok(None),
@@ -10006,7 +10274,7 @@ impl<'a> ClusterStats<'a> {
   }
 
   ///Sends a `GET` request to `/_cluster/stats`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       flat_settings,
@@ -10027,24 +10295,28 @@ impl<'a> ClusterStats<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_stats_with_node_id`]
 ///
-///[`Client::cluster_stats_with_node_id`]: super::Client::cluster_stats_with_node_id
+///[`Client::cluster_stats_with_node_id`]: super::OsClient::cluster_stats_with_node_id
 #[derive(Debug, Clone)]
 pub struct ClusterStatsWithNodeId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   node_id: Result<types::ClusterStatsWithNodeIdNodeId, String>,
   flat_settings: Result<Option<bool>, String>,
   timeout: Result<Option<types::ClusterStatsWithNodeIdTimeout>, String>,
 }
 
 impl<'a> ClusterStatsWithNodeId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       node_id: Err("node_id was not initialized".to_string()),
@@ -10083,7 +10355,7 @@ impl<'a> ClusterStatsWithNodeId<'a> {
   }
 
   ///Sends a `GET` request to `/_cluster/stats/nodes/{node_id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       node_id,
@@ -10110,24 +10382,28 @@ impl<'a> ClusterStatsWithNodeId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_post_voting_config_exclusions`]
 ///
-///[`Client::cluster_post_voting_config_exclusions`]: super::Client::cluster_post_voting_config_exclusions
+///[`Client::cluster_post_voting_config_exclusions`]: super::OsClient::cluster_post_voting_config_exclusions
 #[derive(Debug, Clone)]
 pub struct ClusterPostVotingConfigExclusions<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   node_ids: Result<Option<String>, String>,
   node_names: Result<Option<String>, String>,
   timeout: Result<Option<types::ClusterPostVotingConfigExclusionsTimeout>, String>,
 }
 
 impl<'a> ClusterPostVotingConfigExclusions<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       node_ids: Ok(None),
@@ -10167,7 +10443,7 @@ impl<'a> ClusterPostVotingConfigExclusions<'a> {
   }
 
   ///Sends a `POST` request to `/_cluster/voting_config_exclusions`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       node_ids,
@@ -10193,22 +10469,26 @@ impl<'a> ClusterPostVotingConfigExclusions<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_delete_voting_config_exclusions`]
 ///
-///[`Client::cluster_delete_voting_config_exclusions`]: super::Client::cluster_delete_voting_config_exclusions
+///[`Client::cluster_delete_voting_config_exclusions`]: super::OsClient::cluster_delete_voting_config_exclusions
 #[derive(Debug, Clone)]
 pub struct ClusterDeleteVotingConfigExclusions<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   wait_for_removal: Result<Option<bool>, String>,
 }
 
 impl<'a> ClusterDeleteVotingConfigExclusions<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       wait_for_removal: Ok(None),
@@ -10226,7 +10506,7 @@ impl<'a> ClusterDeleteVotingConfigExclusions<'a> {
   }
 
   ///Sends a `DELETE` request to `/_cluster/voting_config_exclusions`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       wait_for_removal,
@@ -10242,24 +10522,28 @@ impl<'a> ClusterDeleteVotingConfigExclusions<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_get_component_template`]
 ///
-///[`Client::cluster_get_component_template`]: super::Client::cluster_get_component_template
+///[`Client::cluster_get_component_template`]: super::OsClient::cluster_get_component_template
 #[derive(Debug, Clone)]
 pub struct ClusterGetComponentTemplate<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::ClusterGetComponentTemplateClusterManagerTimeout>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::ClusterGetComponentTemplateMasterTimeout>, String>,
 }
 
 impl<'a> ClusterGetComponentTemplate<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -10298,7 +10582,7 @@ impl<'a> ClusterGetComponentTemplate<'a> {
   }
 
   ///Sends a `GET` request to `/_component_template`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -10324,17 +10608,21 @@ impl<'a> ClusterGetComponentTemplate<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_get_component_template_with_name`]
 ///
-///[`Client::cluster_get_component_template_with_name`]: super::Client::cluster_get_component_template_with_name
+///[`Client::cluster_get_component_template_with_name`]: super::OsClient::cluster_get_component_template_with_name
 #[derive(Debug, Clone)]
 pub struct ClusterGetComponentTemplateWithName<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::ClusterGetComponentTemplateWithNameName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterGetComponentTemplateWithNameClusterManagerTimeout>, String>,
   local: Result<Option<bool>, String>,
@@ -10342,7 +10630,7 @@ pub struct ClusterGetComponentTemplateWithName<'a> {
 }
 
 impl<'a> ClusterGetComponentTemplateWithName<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -10391,7 +10679,7 @@ impl<'a> ClusterGetComponentTemplateWithName<'a> {
   }
 
   ///Sends a `GET` request to `/_component_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -10423,17 +10711,21 @@ impl<'a> ClusterGetComponentTemplateWithName<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_put_component_template_put`]
 ///
-///[`Client::cluster_put_component_template_put`]: super::Client::cluster_put_component_template_put
+///[`Client::cluster_put_component_template_put`]: super::OsClient::cluster_put_component_template_put
 #[derive(Debug, Clone)]
 pub struct ClusterPutComponentTemplatePut<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::ClusterPutComponentTemplatePutName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterPutComponentTemplatePutClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
@@ -10443,7 +10735,7 @@ pub struct ClusterPutComponentTemplatePut<'a> {
 }
 
 impl<'a> ClusterPutComponentTemplatePut<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -10514,7 +10806,7 @@ impl<'a> ClusterPutComponentTemplatePut<'a> {
   }
 
   ///Sends a `PUT` request to `/_component_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -10553,17 +10845,21 @@ impl<'a> ClusterPutComponentTemplatePut<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_put_component_template_post`]
 ///
-///[`Client::cluster_put_component_template_post`]: super::Client::cluster_put_component_template_post
+///[`Client::cluster_put_component_template_post`]: super::OsClient::cluster_put_component_template_post
 #[derive(Debug, Clone)]
 pub struct ClusterPutComponentTemplatePost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::ClusterPutComponentTemplatePostName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterPutComponentTemplatePostClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
@@ -10573,7 +10869,7 @@ pub struct ClusterPutComponentTemplatePost<'a> {
 }
 
 impl<'a> ClusterPutComponentTemplatePost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -10643,7 +10939,7 @@ impl<'a> ClusterPutComponentTemplatePost<'a> {
   }
 
   ///Sends a `POST` request to `/_component_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -10682,17 +10978,21 @@ impl<'a> ClusterPutComponentTemplatePost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_delete_component_template`]
 ///
-///[`Client::cluster_delete_component_template`]: super::Client::cluster_delete_component_template
+///[`Client::cluster_delete_component_template`]: super::OsClient::cluster_delete_component_template
 #[derive(Debug, Clone)]
 pub struct ClusterDeleteComponentTemplate<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::ClusterDeleteComponentTemplateName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterDeleteComponentTemplateClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::ClusterDeleteComponentTemplateMasterTimeout>, String>,
@@ -10700,7 +11000,7 @@ pub struct ClusterDeleteComponentTemplate<'a> {
 }
 
 impl<'a> ClusterDeleteComponentTemplate<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -10750,7 +11050,7 @@ impl<'a> ClusterDeleteComponentTemplate<'a> {
   }
 
   ///Sends a `DELETE` request to `/_component_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -10782,24 +11082,28 @@ impl<'a> ClusterDeleteComponentTemplate<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_exists_component_template`]
 ///
-///[`Client::cluster_exists_component_template`]: super::Client::cluster_exists_component_template
+///[`Client::cluster_exists_component_template`]: super::OsClient::cluster_exists_component_template
 #[derive(Debug, Clone)]
 pub struct ClusterExistsComponentTemplate<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::ClusterExistsComponentTemplateName, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::ClusterExistsComponentTemplateMasterTimeout>, String>,
 }
 
 impl<'a> ClusterExistsComponentTemplate<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -10838,7 +11142,7 @@ impl<'a> ClusterExistsComponentTemplate<'a> {
   }
 
   ///Sends a `HEAD` request to `/_component_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -10865,17 +11169,21 @@ impl<'a> ClusterExistsComponentTemplate<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::count_get`]
 ///
-///[`Client::count_get`]: super::Client::count_get
+///[`Client::count_get`]: super::OsClient::count_get
 #[derive(Debug, Clone)]
 pub struct CountGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   analyze_wildcard: Result<Option<bool>, String>,
   analyzer: Result<Option<String>, String>,
@@ -10893,7 +11201,7 @@ pub struct CountGet<'a> {
 }
 
 impl<'a> CountGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -11054,7 +11362,7 @@ impl<'a> CountGet<'a> {
   }
 
   ///Sends a `GET` request to `/_count`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -11135,17 +11443,21 @@ impl<'a> CountGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::count_post`]
 ///
-///[`Client::count_post`]: super::Client::count_post
+///[`Client::count_post`]: super::OsClient::count_post
 #[derive(Debug, Clone)]
 pub struct CountPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   analyze_wildcard: Result<Option<bool>, String>,
   analyzer: Result<Option<String>, String>,
@@ -11164,7 +11476,7 @@ pub struct CountPost<'a> {
 }
 
 impl<'a> CountPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -11335,7 +11647,7 @@ impl<'a> CountPost<'a> {
   }
 
   ///Sends a `POST` request to `/_count`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -11418,26 +11730,30 @@ impl<'a> CountPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::dangling_indices_list_dangling_indices`]
 ///
-///[`Client::dangling_indices_list_dangling_indices`]: super::Client::dangling_indices_list_dangling_indices
+///[`Client::dangling_indices_list_dangling_indices`]: super::OsClient::dangling_indices_list_dangling_indices
 #[derive(Debug, Clone)]
 pub struct DanglingIndicesListDanglingIndices<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> DanglingIndicesListDanglingIndices<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_dangling`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
     let url = format!("{}/_dangling", client.baseurl,);
     let request = client.client.get(url).build()?;
@@ -11445,17 +11761,21 @@ impl<'a> DanglingIndicesListDanglingIndices<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::dangling_indices_import_dangling_index`]
 ///
-///[`Client::dangling_indices_import_dangling_index`]: super::Client::dangling_indices_import_dangling_index
+///[`Client::dangling_indices_import_dangling_index`]: super::OsClient::dangling_indices_import_dangling_index
 #[derive(Debug, Clone)]
 pub struct DanglingIndicesImportDanglingIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index_uuid: Result<types::DanglingIndicesImportDanglingIndexIndexUuid, String>,
   accept_data_loss: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::DanglingIndicesImportDanglingIndexClusterManagerTimeout>, String>,
@@ -11464,7 +11784,7 @@ pub struct DanglingIndicesImportDanglingIndex<'a> {
 }
 
 impl<'a> DanglingIndicesImportDanglingIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index_uuid: Err("index_uuid was not initialized".to_string()),
@@ -11524,7 +11844,7 @@ impl<'a> DanglingIndicesImportDanglingIndex<'a> {
   }
 
   ///Sends a `POST` request to `/_dangling/{index_uuid}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index_uuid,
@@ -11557,17 +11877,21 @@ impl<'a> DanglingIndicesImportDanglingIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::dangling_indices_delete_dangling_index`]
 ///
-///[`Client::dangling_indices_delete_dangling_index`]: super::Client::dangling_indices_delete_dangling_index
+///[`Client::dangling_indices_delete_dangling_index`]: super::OsClient::dangling_indices_delete_dangling_index
 #[derive(Debug, Clone)]
 pub struct DanglingIndicesDeleteDanglingIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index_uuid: Result<types::DanglingIndicesDeleteDanglingIndexIndexUuid, String>,
   accept_data_loss: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::DanglingIndicesDeleteDanglingIndexClusterManagerTimeout>, String>,
@@ -11576,7 +11900,7 @@ pub struct DanglingIndicesDeleteDanglingIndex<'a> {
 }
 
 impl<'a> DanglingIndicesDeleteDanglingIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index_uuid: Err("index_uuid was not initialized".to_string()),
@@ -11636,7 +11960,7 @@ impl<'a> DanglingIndicesDeleteDanglingIndex<'a> {
   }
 
   ///Sends a `DELETE` request to `/_dangling/{index_uuid}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index_uuid,
@@ -11669,26 +11993,30 @@ impl<'a> DanglingIndicesDeleteDanglingIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_data_stream`]
 ///
-///[`Client::indices_get_data_stream`]: super::Client::indices_get_data_stream
+///[`Client::indices_get_data_stream`]: super::OsClient::indices_get_data_stream
 #[derive(Debug, Clone)]
 pub struct IndicesGetDataStream<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> IndicesGetDataStream<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_data_stream`
-  pub async fn send(self) -> Result<ResponseValue<types::IndicesGetDataStreamResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::IndicesGetDataStreamResponseContent>, Error> {
     let Self { client } = self;
     let url = format!("{}/_data_stream", client.baseurl,);
     let request = client
@@ -11703,26 +12031,30 @@ impl<'a> IndicesGetDataStream<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_data_streams_stats`]
 ///
-///[`Client::indices_data_streams_stats`]: super::Client::indices_data_streams_stats
+///[`Client::indices_data_streams_stats`]: super::OsClient::indices_data_streams_stats
 #[derive(Debug, Clone)]
 pub struct IndicesDataStreamsStats<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> IndicesDataStreamsStats<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_data_stream/_stats`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
     let url = format!("{}/_data_stream/_stats", client.baseurl,);
     let request = client.client.get(url).build()?;
@@ -11730,22 +12062,26 @@ impl<'a> IndicesDataStreamsStats<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_data_stream_with_name`]
 ///
-///[`Client::indices_get_data_stream_with_name`]: super::Client::indices_get_data_stream_with_name
+///[`Client::indices_get_data_stream_with_name`]: super::OsClient::indices_get_data_stream_with_name
 #[derive(Debug, Clone)]
 pub struct IndicesGetDataStreamWithName<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesGetDataStreamWithNameName, String>,
 }
 
 impl<'a> IndicesGetDataStreamWithName<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -11762,7 +12098,7 @@ impl<'a> IndicesGetDataStreamWithName<'a> {
   }
 
   ///Sends a `GET` request to `/_data_stream/{name}`
-  pub async fn send(self) -> Result<ResponseValue<types::IndicesGetDataStreamWithNameResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::IndicesGetDataStreamWithNameResponseContent>, Error> {
     let Self { client, name } = self;
     let name = name.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_data_stream/{}", client.baseurl, encode_path(&name.to_string()),);
@@ -11778,23 +12114,27 @@ impl<'a> IndicesGetDataStreamWithName<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_create_data_stream`]
 ///
-///[`Client::indices_create_data_stream`]: super::Client::indices_create_data_stream
+///[`Client::indices_create_data_stream`]: super::OsClient::indices_create_data_stream
 #[derive(Debug, Clone)]
 pub struct IndicesCreateDataStream<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesCreateDataStreamName, String>,
   body: Result<types::IndicesCreateDataStreamBodyParams, String>,
 }
 
 impl<'a> IndicesCreateDataStream<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -11821,7 +12161,7 @@ impl<'a> IndicesCreateDataStream<'a> {
   }
 
   ///Sends a `PUT` request to `/_data_stream/{name}`
-  pub async fn send(self) -> Result<ResponseValue<types::IndicesCreateDataStreamResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::IndicesCreateDataStreamResponseContent>, Error> {
     let Self { client, name, body } = self;
     let name = name.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
@@ -11839,22 +12179,26 @@ impl<'a> IndicesCreateDataStream<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_delete_data_stream`]
 ///
-///[`Client::indices_delete_data_stream`]: super::Client::indices_delete_data_stream
+///[`Client::indices_delete_data_stream`]: super::OsClient::indices_delete_data_stream
 #[derive(Debug, Clone)]
 pub struct IndicesDeleteDataStream<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesDeleteDataStreamName, String>,
 }
 
 impl<'a> IndicesDeleteDataStream<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -11871,7 +12215,7 @@ impl<'a> IndicesDeleteDataStream<'a> {
   }
 
   ///Sends a `DELETE` request to `/_data_stream/{name}`
-  pub async fn send(self) -> Result<ResponseValue<types::IndicesDeleteDataStreamResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::IndicesDeleteDataStreamResponseContent>, Error> {
     let Self { client, name } = self;
     let name = name.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_data_stream/{}", client.baseurl, encode_path(&name.to_string()),);
@@ -11887,22 +12231,26 @@ impl<'a> IndicesDeleteDataStream<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_data_streams_stats_with_name`]
 ///
-///[`Client::indices_data_streams_stats_with_name`]: super::Client::indices_data_streams_stats_with_name
+///[`Client::indices_data_streams_stats_with_name`]: super::OsClient::indices_data_streams_stats_with_name
 #[derive(Debug, Clone)]
 pub struct IndicesDataStreamsStatsWithName<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesDataStreamsStatsWithNameName, String>,
 }
 
 impl<'a> IndicesDataStreamsStatsWithName<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -11919,7 +12267,7 @@ impl<'a> IndicesDataStreamsStatsWithName<'a> {
   }
 
   ///Sends a `GET` request to `/_data_stream/{name}/_stats`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, name } = self;
     let name = name.map_err(Error::InvalidRequest)?;
     let url = format!(
@@ -11932,23 +12280,27 @@ impl<'a> IndicesDataStreamsStatsWithName<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::delete_by_query_rethrottle`]
 ///
-///[`Client::delete_by_query_rethrottle`]: super::Client::delete_by_query_rethrottle
+///[`Client::delete_by_query_rethrottle`]: super::OsClient::delete_by_query_rethrottle
 #[derive(Debug, Clone)]
 pub struct DeleteByQueryRethrottle<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   task_id: Result<types::DeleteByQueryRethrottleTaskId, String>,
   requests_per_second: Result<i32, String>,
 }
 
 impl<'a> DeleteByQueryRethrottle<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       task_id: Err("task_id was not initialized".to_string()),
@@ -11975,7 +12327,7 @@ impl<'a> DeleteByQueryRethrottle<'a> {
   }
 
   ///Sends a `POST` request to `/_delete_by_query/{task_id}/_rethrottle`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       task_id,
@@ -11995,17 +12347,21 @@ impl<'a> DeleteByQueryRethrottle<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::field_caps_get`]
 ///
-///[`Client::field_caps_get`]: super::Client::field_caps_get
+///[`Client::field_caps_get`]: super::OsClient::field_caps_get
 #[derive(Debug, Clone)]
 pub struct FieldCapsGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   fields: Result<Option<Vec<String>>, String>,
@@ -12014,7 +12370,7 @@ pub struct FieldCapsGet<'a> {
 }
 
 impl<'a> FieldCapsGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -12076,7 +12432,7 @@ impl<'a> FieldCapsGet<'a> {
   }
 
   ///Sends a `GET` request to `/_field_caps`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -12112,17 +12468,21 @@ impl<'a> FieldCapsGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::field_caps_post`]
 ///
-///[`Client::field_caps_post`]: super::Client::field_caps_post
+///[`Client::field_caps_post`]: super::OsClient::field_caps_post
 #[derive(Debug, Clone)]
 pub struct FieldCapsPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   fields: Result<Option<Vec<String>>, String>,
@@ -12132,7 +12492,7 @@ pub struct FieldCapsPost<'a> {
 }
 
 impl<'a> FieldCapsPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -12204,7 +12564,7 @@ impl<'a> FieldCapsPost<'a> {
   }
 
   ///Sends a `POST` request to `/_field_caps`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -12242,17 +12602,21 @@ impl<'a> FieldCapsPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_flush_get`]
 ///
-///[`Client::indices_flush_get`]: super::Client::indices_flush_get
+///[`Client::indices_flush_get`]: super::OsClient::indices_flush_get
 #[derive(Debug, Clone)]
 pub struct IndicesFlushGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   force: Result<Option<bool>, String>,
@@ -12261,7 +12625,7 @@ pub struct IndicesFlushGet<'a> {
 }
 
 impl<'a> IndicesFlushGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -12323,7 +12687,7 @@ impl<'a> IndicesFlushGet<'a> {
   }
 
   ///Sends a `GET` request to `/_flush`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -12359,17 +12723,21 @@ impl<'a> IndicesFlushGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_flush_post`]
 ///
-///[`Client::indices_flush_post`]: super::Client::indices_flush_post
+///[`Client::indices_flush_post`]: super::OsClient::indices_flush_post
 #[derive(Debug, Clone)]
 pub struct IndicesFlushPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   force: Result<Option<bool>, String>,
@@ -12378,7 +12746,7 @@ pub struct IndicesFlushPost<'a> {
 }
 
 impl<'a> IndicesFlushPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -12440,7 +12808,7 @@ impl<'a> IndicesFlushPost<'a> {
   }
 
   ///Sends a `POST` request to `/_flush`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -12476,17 +12844,21 @@ impl<'a> IndicesFlushPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_forcemerge`]
 ///
-///[`Client::indices_forcemerge`]: super::Client::indices_forcemerge
+///[`Client::indices_forcemerge`]: super::OsClient::indices_forcemerge
 #[derive(Debug, Clone)]
 pub struct IndicesForcemerge<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   flush: Result<Option<bool>, String>,
@@ -12496,7 +12868,7 @@ pub struct IndicesForcemerge<'a> {
 }
 
 impl<'a> IndicesForcemerge<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -12569,7 +12941,7 @@ impl<'a> IndicesForcemerge<'a> {
   }
 
   ///Sends a `POST` request to `/_forcemerge`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -12610,17 +12982,21 @@ impl<'a> IndicesForcemerge<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_index_template`]
 ///
-///[`Client::indices_get_index_template`]: super::Client::indices_get_index_template
+///[`Client::indices_get_index_template`]: super::OsClient::indices_get_index_template
 #[derive(Debug, Clone)]
 pub struct IndicesGetIndexTemplate<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::IndicesGetIndexTemplateClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
@@ -12628,7 +13004,7 @@ pub struct IndicesGetIndexTemplate<'a> {
 }
 
 impl<'a> IndicesGetIndexTemplate<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -12678,7 +13054,7 @@ impl<'a> IndicesGetIndexTemplate<'a> {
   }
 
   ///Sends a `GET` request to `/_index_template`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -12709,17 +13085,21 @@ impl<'a> IndicesGetIndexTemplate<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_simulate_template`]
 ///
-///[`Client::indices_simulate_template`]: super::Client::indices_simulate_template
+///[`Client::indices_simulate_template`]: super::OsClient::indices_simulate_template
 #[derive(Debug, Clone)]
 pub struct IndicesSimulateTemplate<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cause: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<types::IndicesSimulateTemplateClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
@@ -12728,7 +13108,7 @@ pub struct IndicesSimulateTemplate<'a> {
 }
 
 impl<'a> IndicesSimulateTemplate<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cause: Ok(None),
@@ -12788,7 +13168,7 @@ impl<'a> IndicesSimulateTemplate<'a> {
   }
 
   ///Sends a `POST` request to `/_index_template/_simulate`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       cause,
@@ -12821,17 +13201,21 @@ impl<'a> IndicesSimulateTemplate<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_simulate_template_with_name`]
 ///
-///[`Client::indices_simulate_template_with_name`]: super::Client::indices_simulate_template_with_name
+///[`Client::indices_simulate_template_with_name`]: super::OsClient::indices_simulate_template_with_name
 #[derive(Debug, Clone)]
 pub struct IndicesSimulateTemplateWithName<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesSimulateTemplateWithNameName, String>,
   cause: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<types::IndicesSimulateTemplateWithNameClusterManagerTimeout>, String>,
@@ -12841,7 +13225,7 @@ pub struct IndicesSimulateTemplateWithName<'a> {
 }
 
 impl<'a> IndicesSimulateTemplateWithName<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -12911,7 +13295,7 @@ impl<'a> IndicesSimulateTemplateWithName<'a> {
   }
 
   ///Sends a `POST` request to `/_index_template/_simulate/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -12950,17 +13334,21 @@ impl<'a> IndicesSimulateTemplateWithName<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_simulate_index_template`]
 ///
-///[`Client::indices_simulate_index_template`]: super::Client::indices_simulate_index_template
+///[`Client::indices_simulate_index_template`]: super::OsClient::indices_simulate_index_template
 #[derive(Debug, Clone)]
 pub struct IndicesSimulateIndexTemplate<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesSimulateIndexTemplateName, String>,
   cause: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<types::IndicesSimulateIndexTemplateClusterManagerTimeout>, String>,
@@ -12970,7 +13358,7 @@ pub struct IndicesSimulateIndexTemplate<'a> {
 }
 
 impl<'a> IndicesSimulateIndexTemplate<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -13040,7 +13428,7 @@ impl<'a> IndicesSimulateIndexTemplate<'a> {
   }
 
   ///Sends a `POST` request to `/_index_template/_simulate_index/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -13079,17 +13467,21 @@ impl<'a> IndicesSimulateIndexTemplate<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_index_template_with_name`]
 ///
-///[`Client::indices_get_index_template_with_name`]: super::Client::indices_get_index_template_with_name
+///[`Client::indices_get_index_template_with_name`]: super::OsClient::indices_get_index_template_with_name
 #[derive(Debug, Clone)]
 pub struct IndicesGetIndexTemplateWithName<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesGetIndexTemplateWithNameName, String>,
   cluster_manager_timeout: Result<Option<types::IndicesGetIndexTemplateWithNameClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
@@ -13098,7 +13490,7 @@ pub struct IndicesGetIndexTemplateWithName<'a> {
 }
 
 impl<'a> IndicesGetIndexTemplateWithName<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -13158,7 +13550,7 @@ impl<'a> IndicesGetIndexTemplateWithName<'a> {
   }
 
   ///Sends a `GET` request to `/_index_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -13191,17 +13583,21 @@ impl<'a> IndicesGetIndexTemplateWithName<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_put_index_template_put`]
 ///
-///[`Client::indices_put_index_template_put`]: super::Client::indices_put_index_template_put
+///[`Client::indices_put_index_template_put`]: super::OsClient::indices_put_index_template_put
 #[derive(Debug, Clone)]
 pub struct IndicesPutIndexTemplatePut<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesPutIndexTemplatePutName, String>,
   cause: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<types::IndicesPutIndexTemplatePutClusterManagerTimeout>, String>,
@@ -13211,7 +13607,7 @@ pub struct IndicesPutIndexTemplatePut<'a> {
 }
 
 impl<'a> IndicesPutIndexTemplatePut<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -13281,7 +13677,7 @@ impl<'a> IndicesPutIndexTemplatePut<'a> {
   }
 
   ///Sends a `PUT` request to `/_index_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -13316,17 +13712,21 @@ impl<'a> IndicesPutIndexTemplatePut<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_put_index_template_post`]
 ///
-///[`Client::indices_put_index_template_post`]: super::Client::indices_put_index_template_post
+///[`Client::indices_put_index_template_post`]: super::OsClient::indices_put_index_template_post
 #[derive(Debug, Clone)]
 pub struct IndicesPutIndexTemplatePost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesPutIndexTemplatePostName, String>,
   cause: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<types::IndicesPutIndexTemplatePostClusterManagerTimeout>, String>,
@@ -13336,7 +13736,7 @@ pub struct IndicesPutIndexTemplatePost<'a> {
 }
 
 impl<'a> IndicesPutIndexTemplatePost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -13406,7 +13806,7 @@ impl<'a> IndicesPutIndexTemplatePost<'a> {
   }
 
   ///Sends a `POST` request to `/_index_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -13441,17 +13841,21 @@ impl<'a> IndicesPutIndexTemplatePost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_delete_index_template`]
 ///
-///[`Client::indices_delete_index_template`]: super::Client::indices_delete_index_template
+///[`Client::indices_delete_index_template`]: super::OsClient::indices_delete_index_template
 #[derive(Debug, Clone)]
 pub struct IndicesDeleteIndexTemplate<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesDeleteIndexTemplateName, String>,
   cluster_manager_timeout: Result<Option<types::IndicesDeleteIndexTemplateClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IndicesDeleteIndexTemplateMasterTimeout>, String>,
@@ -13459,7 +13863,7 @@ pub struct IndicesDeleteIndexTemplate<'a> {
 }
 
 impl<'a> IndicesDeleteIndexTemplate<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -13508,7 +13912,7 @@ impl<'a> IndicesDeleteIndexTemplate<'a> {
   }
 
   ///Sends a `DELETE` request to `/_index_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -13536,17 +13940,21 @@ impl<'a> IndicesDeleteIndexTemplate<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_exists_index_template`]
 ///
-///[`Client::indices_exists_index_template`]: super::Client::indices_exists_index_template
+///[`Client::indices_exists_index_template`]: super::OsClient::indices_exists_index_template
 #[derive(Debug, Clone)]
 pub struct IndicesExistsIndexTemplate<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesExistsIndexTemplateName, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
@@ -13554,7 +13962,7 @@ pub struct IndicesExistsIndexTemplate<'a> {
 }
 
 impl<'a> IndicesExistsIndexTemplate<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -13604,7 +14012,7 @@ impl<'a> IndicesExistsIndexTemplate<'a> {
   }
 
   ///Sends a `HEAD` request to `/_index_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -13632,23 +14040,27 @@ impl<'a> IndicesExistsIndexTemplate<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::ingest_get_pipeline`]
 ///
-///[`Client::ingest_get_pipeline`]: super::Client::ingest_get_pipeline
+///[`Client::ingest_get_pipeline`]: super::OsClient::ingest_get_pipeline
 #[derive(Debug, Clone)]
 pub struct IngestGetPipeline<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::IngestGetPipelineClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IngestGetPipelineMasterTimeout>, String>,
 }
 
 impl<'a> IngestGetPipeline<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -13676,7 +14088,7 @@ impl<'a> IngestGetPipeline<'a> {
   }
 
   ///Sends a `GET` request to `/_ingest/pipeline`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -13697,22 +14109,26 @@ impl<'a> IngestGetPipeline<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::ingest_simulate_get`]
 ///
-///[`Client::ingest_simulate_get`]: super::Client::ingest_simulate_get
+///[`Client::ingest_simulate_get`]: super::OsClient::ingest_simulate_get
 #[derive(Debug, Clone)]
 pub struct IngestSimulateGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   verbose: Result<Option<bool>, String>,
 }
 
 impl<'a> IngestSimulateGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       verbose: Ok(None),
@@ -13730,7 +14146,7 @@ impl<'a> IngestSimulateGet<'a> {
   }
 
   ///Sends a `GET` request to `/_ingest/pipeline/_simulate`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, verbose } = self;
     let verbose = verbose.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_ingest/pipeline/_simulate", client.baseurl,);
@@ -13743,23 +14159,27 @@ impl<'a> IngestSimulateGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::ingest_simulate_post`]
 ///
-///[`Client::ingest_simulate_post`]: super::Client::ingest_simulate_post
+///[`Client::ingest_simulate_post`]: super::OsClient::ingest_simulate_post
 #[derive(Debug, Clone)]
 pub struct IngestSimulatePost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   verbose: Result<Option<bool>, String>,
   body: Result<types::IngestSimulateBodyParams, String>,
 }
 
 impl<'a> IngestSimulatePost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       verbose: Ok(None),
@@ -13787,7 +14207,7 @@ impl<'a> IngestSimulatePost<'a> {
   }
 
   ///Sends a `POST` request to `/_ingest/pipeline/_simulate`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, verbose, body } = self;
     let verbose = verbose.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
@@ -13801,24 +14221,28 @@ impl<'a> IngestSimulatePost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::ingest_get_pipeline_with_id`]
 ///
-///[`Client::ingest_get_pipeline_with_id`]: super::Client::ingest_get_pipeline_with_id
+///[`Client::ingest_get_pipeline_with_id`]: super::OsClient::ingest_get_pipeline_with_id
 #[derive(Debug, Clone)]
 pub struct IngestGetPipelineWithId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   id: Result<types::IngestGetPipelineWithIdId, String>,
   cluster_manager_timeout: Result<Option<types::IngestGetPipelineWithIdClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IngestGetPipelineWithIdMasterTimeout>, String>,
 }
 
 impl<'a> IngestGetPipelineWithId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       id: Err("id was not initialized".to_string()),
@@ -13856,7 +14280,7 @@ impl<'a> IngestGetPipelineWithId<'a> {
   }
 
   ///Sends a `GET` request to `/_ingest/pipeline/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       id,
@@ -13879,17 +14303,21 @@ impl<'a> IngestGetPipelineWithId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::ingest_put_pipeline`]
 ///
-///[`Client::ingest_put_pipeline`]: super::Client::ingest_put_pipeline
+///[`Client::ingest_put_pipeline`]: super::OsClient::ingest_put_pipeline
 #[derive(Debug, Clone)]
 pub struct IngestPutPipeline<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   id: Result<types::IngestPutPipelineId, String>,
   cluster_manager_timeout: Result<Option<types::IngestPutPipelineClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IngestPutPipelineMasterTimeout>, String>,
@@ -13898,7 +14326,7 @@ pub struct IngestPutPipeline<'a> {
 }
 
 impl<'a> IngestPutPipeline<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       id: Err("id was not initialized".to_string()),
@@ -13957,7 +14385,7 @@ impl<'a> IngestPutPipeline<'a> {
   }
 
   ///Sends a `PUT` request to `/_ingest/pipeline/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       id,
@@ -13987,17 +14415,21 @@ impl<'a> IngestPutPipeline<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::ingest_delete_pipeline`]
 ///
-///[`Client::ingest_delete_pipeline`]: super::Client::ingest_delete_pipeline
+///[`Client::ingest_delete_pipeline`]: super::OsClient::ingest_delete_pipeline
 #[derive(Debug, Clone)]
 pub struct IngestDeletePipeline<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   id: Result<types::IngestDeletePipelineId, String>,
   cluster_manager_timeout: Result<Option<types::IngestDeletePipelineClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IngestDeletePipelineMasterTimeout>, String>,
@@ -14005,7 +14437,7 @@ pub struct IngestDeletePipeline<'a> {
 }
 
 impl<'a> IngestDeletePipeline<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       id: Err("id was not initialized".to_string()),
@@ -14054,7 +14486,7 @@ impl<'a> IngestDeletePipeline<'a> {
   }
 
   ///Sends a `DELETE` request to `/_ingest/pipeline/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       id,
@@ -14082,23 +14514,27 @@ impl<'a> IngestDeletePipeline<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::ingest_simulate_get_with_id`]
 ///
-///[`Client::ingest_simulate_get_with_id`]: super::Client::ingest_simulate_get_with_id
+///[`Client::ingest_simulate_get_with_id`]: super::OsClient::ingest_simulate_get_with_id
 #[derive(Debug, Clone)]
 pub struct IngestSimulateGetWithId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   id: Result<types::IngestSimulateGetWithIdId, String>,
   verbose: Result<Option<bool>, String>,
 }
 
 impl<'a> IngestSimulateGetWithId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       id: Err("id was not initialized".to_string()),
@@ -14126,7 +14562,7 @@ impl<'a> IngestSimulateGetWithId<'a> {
   }
 
   ///Sends a `GET` request to `/_ingest/pipeline/{id}/_simulate`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, id, verbose } = self;
     let id = id.map_err(Error::InvalidRequest)?;
     let verbose = verbose.map_err(Error::InvalidRequest)?;
@@ -14144,24 +14580,28 @@ impl<'a> IngestSimulateGetWithId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::ingest_simulate_post_with_id`]
 ///
-///[`Client::ingest_simulate_post_with_id`]: super::Client::ingest_simulate_post_with_id
+///[`Client::ingest_simulate_post_with_id`]: super::OsClient::ingest_simulate_post_with_id
 #[derive(Debug, Clone)]
 pub struct IngestSimulatePostWithId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   id: Result<types::IngestSimulatePostWithIdId, String>,
   verbose: Result<Option<bool>, String>,
   body: Result<types::IngestSimulateBodyParams, String>,
 }
 
 impl<'a> IngestSimulatePostWithId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       id: Err("id was not initialized".to_string()),
@@ -14199,7 +14639,7 @@ impl<'a> IngestSimulatePostWithId<'a> {
   }
 
   ///Sends a `POST` request to `/_ingest/pipeline/{id}/_simulate`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       id,
@@ -14223,26 +14663,30 @@ impl<'a> IngestSimulatePostWithId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::ingest_processor_grok`]
 ///
-///[`Client::ingest_processor_grok`]: super::Client::ingest_processor_grok
+///[`Client::ingest_processor_grok`]: super::OsClient::ingest_processor_grok
 #[derive(Debug, Clone)]
 pub struct IngestProcessorGrok<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> IngestProcessorGrok<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_ingest/processor/grok`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
     let url = format!("{}/_ingest/processor/grok", client.baseurl,);
     let request = client.client.get(url).build()?;
@@ -14250,17 +14694,21 @@ impl<'a> IngestProcessorGrok<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_mapping`]
 ///
-///[`Client::indices_get_mapping`]: super::Client::indices_get_mapping
+///[`Client::indices_get_mapping`]: super::OsClient::indices_get_mapping
 #[derive(Debug, Clone)]
 pub struct IndicesGetMapping<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::IndicesGetMappingClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -14270,7 +14718,7 @@ pub struct IndicesGetMapping<'a> {
 }
 
 impl<'a> IndicesGetMapping<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -14342,7 +14790,7 @@ impl<'a> IndicesGetMapping<'a> {
   }
 
   ///Sends a `GET` request to `/_mapping`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -14383,17 +14831,21 @@ impl<'a> IndicesGetMapping<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_field_mapping`]
 ///
-///[`Client::indices_get_field_mapping`]: super::Client::indices_get_field_mapping
+///[`Client::indices_get_field_mapping`]: super::OsClient::indices_get_field_mapping
 #[derive(Debug, Clone)]
 pub struct IndicesGetFieldMapping<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   fields: Result<types::IndicesGetFieldMappingFields, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -14403,7 +14855,7 @@ pub struct IndicesGetFieldMapping<'a> {
 }
 
 impl<'a> IndicesGetFieldMapping<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       fields: Err("fields was not initialized".to_string()),
@@ -14475,7 +14927,7 @@ impl<'a> IndicesGetFieldMapping<'a> {
   }
 
   ///Sends a `GET` request to `/_mapping/field/{fields}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       fields,
@@ -14513,17 +14965,21 @@ impl<'a> IndicesGetFieldMapping<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::mget_get`]
 ///
-///[`Client::mget_get`]: super::Client::mget_get
+///[`Client::mget_get`]: super::OsClient::mget_get
 #[derive(Debug, Clone)]
 pub struct MgetGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -14535,7 +14991,7 @@ pub struct MgetGet<'a> {
 }
 
 impl<'a> MgetGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       source: Ok(None),
@@ -14630,7 +15086,7 @@ impl<'a> MgetGet<'a> {
   }
 
   ///Sends a `GET` request to `/_mget`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       source,
@@ -14681,17 +15137,21 @@ impl<'a> MgetGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::mget_post`]
 ///
-///[`Client::mget_post`]: super::Client::mget_post
+///[`Client::mget_post`]: super::OsClient::mget_post
 #[derive(Debug, Clone)]
 pub struct MgetPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -14704,7 +15164,7 @@ pub struct MgetPost<'a> {
 }
 
 impl<'a> MgetPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       source: Ok(None),
@@ -14809,7 +15269,7 @@ impl<'a> MgetPost<'a> {
   }
 
   ///Sends a `POST` request to `/_mget`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       source,
@@ -14862,17 +15322,21 @@ impl<'a> MgetPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::msearch_get`]
 ///
-///[`Client::msearch_get`]: super::Client::msearch_get
+///[`Client::msearch_get`]: super::OsClient::msearch_get
 #[derive(Debug, Clone)]
 pub struct MsearchGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   ccs_minimize_roundtrips: Result<Option<bool>, String>,
   max_concurrent_searches: Result<Option<i32>, String>,
   max_concurrent_shard_requests: Result<Option<i32>, String>,
@@ -14883,7 +15347,7 @@ pub struct MsearchGet<'a> {
 }
 
 impl<'a> MsearchGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       ccs_minimize_roundtrips: Ok(None),
@@ -14967,7 +15431,7 @@ impl<'a> MsearchGet<'a> {
   }
 
   ///Sends a `GET` request to `/_msearch`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       ccs_minimize_roundtrips,
@@ -15013,17 +15477,21 @@ impl<'a> MsearchGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::msearch_post`]
 ///
-///[`Client::msearch_post`]: super::Client::msearch_post
+///[`Client::msearch_post`]: super::OsClient::msearch_post
 #[derive(Debug, Clone)]
 pub struct MsearchPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   ccs_minimize_roundtrips: Result<Option<bool>, String>,
   max_concurrent_searches: Result<Option<i32>, String>,
   max_concurrent_shard_requests: Result<Option<i32>, String>,
@@ -15035,7 +15503,7 @@ pub struct MsearchPost<'a> {
 }
 
 impl<'a> MsearchPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       ccs_minimize_roundtrips: Ok(None),
@@ -15129,7 +15597,7 @@ impl<'a> MsearchPost<'a> {
   }
 
   ///Sends a `POST` request to `/_msearch`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       ccs_minimize_roundtrips,
@@ -15177,17 +15645,21 @@ impl<'a> MsearchPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::msearch_template_get`]
 ///
-///[`Client::msearch_template_get`]: super::Client::msearch_template_get
+///[`Client::msearch_template_get`]: super::OsClient::msearch_template_get
 #[derive(Debug, Clone)]
 pub struct MsearchTemplateGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   ccs_minimize_roundtrips: Result<Option<bool>, String>,
   max_concurrent_searches: Result<Option<i32>, String>,
   rest_total_hits_as_int: Result<Option<bool>, String>,
@@ -15196,7 +15668,7 @@ pub struct MsearchTemplateGet<'a> {
 }
 
 impl<'a> MsearchTemplateGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       ccs_minimize_roundtrips: Ok(None),
@@ -15258,7 +15730,7 @@ impl<'a> MsearchTemplateGet<'a> {
   }
 
   ///Sends a `GET` request to `/_msearch/template`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       ccs_minimize_roundtrips,
@@ -15294,17 +15766,21 @@ impl<'a> MsearchTemplateGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::msearch_template_post`]
 ///
-///[`Client::msearch_template_post`]: super::Client::msearch_template_post
+///[`Client::msearch_template_post`]: super::OsClient::msearch_template_post
 #[derive(Debug, Clone)]
 pub struct MsearchTemplatePost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   ccs_minimize_roundtrips: Result<Option<bool>, String>,
   max_concurrent_searches: Result<Option<i32>, String>,
   rest_total_hits_as_int: Result<Option<bool>, String>,
@@ -15314,7 +15790,7 @@ pub struct MsearchTemplatePost<'a> {
 }
 
 impl<'a> MsearchTemplatePost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       ccs_minimize_roundtrips: Ok(None),
@@ -15386,7 +15862,7 @@ impl<'a> MsearchTemplatePost<'a> {
   }
 
   ///Sends a `POST` request to `/_msearch/template`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       ccs_minimize_roundtrips,
@@ -15424,17 +15900,21 @@ impl<'a> MsearchTemplatePost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::mtermvectors_get`]
 ///
-///[`Client::mtermvectors_get`]: super::Client::mtermvectors_get
+///[`Client::mtermvectors_get`]: super::OsClient::mtermvectors_get
 #[derive(Debug, Clone)]
 pub struct MtermvectorsGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
   ids: Result<Option<Vec<String>>, String>,
@@ -15450,7 +15930,7 @@ pub struct MtermvectorsGet<'a> {
 }
 
 impl<'a> MtermvectorsGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       field_statistics: Ok(None),
@@ -15589,7 +16069,7 @@ impl<'a> MtermvectorsGet<'a> {
   }
 
   ///Sends a `GET` request to `/_mtermvectors`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       field_statistics,
@@ -15660,17 +16140,21 @@ impl<'a> MtermvectorsGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::mtermvectors_post`]
 ///
-///[`Client::mtermvectors_post`]: super::Client::mtermvectors_post
+///[`Client::mtermvectors_post`]: super::OsClient::mtermvectors_post
 #[derive(Debug, Clone)]
 pub struct MtermvectorsPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
   ids: Result<Option<Vec<String>>, String>,
@@ -15687,7 +16171,7 @@ pub struct MtermvectorsPost<'a> {
 }
 
 impl<'a> MtermvectorsPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       field_statistics: Ok(None),
@@ -15836,7 +16320,7 @@ impl<'a> MtermvectorsPost<'a> {
   }
 
   ///Sends a `POST` request to `/_mtermvectors`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       field_statistics,
@@ -15909,23 +16393,27 @@ impl<'a> MtermvectorsPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_info`]
 ///
-///[`Client::nodes_info`]: super::Client::nodes_info
+///[`Client::nodes_info`]: super::OsClient::nodes_info
 #[derive(Debug, Clone)]
 pub struct NodesInfo<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   flat_settings: Result<Option<bool>, String>,
   timeout: Result<Option<types::NodesInfoTimeout>, String>,
 }
 
 impl<'a> NodesInfo<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       flat_settings: Ok(None),
@@ -15954,7 +16442,7 @@ impl<'a> NodesInfo<'a> {
   }
 
   ///Sends a `GET` request to `/_nodes`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       flat_settings,
@@ -15975,17 +16463,21 @@ impl<'a> NodesInfo<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_hot_threads`]
 ///
-///[`Client::nodes_hot_threads`]: super::Client::nodes_hot_threads
+///[`Client::nodes_hot_threads`]: super::OsClient::nodes_hot_threads
 #[derive(Debug, Clone)]
 pub struct NodesHotThreads<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   ignore_idle_threads: Result<Option<bool>, String>,
   interval: Result<Option<types::NodesHotThreadsInterval>, String>,
   snapshots: Result<Option<i32>, String>,
@@ -15995,7 +16487,7 @@ pub struct NodesHotThreads<'a> {
 }
 
 impl<'a> NodesHotThreads<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       ignore_idle_threads: Ok(None),
@@ -16068,7 +16560,7 @@ impl<'a> NodesHotThreads<'a> {
   }
 
   ///Sends a `GET` request to `/_nodes/hot_threads`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       ignore_idle_threads,
@@ -16109,17 +16601,21 @@ impl<'a> NodesHotThreads<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_hot_threads_deprecated`]
 ///
-///[`Client::nodes_hot_threads_deprecated`]: super::Client::nodes_hot_threads_deprecated
+///[`Client::nodes_hot_threads_deprecated`]: super::OsClient::nodes_hot_threads_deprecated
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsDeprecated<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   ignore_idle_threads: Result<Option<bool>, String>,
   interval: Result<Option<types::NodesHotThreadsDeprecatedInterval>, String>,
   snapshots: Result<Option<i32>, String>,
@@ -16129,7 +16625,7 @@ pub struct NodesHotThreadsDeprecated<'a> {
 }
 
 impl<'a> NodesHotThreadsDeprecated<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       ignore_idle_threads: Ok(None),
@@ -16202,7 +16698,7 @@ impl<'a> NodesHotThreadsDeprecated<'a> {
   }
 
   ///Sends a `GET` request to `/_nodes/hotthreads`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       ignore_idle_threads,
@@ -16243,23 +16739,27 @@ impl<'a> NodesHotThreadsDeprecated<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_reload_secure_settings`]
 ///
-///[`Client::nodes_reload_secure_settings`]: super::Client::nodes_reload_secure_settings
+///[`Client::nodes_reload_secure_settings`]: super::OsClient::nodes_reload_secure_settings
 #[derive(Debug, Clone)]
 pub struct NodesReloadSecureSettings<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   timeout: Result<Option<types::NodesReloadSecureSettingsTimeout>, String>,
   body: Result<types::NodesReloadSecureSettingsBodyParams, String>,
 }
 
 impl<'a> NodesReloadSecureSettings<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       timeout: Ok(None),
@@ -16287,7 +16787,7 @@ impl<'a> NodesReloadSecureSettings<'a> {
   }
 
   ///Sends a `POST` request to `/_nodes/reload_secure_settings`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, timeout, body } = self;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
@@ -16301,17 +16801,21 @@ impl<'a> NodesReloadSecureSettings<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_stats`]
 ///
-///[`Client::nodes_stats`]: super::Client::nodes_stats
+///[`Client::nodes_stats`]: super::OsClient::nodes_stats
 #[derive(Debug, Clone)]
 pub struct NodesStats<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   completion_fields: Result<Option<Vec<String>>, String>,
   fielddata_fields: Result<Option<Vec<String>>, String>,
   fields: Result<Option<Vec<String>>, String>,
@@ -16323,7 +16827,7 @@ pub struct NodesStats<'a> {
 }
 
 impl<'a> NodesStats<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       completion_fields: Ok(None),
@@ -16418,7 +16922,7 @@ impl<'a> NodesStats<'a> {
   }
 
   ///Sends a `GET` request to `/_nodes/stats`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       completion_fields,
@@ -16469,17 +16973,21 @@ impl<'a> NodesStats<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_stats_with_metric`]
 ///
-///[`Client::nodes_stats_with_metric`]: super::Client::nodes_stats_with_metric
+///[`Client::nodes_stats_with_metric`]: super::OsClient::nodes_stats_with_metric
 #[derive(Debug, Clone)]
 pub struct NodesStatsWithMetric<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   metric: Result<types::NodesStatsWithMetricMetric, String>,
   completion_fields: Result<Option<Vec<String>>, String>,
   fielddata_fields: Result<Option<Vec<String>>, String>,
@@ -16492,7 +17000,7 @@ pub struct NodesStatsWithMetric<'a> {
 }
 
 impl<'a> NodesStatsWithMetric<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       metric: Err("metric was not initialized".to_string()),
@@ -16597,7 +17105,7 @@ impl<'a> NodesStatsWithMetric<'a> {
   }
 
   ///Sends a `GET` request to `/_nodes/stats/{metric}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       metric,
@@ -16650,17 +17158,21 @@ impl<'a> NodesStatsWithMetric<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_stats_with_index_metric_metric`]
 ///
-///[`Client::nodes_stats_with_index_metric_metric`]: super::Client::nodes_stats_with_index_metric_metric
+///[`Client::nodes_stats_with_index_metric_metric`]: super::OsClient::nodes_stats_with_index_metric_metric
 #[derive(Debug, Clone)]
 pub struct NodesStatsWithIndexMetricMetric<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   metric: Result<types::NodesStatsWithIndexMetricMetricMetric, String>,
   index_metric: Result<types::NodesStatsWithIndexMetricMetricIndexMetric, String>,
   completion_fields: Result<Option<Vec<String>>, String>,
@@ -16674,7 +17186,7 @@ pub struct NodesStatsWithIndexMetricMetric<'a> {
 }
 
 impl<'a> NodesStatsWithIndexMetricMetric<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       metric: Err("metric was not initialized".to_string()),
@@ -16789,7 +17301,7 @@ impl<'a> NodesStatsWithIndexMetricMetric<'a> {
   }
 
   ///Sends a `GET` request to `/_nodes/stats/{metric}/{index_metric}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       metric,
@@ -16849,22 +17361,26 @@ impl<'a> NodesStatsWithIndexMetricMetric<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_usage`]
 ///
-///[`Client::nodes_usage`]: super::Client::nodes_usage
+///[`Client::nodes_usage`]: super::OsClient::nodes_usage
 #[derive(Debug, Clone)]
 pub struct NodesUsage<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   timeout: Result<Option<types::NodesUsageTimeout>, String>,
 }
 
 impl<'a> NodesUsage<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       timeout: Ok(None),
@@ -16882,7 +17398,7 @@ impl<'a> NodesUsage<'a> {
   }
 
   ///Sends a `GET` request to `/_nodes/usage`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, timeout } = self;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_nodes/usage", client.baseurl,);
@@ -16895,23 +17411,27 @@ impl<'a> NodesUsage<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_usage_with_metric`]
 ///
-///[`Client::nodes_usage_with_metric`]: super::Client::nodes_usage_with_metric
+///[`Client::nodes_usage_with_metric`]: super::OsClient::nodes_usage_with_metric
 #[derive(Debug, Clone)]
 pub struct NodesUsageWithMetric<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   metric: Result<types::NodesUsageWithMetricMetric, String>,
   timeout: Result<Option<types::NodesUsageWithMetricTimeout>, String>,
 }
 
 impl<'a> NodesUsageWithMetric<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       metric: Err("metric was not initialized".to_string()),
@@ -16939,7 +17459,7 @@ impl<'a> NodesUsageWithMetric<'a> {
   }
 
   ///Sends a `GET` request to `/_nodes/usage/{metric}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       metric,
@@ -16957,24 +17477,28 @@ impl<'a> NodesUsageWithMetric<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_info_with_node_id`]
 ///
-///[`Client::nodes_info_with_node_id`]: super::Client::nodes_info_with_node_id
+///[`Client::nodes_info_with_node_id`]: super::OsClient::nodes_info_with_node_id
 #[derive(Debug, Clone)]
 pub struct NodesInfoWithNodeId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   node_id: Result<types::NodesInfoWithNodeIdNodeId, String>,
   flat_settings: Result<Option<bool>, String>,
   timeout: Result<Option<types::NodesInfoWithNodeIdTimeout>, String>,
 }
 
 impl<'a> NodesInfoWithNodeId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       node_id: Err("node_id was not initialized".to_string()),
@@ -17013,7 +17537,7 @@ impl<'a> NodesInfoWithNodeId<'a> {
   }
 
   ///Sends a `GET` request to `/_nodes/{node_id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       node_id,
@@ -17036,17 +17560,21 @@ impl<'a> NodesInfoWithNodeId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_hot_threads_with_node_id`]
 ///
-///[`Client::nodes_hot_threads_with_node_id`]: super::Client::nodes_hot_threads_with_node_id
+///[`Client::nodes_hot_threads_with_node_id`]: super::OsClient::nodes_hot_threads_with_node_id
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsWithNodeId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   node_id: Result<types::NodesHotThreadsWithNodeIdNodeId, String>,
   ignore_idle_threads: Result<Option<bool>, String>,
   interval: Result<Option<types::NodesHotThreadsWithNodeIdInterval>, String>,
@@ -17057,7 +17585,7 @@ pub struct NodesHotThreadsWithNodeId<'a> {
 }
 
 impl<'a> NodesHotThreadsWithNodeId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       node_id: Err("node_id was not initialized".to_string()),
@@ -17140,7 +17668,7 @@ impl<'a> NodesHotThreadsWithNodeId<'a> {
   }
 
   ///Sends a `GET` request to `/_nodes/{node_id}/hot_threads`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       node_id,
@@ -17187,17 +17715,21 @@ impl<'a> NodesHotThreadsWithNodeId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_hot_threads_with_node_id_deprecated`]
 ///
-///[`Client::nodes_hot_threads_with_node_id_deprecated`]: super::Client::nodes_hot_threads_with_node_id_deprecated
+///[`Client::nodes_hot_threads_with_node_id_deprecated`]: super::OsClient::nodes_hot_threads_with_node_id_deprecated
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsWithNodeIdDeprecated<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   node_id: Result<types::NodesHotThreadsWithNodeIdDeprecatedNodeId, String>,
   ignore_idle_threads: Result<Option<bool>, String>,
   interval: Result<Option<types::NodesHotThreadsWithNodeIdDeprecatedInterval>, String>,
@@ -17208,7 +17740,7 @@ pub struct NodesHotThreadsWithNodeIdDeprecated<'a> {
 }
 
 impl<'a> NodesHotThreadsWithNodeIdDeprecated<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       node_id: Err("node_id was not initialized".to_string()),
@@ -17291,7 +17823,7 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecated<'a> {
   }
 
   ///Sends a `GET` request to `/_nodes/{node_id}/hotthreads`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       node_id,
@@ -17338,24 +17870,28 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecated<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_reload_secure_settings_with_node_id`]
 ///
-///[`Client::nodes_reload_secure_settings_with_node_id`]: super::Client::nodes_reload_secure_settings_with_node_id
+///[`Client::nodes_reload_secure_settings_with_node_id`]: super::OsClient::nodes_reload_secure_settings_with_node_id
 #[derive(Debug, Clone)]
 pub struct NodesReloadSecureSettingsWithNodeId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   node_id: Result<types::NodesReloadSecureSettingsWithNodeIdNodeId, String>,
   timeout: Result<Option<types::NodesReloadSecureSettingsWithNodeIdTimeout>, String>,
   body: Result<types::NodesReloadSecureSettingsBodyParams, String>,
 }
 
 impl<'a> NodesReloadSecureSettingsWithNodeId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       node_id: Err("node_id was not initialized".to_string()),
@@ -17393,7 +17929,7 @@ impl<'a> NodesReloadSecureSettingsWithNodeId<'a> {
   }
 
   ///Sends a `POST` request to `/_nodes/{node_id}/reload_secure_settings`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       node_id,
@@ -17417,17 +17953,21 @@ impl<'a> NodesReloadSecureSettingsWithNodeId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_stats_with_node_id`]
 ///
-///[`Client::nodes_stats_with_node_id`]: super::Client::nodes_stats_with_node_id
+///[`Client::nodes_stats_with_node_id`]: super::OsClient::nodes_stats_with_node_id
 #[derive(Debug, Clone)]
 pub struct NodesStatsWithNodeId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   node_id: Result<types::NodesStatsWithNodeIdNodeId, String>,
   completion_fields: Result<Option<Vec<String>>, String>,
   fielddata_fields: Result<Option<Vec<String>>, String>,
@@ -17440,7 +17980,7 @@ pub struct NodesStatsWithNodeId<'a> {
 }
 
 impl<'a> NodesStatsWithNodeId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       node_id: Err("node_id was not initialized".to_string()),
@@ -17545,7 +18085,7 @@ impl<'a> NodesStatsWithNodeId<'a> {
   }
 
   ///Sends a `GET` request to `/_nodes/{node_id}/stats`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       node_id,
@@ -17598,17 +18138,21 @@ impl<'a> NodesStatsWithNodeId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_stats_with_metric_node_id`]
 ///
-///[`Client::nodes_stats_with_metric_node_id`]: super::Client::nodes_stats_with_metric_node_id
+///[`Client::nodes_stats_with_metric_node_id`]: super::OsClient::nodes_stats_with_metric_node_id
 #[derive(Debug, Clone)]
 pub struct NodesStatsWithMetricNodeId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   node_id: Result<types::NodesStatsWithMetricNodeIdNodeId, String>,
   metric: Result<types::NodesStatsWithMetricNodeIdMetric, String>,
   completion_fields: Result<Option<Vec<String>>, String>,
@@ -17622,7 +18166,7 @@ pub struct NodesStatsWithMetricNodeId<'a> {
 }
 
 impl<'a> NodesStatsWithMetricNodeId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       node_id: Err("node_id was not initialized".to_string()),
@@ -17737,7 +18281,7 @@ impl<'a> NodesStatsWithMetricNodeId<'a> {
   }
 
   ///Sends a `GET` request to `/_nodes/{node_id}/stats/{metric}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       node_id,
@@ -17797,17 +18341,21 @@ impl<'a> NodesStatsWithMetricNodeId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_stats_with_index_metric_metric_node_id`]
 ///
-///[`Client::nodes_stats_with_index_metric_metric_node_id`]: super::Client::nodes_stats_with_index_metric_metric_node_id
+///[`Client::nodes_stats_with_index_metric_metric_node_id`]: super::OsClient::nodes_stats_with_index_metric_metric_node_id
 #[derive(Debug, Clone)]
 pub struct NodesStatsWithIndexMetricMetricNodeId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   node_id: Result<types::NodesStatsWithIndexMetricMetricNodeIdNodeId, String>,
   metric: Result<types::NodesStatsWithIndexMetricMetricNodeIdMetric, String>,
   index_metric: Result<types::NodesStatsWithIndexMetricMetricNodeIdIndexMetric, String>,
@@ -17822,7 +18370,7 @@ pub struct NodesStatsWithIndexMetricMetricNodeId<'a> {
 }
 
 impl<'a> NodesStatsWithIndexMetricMetricNodeId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       node_id: Err("node_id was not initialized".to_string()),
@@ -17948,7 +18496,7 @@ impl<'a> NodesStatsWithIndexMetricMetricNodeId<'a> {
 
   ///Sends a `GET` request to
   /// `/_nodes/{node_id}/stats/{metric}/{index_metric}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       node_id,
@@ -18011,23 +18559,27 @@ impl<'a> NodesStatsWithIndexMetricMetricNodeId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_usage_with_node_id`]
 ///
-///[`Client::nodes_usage_with_node_id`]: super::Client::nodes_usage_with_node_id
+///[`Client::nodes_usage_with_node_id`]: super::OsClient::nodes_usage_with_node_id
 #[derive(Debug, Clone)]
 pub struct NodesUsageWithNodeId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   node_id: Result<types::NodesUsageWithNodeIdNodeId, String>,
   timeout: Result<Option<types::NodesUsageWithNodeIdTimeout>, String>,
 }
 
 impl<'a> NodesUsageWithNodeId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       node_id: Err("node_id was not initialized".to_string()),
@@ -18055,7 +18607,7 @@ impl<'a> NodesUsageWithNodeId<'a> {
   }
 
   ///Sends a `GET` request to `/_nodes/{node_id}/usage`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       node_id,
@@ -18073,24 +18625,28 @@ impl<'a> NodesUsageWithNodeId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_usage_with_metric_node_id`]
 ///
-///[`Client::nodes_usage_with_metric_node_id`]: super::Client::nodes_usage_with_metric_node_id
+///[`Client::nodes_usage_with_metric_node_id`]: super::OsClient::nodes_usage_with_metric_node_id
 #[derive(Debug, Clone)]
 pub struct NodesUsageWithMetricNodeId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   node_id: Result<types::NodesUsageWithMetricNodeIdNodeId, String>,
   metric: Result<types::NodesUsageWithMetricNodeIdMetric, String>,
   timeout: Result<Option<types::NodesUsageWithMetricNodeIdTimeout>, String>,
 }
 
 impl<'a> NodesUsageWithMetricNodeId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       node_id: Err("node_id was not initialized".to_string()),
@@ -18128,7 +18684,7 @@ impl<'a> NodesUsageWithMetricNodeId<'a> {
   }
 
   ///Sends a `GET` request to `/_nodes/{node_id}/usage/{metric}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       node_id,
@@ -18153,17 +18709,21 @@ impl<'a> NodesUsageWithMetricNodeId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::nodes_info_with_metric_node_id`]
 ///
-///[`Client::nodes_info_with_metric_node_id`]: super::Client::nodes_info_with_metric_node_id
+///[`Client::nodes_info_with_metric_node_id`]: super::OsClient::nodes_info_with_metric_node_id
 #[derive(Debug, Clone)]
 pub struct NodesInfoWithMetricNodeId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   node_id: Result<types::NodesInfoWithMetricNodeIdNodeId, String>,
   metric: Result<types::NodesInfoWithMetricNodeIdMetric, String>,
   flat_settings: Result<Option<bool>, String>,
@@ -18171,7 +18731,7 @@ pub struct NodesInfoWithMetricNodeId<'a> {
 }
 
 impl<'a> NodesInfoWithMetricNodeId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       node_id: Err("node_id was not initialized".to_string()),
@@ -18220,7 +18780,7 @@ impl<'a> NodesInfoWithMetricNodeId<'a> {
   }
 
   ///Sends a `GET` request to `/_nodes/{node_id}/{metric}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       node_id,
@@ -18250,26 +18810,30 @@ impl<'a> NodesInfoWithMetricNodeId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_account_details`]
 ///
-///[`Client::get_account_details`]: super::Client::get_account_details
+///[`Client::get_account_details`]: super::OsClient::get_account_details
 #[derive(Debug, Clone)]
 pub struct GetAccountDetails<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> GetAccountDetails<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_plugins/_security/api/account`
-  pub async fn send(self) -> Result<ResponseValue<types::AccountDetails>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::AccountDetails>, Error> {
     let Self { client } = self;
     let url = format!("{}/_plugins/_security/api/account", client.baseurl,);
     let request = client
@@ -18284,22 +18848,26 @@ impl<'a> GetAccountDetails<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::change_password`]
 ///
-///[`Client::change_password`]: super::Client::change_password
+///[`Client::change_password`]: super::OsClient::change_password
 #[derive(Debug, Clone)]
 pub struct ChangePassword<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   body: Result<types::builder::ChangePasswordRequestContent, String>,
 }
 
 impl<'a> ChangePassword<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       body: Ok(types::builder::ChangePasswordRequestContent::default()),
@@ -18325,7 +18893,7 @@ impl<'a> ChangePassword<'a> {
   }
 
   ///Sends a `PUT` request to `/_plugins/_security/api/account`
-  pub async fn send(self) -> Result<ResponseValue<types::ChangePasswordResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::ChangePasswordResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body
       .and_then(std::convert::TryInto::<types::ChangePasswordRequestContent>::try_into)
@@ -18344,22 +18912,26 @@ impl<'a> ChangePassword<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::patch_action_groups`]
 ///
-///[`Client::patch_action_groups`]: super::Client::patch_action_groups
+///[`Client::patch_action_groups`]: super::OsClient::patch_action_groups
 #[derive(Debug, Clone)]
 pub struct PatchActionGroups<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   body: Result<types::PatchActionGroupsInputPayload, String>,
 }
 
 impl<'a> PatchActionGroups<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       body: Err("body was not initialized".to_string()),
@@ -18376,7 +18948,7 @@ impl<'a> PatchActionGroups<'a> {
   }
 
   ///Sends a `PATCH` request to `/_plugins/_security/api/actiongroups`
-  pub async fn send(self) -> Result<ResponseValue<types::PatchActionGroupsResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::PatchActionGroupsResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_plugins/_security/api/actiongroups", client.baseurl,);
@@ -18393,26 +18965,30 @@ impl<'a> PatchActionGroups<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_action_groups`]
 ///
-///[`Client::get_action_groups`]: super::Client::get_action_groups
+///[`Client::get_action_groups`]: super::OsClient::get_action_groups
 #[derive(Debug, Clone)]
 pub struct GetActionGroups<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> GetActionGroups<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_plugins/_security/api/actiongroups/`
-  pub async fn send(self) -> Result<ResponseValue<types::ActionGroupsMap>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::ActionGroupsMap>, Error> {
     let Self { client } = self;
     let url = format!("{}/_plugins/_security/api/actiongroups/", client.baseurl,);
     let request = client
@@ -18427,22 +19003,26 @@ impl<'a> GetActionGroups<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_action_group`]
 ///
-///[`Client::get_action_group`]: super::Client::get_action_group
+///[`Client::get_action_group`]: super::OsClient::get_action_group
 #[derive(Debug, Clone)]
 pub struct GetActionGroup<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   action_group: Result<String, String>,
 }
 
 impl<'a> GetActionGroup<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       action_group: Err("action_group was not initialized".to_string()),
@@ -18460,7 +19040,7 @@ impl<'a> GetActionGroup<'a> {
 
   ///Sends a `GET` request to
   /// `/_plugins/_security/api/actiongroups/{action_group}`
-  pub async fn send(self) -> Result<ResponseValue<types::ActionGroupsMap>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::ActionGroupsMap>, Error> {
     let Self { client, action_group } = self;
     let action_group = action_group.map_err(Error::InvalidRequest)?;
     let url = format!(
@@ -18480,23 +19060,27 @@ impl<'a> GetActionGroup<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::create_action_group`]
 ///
-///[`Client::create_action_group`]: super::Client::create_action_group
+///[`Client::create_action_group`]: super::OsClient::create_action_group
 #[derive(Debug, Clone)]
 pub struct CreateActionGroup<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   action_group: Result<String, String>,
   body: Result<types::builder::ActionGroup, String>,
 }
 
 impl<'a> CreateActionGroup<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       action_group: Err("action_group was not initialized".to_string()),
@@ -18532,7 +19116,7 @@ impl<'a> CreateActionGroup<'a> {
 
   ///Sends a `PUT` request to
   /// `/_plugins/_security/api/actiongroups/{action_group}`
-  pub async fn send(self) -> Result<ResponseValue<types::CreateActionGroupResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::CreateActionGroupResponseContent>, Error> {
     let Self {
       client,
       action_group,
@@ -18560,22 +19144,26 @@ impl<'a> CreateActionGroup<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::delete_action_group`]
 ///
-///[`Client::delete_action_group`]: super::Client::delete_action_group
+///[`Client::delete_action_group`]: super::OsClient::delete_action_group
 #[derive(Debug, Clone)]
 pub struct DeleteActionGroup<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   action_group: Result<String, String>,
 }
 
 impl<'a> DeleteActionGroup<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       action_group: Err("action_group was not initialized".to_string()),
@@ -18593,7 +19181,7 @@ impl<'a> DeleteActionGroup<'a> {
 
   ///Sends a `DELETE` request to
   /// `/_plugins/_security/api/actiongroups/{action_group}`
-  pub async fn send(self) -> Result<ResponseValue<types::DeleteActionGroupResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::DeleteActionGroupResponseContent>, Error> {
     let Self { client, action_group } = self;
     let action_group = action_group.map_err(Error::InvalidRequest)?;
     let url = format!(
@@ -18613,23 +19201,27 @@ impl<'a> DeleteActionGroup<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::patch_action_group`]
 ///
-///[`Client::patch_action_group`]: super::Client::patch_action_group
+///[`Client::patch_action_group`]: super::OsClient::patch_action_group
 #[derive(Debug, Clone)]
 pub struct PatchActionGroup<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   action_group: Result<String, String>,
   body: Result<types::PatchActionGroupInputPayload, String>,
 }
 
 impl<'a> PatchActionGroup<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       action_group: Err("action_group was not initialized".to_string()),
@@ -18657,7 +19249,7 @@ impl<'a> PatchActionGroup<'a> {
 
   ///Sends a `PATCH` request to
   /// `/_plugins/_security/api/actiongroups/{action_group}`
-  pub async fn send(self) -> Result<ResponseValue<types::PatchActionGroupResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::PatchActionGroupResponseContent>, Error> {
     let Self {
       client,
       action_group,
@@ -18683,26 +19275,30 @@ impl<'a> PatchActionGroup<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_audit_configuration`]
 ///
-///[`Client::get_audit_configuration`]: super::Client::get_audit_configuration
+///[`Client::get_audit_configuration`]: super::OsClient::get_audit_configuration
 #[derive(Debug, Clone)]
 pub struct GetAuditConfiguration<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> GetAuditConfiguration<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_plugins/_security/api/audit`
-  pub async fn send(self) -> Result<ResponseValue<types::AuditConfigWithReadOnly>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::AuditConfigWithReadOnly>, Error> {
     let Self { client } = self;
     let url = format!("{}/_plugins/_security/api/audit", client.baseurl,);
     let request = client
@@ -18717,22 +19313,26 @@ impl<'a> GetAuditConfiguration<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::patch_audit_configuration`]
 ///
-///[`Client::patch_audit_configuration`]: super::Client::patch_audit_configuration
+///[`Client::patch_audit_configuration`]: super::OsClient::patch_audit_configuration
 #[derive(Debug, Clone)]
 pub struct PatchAuditConfiguration<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   body: Result<types::PatchAuditConfigurationInputPayload, String>,
 }
 
 impl<'a> PatchAuditConfiguration<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       body: Err("body was not initialized".to_string()),
@@ -18749,7 +19349,7 @@ impl<'a> PatchAuditConfiguration<'a> {
   }
 
   ///Sends a `PATCH` request to `/_plugins/_security/api/audit`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_plugins/_security/api/audit", client.baseurl,);
@@ -18758,22 +19358,26 @@ impl<'a> PatchAuditConfiguration<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::update_audit_configuration`]
 ///
-///[`Client::update_audit_configuration`]: super::Client::update_audit_configuration
+///[`Client::update_audit_configuration`]: super::OsClient::update_audit_configuration
 #[derive(Debug, Clone)]
 pub struct UpdateAuditConfiguration<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   body: Result<types::builder::AuditConfig, String>,
 }
 
 impl<'a> UpdateAuditConfiguration<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       body: Ok(types::builder::AuditConfig::default()),
@@ -18798,7 +19402,7 @@ impl<'a> UpdateAuditConfiguration<'a> {
   }
 
   ///Sends a `PUT` request to `/_plugins/_security/api/audit/config`
-  pub async fn send(self) -> Result<ResponseValue<types::UpdateAuditConfigurationResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::UpdateAuditConfigurationResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body
       .and_then(std::convert::TryInto::<types::AuditConfig>::try_into)
@@ -18817,26 +19421,30 @@ impl<'a> UpdateAuditConfiguration<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::flush_cache`]
 ///
-///[`Client::flush_cache`]: super::Client::flush_cache
+///[`Client::flush_cache`]: super::OsClient::flush_cache
 #[derive(Debug, Clone)]
 pub struct FlushCache<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> FlushCache<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `DELETE` request to `/_plugins/_security/api/cache`
-  pub async fn send(self) -> Result<ResponseValue<types::FlushCacheResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::FlushCacheResponseContent>, Error> {
     let Self { client } = self;
     let url = format!("{}/_plugins/_security/api/cache", client.baseurl,);
     let request = client
@@ -18851,26 +19459,30 @@ impl<'a> FlushCache<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_users`]
 ///
-///[`Client::get_users`]: super::Client::get_users
+///[`Client::get_users`]: super::OsClient::get_users
 #[derive(Debug, Clone)]
 pub struct GetUsers<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> GetUsers<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_plugins/_security/api/internalusers`
-  pub async fn send(self) -> Result<ResponseValue<types::UsersMap>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::UsersMap>, Error> {
     let Self { client } = self;
     let url = format!("{}/_plugins/_security/api/internalusers", client.baseurl,);
     let request = client
@@ -18885,22 +19497,26 @@ impl<'a> GetUsers<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::patch_users`]
 ///
-///[`Client::patch_users`]: super::Client::patch_users
+///[`Client::patch_users`]: super::OsClient::patch_users
 #[derive(Debug, Clone)]
 pub struct PatchUsers<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   body: Result<types::PatchUsersInputPayload, String>,
 }
 
 impl<'a> PatchUsers<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       body: Err("body was not initialized".to_string()),
@@ -18917,7 +19533,7 @@ impl<'a> PatchUsers<'a> {
   }
 
   ///Sends a `PATCH` request to `/_plugins/_security/api/internalusers`
-  pub async fn send(self) -> Result<ResponseValue<types::PatchUsersResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::PatchUsersResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_plugins/_security/api/internalusers", client.baseurl,);
@@ -18934,22 +19550,26 @@ impl<'a> PatchUsers<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_user`]
 ///
-///[`Client::get_user`]: super::Client::get_user
+///[`Client::get_user`]: super::OsClient::get_user
 #[derive(Debug, Clone)]
 pub struct GetUser<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   username: Result<String, String>,
 }
 
 impl<'a> GetUser<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       username: Err("username was not initialized".to_string()),
@@ -18967,7 +19587,7 @@ impl<'a> GetUser<'a> {
 
   ///Sends a `GET` request to
   /// `/_plugins/_security/api/internalusers/{username}`
-  pub async fn send(self) -> Result<ResponseValue<types::UsersMap>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::UsersMap>, Error> {
     let Self { client, username } = self;
     let username = username.map_err(Error::InvalidRequest)?;
     let url = format!(
@@ -18987,23 +19607,27 @@ impl<'a> GetUser<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::create_user`]
 ///
-///[`Client::create_user`]: super::Client::create_user
+///[`Client::create_user`]: super::OsClient::create_user
 #[derive(Debug, Clone)]
 pub struct CreateUser<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   username: Result<String, String>,
   body: Result<types::builder::User, String>,
 }
 
 impl<'a> CreateUser<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       username: Err("username was not initialized".to_string()),
@@ -19039,7 +19663,7 @@ impl<'a> CreateUser<'a> {
 
   ///Sends a `PUT` request to
   /// `/_plugins/_security/api/internalusers/{username}`
-  pub async fn send(self) -> Result<ResponseValue<types::CreateUserResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::CreateUserResponseContent>, Error> {
     let Self { client, username, body } = self;
     let username = username.map_err(Error::InvalidRequest)?;
     let body = body
@@ -19063,22 +19687,26 @@ impl<'a> CreateUser<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::delete_user`]
 ///
-///[`Client::delete_user`]: super::Client::delete_user
+///[`Client::delete_user`]: super::OsClient::delete_user
 #[derive(Debug, Clone)]
 pub struct DeleteUser<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   username: Result<String, String>,
 }
 
 impl<'a> DeleteUser<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       username: Err("username was not initialized".to_string()),
@@ -19096,7 +19724,7 @@ impl<'a> DeleteUser<'a> {
 
   ///Sends a `DELETE` request to
   /// `/_plugins/_security/api/internalusers/{username}`
-  pub async fn send(self) -> Result<ResponseValue<types::DeleteUserResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::DeleteUserResponseContent>, Error> {
     let Self { client, username } = self;
     let username = username.map_err(Error::InvalidRequest)?;
     let url = format!(
@@ -19116,23 +19744,27 @@ impl<'a> DeleteUser<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::patch_user`]
 ///
-///[`Client::patch_user`]: super::Client::patch_user
+///[`Client::patch_user`]: super::OsClient::patch_user
 #[derive(Debug, Clone)]
 pub struct PatchUser<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   username: Result<String, String>,
   body: Result<types::PatchUserInputPayload, String>,
 }
 
 impl<'a> PatchUser<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       username: Err("username was not initialized".to_string()),
@@ -19160,7 +19792,7 @@ impl<'a> PatchUser<'a> {
 
   ///Sends a `PATCH` request to
   /// `/_plugins/_security/api/internalusers/{username}`
-  pub async fn send(self) -> Result<ResponseValue<types::PatchUserResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::PatchUserResponseContent>, Error> {
     let Self { client, username, body } = self;
     let username = username.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
@@ -19182,26 +19814,30 @@ impl<'a> PatchUser<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_distinguished_names`]
 ///
-///[`Client::get_distinguished_names`]: super::Client::get_distinguished_names
+///[`Client::get_distinguished_names`]: super::OsClient::get_distinguished_names
 #[derive(Debug, Clone)]
 pub struct GetDistinguishedNames<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> GetDistinguishedNames<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_plugins/_security/api/nodesdn`
-  pub async fn send(self) -> Result<ResponseValue<types::DistinguishedNamesMap>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::DistinguishedNamesMap>, Error> {
     let Self { client } = self;
     let url = format!("{}/_plugins/_security/api/nodesdn", client.baseurl,);
     let request = client
@@ -19216,22 +19852,26 @@ impl<'a> GetDistinguishedNames<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::patch_distinguished_names`]
 ///
-///[`Client::patch_distinguished_names`]: super::Client::patch_distinguished_names
+///[`Client::patch_distinguished_names`]: super::OsClient::patch_distinguished_names
 #[derive(Debug, Clone)]
 pub struct PatchDistinguishedNames<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   body: Result<types::PatchDistinguishedNamesInputPayload, String>,
 }
 
 impl<'a> PatchDistinguishedNames<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       body: Err("body was not initialized".to_string()),
@@ -19248,7 +19888,7 @@ impl<'a> PatchDistinguishedNames<'a> {
   }
 
   ///Sends a `PATCH` request to `/_plugins/_security/api/nodesdn`
-  pub async fn send(self) -> Result<ResponseValue<types::PatchDistinguishedNamesResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::PatchDistinguishedNamesResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_plugins/_security/api/nodesdn", client.baseurl,);
@@ -19265,22 +19905,26 @@ impl<'a> PatchDistinguishedNames<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_distinguished_names_with_cluster_name`]
 ///
-///[`Client::get_distinguished_names_with_cluster_name`]: super::Client::get_distinguished_names_with_cluster_name
+///[`Client::get_distinguished_names_with_cluster_name`]: super::OsClient::get_distinguished_names_with_cluster_name
 #[derive(Debug, Clone)]
 pub struct GetDistinguishedNamesWithClusterName<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_name: Result<String, String>,
 }
 
 impl<'a> GetDistinguishedNamesWithClusterName<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_name: Err("cluster_name was not initialized".to_string()),
@@ -19298,7 +19942,7 @@ impl<'a> GetDistinguishedNamesWithClusterName<'a> {
 
   ///Sends a `GET` request to
   /// `/_plugins/_security/api/nodesdn/{cluster_name}`
-  pub async fn send(self) -> Result<ResponseValue<types::DistinguishedNamesMap>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::DistinguishedNamesMap>, Error> {
     let Self { client, cluster_name } = self;
     let cluster_name = cluster_name.map_err(Error::InvalidRequest)?;
     let url = format!(
@@ -19318,23 +19962,27 @@ impl<'a> GetDistinguishedNamesWithClusterName<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::update_distinguished_names`]
 ///
-///[`Client::update_distinguished_names`]: super::Client::update_distinguished_names
+///[`Client::update_distinguished_names`]: super::OsClient::update_distinguished_names
 #[derive(Debug, Clone)]
 pub struct UpdateDistinguishedNames<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_name: Result<String, String>,
   body: Result<types::builder::DistinguishedNames, String>,
 }
 
 impl<'a> UpdateDistinguishedNames<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_name: Err("cluster_name was not initialized".to_string()),
@@ -19370,7 +20018,7 @@ impl<'a> UpdateDistinguishedNames<'a> {
 
   ///Sends a `PUT` request to
   /// `/_plugins/_security/api/nodesdn/{cluster_name}`
-  pub async fn send(self) -> Result<ResponseValue<types::UpdateDistinguishedNamesResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::UpdateDistinguishedNamesResponseContent>, Error> {
     let Self {
       client,
       cluster_name,
@@ -19398,22 +20046,26 @@ impl<'a> UpdateDistinguishedNames<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::delete_distinguished_names`]
 ///
-///[`Client::delete_distinguished_names`]: super::Client::delete_distinguished_names
+///[`Client::delete_distinguished_names`]: super::OsClient::delete_distinguished_names
 #[derive(Debug, Clone)]
 pub struct DeleteDistinguishedNames<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_name: Result<String, String>,
 }
 
 impl<'a> DeleteDistinguishedNames<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_name: Err("cluster_name was not initialized".to_string()),
@@ -19431,7 +20083,7 @@ impl<'a> DeleteDistinguishedNames<'a> {
 
   ///Sends a `DELETE` request to
   /// `/_plugins/_security/api/nodesdn/{cluster_name}`
-  pub async fn send(self) -> Result<ResponseValue<types::DeleteDistinguishedNamesResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::DeleteDistinguishedNamesResponseContent>, Error> {
     let Self { client, cluster_name } = self;
     let cluster_name = cluster_name.map_err(Error::InvalidRequest)?;
     let url = format!(
@@ -19451,22 +20103,26 @@ impl<'a> DeleteDistinguishedNames<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::patch_roles`]
 ///
-///[`Client::patch_roles`]: super::Client::patch_roles
+///[`Client::patch_roles`]: super::OsClient::patch_roles
 #[derive(Debug, Clone)]
 pub struct PatchRoles<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   body: Result<types::PatchRolesInputPayload, String>,
 }
 
 impl<'a> PatchRoles<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       body: Err("body was not initialized".to_string()),
@@ -19483,7 +20139,7 @@ impl<'a> PatchRoles<'a> {
   }
 
   ///Sends a `PATCH` request to `/_plugins/_security/api/roles`
-  pub async fn send(self) -> Result<ResponseValue<types::PatchRolesResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::PatchRolesResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_plugins/_security/api/roles", client.baseurl,);
@@ -19500,26 +20156,30 @@ impl<'a> PatchRoles<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_roles`]
 ///
-///[`Client::get_roles`]: super::Client::get_roles
+///[`Client::get_roles`]: super::OsClient::get_roles
 #[derive(Debug, Clone)]
 pub struct GetRoles<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> GetRoles<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_plugins/_security/api/roles/`
-  pub async fn send(self) -> Result<ResponseValue<types::RolesMap>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::RolesMap>, Error> {
     let Self { client } = self;
     let url = format!("{}/_plugins/_security/api/roles/", client.baseurl,);
     let request = client
@@ -19534,22 +20194,26 @@ impl<'a> GetRoles<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_role`]
 ///
-///[`Client::get_role`]: super::Client::get_role
+///[`Client::get_role`]: super::OsClient::get_role
 #[derive(Debug, Clone)]
 pub struct GetRole<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   role: Result<String, String>,
 }
 
 impl<'a> GetRole<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       role: Err("role was not initialized".to_string()),
@@ -19566,7 +20230,7 @@ impl<'a> GetRole<'a> {
   }
 
   ///Sends a `GET` request to `/_plugins/_security/api/roles/{role}`
-  pub async fn send(self) -> Result<ResponseValue<types::RolesMap>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::RolesMap>, Error> {
     let Self { client, role } = self;
     let role = role.map_err(Error::InvalidRequest)?;
     let url = format!(
@@ -19586,23 +20250,27 @@ impl<'a> GetRole<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::create_role`]
 ///
-///[`Client::create_role`]: super::Client::create_role
+///[`Client::create_role`]: super::OsClient::create_role
 #[derive(Debug, Clone)]
 pub struct CreateRole<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   role: Result<String, String>,
   body: Result<types::builder::Role, String>,
 }
 
 impl<'a> CreateRole<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       role: Err("role was not initialized".to_string()),
@@ -19637,7 +20305,7 @@ impl<'a> CreateRole<'a> {
   }
 
   ///Sends a `PUT` request to `/_plugins/_security/api/roles/{role}`
-  pub async fn send(self) -> Result<ResponseValue<types::CreateRoleResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::CreateRoleResponseContent>, Error> {
     let Self { client, role, body } = self;
     let role = role.map_err(Error::InvalidRequest)?;
     let body = body
@@ -19661,22 +20329,26 @@ impl<'a> CreateRole<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::delete_role`]
 ///
-///[`Client::delete_role`]: super::Client::delete_role
+///[`Client::delete_role`]: super::OsClient::delete_role
 #[derive(Debug, Clone)]
 pub struct DeleteRole<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   role: Result<String, String>,
 }
 
 impl<'a> DeleteRole<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       role: Err("role was not initialized".to_string()),
@@ -19693,7 +20365,7 @@ impl<'a> DeleteRole<'a> {
   }
 
   ///Sends a `DELETE` request to `/_plugins/_security/api/roles/{role}`
-  pub async fn send(self) -> Result<ResponseValue<types::DeleteRoleResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::DeleteRoleResponseContent>, Error> {
     let Self { client, role } = self;
     let role = role.map_err(Error::InvalidRequest)?;
     let url = format!(
@@ -19713,23 +20385,27 @@ impl<'a> DeleteRole<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::patch_role`]
 ///
-///[`Client::patch_role`]: super::Client::patch_role
+///[`Client::patch_role`]: super::OsClient::patch_role
 #[derive(Debug, Clone)]
 pub struct PatchRole<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   role: Result<String, String>,
   body: Result<types::PatchRoleInputPayload, String>,
 }
 
 impl<'a> PatchRole<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       role: Err("role was not initialized".to_string()),
@@ -19756,7 +20432,7 @@ impl<'a> PatchRole<'a> {
   }
 
   ///Sends a `PATCH` request to `/_plugins/_security/api/roles/{role}`
-  pub async fn send(self) -> Result<ResponseValue<types::PatchRoleResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::PatchRoleResponseContent>, Error> {
     let Self { client, role, body } = self;
     let role = role.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
@@ -19778,26 +20454,30 @@ impl<'a> PatchRole<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_role_mappings`]
 ///
-///[`Client::get_role_mappings`]: super::Client::get_role_mappings
+///[`Client::get_role_mappings`]: super::OsClient::get_role_mappings
 #[derive(Debug, Clone)]
 pub struct GetRoleMappings<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> GetRoleMappings<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_plugins/_security/api/rolesmapping`
-  pub async fn send(self) -> Result<ResponseValue<types::RoleMappings>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::RoleMappings>, Error> {
     let Self { client } = self;
     let url = format!("{}/_plugins/_security/api/rolesmapping", client.baseurl,);
     let request = client
@@ -19812,22 +20492,26 @@ impl<'a> GetRoleMappings<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::patch_role_mappings`]
 ///
-///[`Client::patch_role_mappings`]: super::Client::patch_role_mappings
+///[`Client::patch_role_mappings`]: super::OsClient::patch_role_mappings
 #[derive(Debug, Clone)]
 pub struct PatchRoleMappings<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   body: Result<types::PatchRoleMappingsInputPayload, String>,
 }
 
 impl<'a> PatchRoleMappings<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       body: Err("body was not initialized".to_string()),
@@ -19844,7 +20528,7 @@ impl<'a> PatchRoleMappings<'a> {
   }
 
   ///Sends a `PATCH` request to `/_plugins/_security/api/rolesmapping`
-  pub async fn send(self) -> Result<ResponseValue<types::PatchRoleMappingsResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::PatchRoleMappingsResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_plugins/_security/api/rolesmapping", client.baseurl,);
@@ -19861,22 +20545,26 @@ impl<'a> PatchRoleMappings<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_role_mapping`]
 ///
-///[`Client::get_role_mapping`]: super::Client::get_role_mapping
+///[`Client::get_role_mapping`]: super::OsClient::get_role_mapping
 #[derive(Debug, Clone)]
 pub struct GetRoleMapping<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   role: Result<String, String>,
 }
 
 impl<'a> GetRoleMapping<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       role: Err("role was not initialized".to_string()),
@@ -19894,7 +20582,7 @@ impl<'a> GetRoleMapping<'a> {
 
   ///Sends a `GET` request to
   /// `/_plugins/_security/api/rolesmapping/{role}`
-  pub async fn send(self) -> Result<ResponseValue<types::RoleMappings>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::RoleMappings>, Error> {
     let Self { client, role } = self;
     let role = role.map_err(Error::InvalidRequest)?;
     let url = format!(
@@ -19914,23 +20602,27 @@ impl<'a> GetRoleMapping<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::create_role_mapping`]
 ///
-///[`Client::create_role_mapping`]: super::Client::create_role_mapping
+///[`Client::create_role_mapping`]: super::OsClient::create_role_mapping
 #[derive(Debug, Clone)]
 pub struct CreateRoleMapping<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   role: Result<String, String>,
   body: Result<types::builder::RoleMapping, String>,
 }
 
 impl<'a> CreateRoleMapping<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       role: Err("role was not initialized".to_string()),
@@ -19966,7 +20658,7 @@ impl<'a> CreateRoleMapping<'a> {
 
   ///Sends a `PUT` request to
   /// `/_plugins/_security/api/rolesmapping/{role}`
-  pub async fn send(self) -> Result<ResponseValue<types::CreateRoleMappingResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::CreateRoleMappingResponseContent>, Error> {
     let Self { client, role, body } = self;
     let role = role.map_err(Error::InvalidRequest)?;
     let body = body
@@ -19990,22 +20682,26 @@ impl<'a> CreateRoleMapping<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::delete_role_mapping`]
 ///
-///[`Client::delete_role_mapping`]: super::Client::delete_role_mapping
+///[`Client::delete_role_mapping`]: super::OsClient::delete_role_mapping
 #[derive(Debug, Clone)]
 pub struct DeleteRoleMapping<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   role: Result<String, String>,
 }
 
 impl<'a> DeleteRoleMapping<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       role: Err("role was not initialized".to_string()),
@@ -20023,7 +20719,7 @@ impl<'a> DeleteRoleMapping<'a> {
 
   ///Sends a `DELETE` request to
   /// `/_plugins/_security/api/rolesmapping/{role}`
-  pub async fn send(self) -> Result<ResponseValue<types::DeleteRoleMappingResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::DeleteRoleMappingResponseContent>, Error> {
     let Self { client, role } = self;
     let role = role.map_err(Error::InvalidRequest)?;
     let url = format!(
@@ -20043,23 +20739,27 @@ impl<'a> DeleteRoleMapping<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::patch_role_mapping`]
 ///
-///[`Client::patch_role_mapping`]: super::Client::patch_role_mapping
+///[`Client::patch_role_mapping`]: super::OsClient::patch_role_mapping
 #[derive(Debug, Clone)]
 pub struct PatchRoleMapping<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   role: Result<String, String>,
   body: Result<types::PatchRoleMappingInputPayload, String>,
 }
 
 impl<'a> PatchRoleMapping<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       role: Err("role was not initialized".to_string()),
@@ -20087,7 +20787,7 @@ impl<'a> PatchRoleMapping<'a> {
 
   ///Sends a `PATCH` request to
   /// `/_plugins/_security/api/rolesmapping/{role}`
-  pub async fn send(self) -> Result<ResponseValue<types::PatchRoleMappingResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::PatchRoleMappingResponseContent>, Error> {
     let Self { client, role, body } = self;
     let role = role.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
@@ -20109,26 +20809,30 @@ impl<'a> PatchRoleMapping<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_configuration`]
 ///
-///[`Client::get_configuration`]: super::Client::get_configuration
+///[`Client::get_configuration`]: super::OsClient::get_configuration
 #[derive(Debug, Clone)]
 pub struct GetConfiguration<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> GetConfiguration<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_plugins/_security/api/securityconfig`
-  pub async fn send(self) -> Result<ResponseValue<types::DynamicConfig>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::DynamicConfig>, Error> {
     let Self { client } = self;
     let url = format!("{}/_plugins/_security/api/securityconfig", client.baseurl,);
     let request = client
@@ -20143,22 +20847,26 @@ impl<'a> GetConfiguration<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::patch_configuration`]
 ///
-///[`Client::patch_configuration`]: super::Client::patch_configuration
+///[`Client::patch_configuration`]: super::OsClient::patch_configuration
 #[derive(Debug, Clone)]
 pub struct PatchConfiguration<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   body: Result<types::PatchConfigurationInputPayload, String>,
 }
 
 impl<'a> PatchConfiguration<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       body: Err("body was not initialized".to_string()),
@@ -20175,7 +20883,7 @@ impl<'a> PatchConfiguration<'a> {
   }
 
   ///Sends a `PATCH` request to `/_plugins/_security/api/securityconfig`
-  pub async fn send(self) -> Result<ResponseValue<types::PatchConfigurationResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::PatchConfigurationResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_plugins/_security/api/securityconfig", client.baseurl,);
@@ -20192,22 +20900,26 @@ impl<'a> PatchConfiguration<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::update_configuration`]
 ///
-///[`Client::update_configuration`]: super::Client::update_configuration
+///[`Client::update_configuration`]: super::OsClient::update_configuration
 #[derive(Debug, Clone)]
 pub struct UpdateConfiguration<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   body: Result<types::builder::DynamicConfig, String>,
 }
 
 impl<'a> UpdateConfiguration<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       body: Ok(types::builder::DynamicConfig::default()),
@@ -20233,7 +20945,7 @@ impl<'a> UpdateConfiguration<'a> {
 
   ///Sends a `PUT` request to
   /// `/_plugins/_security/api/securityconfig/config`
-  pub async fn send(self) -> Result<ResponseValue<types::UpdateConfigurationResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::UpdateConfigurationResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body
       .and_then(std::convert::TryInto::<types::DynamicConfig>::try_into)
@@ -20252,26 +20964,30 @@ impl<'a> UpdateConfiguration<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_certificates`]
 ///
-///[`Client::get_certificates`]: super::Client::get_certificates
+///[`Client::get_certificates`]: super::OsClient::get_certificates
 #[derive(Debug, Clone)]
 pub struct GetCertificates<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> GetCertificates<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_plugins/_security/api/ssl/certs`
-  pub async fn send(self) -> Result<ResponseValue<types::GetCertificatesResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::GetCertificatesResponseContent>, Error> {
     let Self { client } = self;
     let url = format!("{}/_plugins/_security/api/ssl/certs", client.baseurl,);
     let request = client
@@ -20286,27 +21002,31 @@ impl<'a> GetCertificates<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::reload_http_certificates`]
 ///
-///[`Client::reload_http_certificates`]: super::Client::reload_http_certificates
+///[`Client::reload_http_certificates`]: super::OsClient::reload_http_certificates
 #[derive(Debug, Clone)]
 pub struct ReloadHttpCertificates<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> ReloadHttpCertificates<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `PUT` request to
   /// `/_plugins/_security/api/ssl/http/reloadcerts`
-  pub async fn send(self) -> Result<ResponseValue<types::ReloadHttpCertificatesResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::ReloadHttpCertificatesResponseContent>, Error> {
     let Self { client } = self;
     let url = format!("{}/_plugins/_security/api/ssl/http/reloadcerts", client.baseurl,);
     let request = client
@@ -20321,27 +21041,31 @@ impl<'a> ReloadHttpCertificates<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::reload_transport_certificates`]
 ///
-///[`Client::reload_transport_certificates`]: super::Client::reload_transport_certificates
+///[`Client::reload_transport_certificates`]: super::OsClient::reload_transport_certificates
 #[derive(Debug, Clone)]
 pub struct ReloadTransportCertificates<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> ReloadTransportCertificates<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `PUT` request to
   /// `/_plugins/_security/api/ssl/transport/reloadcerts`
-  pub async fn send(self) -> Result<ResponseValue<types::ReloadTransportCertificatesResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::ReloadTransportCertificatesResponseContent>, Error> {
     let Self { client } = self;
     let url = format!("{}/_plugins/_security/api/ssl/transport/reloadcerts", client.baseurl,);
     let request = client
@@ -20356,26 +21080,30 @@ impl<'a> ReloadTransportCertificates<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_tenants`]
 ///
-///[`Client::get_tenants`]: super::Client::get_tenants
+///[`Client::get_tenants`]: super::OsClient::get_tenants
 #[derive(Debug, Clone)]
 pub struct GetTenants<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> GetTenants<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_plugins/_security/api/tenants/`
-  pub async fn send(self) -> Result<ResponseValue<types::TenantsMap>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::TenantsMap>, Error> {
     let Self { client } = self;
     let url = format!("{}/_plugins/_security/api/tenants/", client.baseurl,);
     let request = client
@@ -20390,22 +21118,26 @@ impl<'a> GetTenants<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::patch_tenants`]
 ///
-///[`Client::patch_tenants`]: super::Client::patch_tenants
+///[`Client::patch_tenants`]: super::OsClient::patch_tenants
 #[derive(Debug, Clone)]
 pub struct PatchTenants<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   body: Result<types::PatchTenantsInputPayload, String>,
 }
 
 impl<'a> PatchTenants<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       body: Err("body was not initialized".to_string()),
@@ -20422,7 +21154,7 @@ impl<'a> PatchTenants<'a> {
   }
 
   ///Sends a `PATCH` request to `/_plugins/_security/api/tenants/`
-  pub async fn send(self) -> Result<ResponseValue<types::PatchTenantsResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::PatchTenantsResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_plugins/_security/api/tenants/", client.baseurl,);
@@ -20439,22 +21171,26 @@ impl<'a> PatchTenants<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_tenant`]
 ///
-///[`Client::get_tenant`]: super::Client::get_tenant
+///[`Client::get_tenant`]: super::OsClient::get_tenant
 #[derive(Debug, Clone)]
 pub struct GetTenant<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   tenant: Result<String, String>,
 }
 
 impl<'a> GetTenant<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       tenant: Err("tenant was not initialized".to_string()),
@@ -20471,7 +21207,7 @@ impl<'a> GetTenant<'a> {
   }
 
   ///Sends a `GET` request to `/_plugins/_security/api/tenants/{tenant}`
-  pub async fn send(self) -> Result<ResponseValue<types::TenantsMap>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::TenantsMap>, Error> {
     let Self { client, tenant } = self;
     let tenant = tenant.map_err(Error::InvalidRequest)?;
     let url = format!(
@@ -20491,23 +21227,27 @@ impl<'a> GetTenant<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::create_tenant`]
 ///
-///[`Client::create_tenant`]: super::Client::create_tenant
+///[`Client::create_tenant`]: super::OsClient::create_tenant
 #[derive(Debug, Clone)]
 pub struct CreateTenant<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   tenant: Result<String, String>,
   body: Result<types::builder::CreateTenantParams, String>,
 }
 
 impl<'a> CreateTenant<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       tenant: Err("tenant was not initialized".to_string()),
@@ -20542,7 +21282,7 @@ impl<'a> CreateTenant<'a> {
   }
 
   ///Sends a `PUT` request to `/_plugins/_security/api/tenants/{tenant}`
-  pub async fn send(self) -> Result<ResponseValue<types::CreateTenantResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::CreateTenantResponseContent>, Error> {
     let Self { client, tenant, body } = self;
     let tenant = tenant.map_err(Error::InvalidRequest)?;
     let body = body
@@ -20566,22 +21306,26 @@ impl<'a> CreateTenant<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::delete_tenant`]
 ///
-///[`Client::delete_tenant`]: super::Client::delete_tenant
+///[`Client::delete_tenant`]: super::OsClient::delete_tenant
 #[derive(Debug, Clone)]
 pub struct DeleteTenant<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   tenant: Result<String, String>,
 }
 
 impl<'a> DeleteTenant<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       tenant: Err("tenant was not initialized".to_string()),
@@ -20599,7 +21343,7 @@ impl<'a> DeleteTenant<'a> {
 
   ///Sends a `DELETE` request to
   /// `/_plugins/_security/api/tenants/{tenant}`
-  pub async fn send(self) -> Result<ResponseValue<types::DeleteTenantResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::DeleteTenantResponseContent>, Error> {
     let Self { client, tenant } = self;
     let tenant = tenant.map_err(Error::InvalidRequest)?;
     let url = format!(
@@ -20619,23 +21363,27 @@ impl<'a> DeleteTenant<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::patch_tenant`]
 ///
-///[`Client::patch_tenant`]: super::Client::patch_tenant
+///[`Client::patch_tenant`]: super::OsClient::patch_tenant
 #[derive(Debug, Clone)]
 pub struct PatchTenant<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   tenant: Result<String, String>,
   body: Result<types::PatchTenantInputPayload, String>,
 }
 
 impl<'a> PatchTenant<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       tenant: Err("tenant was not initialized".to_string()),
@@ -20663,7 +21411,7 @@ impl<'a> PatchTenant<'a> {
 
   ///Sends a `PATCH` request to
   /// `/_plugins/_security/api/tenants/{tenant}`
-  pub async fn send(self) -> Result<ResponseValue<types::PatchTenantResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::PatchTenantResponseContent>, Error> {
     let Self { client, tenant, body } = self;
     let tenant = tenant.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
@@ -20685,26 +21433,30 @@ impl<'a> PatchTenant<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::security_health`]
 ///
-///[`Client::security_health`]: super::Client::security_health
+///[`Client::security_health`]: super::OsClient::security_health
 #[derive(Debug, Clone)]
 pub struct SecurityHealth<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> SecurityHealth<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_plugins/_security/health`
-  pub async fn send(self) -> Result<ResponseValue<types::SecurityHealthResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::SecurityHealthResponseContent>, Error> {
     let Self { client } = self;
     let url = format!("{}/_plugins/_security/health", client.baseurl,);
     let request = client
@@ -20719,17 +21471,21 @@ impl<'a> SecurityHealth<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::rank_eval_get`]
 ///
-///[`Client::rank_eval_get`]: super::Client::rank_eval_get
+///[`Client::rank_eval_get`]: super::OsClient::rank_eval_get
 #[derive(Debug, Clone)]
 pub struct RankEvalGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -20737,7 +21493,7 @@ pub struct RankEvalGet<'a> {
 }
 
 impl<'a> RankEvalGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -20788,7 +21544,7 @@ impl<'a> RankEvalGet<'a> {
   }
 
   ///Sends a `GET` request to `/_rank_eval`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -20819,17 +21575,21 @@ impl<'a> RankEvalGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::rank_eval_post`]
 ///
-///[`Client::rank_eval_post`]: super::Client::rank_eval_post
+///[`Client::rank_eval_post`]: super::OsClient::rank_eval_post
 #[derive(Debug, Clone)]
 pub struct RankEvalPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -20838,7 +21598,7 @@ pub struct RankEvalPost<'a> {
 }
 
 impl<'a> RankEvalPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -20899,7 +21659,7 @@ impl<'a> RankEvalPost<'a> {
   }
 
   ///Sends a `POST` request to `/_rank_eval`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -20932,23 +21692,27 @@ impl<'a> RankEvalPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_recovery`]
 ///
-///[`Client::indices_recovery`]: super::Client::indices_recovery
+///[`Client::indices_recovery`]: super::OsClient::indices_recovery
 #[derive(Debug, Clone)]
 pub struct IndicesRecovery<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   active_only: Result<Option<bool>, String>,
   detailed: Result<Option<bool>, String>,
 }
 
 impl<'a> IndicesRecovery<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       active_only: Ok(None),
@@ -20977,7 +21741,7 @@ impl<'a> IndicesRecovery<'a> {
   }
 
   ///Sends a `GET` request to `/_recovery`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       active_only,
@@ -20998,24 +21762,28 @@ impl<'a> IndicesRecovery<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_refresh_get`]
 ///
-///[`Client::indices_refresh_get`]: super::Client::indices_refresh_get
+///[`Client::indices_refresh_get`]: super::OsClient::indices_refresh_get
 #[derive(Debug, Clone)]
 pub struct IndicesRefreshGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
 }
 
 impl<'a> IndicesRefreshGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -21055,7 +21823,7 @@ impl<'a> IndicesRefreshGet<'a> {
   }
 
   ///Sends a `GET` request to `/_refresh`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -21081,24 +21849,28 @@ impl<'a> IndicesRefreshGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_refresh_post`]
 ///
-///[`Client::indices_refresh_post`]: super::Client::indices_refresh_post
+///[`Client::indices_refresh_post`]: super::OsClient::indices_refresh_post
 #[derive(Debug, Clone)]
 pub struct IndicesRefreshPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
 }
 
 impl<'a> IndicesRefreshPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -21138,7 +21910,7 @@ impl<'a> IndicesRefreshPost<'a> {
   }
 
   ///Sends a `POST` request to `/_refresh`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -21164,17 +21936,21 @@ impl<'a> IndicesRefreshPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::reindex`]
 ///
-///[`Client::reindex`]: super::Client::reindex
+///[`Client::reindex`]: super::OsClient::reindex
 #[derive(Debug, Clone)]
 pub struct Reindex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   max_docs: Result<Option<i32>, String>,
   refresh: Result<Option<bool>, String>,
   requests_per_second: Result<Option<i32>, String>,
@@ -21187,7 +21963,7 @@ pub struct Reindex<'a> {
 }
 
 impl<'a> Reindex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       max_docs: Ok(None),
@@ -21292,7 +22068,7 @@ impl<'a> Reindex<'a> {
   }
 
   ///Sends a `POST` request to `/_reindex`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       max_docs,
@@ -21345,23 +22121,27 @@ impl<'a> Reindex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::reindex_rethrottle`]
 ///
-///[`Client::reindex_rethrottle`]: super::Client::reindex_rethrottle
+///[`Client::reindex_rethrottle`]: super::OsClient::reindex_rethrottle
 #[derive(Debug, Clone)]
 pub struct ReindexRethrottle<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   task_id: Result<types::ReindexRethrottleTaskId, String>,
   requests_per_second: Result<i32, String>,
 }
 
 impl<'a> ReindexRethrottle<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       task_id: Err("task_id was not initialized".to_string()),
@@ -21388,7 +22168,7 @@ impl<'a> ReindexRethrottle<'a> {
   }
 
   ///Sends a `POST` request to `/_reindex/{task_id}/_rethrottle`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       task_id,
@@ -21408,26 +22188,30 @@ impl<'a> ReindexRethrottle<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::cluster_remote_info`]
 ///
-///[`Client::cluster_remote_info`]: super::Client::cluster_remote_info
+///[`Client::cluster_remote_info`]: super::OsClient::cluster_remote_info
 #[derive(Debug, Clone)]
 pub struct ClusterRemoteInfo<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> ClusterRemoteInfo<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_remote/info`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
     let url = format!("{}/_remote/info", client.baseurl,);
     let request = client.client.get(url).build()?;
@@ -21435,24 +22219,28 @@ impl<'a> ClusterRemoteInfo<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::remote_store_restore`]
 ///
-///[`Client::remote_store_restore`]: super::Client::remote_store_restore
+///[`Client::remote_store_restore`]: super::OsClient::remote_store_restore
 #[derive(Debug, Clone)]
 pub struct RemoteStoreRestore<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::RemoteStoreRestoreClusterManagerTimeout>, String>,
   wait_for_completion: Result<Option<bool>, String>,
   body: Result<types::builder::RemoteStoreRestoreBodyParams, String>,
 }
 
 impl<'a> RemoteStoreRestore<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -21499,7 +22287,7 @@ impl<'a> RemoteStoreRestore<'a> {
   }
 
   ///Sends a `POST` request to `/_remotestore/_restore`
-  pub async fn send(self) -> Result<ResponseValue<types::RemoteStoreRestoreResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::RemoteStoreRestoreResponseContent>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -21533,26 +22321,30 @@ impl<'a> RemoteStoreRestore<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::render_search_template_get`]
 ///
-///[`Client::render_search_template_get`]: super::Client::render_search_template_get
+///[`Client::render_search_template_get`]: super::OsClient::render_search_template_get
 #[derive(Debug, Clone)]
 pub struct RenderSearchTemplateGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> RenderSearchTemplateGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_render/template`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
     let url = format!("{}/_render/template", client.baseurl,);
     let request = client.client.get(url).build()?;
@@ -21560,22 +22352,26 @@ impl<'a> RenderSearchTemplateGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::render_search_template_post`]
 ///
-///[`Client::render_search_template_post`]: super::Client::render_search_template_post
+///[`Client::render_search_template_post`]: super::OsClient::render_search_template_post
 #[derive(Debug, Clone)]
 pub struct RenderSearchTemplatePost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   body: Result<types::RenderSearchTemplateBodyParams, String>,
 }
 
 impl<'a> RenderSearchTemplatePost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       body: Err("body was not initialized".to_string()),
@@ -21592,7 +22388,7 @@ impl<'a> RenderSearchTemplatePost<'a> {
   }
 
   ///Sends a `POST` request to `/_render/template`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_render/template", client.baseurl,);
@@ -21601,22 +22397,26 @@ impl<'a> RenderSearchTemplatePost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::render_search_template_get_with_id`]
 ///
-///[`Client::render_search_template_get_with_id`]: super::Client::render_search_template_get_with_id
+///[`Client::render_search_template_get_with_id`]: super::OsClient::render_search_template_get_with_id
 #[derive(Debug, Clone)]
 pub struct RenderSearchTemplateGetWithId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   id: Result<types::RenderSearchTemplateGetWithIdId, String>,
 }
 
 impl<'a> RenderSearchTemplateGetWithId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       id: Err("id was not initialized".to_string()),
@@ -21633,7 +22433,7 @@ impl<'a> RenderSearchTemplateGetWithId<'a> {
   }
 
   ///Sends a `GET` request to `/_render/template/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, id } = self;
     let id = id.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_render/template/{}", client.baseurl, encode_path(&id.to_string()),);
@@ -21642,23 +22442,27 @@ impl<'a> RenderSearchTemplateGetWithId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::render_search_template_post_with_id`]
 ///
-///[`Client::render_search_template_post_with_id`]: super::Client::render_search_template_post_with_id
+///[`Client::render_search_template_post_with_id`]: super::OsClient::render_search_template_post_with_id
 #[derive(Debug, Clone)]
 pub struct RenderSearchTemplatePostWithId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   id: Result<types::RenderSearchTemplatePostWithIdId, String>,
   body: Result<types::RenderSearchTemplateBodyParams, String>,
 }
 
 impl<'a> RenderSearchTemplatePostWithId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       id: Err("id was not initialized".to_string()),
@@ -21685,7 +22489,7 @@ impl<'a> RenderSearchTemplatePostWithId<'a> {
   }
 
   ///Sends a `POST` request to `/_render/template/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, id, body } = self;
     let id = id.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
@@ -21695,23 +22499,27 @@ impl<'a> RenderSearchTemplatePostWithId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_resolve_index`]
 ///
-///[`Client::indices_resolve_index`]: super::Client::indices_resolve_index
+///[`Client::indices_resolve_index`]: super::OsClient::indices_resolve_index
 #[derive(Debug, Clone)]
 pub struct IndicesResolveIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesResolveIndexName, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
 }
 
 impl<'a> IndicesResolveIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -21739,7 +22547,7 @@ impl<'a> IndicesResolveIndex<'a> {
   }
 
   ///Sends a `GET` request to `/_resolve/index/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -21757,26 +22565,30 @@ impl<'a> IndicesResolveIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_script_context`]
 ///
-///[`Client::get_script_context`]: super::Client::get_script_context
+///[`Client::get_script_context`]: super::OsClient::get_script_context
 #[derive(Debug, Clone)]
 pub struct GetScriptContext<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> GetScriptContext<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_script_context`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
     let url = format!("{}/_script_context", client.baseurl,);
     let request = client.client.get(url).build()?;
@@ -21784,26 +22596,30 @@ impl<'a> GetScriptContext<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_script_languages`]
 ///
-///[`Client::get_script_languages`]: super::Client::get_script_languages
+///[`Client::get_script_languages`]: super::OsClient::get_script_languages
 #[derive(Debug, Clone)]
 pub struct GetScriptLanguages<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> GetScriptLanguages<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_script_language`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
     let url = format!("{}/_script_language", client.baseurl,);
     let request = client.client.get(url).build()?;
@@ -21811,26 +22627,30 @@ impl<'a> GetScriptLanguages<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::scripts_painless_execute_get`]
 ///
-///[`Client::scripts_painless_execute_get`]: super::Client::scripts_painless_execute_get
+///[`Client::scripts_painless_execute_get`]: super::OsClient::scripts_painless_execute_get
 #[derive(Debug, Clone)]
 pub struct ScriptsPainlessExecuteGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> ScriptsPainlessExecuteGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_scripts/painless/_execute`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
     let url = format!("{}/_scripts/painless/_execute", client.baseurl,);
     let request = client.client.get(url).build()?;
@@ -21838,22 +22658,26 @@ impl<'a> ScriptsPainlessExecuteGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::scripts_painless_execute_post`]
 ///
-///[`Client::scripts_painless_execute_post`]: super::Client::scripts_painless_execute_post
+///[`Client::scripts_painless_execute_post`]: super::OsClient::scripts_painless_execute_post
 #[derive(Debug, Clone)]
 pub struct ScriptsPainlessExecutePost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   body: Result<types::ScriptsPainlessExecuteBodyParams, String>,
 }
 
 impl<'a> ScriptsPainlessExecutePost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       body: Err("body was not initialized".to_string()),
@@ -21870,7 +22694,7 @@ impl<'a> ScriptsPainlessExecutePost<'a> {
   }
 
   ///Sends a `POST` request to `/_scripts/painless/_execute`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_scripts/painless/_execute", client.baseurl,);
@@ -21879,24 +22703,28 @@ impl<'a> ScriptsPainlessExecutePost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_script`]
 ///
-///[`Client::get_script`]: super::Client::get_script
+///[`Client::get_script`]: super::OsClient::get_script
 #[derive(Debug, Clone)]
 pub struct GetScript<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   id: Result<types::GetScriptId, String>,
   cluster_manager_timeout: Result<Option<types::GetScriptClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::GetScriptMasterTimeout>, String>,
 }
 
 impl<'a> GetScript<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       id: Err("id was not initialized".to_string()),
@@ -21935,7 +22763,7 @@ impl<'a> GetScript<'a> {
   }
 
   ///Sends a `GET` request to `/_scripts/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       id,
@@ -21958,17 +22786,21 @@ impl<'a> GetScript<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::put_script_put`]
 ///
-///[`Client::put_script_put`]: super::Client::put_script_put
+///[`Client::put_script_put`]: super::OsClient::put_script_put
 #[derive(Debug, Clone)]
 pub struct PutScriptPut<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   id: Result<types::PutScriptPutId, String>,
   cluster_manager_timeout: Result<Option<types::PutScriptPutClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::PutScriptPutMasterTimeout>, String>,
@@ -21977,7 +22809,7 @@ pub struct PutScriptPut<'a> {
 }
 
 impl<'a> PutScriptPut<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       id: Err("id was not initialized".to_string()),
@@ -22037,7 +22869,7 @@ impl<'a> PutScriptPut<'a> {
   }
 
   ///Sends a `PUT` request to `/_scripts/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       id,
@@ -22067,17 +22899,21 @@ impl<'a> PutScriptPut<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::put_script_post`]
 ///
-///[`Client::put_script_post`]: super::Client::put_script_post
+///[`Client::put_script_post`]: super::OsClient::put_script_post
 #[derive(Debug, Clone)]
 pub struct PutScriptPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   id: Result<types::PutScriptPostId, String>,
   cluster_manager_timeout: Result<Option<types::PutScriptPostClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::PutScriptPostMasterTimeout>, String>,
@@ -22086,7 +22922,7 @@ pub struct PutScriptPost<'a> {
 }
 
 impl<'a> PutScriptPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       id: Err("id was not initialized".to_string()),
@@ -22146,7 +22982,7 @@ impl<'a> PutScriptPost<'a> {
   }
 
   ///Sends a `POST` request to `/_scripts/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       id,
@@ -22176,17 +23012,21 @@ impl<'a> PutScriptPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::delete_script`]
 ///
-///[`Client::delete_script`]: super::Client::delete_script
+///[`Client::delete_script`]: super::OsClient::delete_script
 #[derive(Debug, Clone)]
 pub struct DeleteScript<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   id: Result<types::DeleteScriptId, String>,
   cluster_manager_timeout: Result<Option<types::DeleteScriptClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::DeleteScriptMasterTimeout>, String>,
@@ -22194,7 +23034,7 @@ pub struct DeleteScript<'a> {
 }
 
 impl<'a> DeleteScript<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       id: Err("id was not initialized".to_string()),
@@ -22244,7 +23084,7 @@ impl<'a> DeleteScript<'a> {
   }
 
   ///Sends a `DELETE` request to `/_scripts/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       id,
@@ -22272,17 +23112,21 @@ impl<'a> DeleteScript<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::put_script_put_with_context`]
 ///
-///[`Client::put_script_put_with_context`]: super::Client::put_script_put_with_context
+///[`Client::put_script_put_with_context`]: super::OsClient::put_script_put_with_context
 #[derive(Debug, Clone)]
 pub struct PutScriptPutWithContext<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   id: Result<types::PutScriptPutWithContextId, String>,
   context: Result<types::PutScriptPutWithContextContext, String>,
   cluster_manager_timeout: Result<Option<types::PutScriptPutWithContextClusterManagerTimeout>, String>,
@@ -22292,7 +23136,7 @@ pub struct PutScriptPutWithContext<'a> {
 }
 
 impl<'a> PutScriptPutWithContext<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       id: Err("id was not initialized".to_string()),
@@ -22361,7 +23205,7 @@ impl<'a> PutScriptPutWithContext<'a> {
   }
 
   ///Sends a `PUT` request to `/_scripts/{id}/{context}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       id,
@@ -22398,17 +23242,21 @@ impl<'a> PutScriptPutWithContext<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::put_script_post_with_context`]
 ///
-///[`Client::put_script_post_with_context`]: super::Client::put_script_post_with_context
+///[`Client::put_script_post_with_context`]: super::OsClient::put_script_post_with_context
 #[derive(Debug, Clone)]
 pub struct PutScriptPostWithContext<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   id: Result<types::PutScriptPostWithContextId, String>,
   context: Result<types::PutScriptPostWithContextContext, String>,
   cluster_manager_timeout: Result<Option<types::PutScriptPostWithContextClusterManagerTimeout>, String>,
@@ -22418,7 +23266,7 @@ pub struct PutScriptPostWithContext<'a> {
 }
 
 impl<'a> PutScriptPostWithContext<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       id: Err("id was not initialized".to_string()),
@@ -22487,7 +23335,7 @@ impl<'a> PutScriptPostWithContext<'a> {
   }
 
   ///Sends a `POST` request to `/_scripts/{id}/{context}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       id,
@@ -22524,17 +23372,21 @@ impl<'a> PutScriptPostWithContext<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::search_post`]
 ///
-///[`Client::search_post`]: super::Client::search_post
+///[`Client::search_post`]: super::OsClient::search_post
 #[derive(Debug, Clone)]
 pub struct SearchPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -22581,7 +23433,7 @@ pub struct SearchPost<'a> {
 }
 
 impl<'a> SearchPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       source: Ok(None),
@@ -23070,7 +23922,7 @@ impl<'a> SearchPost<'a> {
   ///Sends a `POST` request to `/_search`
   pub async fn send<T: DeserializeOwned + std::default::Default>(
     self,
-  ) -> Result<ResponseValue<types::SearchPostResponseContent<T>>, Error<()>> {
+  ) -> Result<ResponseValue<types::SearchPostResponseContent<T>>, Error> {
     let Self {
       client,
       source,
@@ -23305,22 +24157,26 @@ impl<'a> SearchPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::delete_pit`]
 ///
-///[`Client::delete_pit`]: super::Client::delete_pit
+///[`Client::delete_pit`]: super::OsClient::delete_pit
 #[derive(Debug, Clone)]
 pub struct DeletePit<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   body: Result<types::builder::DeletePitBodyParams, String>,
 }
 
 impl<'a> DeletePit<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       body: Ok(types::builder::DeletePitBodyParams::default()),
@@ -23345,7 +24201,7 @@ impl<'a> DeletePit<'a> {
   }
 
   ///Sends a `DELETE` request to `/_search/point_in_time`
-  pub async fn send(self) -> Result<ResponseValue<types::DeletePitResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::DeletePitResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body
       .and_then(std::convert::TryInto::<types::DeletePitBodyParams>::try_into)
@@ -23364,26 +24220,30 @@ impl<'a> DeletePit<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_all_pits`]
 ///
-///[`Client::get_all_pits`]: super::Client::get_all_pits
+///[`Client::get_all_pits`]: super::OsClient::get_all_pits
 #[derive(Debug, Clone)]
 pub struct GetAllPits<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> GetAllPits<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `GET` request to `/_search/point_in_time/_all`
-  pub async fn send(self) -> Result<ResponseValue<types::GetAllPitsResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::GetAllPitsResponseContent>, Error> {
     let Self { client } = self;
     let url = format!("{}/_search/point_in_time/_all", client.baseurl,);
     let request = client
@@ -23398,26 +24258,30 @@ impl<'a> GetAllPits<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::delete_all_pits`]
 ///
-///[`Client::delete_all_pits`]: super::Client::delete_all_pits
+///[`Client::delete_all_pits`]: super::OsClient::delete_all_pits
 #[derive(Debug, Clone)]
 pub struct DeleteAllPits<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
 }
 
 impl<'a> DeleteAllPits<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self { client }
   }
 
   ///Sends a `DELETE` request to `/_search/point_in_time/_all`
-  pub async fn send(self) -> Result<ResponseValue<types::DeleteAllPitsResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::DeleteAllPitsResponseContent>, Error> {
     let Self { client } = self;
     let url = format!("{}/_search/point_in_time/_all", client.baseurl,);
     let request = client
@@ -23432,24 +24296,28 @@ impl<'a> DeleteAllPits<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::scroll_get`]
 ///
-///[`Client::scroll_get`]: super::Client::scroll_get
+///[`Client::scroll_get`]: super::OsClient::scroll_get
 #[derive(Debug, Clone)]
 pub struct ScrollGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   rest_total_hits_as_int: Result<Option<bool>, String>,
   scroll: Result<Option<types::ScrollGetScroll>, String>,
   scroll_id: Result<Option<String>, String>,
 }
 
 impl<'a> ScrollGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       rest_total_hits_as_int: Ok(None),
@@ -23489,7 +24357,7 @@ impl<'a> ScrollGet<'a> {
   }
 
   ///Sends a `GET` request to `/_search/scroll`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       rest_total_hits_as_int,
@@ -23515,17 +24383,21 @@ impl<'a> ScrollGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::scroll_post`]
 ///
-///[`Client::scroll_post`]: super::Client::scroll_post
+///[`Client::scroll_post`]: super::OsClient::scroll_post
 #[derive(Debug, Clone)]
 pub struct ScrollPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   rest_total_hits_as_int: Result<Option<bool>, String>,
   scroll: Result<Option<types::ScrollPostScroll>, String>,
   scroll_id: Result<Option<String>, String>,
@@ -23533,7 +24405,7 @@ pub struct ScrollPost<'a> {
 }
 
 impl<'a> ScrollPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       rest_total_hits_as_int: Ok(None),
@@ -23583,7 +24455,7 @@ impl<'a> ScrollPost<'a> {
   }
 
   ///Sends a `POST` request to `/_search/scroll`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       rest_total_hits_as_int,
@@ -23611,22 +24483,26 @@ impl<'a> ScrollPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::clear_scroll`]
 ///
-///[`Client::clear_scroll`]: super::Client::clear_scroll
+///[`Client::clear_scroll`]: super::OsClient::clear_scroll
 #[derive(Debug, Clone)]
 pub struct ClearScroll<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   body: Result<types::ClearScrollBodyParams, String>,
 }
 
 impl<'a> ClearScroll<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       body: Err("body was not initialized".to_string()),
@@ -23643,7 +24519,7 @@ impl<'a> ClearScroll<'a> {
   }
 
   ///Sends a `DELETE` request to `/_search/scroll`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!("{}/_search/scroll", client.baseurl,);
@@ -23652,24 +24528,28 @@ impl<'a> ClearScroll<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::scroll_get_with_scroll_id`]
 ///
-///[`Client::scroll_get_with_scroll_id`]: super::Client::scroll_get_with_scroll_id
+///[`Client::scroll_get_with_scroll_id`]: super::OsClient::scroll_get_with_scroll_id
 #[derive(Debug, Clone)]
 pub struct ScrollGetWithScrollId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   rest_total_hits_as_int: Result<Option<bool>, String>,
   scroll: Result<Option<types::ScrollGetWithScrollIdScroll>, String>,
   scroll_id: Result<Option<String>, String>,
 }
 
 impl<'a> ScrollGetWithScrollId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       rest_total_hits_as_int: Ok(None),
@@ -23709,7 +24589,7 @@ impl<'a> ScrollGetWithScrollId<'a> {
   }
 
   ///Sends a `GET` request to `/_search/scroll/{scroll_id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       rest_total_hits_as_int,
@@ -23739,17 +24619,21 @@ impl<'a> ScrollGetWithScrollId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::scroll_post_with_scroll_id`]
 ///
-///[`Client::scroll_post_with_scroll_id`]: super::Client::scroll_post_with_scroll_id
+///[`Client::scroll_post_with_scroll_id`]: super::OsClient::scroll_post_with_scroll_id
 #[derive(Debug, Clone)]
 pub struct ScrollPostWithScrollId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   rest_total_hits_as_int: Result<Option<bool>, String>,
   scroll: Result<Option<types::ScrollPostWithScrollIdScroll>, String>,
   scroll_id: Result<Option<String>, String>,
@@ -23757,7 +24641,7 @@ pub struct ScrollPostWithScrollId<'a> {
 }
 
 impl<'a> ScrollPostWithScrollId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       rest_total_hits_as_int: Ok(None),
@@ -23807,7 +24691,7 @@ impl<'a> ScrollPostWithScrollId<'a> {
   }
 
   ///Sends a `POST` request to `/_search/scroll/{scroll_id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       rest_total_hits_as_int,
@@ -23839,23 +24723,27 @@ impl<'a> ScrollPostWithScrollId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::clear_scroll_with_scroll_id`]
 ///
-///[`Client::clear_scroll_with_scroll_id`]: super::Client::clear_scroll_with_scroll_id
+///[`Client::clear_scroll_with_scroll_id`]: super::OsClient::clear_scroll_with_scroll_id
 #[derive(Debug, Clone)]
 pub struct ClearScrollWithScrollId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   scroll_id: Result<types::ClearScrollWithScrollIdScrollId, String>,
   body: Result<types::ClearScrollBodyParams, String>,
 }
 
 impl<'a> ClearScrollWithScrollId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       scroll_id: Err("scroll_id was not initialized".to_string()),
@@ -23882,7 +24770,7 @@ impl<'a> ClearScrollWithScrollId<'a> {
   }
 
   ///Sends a `DELETE` request to `/_search/scroll/{scroll_id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       scroll_id,
@@ -23900,17 +24788,21 @@ impl<'a> ClearScrollWithScrollId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::search_template_get`]
 ///
-///[`Client::search_template_get`]: super::Client::search_template_get
+///[`Client::search_template_get`]: super::OsClient::search_template_get
 #[derive(Debug, Clone)]
 pub struct SearchTemplateGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   ccs_minimize_roundtrips: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -23927,7 +24819,7 @@ pub struct SearchTemplateGet<'a> {
 }
 
 impl<'a> SearchTemplateGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -24077,7 +24969,7 @@ impl<'a> SearchTemplateGet<'a> {
   }
 
   ///Sends a `GET` request to `/_search/template`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -24153,17 +25045,21 @@ impl<'a> SearchTemplateGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::search_template_post`]
 ///
-///[`Client::search_template_post`]: super::Client::search_template_post
+///[`Client::search_template_post`]: super::OsClient::search_template_post
 #[derive(Debug, Clone)]
 pub struct SearchTemplatePost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   ccs_minimize_roundtrips: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -24181,7 +25077,7 @@ pub struct SearchTemplatePost<'a> {
 }
 
 impl<'a> SearchTemplatePost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -24341,7 +25237,7 @@ impl<'a> SearchTemplatePost<'a> {
   }
 
   ///Sends a `POST` request to `/_search/template`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -24419,17 +25315,21 @@ impl<'a> SearchTemplatePost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::search_shards_get`]
 ///
-///[`Client::search_shards_get`]: super::Client::search_shards_get
+///[`Client::search_shards_get`]: super::OsClient::search_shards_get
 #[derive(Debug, Clone)]
 pub struct SearchShardsGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -24439,7 +25339,7 @@ pub struct SearchShardsGet<'a> {
 }
 
 impl<'a> SearchShardsGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -24512,7 +25412,7 @@ impl<'a> SearchShardsGet<'a> {
   }
 
   ///Sends a `GET` request to `/_search_shards`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -24553,17 +25453,21 @@ impl<'a> SearchShardsGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::search_shards_post`]
 ///
-///[`Client::search_shards_post`]: super::Client::search_shards_post
+///[`Client::search_shards_post`]: super::OsClient::search_shards_post
 #[derive(Debug, Clone)]
 pub struct SearchShardsPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -24573,7 +25477,7 @@ pub struct SearchShardsPost<'a> {
 }
 
 impl<'a> SearchShardsPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -24646,7 +25550,7 @@ impl<'a> SearchShardsPost<'a> {
   }
 
   ///Sends a `POST` request to `/_search_shards`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -24687,17 +25591,21 @@ impl<'a> SearchShardsPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_segments`]
 ///
-///[`Client::indices_segments`]: super::Client::indices_segments
+///[`Client::indices_segments`]: super::OsClient::indices_segments
 #[derive(Debug, Clone)]
 pub struct IndicesSegments<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -24705,7 +25613,7 @@ pub struct IndicesSegments<'a> {
 }
 
 impl<'a> IndicesSegments<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -24756,7 +25664,7 @@ impl<'a> IndicesSegments<'a> {
   }
 
   ///Sends a `GET` request to `/_segments`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -24787,17 +25695,21 @@ impl<'a> IndicesSegments<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_settings`]
 ///
-///[`Client::indices_get_settings`]: super::Client::indices_get_settings
+///[`Client::indices_get_settings`]: super::OsClient::indices_get_settings
 #[derive(Debug, Clone)]
 pub struct IndicesGetSettings<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::IndicesGetSettingsClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -24809,7 +25721,7 @@ pub struct IndicesGetSettings<'a> {
 }
 
 impl<'a> IndicesGetSettings<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -24903,7 +25815,7 @@ impl<'a> IndicesGetSettings<'a> {
   }
 
   ///Sends a `GET` request to `/_settings`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -24954,17 +25866,21 @@ impl<'a> IndicesGetSettings<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_put_settings`]
 ///
-///[`Client::indices_put_settings`]: super::Client::indices_put_settings
+///[`Client::indices_put_settings`]: super::OsClient::indices_put_settings
 #[derive(Debug, Clone)]
 pub struct IndicesPutSettings<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::IndicesPutSettingsClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -24977,7 +25893,7 @@ pub struct IndicesPutSettings<'a> {
 }
 
 impl<'a> IndicesPutSettings<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -25081,7 +25997,7 @@ impl<'a> IndicesPutSettings<'a> {
   }
 
   ///Sends a `PUT` request to `/_settings`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -25134,17 +26050,21 @@ impl<'a> IndicesPutSettings<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_settings_with_name`]
 ///
-///[`Client::indices_get_settings_with_name`]: super::Client::indices_get_settings_with_name
+///[`Client::indices_get_settings_with_name`]: super::OsClient::indices_get_settings_with_name
 #[derive(Debug, Clone)]
 pub struct IndicesGetSettingsWithName<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesGetSettingsWithNameName, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::IndicesGetSettingsWithNameClusterManagerTimeout>, String>,
@@ -25157,7 +26077,7 @@ pub struct IndicesGetSettingsWithName<'a> {
 }
 
 impl<'a> IndicesGetSettingsWithName<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -25261,7 +26181,7 @@ impl<'a> IndicesGetSettingsWithName<'a> {
   }
 
   ///Sends a `GET` request to `/_settings/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -25314,17 +26234,21 @@ impl<'a> IndicesGetSettingsWithName<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_shard_stores`]
 ///
-///[`Client::indices_shard_stores`]: super::Client::indices_shard_stores
+///[`Client::indices_shard_stores`]: super::OsClient::indices_shard_stores
 #[derive(Debug, Clone)]
 pub struct IndicesShardStores<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -25332,7 +26256,7 @@ pub struct IndicesShardStores<'a> {
 }
 
 impl<'a> IndicesShardStores<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -25383,7 +26307,7 @@ impl<'a> IndicesShardStores<'a> {
   }
 
   ///Sends a `GET` request to `/_shard_stores`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -25414,24 +26338,28 @@ impl<'a> IndicesShardStores<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::snapshot_get_repository`]
 ///
-///[`Client::snapshot_get_repository`]: super::Client::snapshot_get_repository
+///[`Client::snapshot_get_repository`]: super::OsClient::snapshot_get_repository
 #[derive(Debug, Clone)]
 pub struct SnapshotGetRepository<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::SnapshotGetRepositoryClusterManagerTimeout>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::SnapshotGetRepositoryMasterTimeout>, String>,
 }
 
 impl<'a> SnapshotGetRepository<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -25470,7 +26398,7 @@ impl<'a> SnapshotGetRepository<'a> {
   }
 
   ///Sends a `GET` request to `/_snapshot`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -25496,24 +26424,28 @@ impl<'a> SnapshotGetRepository<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::snapshot_status`]
 ///
-///[`Client::snapshot_status`]: super::Client::snapshot_status
+///[`Client::snapshot_status`]: super::OsClient::snapshot_status
 #[derive(Debug, Clone)]
 pub struct SnapshotStatus<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::SnapshotStatusClusterManagerTimeout>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::SnapshotStatusMasterTimeout>, String>,
 }
 
 impl<'a> SnapshotStatus<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -25552,7 +26484,7 @@ impl<'a> SnapshotStatus<'a> {
   }
 
   ///Sends a `GET` request to `/_snapshot/_status`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -25578,17 +26510,21 @@ impl<'a> SnapshotStatus<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::snapshot_get_repository_with_repository`]
 ///
-///[`Client::snapshot_get_repository_with_repository`]: super::Client::snapshot_get_repository_with_repository
+///[`Client::snapshot_get_repository_with_repository`]: super::OsClient::snapshot_get_repository_with_repository
 #[derive(Debug, Clone)]
 pub struct SnapshotGetRepositoryWithRepository<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   repository: Result<types::SnapshotGetRepositoryWithRepositoryRepository, String>,
   cluster_manager_timeout: Result<Option<types::SnapshotGetRepositoryWithRepositoryClusterManagerTimeout>, String>,
   local: Result<Option<bool>, String>,
@@ -25596,7 +26532,7 @@ pub struct SnapshotGetRepositoryWithRepository<'a> {
 }
 
 impl<'a> SnapshotGetRepositoryWithRepository<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       repository: Err("repository was not initialized".to_string()),
@@ -25645,7 +26581,7 @@ impl<'a> SnapshotGetRepositoryWithRepository<'a> {
   }
 
   ///Sends a `GET` request to `/_snapshot/{repository}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       repository,
@@ -25673,17 +26609,21 @@ impl<'a> SnapshotGetRepositoryWithRepository<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::snapshot_create_repository_put`]
 ///
-///[`Client::snapshot_create_repository_put`]: super::Client::snapshot_create_repository_put
+///[`Client::snapshot_create_repository_put`]: super::OsClient::snapshot_create_repository_put
 #[derive(Debug, Clone)]
 pub struct SnapshotCreateRepositoryPut<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   repository: Result<types::SnapshotCreateRepositoryPutRepository, String>,
   cluster_manager_timeout: Result<Option<types::SnapshotCreateRepositoryPutClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::SnapshotCreateRepositoryPutMasterTimeout>, String>,
@@ -25693,7 +26633,7 @@ pub struct SnapshotCreateRepositoryPut<'a> {
 }
 
 impl<'a> SnapshotCreateRepositoryPut<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       repository: Err("repository was not initialized".to_string()),
@@ -25763,7 +26703,7 @@ impl<'a> SnapshotCreateRepositoryPut<'a> {
   }
 
   ///Sends a `PUT` request to `/_snapshot/{repository}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       repository,
@@ -25798,17 +26738,21 @@ impl<'a> SnapshotCreateRepositoryPut<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::snapshot_create_repository_post`]
 ///
-///[`Client::snapshot_create_repository_post`]: super::Client::snapshot_create_repository_post
+///[`Client::snapshot_create_repository_post`]: super::OsClient::snapshot_create_repository_post
 #[derive(Debug, Clone)]
 pub struct SnapshotCreateRepositoryPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   repository: Result<types::SnapshotCreateRepositoryPostRepository, String>,
   cluster_manager_timeout: Result<Option<types::SnapshotCreateRepositoryPostClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::SnapshotCreateRepositoryPostMasterTimeout>, String>,
@@ -25818,7 +26762,7 @@ pub struct SnapshotCreateRepositoryPost<'a> {
 }
 
 impl<'a> SnapshotCreateRepositoryPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       repository: Err("repository was not initialized".to_string()),
@@ -25888,7 +26832,7 @@ impl<'a> SnapshotCreateRepositoryPost<'a> {
   }
 
   ///Sends a `POST` request to `/_snapshot/{repository}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       repository,
@@ -25923,17 +26867,21 @@ impl<'a> SnapshotCreateRepositoryPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::snapshot_delete_repository`]
 ///
-///[`Client::snapshot_delete_repository`]: super::Client::snapshot_delete_repository
+///[`Client::snapshot_delete_repository`]: super::OsClient::snapshot_delete_repository
 #[derive(Debug, Clone)]
 pub struct SnapshotDeleteRepository<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   repository: Result<types::SnapshotDeleteRepositoryRepository, String>,
   cluster_manager_timeout: Result<Option<types::SnapshotDeleteRepositoryClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::SnapshotDeleteRepositoryMasterTimeout>, String>,
@@ -25941,7 +26889,7 @@ pub struct SnapshotDeleteRepository<'a> {
 }
 
 impl<'a> SnapshotDeleteRepository<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       repository: Err("repository was not initialized".to_string()),
@@ -25990,7 +26938,7 @@ impl<'a> SnapshotDeleteRepository<'a> {
   }
 
   ///Sends a `DELETE` request to `/_snapshot/{repository}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       repository,
@@ -26018,17 +26966,21 @@ impl<'a> SnapshotDeleteRepository<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::snapshot_cleanup_repository`]
 ///
-///[`Client::snapshot_cleanup_repository`]: super::Client::snapshot_cleanup_repository
+///[`Client::snapshot_cleanup_repository`]: super::OsClient::snapshot_cleanup_repository
 #[derive(Debug, Clone)]
 pub struct SnapshotCleanupRepository<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   repository: Result<types::SnapshotCleanupRepositoryRepository, String>,
   cluster_manager_timeout: Result<Option<types::SnapshotCleanupRepositoryClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::SnapshotCleanupRepositoryMasterTimeout>, String>,
@@ -26036,7 +26988,7 @@ pub struct SnapshotCleanupRepository<'a> {
 }
 
 impl<'a> SnapshotCleanupRepository<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       repository: Err("repository was not initialized".to_string()),
@@ -26085,7 +27037,7 @@ impl<'a> SnapshotCleanupRepository<'a> {
   }
 
   ///Sends a `POST` request to `/_snapshot/{repository}/_cleanup`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       repository,
@@ -26117,17 +27069,21 @@ impl<'a> SnapshotCleanupRepository<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::snapshot_status_with_repository`]
 ///
-///[`Client::snapshot_status_with_repository`]: super::Client::snapshot_status_with_repository
+///[`Client::snapshot_status_with_repository`]: super::OsClient::snapshot_status_with_repository
 #[derive(Debug, Clone)]
 pub struct SnapshotStatusWithRepository<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   repository: Result<types::SnapshotStatusWithRepositoryRepository, String>,
   cluster_manager_timeout: Result<Option<types::SnapshotStatusWithRepositoryClusterManagerTimeout>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -26135,7 +27091,7 @@ pub struct SnapshotStatusWithRepository<'a> {
 }
 
 impl<'a> SnapshotStatusWithRepository<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       repository: Err("repository was not initialized".to_string()),
@@ -26184,7 +27140,7 @@ impl<'a> SnapshotStatusWithRepository<'a> {
   }
 
   ///Sends a `GET` request to `/_snapshot/{repository}/_status`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       repository,
@@ -26216,17 +27172,21 @@ impl<'a> SnapshotStatusWithRepository<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::snapshot_verify_repository`]
 ///
-///[`Client::snapshot_verify_repository`]: super::Client::snapshot_verify_repository
+///[`Client::snapshot_verify_repository`]: super::OsClient::snapshot_verify_repository
 #[derive(Debug, Clone)]
 pub struct SnapshotVerifyRepository<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   repository: Result<types::SnapshotVerifyRepositoryRepository, String>,
   cluster_manager_timeout: Result<Option<types::SnapshotVerifyRepositoryClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::SnapshotVerifyRepositoryMasterTimeout>, String>,
@@ -26234,7 +27194,7 @@ pub struct SnapshotVerifyRepository<'a> {
 }
 
 impl<'a> SnapshotVerifyRepository<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       repository: Err("repository was not initialized".to_string()),
@@ -26283,7 +27243,7 @@ impl<'a> SnapshotVerifyRepository<'a> {
   }
 
   ///Sends a `POST` request to `/_snapshot/{repository}/_verify`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       repository,
@@ -26315,17 +27275,21 @@ impl<'a> SnapshotVerifyRepository<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::snapshot_get`]
 ///
-///[`Client::snapshot_get`]: super::Client::snapshot_get
+///[`Client::snapshot_get`]: super::OsClient::snapshot_get
 #[derive(Debug, Clone)]
 pub struct SnapshotGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   repository: Result<types::SnapshotGetRepository, String>,
   snapshot: Result<types::SnapshotGetSnapshot, String>,
   cluster_manager_timeout: Result<Option<types::SnapshotGetClusterManagerTimeout>, String>,
@@ -26335,7 +27299,7 @@ pub struct SnapshotGet<'a> {
 }
 
 impl<'a> SnapshotGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       repository: Err("repository was not initialized".to_string()),
@@ -26406,7 +27370,7 @@ impl<'a> SnapshotGet<'a> {
   }
 
   ///Sends a `GET` request to `/_snapshot/{repository}/{snapshot}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       repository,
@@ -26446,17 +27410,21 @@ impl<'a> SnapshotGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::snapshot_create_put`]
 ///
-///[`Client::snapshot_create_put`]: super::Client::snapshot_create_put
+///[`Client::snapshot_create_put`]: super::OsClient::snapshot_create_put
 #[derive(Debug, Clone)]
 pub struct SnapshotCreatePut<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   repository: Result<types::SnapshotCreatePutRepository, String>,
   snapshot: Result<types::SnapshotCreatePutSnapshot, String>,
   cluster_manager_timeout: Result<Option<types::SnapshotCreatePutClusterManagerTimeout>, String>,
@@ -26466,7 +27434,7 @@ pub struct SnapshotCreatePut<'a> {
 }
 
 impl<'a> SnapshotCreatePut<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       repository: Err("repository was not initialized".to_string()),
@@ -26535,7 +27503,7 @@ impl<'a> SnapshotCreatePut<'a> {
   }
 
   ///Sends a `PUT` request to `/_snapshot/{repository}/{snapshot}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       repository,
@@ -26572,17 +27540,21 @@ impl<'a> SnapshotCreatePut<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::snapshot_create_post`]
 ///
-///[`Client::snapshot_create_post`]: super::Client::snapshot_create_post
+///[`Client::snapshot_create_post`]: super::OsClient::snapshot_create_post
 #[derive(Debug, Clone)]
 pub struct SnapshotCreatePost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   repository: Result<types::SnapshotCreatePostRepository, String>,
   snapshot: Result<types::SnapshotCreatePostSnapshot, String>,
   cluster_manager_timeout: Result<Option<types::SnapshotCreatePostClusterManagerTimeout>, String>,
@@ -26592,7 +27564,7 @@ pub struct SnapshotCreatePost<'a> {
 }
 
 impl<'a> SnapshotCreatePost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       repository: Err("repository was not initialized".to_string()),
@@ -26661,7 +27633,7 @@ impl<'a> SnapshotCreatePost<'a> {
   }
 
   ///Sends a `POST` request to `/_snapshot/{repository}/{snapshot}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       repository,
@@ -26698,17 +27670,21 @@ impl<'a> SnapshotCreatePost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::snapshot_delete`]
 ///
-///[`Client::snapshot_delete`]: super::Client::snapshot_delete
+///[`Client::snapshot_delete`]: super::OsClient::snapshot_delete
 #[derive(Debug, Clone)]
 pub struct SnapshotDelete<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   repository: Result<types::SnapshotDeleteRepository, String>,
   snapshot: Result<types::SnapshotDeleteSnapshot, String>,
   cluster_manager_timeout: Result<Option<types::SnapshotDeleteClusterManagerTimeout>, String>,
@@ -26716,7 +27692,7 @@ pub struct SnapshotDelete<'a> {
 }
 
 impl<'a> SnapshotDelete<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       repository: Err("repository was not initialized".to_string()),
@@ -26764,7 +27740,7 @@ impl<'a> SnapshotDelete<'a> {
   }
 
   ///Sends a `DELETE` request to `/_snapshot/{repository}/{snapshot}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       repository,
@@ -26794,17 +27770,21 @@ impl<'a> SnapshotDelete<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::snapshot_clone`]
 ///
-///[`Client::snapshot_clone`]: super::Client::snapshot_clone
+///[`Client::snapshot_clone`]: super::OsClient::snapshot_clone
 #[derive(Debug, Clone)]
 pub struct SnapshotClone<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   repository: Result<types::SnapshotCloneRepository, String>,
   snapshot: Result<types::SnapshotCloneSnapshot, String>,
   target_snapshot: Result<types::SnapshotCloneTargetSnapshot, String>,
@@ -26814,7 +27794,7 @@ pub struct SnapshotClone<'a> {
 }
 
 impl<'a> SnapshotClone<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       repository: Err("repository was not initialized".to_string()),
@@ -26884,7 +27864,7 @@ impl<'a> SnapshotClone<'a> {
 
   ///Sends a `PUT` request to
   /// `/_snapshot/{repository}/{snapshot}/_clone/{target_snapshot}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       repository,
@@ -26919,17 +27899,21 @@ impl<'a> SnapshotClone<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::snapshot_restore`]
 ///
-///[`Client::snapshot_restore`]: super::Client::snapshot_restore
+///[`Client::snapshot_restore`]: super::OsClient::snapshot_restore
 #[derive(Debug, Clone)]
 pub struct SnapshotRestore<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   repository: Result<types::SnapshotRestoreRepository, String>,
   snapshot: Result<types::SnapshotRestoreSnapshot, String>,
   cluster_manager_timeout: Result<Option<types::SnapshotRestoreClusterManagerTimeout>, String>,
@@ -26939,7 +27923,7 @@ pub struct SnapshotRestore<'a> {
 }
 
 impl<'a> SnapshotRestore<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       repository: Err("repository was not initialized".to_string()),
@@ -27009,7 +27993,7 @@ impl<'a> SnapshotRestore<'a> {
 
   ///Sends a `POST` request to
   /// `/_snapshot/{repository}/{snapshot}/_restore`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       repository,
@@ -27046,17 +28030,21 @@ impl<'a> SnapshotRestore<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::snapshot_status_with_repository_snapshot`]
 ///
-///[`Client::snapshot_status_with_repository_snapshot`]: super::Client::snapshot_status_with_repository_snapshot
+///[`Client::snapshot_status_with_repository_snapshot`]: super::OsClient::snapshot_status_with_repository_snapshot
 #[derive(Debug, Clone)]
 pub struct SnapshotStatusWithRepositorySnapshot<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   repository: Result<types::SnapshotStatusWithRepositorySnapshotRepository, String>,
   snapshot: Result<types::SnapshotStatusWithRepositorySnapshotSnapshot, String>,
   cluster_manager_timeout: Result<Option<types::SnapshotStatusWithRepositorySnapshotClusterManagerTimeout>, String>,
@@ -27065,7 +28053,7 @@ pub struct SnapshotStatusWithRepositorySnapshot<'a> {
 }
 
 impl<'a> SnapshotStatusWithRepositorySnapshot<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       repository: Err("repository was not initialized".to_string()),
@@ -27125,7 +28113,7 @@ impl<'a> SnapshotStatusWithRepositorySnapshot<'a> {
 
   ///Sends a `GET` request to
   /// `/_snapshot/{repository}/{snapshot}/_status`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       repository,
@@ -27160,17 +28148,21 @@ impl<'a> SnapshotStatusWithRepositorySnapshot<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_stats`]
 ///
-///[`Client::indices_stats`]: super::Client::indices_stats
+///[`Client::indices_stats`]: super::OsClient::indices_stats
 #[derive(Debug, Clone)]
 pub struct IndicesStats<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   completion_fields: Result<Option<Vec<String>>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   fielddata_fields: Result<Option<Vec<String>>, String>,
@@ -27183,7 +28175,7 @@ pub struct IndicesStats<'a> {
 }
 
 impl<'a> IndicesStats<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       completion_fields: Ok(None),
@@ -27289,7 +28281,7 @@ impl<'a> IndicesStats<'a> {
   }
 
   ///Sends a `GET` request to `/_stats`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       completion_fields,
@@ -27345,17 +28337,21 @@ impl<'a> IndicesStats<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_stats_with_metric`]
 ///
-///[`Client::indices_stats_with_metric`]: super::Client::indices_stats_with_metric
+///[`Client::indices_stats_with_metric`]: super::OsClient::indices_stats_with_metric
 #[derive(Debug, Clone)]
 pub struct IndicesStatsWithMetric<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   metric: Result<types::IndicesStatsWithMetricMetric, String>,
   completion_fields: Result<Option<Vec<String>>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -27369,7 +28365,7 @@ pub struct IndicesStatsWithMetric<'a> {
 }
 
 impl<'a> IndicesStatsWithMetric<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       metric: Err("metric was not initialized".to_string()),
@@ -27485,7 +28481,7 @@ impl<'a> IndicesStatsWithMetric<'a> {
   }
 
   ///Sends a `GET` request to `/_stats/{metric}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       metric,
@@ -27543,17 +28539,21 @@ impl<'a> IndicesStatsWithMetric<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::tasks_list`]
 ///
-///[`Client::tasks_list`]: super::Client::tasks_list
+///[`Client::tasks_list`]: super::OsClient::tasks_list
 #[derive(Debug, Clone)]
 pub struct TasksList<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   actions: Result<Option<Vec<String>>, String>,
   detailed: Result<Option<bool>, String>,
   group_by: Result<Option<types::GroupBy>, String>,
@@ -27564,7 +28564,7 @@ pub struct TasksList<'a> {
 }
 
 impl<'a> TasksList<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       actions: Ok(None),
@@ -27648,7 +28648,7 @@ impl<'a> TasksList<'a> {
   }
 
   ///Sends a `GET` request to `/_tasks`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       actions,
@@ -27694,17 +28694,21 @@ impl<'a> TasksList<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::tasks_cancel`]
 ///
-///[`Client::tasks_cancel`]: super::Client::tasks_cancel
+///[`Client::tasks_cancel`]: super::OsClient::tasks_cancel
 #[derive(Debug, Clone)]
 pub struct TasksCancel<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   actions: Result<Option<Vec<String>>, String>,
   nodes: Result<Option<Vec<String>>, String>,
   parent_task_id: Result<Option<String>, String>,
@@ -27712,7 +28716,7 @@ pub struct TasksCancel<'a> {
 }
 
 impl<'a> TasksCancel<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       actions: Ok(None),
@@ -27763,7 +28767,7 @@ impl<'a> TasksCancel<'a> {
   }
 
   ///Sends a `POST` request to `/_tasks/_cancel`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       actions,
@@ -27794,24 +28798,28 @@ impl<'a> TasksCancel<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::tasks_get`]
 ///
-///[`Client::tasks_get`]: super::Client::tasks_get
+///[`Client::tasks_get`]: super::OsClient::tasks_get
 #[derive(Debug, Clone)]
 pub struct TasksGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   task_id: Result<types::TasksGetTaskId, String>,
   timeout: Result<Option<types::TasksGetTimeout>, String>,
   wait_for_completion: Result<Option<bool>, String>,
 }
 
 impl<'a> TasksGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       task_id: Err("task_id was not initialized".to_string()),
@@ -27850,7 +28858,7 @@ impl<'a> TasksGet<'a> {
   }
 
   ///Sends a `GET` request to `/_tasks/{task_id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       task_id,
@@ -27873,17 +28881,21 @@ impl<'a> TasksGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::tasks_cancel_with_task_id`]
 ///
-///[`Client::tasks_cancel_with_task_id`]: super::Client::tasks_cancel_with_task_id
+///[`Client::tasks_cancel_with_task_id`]: super::OsClient::tasks_cancel_with_task_id
 #[derive(Debug, Clone)]
 pub struct TasksCancelWithTaskId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   task_id: Result<types::TasksCancelWithTaskIdTaskId, String>,
   actions: Result<Option<Vec<String>>, String>,
   nodes: Result<Option<Vec<String>>, String>,
@@ -27892,7 +28904,7 @@ pub struct TasksCancelWithTaskId<'a> {
 }
 
 impl<'a> TasksCancelWithTaskId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       task_id: Err("task_id was not initialized".to_string()),
@@ -27953,7 +28965,7 @@ impl<'a> TasksCancelWithTaskId<'a> {
   }
 
   ///Sends a `POST` request to `/_tasks/{task_id}/_cancel`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       task_id,
@@ -27990,17 +29002,21 @@ impl<'a> TasksCancelWithTaskId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_template`]
 ///
-///[`Client::indices_get_template`]: super::Client::indices_get_template
+///[`Client::indices_get_template`]: super::OsClient::indices_get_template
 #[derive(Debug, Clone)]
 pub struct IndicesGetTemplate<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::IndicesGetTemplateClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
@@ -28008,7 +29024,7 @@ pub struct IndicesGetTemplate<'a> {
 }
 
 impl<'a> IndicesGetTemplate<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       cluster_manager_timeout: Ok(None),
@@ -28058,7 +29074,7 @@ impl<'a> IndicesGetTemplate<'a> {
   }
 
   ///Sends a `GET` request to `/_template`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       cluster_manager_timeout,
@@ -28089,17 +29105,21 @@ impl<'a> IndicesGetTemplate<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_template_with_name`]
 ///
-///[`Client::indices_get_template_with_name`]: super::Client::indices_get_template_with_name
+///[`Client::indices_get_template_with_name`]: super::OsClient::indices_get_template_with_name
 #[derive(Debug, Clone)]
 pub struct IndicesGetTemplateWithName<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesGetTemplateWithNameName, String>,
   cluster_manager_timeout: Result<Option<types::IndicesGetTemplateWithNameClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
@@ -28108,7 +29128,7 @@ pub struct IndicesGetTemplateWithName<'a> {
 }
 
 impl<'a> IndicesGetTemplateWithName<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -28168,7 +29188,7 @@ impl<'a> IndicesGetTemplateWithName<'a> {
   }
 
   ///Sends a `GET` request to `/_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -28201,17 +29221,21 @@ impl<'a> IndicesGetTemplateWithName<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_put_template_put`]
 ///
-///[`Client::indices_put_template_put`]: super::Client::indices_put_template_put
+///[`Client::indices_put_template_put`]: super::OsClient::indices_put_template_put
 #[derive(Debug, Clone)]
 pub struct IndicesPutTemplatePut<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesPutTemplatePutName, String>,
   cluster_manager_timeout: Result<Option<types::IndicesPutTemplatePutClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
@@ -28221,7 +29245,7 @@ pub struct IndicesPutTemplatePut<'a> {
 }
 
 impl<'a> IndicesPutTemplatePut<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -28291,7 +29315,7 @@ impl<'a> IndicesPutTemplatePut<'a> {
   }
 
   ///Sends a `PUT` request to `/_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -28326,17 +29350,21 @@ impl<'a> IndicesPutTemplatePut<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_put_template_post`]
 ///
-///[`Client::indices_put_template_post`]: super::Client::indices_put_template_post
+///[`Client::indices_put_template_post`]: super::OsClient::indices_put_template_post
 #[derive(Debug, Clone)]
 pub struct IndicesPutTemplatePost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesPutTemplatePostName, String>,
   cluster_manager_timeout: Result<Option<types::IndicesPutTemplatePostClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
@@ -28346,7 +29374,7 @@ pub struct IndicesPutTemplatePost<'a> {
 }
 
 impl<'a> IndicesPutTemplatePost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -28416,7 +29444,7 @@ impl<'a> IndicesPutTemplatePost<'a> {
   }
 
   ///Sends a `POST` request to `/_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -28451,17 +29479,21 @@ impl<'a> IndicesPutTemplatePost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_delete_template`]
 ///
-///[`Client::indices_delete_template`]: super::Client::indices_delete_template
+///[`Client::indices_delete_template`]: super::OsClient::indices_delete_template
 #[derive(Debug, Clone)]
 pub struct IndicesDeleteTemplate<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesDeleteTemplateName, String>,
   cluster_manager_timeout: Result<Option<types::IndicesDeleteTemplateClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IndicesDeleteTemplateMasterTimeout>, String>,
@@ -28469,7 +29501,7 @@ pub struct IndicesDeleteTemplate<'a> {
 }
 
 impl<'a> IndicesDeleteTemplate<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -28518,7 +29550,7 @@ impl<'a> IndicesDeleteTemplate<'a> {
   }
 
   ///Sends a `DELETE` request to `/_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -28546,17 +29578,21 @@ impl<'a> IndicesDeleteTemplate<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_exists_template`]
 ///
-///[`Client::indices_exists_template`]: super::Client::indices_exists_template
+///[`Client::indices_exists_template`]: super::OsClient::indices_exists_template
 #[derive(Debug, Clone)]
 pub struct IndicesExistsTemplate<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   name: Result<types::IndicesExistsTemplateName, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
@@ -28564,7 +29600,7 @@ pub struct IndicesExistsTemplate<'a> {
 }
 
 impl<'a> IndicesExistsTemplate<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       name: Err("name was not initialized".to_string()),
@@ -28614,7 +29650,7 @@ impl<'a> IndicesExistsTemplate<'a> {
   }
 
   ///Sends a `HEAD` request to `/_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       name,
@@ -28642,23 +29678,27 @@ impl<'a> IndicesExistsTemplate<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::update_by_query_rethrottle`]
 ///
-///[`Client::update_by_query_rethrottle`]: super::Client::update_by_query_rethrottle
+///[`Client::update_by_query_rethrottle`]: super::OsClient::update_by_query_rethrottle
 #[derive(Debug, Clone)]
 pub struct UpdateByQueryRethrottle<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   task_id: Result<types::UpdateByQueryRethrottleTaskId, String>,
   requests_per_second: Result<i32, String>,
 }
 
 impl<'a> UpdateByQueryRethrottle<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       task_id: Err("task_id was not initialized".to_string()),
@@ -28685,7 +29725,7 @@ impl<'a> UpdateByQueryRethrottle<'a> {
   }
 
   ///Sends a `POST` request to `/_update_by_query/{task_id}/_rethrottle`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       task_id,
@@ -28705,24 +29745,28 @@ impl<'a> UpdateByQueryRethrottle<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_upgrade`]
 ///
-///[`Client::indices_get_upgrade`]: super::Client::indices_get_upgrade
+///[`Client::indices_get_upgrade`]: super::OsClient::indices_get_upgrade
 #[derive(Debug, Clone)]
 pub struct IndicesGetUpgrade<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
 }
 
 impl<'a> IndicesGetUpgrade<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -28762,7 +29806,7 @@ impl<'a> IndicesGetUpgrade<'a> {
   }
 
   ///Sends a `GET` request to `/_upgrade`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -28788,17 +29832,21 @@ impl<'a> IndicesGetUpgrade<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_upgrade`]
 ///
-///[`Client::indices_upgrade`]: super::Client::indices_upgrade
+///[`Client::indices_upgrade`]: super::OsClient::indices_upgrade
 #[derive(Debug, Clone)]
 pub struct IndicesUpgrade<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -28807,7 +29855,7 @@ pub struct IndicesUpgrade<'a> {
 }
 
 impl<'a> IndicesUpgrade<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -28869,7 +29917,7 @@ impl<'a> IndicesUpgrade<'a> {
   }
 
   ///Sends a `POST` request to `/_upgrade`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -28905,17 +29953,21 @@ impl<'a> IndicesUpgrade<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_validate_query_get`]
 ///
-///[`Client::indices_validate_query_get`]: super::Client::indices_validate_query_get
+///[`Client::indices_validate_query_get`]: super::OsClient::indices_validate_query_get
 #[derive(Debug, Clone)]
 pub struct IndicesValidateQueryGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   all_shards: Result<Option<bool>, String>,
   allow_no_indices: Result<Option<bool>, String>,
   analyze_wildcard: Result<Option<bool>, String>,
@@ -28931,7 +29983,7 @@ pub struct IndicesValidateQueryGet<'a> {
 }
 
 impl<'a> IndicesValidateQueryGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       all_shards: Ok(None),
@@ -29070,7 +30122,7 @@ impl<'a> IndicesValidateQueryGet<'a> {
   }
 
   ///Sends a `GET` request to `/_validate/query`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       all_shards,
@@ -29141,17 +30193,21 @@ impl<'a> IndicesValidateQueryGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_validate_query_post`]
 ///
-///[`Client::indices_validate_query_post`]: super::Client::indices_validate_query_post
+///[`Client::indices_validate_query_post`]: super::OsClient::indices_validate_query_post
 #[derive(Debug, Clone)]
 pub struct IndicesValidateQueryPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   all_shards: Result<Option<bool>, String>,
   allow_no_indices: Result<Option<bool>, String>,
   analyze_wildcard: Result<Option<bool>, String>,
@@ -29168,7 +30224,7 @@ pub struct IndicesValidateQueryPost<'a> {
 }
 
 impl<'a> IndicesValidateQueryPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       all_shards: Ok(None),
@@ -29317,7 +30373,7 @@ impl<'a> IndicesValidateQueryPost<'a> {
   }
 
   ///Sends a `POST` request to `/_validate/query`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       all_shards,
@@ -29390,17 +30446,21 @@ impl<'a> IndicesValidateQueryPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_rollover`]
 ///
-///[`Client::indices_rollover`]: super::Client::indices_rollover
+///[`Client::indices_rollover`]: super::OsClient::indices_rollover
 #[derive(Debug, Clone)]
 pub struct IndicesRollover<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   alias: Result<types::IndicesRolloverAlias, String>,
   cluster_manager_timeout: Result<Option<types::IndicesRolloverClusterManagerTimeout>, String>,
   dry_run: Result<Option<bool>, String>,
@@ -29411,7 +30471,7 @@ pub struct IndicesRollover<'a> {
 }
 
 impl<'a> IndicesRollover<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       alias: Err("alias was not initialized".to_string()),
@@ -29492,7 +30552,7 @@ impl<'a> IndicesRollover<'a> {
   }
 
   ///Sends a `POST` request to `/{alias}/_rollover`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       alias,
@@ -29532,17 +30592,21 @@ impl<'a> IndicesRollover<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_rollover_with_new_index`]
 ///
-///[`Client::indices_rollover_with_new_index`]: super::Client::indices_rollover_with_new_index
+///[`Client::indices_rollover_with_new_index`]: super::OsClient::indices_rollover_with_new_index
 #[derive(Debug, Clone)]
 pub struct IndicesRolloverWithNewIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   alias: Result<types::IndicesRolloverWithNewIndexAlias, String>,
   new_index: Result<types::IndicesRolloverWithNewIndexNewIndex, String>,
   cluster_manager_timeout: Result<Option<types::IndicesRolloverWithNewIndexClusterManagerTimeout>, String>,
@@ -29554,7 +30618,7 @@ pub struct IndicesRolloverWithNewIndex<'a> {
 }
 
 impl<'a> IndicesRolloverWithNewIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       alias: Err("alias was not initialized".to_string()),
@@ -29645,7 +30709,7 @@ impl<'a> IndicesRolloverWithNewIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{alias}/_rollover/{new_index}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       alias,
@@ -29692,17 +30756,21 @@ impl<'a> IndicesRolloverWithNewIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get`]
 ///
-///[`Client::indices_get`]: super::Client::indices_get
+///[`Client::indices_get`]: super::OsClient::indices_get
 #[derive(Debug, Clone)]
 pub struct IndicesGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesGetIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::IndicesGetClusterManagerTimeout>, String>,
@@ -29715,7 +30783,7 @@ pub struct IndicesGet<'a> {
 }
 
 impl<'a> IndicesGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -29820,7 +30888,7 @@ impl<'a> IndicesGet<'a> {
   }
 
   ///Sends a `GET` request to `/{index}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -29873,17 +30941,21 @@ impl<'a> IndicesGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_create`]
 ///
-///[`Client::indices_create`]: super::Client::indices_create
+///[`Client::indices_create`]: super::OsClient::indices_create
 #[derive(Debug, Clone)]
 pub struct IndicesCreate<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesCreateIndex, String>,
   cluster_manager_timeout: Result<Option<types::IndicesCreateClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IndicesCreateMasterTimeout>, String>,
@@ -29893,7 +30965,7 @@ pub struct IndicesCreate<'a> {
 }
 
 impl<'a> IndicesCreate<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -29972,7 +31044,7 @@ impl<'a> IndicesCreate<'a> {
   }
 
   ///Sends a `PUT` request to `/{index}`
-  pub async fn send(self) -> Result<ResponseValue<types::IndicesCreateResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::IndicesCreateResponseContent>, Error> {
     let Self {
       client,
       index,
@@ -30018,17 +31090,21 @@ impl<'a> IndicesCreate<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_delete`]
 ///
-///[`Client::indices_delete`]: super::Client::indices_delete
+///[`Client::indices_delete`]: super::OsClient::indices_delete
 #[derive(Debug, Clone)]
 pub struct IndicesDelete<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesDeleteIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -30038,7 +31114,7 @@ pub struct IndicesDelete<'a> {
 }
 
 impl<'a> IndicesDelete<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -30110,7 +31186,7 @@ impl<'a> IndicesDelete<'a> {
   }
 
   ///Sends a `DELETE` request to `/{index}`
-  pub async fn send(self) -> Result<ResponseValue<types::IndicesDeleteResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::IndicesDeleteResponseContent>, Error> {
     let Self {
       client,
       index,
@@ -30156,17 +31232,21 @@ impl<'a> IndicesDelete<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_exists`]
 ///
-///[`Client::indices_exists`]: super::Client::indices_exists
+///[`Client::indices_exists`]: super::OsClient::indices_exists
 #[derive(Debug, Clone)]
 pub struct IndicesExists<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesExistsIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -30177,7 +31257,7 @@ pub struct IndicesExists<'a> {
 }
 
 impl<'a> IndicesExists<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -30260,7 +31340,7 @@ impl<'a> IndicesExists<'a> {
   }
 
   ///Sends a `HEAD` request to `/{index}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -30303,17 +31383,21 @@ impl<'a> IndicesExists<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_alias_with_index`]
 ///
-///[`Client::indices_get_alias_with_index`]: super::Client::indices_get_alias_with_index
+///[`Client::indices_get_alias_with_index`]: super::OsClient::indices_get_alias_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesGetAliasWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesGetAliasWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -30322,7 +31406,7 @@ pub struct IndicesGetAliasWithIndex<'a> {
 }
 
 impl<'a> IndicesGetAliasWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -30383,7 +31467,7 @@ impl<'a> IndicesGetAliasWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_alias`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -30416,17 +31500,21 @@ impl<'a> IndicesGetAliasWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_alias_with_index_name`]
 ///
-///[`Client::indices_get_alias_with_index_name`]: super::Client::indices_get_alias_with_index_name
+///[`Client::indices_get_alias_with_index_name`]: super::OsClient::indices_get_alias_with_index_name
 #[derive(Debug, Clone)]
 pub struct IndicesGetAliasWithIndexName<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesGetAliasWithIndexNameIndex, String>,
   name: Result<types::IndicesGetAliasWithIndexNameName, String>,
   allow_no_indices: Result<Option<bool>, String>,
@@ -30436,7 +31524,7 @@ pub struct IndicesGetAliasWithIndexName<'a> {
 }
 
 impl<'a> IndicesGetAliasWithIndexName<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -30507,7 +31595,7 @@ impl<'a> IndicesGetAliasWithIndexName<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_alias/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -30547,17 +31635,21 @@ impl<'a> IndicesGetAliasWithIndexName<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_put_alias_put`]
 ///
-///[`Client::indices_put_alias_put`]: super::Client::indices_put_alias_put
+///[`Client::indices_put_alias_put`]: super::OsClient::indices_put_alias_put
 #[derive(Debug, Clone)]
 pub struct IndicesPutAliasPut<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesPutAliasPutIndex, String>,
   name: Result<types::IndicesPutAliasPutName, String>,
   cluster_manager_timeout: Result<Option<types::IndicesPutAliasPutClusterManagerTimeout>, String>,
@@ -30567,7 +31659,7 @@ pub struct IndicesPutAliasPut<'a> {
 }
 
 impl<'a> IndicesPutAliasPut<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -30636,7 +31728,7 @@ impl<'a> IndicesPutAliasPut<'a> {
   }
 
   ///Sends a `PUT` request to `/{index}/_alias/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -30673,17 +31765,21 @@ impl<'a> IndicesPutAliasPut<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_put_alias_post`]
 ///
-///[`Client::indices_put_alias_post`]: super::Client::indices_put_alias_post
+///[`Client::indices_put_alias_post`]: super::OsClient::indices_put_alias_post
 #[derive(Debug, Clone)]
 pub struct IndicesPutAliasPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesPutAliasPostIndex, String>,
   name: Result<types::IndicesPutAliasPostName, String>,
   cluster_manager_timeout: Result<Option<types::IndicesPutAliasPostClusterManagerTimeout>, String>,
@@ -30693,7 +31789,7 @@ pub struct IndicesPutAliasPost<'a> {
 }
 
 impl<'a> IndicesPutAliasPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -30762,7 +31858,7 @@ impl<'a> IndicesPutAliasPost<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_alias/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -30799,17 +31895,21 @@ impl<'a> IndicesPutAliasPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_delete_alias`]
 ///
-///[`Client::indices_delete_alias`]: super::Client::indices_delete_alias
+///[`Client::indices_delete_alias`]: super::OsClient::indices_delete_alias
 #[derive(Debug, Clone)]
 pub struct IndicesDeleteAlias<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesDeleteAliasIndex, String>,
   name: Result<types::IndicesDeleteAliasName, String>,
   cluster_manager_timeout: Result<Option<types::IndicesDeleteAliasClusterManagerTimeout>, String>,
@@ -30818,7 +31918,7 @@ pub struct IndicesDeleteAlias<'a> {
 }
 
 impl<'a> IndicesDeleteAlias<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -30877,7 +31977,7 @@ impl<'a> IndicesDeleteAlias<'a> {
   }
 
   ///Sends a `DELETE` request to `/{index}/_alias/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -30912,17 +32012,21 @@ impl<'a> IndicesDeleteAlias<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_exists_alias_with_index`]
 ///
-///[`Client::indices_exists_alias_with_index`]: super::Client::indices_exists_alias_with_index
+///[`Client::indices_exists_alias_with_index`]: super::OsClient::indices_exists_alias_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesExistsAliasWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesExistsAliasWithIndexIndex, String>,
   name: Result<types::IndicesExistsAliasWithIndexName, String>,
   allow_no_indices: Result<Option<bool>, String>,
@@ -30932,7 +32036,7 @@ pub struct IndicesExistsAliasWithIndex<'a> {
 }
 
 impl<'a> IndicesExistsAliasWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -31003,7 +32107,7 @@ impl<'a> IndicesExistsAliasWithIndex<'a> {
   }
 
   ///Sends a `HEAD` request to `/{index}/_alias/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -31043,17 +32147,21 @@ impl<'a> IndicesExistsAliasWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_put_alias_put_plural`]
 ///
-///[`Client::indices_put_alias_put_plural`]: super::Client::indices_put_alias_put_plural
+///[`Client::indices_put_alias_put_plural`]: super::OsClient::indices_put_alias_put_plural
 #[derive(Debug, Clone)]
 pub struct IndicesPutAliasPutPlural<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesPutAliasPutPluralIndex, String>,
   name: Result<types::IndicesPutAliasPutPluralName, String>,
   cluster_manager_timeout: Result<Option<types::IndicesPutAliasPutPluralClusterManagerTimeout>, String>,
@@ -31063,7 +32171,7 @@ pub struct IndicesPutAliasPutPlural<'a> {
 }
 
 impl<'a> IndicesPutAliasPutPlural<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -31132,7 +32240,7 @@ impl<'a> IndicesPutAliasPutPlural<'a> {
   }
 
   ///Sends a `PUT` request to `/{index}/_aliases/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -31169,17 +32277,21 @@ impl<'a> IndicesPutAliasPutPlural<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_put_alias_post_plural`]
 ///
-///[`Client::indices_put_alias_post_plural`]: super::Client::indices_put_alias_post_plural
+///[`Client::indices_put_alias_post_plural`]: super::OsClient::indices_put_alias_post_plural
 #[derive(Debug, Clone)]
 pub struct IndicesPutAliasPostPlural<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesPutAliasPostPluralIndex, String>,
   name: Result<types::IndicesPutAliasPostPluralName, String>,
   cluster_manager_timeout: Result<Option<types::IndicesPutAliasPostPluralClusterManagerTimeout>, String>,
@@ -31189,7 +32301,7 @@ pub struct IndicesPutAliasPostPlural<'a> {
 }
 
 impl<'a> IndicesPutAliasPostPlural<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -31258,7 +32370,7 @@ impl<'a> IndicesPutAliasPostPlural<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_aliases/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -31295,17 +32407,21 @@ impl<'a> IndicesPutAliasPostPlural<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_delete_alias_plural`]
 ///
-///[`Client::indices_delete_alias_plural`]: super::Client::indices_delete_alias_plural
+///[`Client::indices_delete_alias_plural`]: super::OsClient::indices_delete_alias_plural
 #[derive(Debug, Clone)]
 pub struct IndicesDeleteAliasPlural<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesDeleteAliasPluralIndex, String>,
   name: Result<types::IndicesDeleteAliasPluralName, String>,
   cluster_manager_timeout: Result<Option<types::IndicesDeleteAliasPluralClusterManagerTimeout>, String>,
@@ -31314,7 +32430,7 @@ pub struct IndicesDeleteAliasPlural<'a> {
 }
 
 impl<'a> IndicesDeleteAliasPlural<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -31373,7 +32489,7 @@ impl<'a> IndicesDeleteAliasPlural<'a> {
   }
 
   ///Sends a `DELETE` request to `/{index}/_aliases/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -31408,22 +32524,26 @@ impl<'a> IndicesDeleteAliasPlural<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_analyze_get_with_index`]
 ///
-///[`Client::indices_analyze_get_with_index`]: super::Client::indices_analyze_get_with_index
+///[`Client::indices_analyze_get_with_index`]: super::OsClient::indices_analyze_get_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesAnalyzeGetWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<Option<String>, String>,
 }
 
 impl<'a> IndicesAnalyzeGetWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Ok(None),
@@ -31441,7 +32561,7 @@ impl<'a> IndicesAnalyzeGetWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_analyze`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, index } = self;
     let index = index.map_err(Error::InvalidRequest)?;
     let url = format!(
@@ -31458,23 +32578,27 @@ impl<'a> IndicesAnalyzeGetWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_analyze_post_with_index`]
 ///
-///[`Client::indices_analyze_post_with_index`]: super::Client::indices_analyze_post_with_index
+///[`Client::indices_analyze_post_with_index`]: super::OsClient::indices_analyze_post_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesAnalyzePostWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<Option<String>, String>,
   body: Result<types::IndicesAnalyzeBodyParams, String>,
 }
 
 impl<'a> IndicesAnalyzePostWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Ok(None),
@@ -31502,7 +32626,7 @@ impl<'a> IndicesAnalyzePostWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_analyze`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, index, body } = self;
     let index = index.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
@@ -31516,17 +32640,21 @@ impl<'a> IndicesAnalyzePostWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_add_block`]
 ///
-///[`Client::indices_add_block`]: super::Client::indices_add_block
+///[`Client::indices_add_block`]: super::OsClient::indices_add_block
 #[derive(Debug, Clone)]
 pub struct IndicesAddBlock<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesAddBlockIndex, String>,
   block: Result<types::IndicesAddBlockBlock, String>,
   allow_no_indices: Result<Option<bool>, String>,
@@ -31538,7 +32666,7 @@ pub struct IndicesAddBlock<'a> {
 }
 
 impl<'a> IndicesAddBlock<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -31630,7 +32758,7 @@ impl<'a> IndicesAddBlock<'a> {
   }
 
   ///Sends a `PUT` request to `/{index}/_block/{block}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -31680,16 +32808,20 @@ impl<'a> IndicesAddBlock<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 ///Builder for [`Client::indices_clear_cache_with_index`]
 ///
-///[`Client::indices_clear_cache_with_index`]: super::Client::indices_clear_cache_with_index
+///[`Client::indices_clear_cache_with_index`]: super::OsClient::indices_clear_cache_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesClearCacheWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   fielddata: Result<Option<bool>, String>,
@@ -31701,7 +32833,7 @@ pub struct IndicesClearCacheWithIndex<'a> {
 }
 
 impl<'a> IndicesClearCacheWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       allow_no_indices: Ok(None),
@@ -31796,7 +32928,7 @@ impl<'a> IndicesClearCacheWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_cache/clear`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       allow_no_indices,
@@ -31856,17 +32988,21 @@ impl<'a> IndicesClearCacheWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_clone_put`]
 ///
-///[`Client::indices_clone_put`]: super::Client::indices_clone_put
+///[`Client::indices_clone_put`]: super::OsClient::indices_clone_put
 #[derive(Debug, Clone)]
 pub struct IndicesClonePut<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesClonePutIndex, String>,
   target: Result<types::IndicesClonePutTarget, String>,
   cluster_manager_timeout: Result<Option<types::IndicesClonePutClusterManagerTimeout>, String>,
@@ -31877,7 +33013,7 @@ pub struct IndicesClonePut<'a> {
 }
 
 impl<'a> IndicesClonePut<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -31957,7 +33093,7 @@ impl<'a> IndicesClonePut<'a> {
   }
 
   ///Sends a `PUT` request to `/{index}/_clone/{target}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -31999,17 +33135,21 @@ impl<'a> IndicesClonePut<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_clone_post`]
 ///
-///[`Client::indices_clone_post`]: super::Client::indices_clone_post
+///[`Client::indices_clone_post`]: super::OsClient::indices_clone_post
 #[derive(Debug, Clone)]
 pub struct IndicesClonePost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesClonePostIndex, String>,
   target: Result<types::IndicesClonePostTarget, String>,
   cluster_manager_timeout: Result<Option<types::IndicesClonePostClusterManagerTimeout>, String>,
@@ -32020,7 +33160,7 @@ pub struct IndicesClonePost<'a> {
 }
 
 impl<'a> IndicesClonePost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -32100,7 +33240,7 @@ impl<'a> IndicesClonePost<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_clone/{target}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -32142,17 +33282,21 @@ impl<'a> IndicesClonePost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_close`]
 ///
-///[`Client::indices_close`]: super::Client::indices_close
+///[`Client::indices_close`]: super::OsClient::indices_close
 #[derive(Debug, Clone)]
 pub struct IndicesClose<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesCloseIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::IndicesCloseClusterManagerTimeout>, String>,
@@ -32164,7 +33308,7 @@ pub struct IndicesClose<'a> {
 }
 
 impl<'a> IndicesClose<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -32258,7 +33402,7 @@ impl<'a> IndicesClose<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_close`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -32306,17 +33450,21 @@ impl<'a> IndicesClose<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::count_get_with_index`]
 ///
-///[`Client::count_get_with_index`]: super::Client::count_get_with_index
+///[`Client::count_get_with_index`]: super::OsClient::count_get_with_index
 #[derive(Debug, Clone)]
 pub struct CountGetWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::CountGetWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   analyze_wildcard: Result<Option<bool>, String>,
@@ -32335,7 +33483,7 @@ pub struct CountGetWithIndex<'a> {
 }
 
 impl<'a> CountGetWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -32506,7 +33654,7 @@ impl<'a> CountGetWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_count`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -32589,17 +33737,21 @@ impl<'a> CountGetWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::count_post_with_index`]
 ///
-///[`Client::count_post_with_index`]: super::Client::count_post_with_index
+///[`Client::count_post_with_index`]: super::OsClient::count_post_with_index
 #[derive(Debug, Clone)]
 pub struct CountPostWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::CountPostWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   analyze_wildcard: Result<Option<bool>, String>,
@@ -32619,7 +33771,7 @@ pub struct CountPostWithIndex<'a> {
 }
 
 impl<'a> CountPostWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -32800,7 +33952,7 @@ impl<'a> CountPostWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_count`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -32885,17 +34037,21 @@ impl<'a> CountPostWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::create_put`]
 ///
-///[`Client::create_put`]: super::Client::create_put
+///[`Client::create_put`]: super::OsClient::create_put
 #[derive(Debug, Clone)]
 pub struct CreatePut<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::CreatePutIndex, String>,
   id: Result<types::CreatePutId, String>,
   pipeline: Result<Option<String>, String>,
@@ -32909,7 +34065,7 @@ pub struct CreatePut<'a> {
 }
 
 impl<'a> CreatePut<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -33023,7 +34179,7 @@ impl<'a> CreatePut<'a> {
   }
 
   ///Sends a `PUT` request to `/{index}/_create/{id}`
-  pub async fn send(self) -> Result<ResponseValue<types::IndexResponse>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::IndexResponse>, Error> {
     let Self {
       client,
       index,
@@ -33080,17 +34236,21 @@ impl<'a> CreatePut<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::create_post`]
 ///
-///[`Client::create_post`]: super::Client::create_post
+///[`Client::create_post`]: super::OsClient::create_post
 #[derive(Debug, Clone)]
 pub struct CreatePost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::CreatePostIndex, String>,
   id: Result<types::CreatePostId, String>,
   pipeline: Result<Option<String>, String>,
@@ -33104,7 +34264,7 @@ pub struct CreatePost<'a> {
 }
 
 impl<'a> CreatePost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -33218,7 +34378,7 @@ impl<'a> CreatePost<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_create/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -33275,17 +34435,21 @@ impl<'a> CreatePost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::delete_by_query`]
 ///
-///[`Client::delete_by_query`]: super::Client::delete_by_query
+///[`Client::delete_by_query`]: super::OsClient::delete_by_query
 #[derive(Debug, Clone)]
 pub struct DeleteByQuery<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::DeleteByQueryIndex, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
@@ -33324,7 +34488,7 @@ pub struct DeleteByQuery<'a> {
 }
 
 impl<'a> DeleteByQuery<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -33714,7 +34878,7 @@ impl<'a> DeleteByQuery<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_delete_by_query`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -33898,17 +35062,21 @@ impl<'a> DeleteByQuery<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get`]
 ///
-///[`Client::get`]: super::Client::get
+///[`Client::get`]: super::OsClient::get
 #[derive(Debug, Clone)]
 pub struct Get<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::GetIndex, String>,
   id: Result<types::GetId, String>,
   source: Result<Option<Vec<String>>, String>,
@@ -33924,7 +35092,7 @@ pub struct Get<'a> {
 }
 
 impl<'a> Get<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -34063,7 +35231,7 @@ impl<'a> Get<'a> {
   ///Sends a `GET` request to `/{index}/_doc/{id}`
   pub async fn send<T: DeserializeOwned + std::default::Default>(
     self,
-  ) -> Result<ResponseValue<types::GetResponseContent<T>>, Error<()>> {
+  ) -> Result<ResponseValue<types::GetResponseContent<T>>, Error> {
     let Self {
       client,
       index,
@@ -34141,17 +35309,21 @@ impl<'a> Get<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::index_put_with_id`]
 ///
-///[`Client::index_put_with_id`]: super::Client::index_put_with_id
+///[`Client::index_put_with_id`]: super::OsClient::index_put_with_id
 #[derive(Debug, Clone)]
 pub struct IndexPutWithId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndexPutWithIdIndex, String>,
   id: Result<types::IndexPutWithIdId, String>,
   if_primary_term: Result<Option<i32>, String>,
@@ -34169,7 +35341,7 @@ pub struct IndexPutWithId<'a> {
 }
 
 impl<'a> IndexPutWithId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -34327,7 +35499,7 @@ impl<'a> IndexPutWithId<'a> {
   }
 
   ///Sends a `PUT` request to `/{index}/_doc/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -34404,17 +35576,21 @@ impl<'a> IndexPutWithId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::index_post_with_id`]
 ///
-///[`Client::index_post_with_id`]: super::Client::index_post_with_id
+///[`Client::index_post_with_id`]: super::OsClient::index_post_with_id
 #[derive(Debug, Clone)]
 pub struct IndexPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndexPostIndex, String>,
   id: Result<Option<String>, String>,
   if_primary_term: Result<Option<i32>, String>,
@@ -34432,7 +35608,7 @@ pub struct IndexPost<'a> {
 }
 
 impl<'a> IndexPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -34589,7 +35765,7 @@ impl<'a> IndexPost<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_doc/{id}`
-  pub async fn send(self) -> Result<ResponseValue<types::IndexResponse>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::IndexResponse>, Error> {
     let Self {
       client,
       index,
@@ -34671,17 +35847,21 @@ impl<'a> IndexPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::delete`]
 ///
-///[`Client::delete`]: super::Client::delete
+///[`Client::delete`]: super::OsClient::delete
 #[derive(Debug, Clone)]
 pub struct Delete<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::DeleteIndex, String>,
   id: Result<types::DeleteId, String>,
   if_primary_term: Result<Option<i32>, String>,
@@ -34695,7 +35875,7 @@ pub struct Delete<'a> {
 }
 
 impl<'a> Delete<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -34810,7 +35990,7 @@ impl<'a> Delete<'a> {
   }
 
   ///Sends a `DELETE` request to `/{index}/_doc/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -34870,17 +36050,21 @@ impl<'a> Delete<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::exists`]
 ///
-///[`Client::exists`]: super::Client::exists
+///[`Client::exists`]: super::OsClient::exists
 #[derive(Debug, Clone)]
 pub struct Exists<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::ExistsIndex, String>,
   id: Result<types::ExistsId, String>,
   source: Result<Option<Vec<String>>, String>,
@@ -34896,7 +36080,7 @@ pub struct Exists<'a> {
 }
 
 impl<'a> Exists<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -35033,7 +36217,7 @@ impl<'a> Exists<'a> {
   }
 
   ///Sends a `HEAD` request to `/{index}/_doc/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -35103,17 +36287,21 @@ impl<'a> Exists<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::explain_get`]
 ///
-///[`Client::explain_get`]: super::Client::explain_get
+///[`Client::explain_get`]: super::OsClient::explain_get
 #[derive(Debug, Clone)]
 pub struct ExplainGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::ExplainGetIndex, String>,
   id: Result<types::ExplainGetId, String>,
   source: Result<Option<Vec<String>>, String>,
@@ -35131,7 +36319,7 @@ pub struct ExplainGet<'a> {
 }
 
 impl<'a> ExplainGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -35290,7 +36478,7 @@ impl<'a> ExplainGet<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_explain/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -35370,17 +36558,21 @@ impl<'a> ExplainGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::explain_post`]
 ///
-///[`Client::explain_post`]: super::Client::explain_post
+///[`Client::explain_post`]: super::OsClient::explain_post
 #[derive(Debug, Clone)]
 pub struct ExplainPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::ExplainPostIndex, String>,
   id: Result<types::ExplainPostId, String>,
   source: Result<Option<Vec<String>>, String>,
@@ -35399,7 +36591,7 @@ pub struct ExplainPost<'a> {
 }
 
 impl<'a> ExplainPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -35568,7 +36760,7 @@ impl<'a> ExplainPost<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_explain/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -35650,17 +36842,21 @@ impl<'a> ExplainPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::field_caps_get_with_index`]
 ///
-///[`Client::field_caps_get_with_index`]: super::Client::field_caps_get_with_index
+///[`Client::field_caps_get_with_index`]: super::OsClient::field_caps_get_with_index
 #[derive(Debug, Clone)]
 pub struct FieldCapsGetWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::FieldCapsGetWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -35670,7 +36866,7 @@ pub struct FieldCapsGetWithIndex<'a> {
 }
 
 impl<'a> FieldCapsGetWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -35742,7 +36938,7 @@ impl<'a> FieldCapsGetWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_field_caps`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -35780,17 +36976,21 @@ impl<'a> FieldCapsGetWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::field_caps_post_with_index`]
 ///
-///[`Client::field_caps_post_with_index`]: super::Client::field_caps_post_with_index
+///[`Client::field_caps_post_with_index`]: super::OsClient::field_caps_post_with_index
 #[derive(Debug, Clone)]
 pub struct FieldCapsPostWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::FieldCapsPostWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -35801,7 +37001,7 @@ pub struct FieldCapsPostWithIndex<'a> {
 }
 
 impl<'a> FieldCapsPostWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -35883,7 +37083,7 @@ impl<'a> FieldCapsPostWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_field_caps`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -35923,17 +37123,21 @@ impl<'a> FieldCapsPostWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_flush_get_with_index`]
 ///
-///[`Client::indices_flush_get_with_index`]: super::Client::indices_flush_get_with_index
+///[`Client::indices_flush_get_with_index`]: super::OsClient::indices_flush_get_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesFlushGetWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesFlushGetWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -35943,7 +37147,7 @@ pub struct IndicesFlushGetWithIndex<'a> {
 }
 
 impl<'a> IndicesFlushGetWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -36015,7 +37219,7 @@ impl<'a> IndicesFlushGetWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_flush`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -36053,17 +37257,21 @@ impl<'a> IndicesFlushGetWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_flush_post_with_index`]
 ///
-///[`Client::indices_flush_post_with_index`]: super::Client::indices_flush_post_with_index
+///[`Client::indices_flush_post_with_index`]: super::OsClient::indices_flush_post_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesFlushPostWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesFlushPostWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -36073,7 +37281,7 @@ pub struct IndicesFlushPostWithIndex<'a> {
 }
 
 impl<'a> IndicesFlushPostWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -36145,7 +37353,7 @@ impl<'a> IndicesFlushPostWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_flush`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -36183,17 +37391,21 @@ impl<'a> IndicesFlushPostWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_forcemerge_with_index`]
 ///
-///[`Client::indices_forcemerge_with_index`]: super::Client::indices_forcemerge_with_index
+///[`Client::indices_forcemerge_with_index`]: super::OsClient::indices_forcemerge_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesForcemergeWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesForcemergeWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -36204,7 +37416,7 @@ pub struct IndicesForcemergeWithIndex<'a> {
 }
 
 impl<'a> IndicesForcemergeWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -36287,7 +37499,7 @@ impl<'a> IndicesForcemergeWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_forcemerge`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -36330,17 +37542,21 @@ impl<'a> IndicesForcemergeWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_mapping_with_index`]
 ///
-///[`Client::indices_get_mapping_with_index`]: super::Client::indices_get_mapping_with_index
+///[`Client::indices_get_mapping_with_index`]: super::OsClient::indices_get_mapping_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesGetMappingWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesGetMappingWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::IndicesGetMappingWithIndexClusterManagerTimeout>, String>,
@@ -36351,7 +37567,7 @@ pub struct IndicesGetMappingWithIndex<'a> {
 }
 
 impl<'a> IndicesGetMappingWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -36433,7 +37649,7 @@ impl<'a> IndicesGetMappingWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_mapping`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -36476,17 +37692,21 @@ impl<'a> IndicesGetMappingWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_put_mapping_put`]
 ///
-///[`Client::indices_put_mapping_put`]: super::Client::indices_put_mapping_put
+///[`Client::indices_put_mapping_put`]: super::OsClient::indices_put_mapping_put
 #[derive(Debug, Clone)]
 pub struct IndicesPutMappingPut<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesPutMappingPutIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::IndicesPutMappingPutClusterManagerTimeout>, String>,
@@ -36499,7 +37719,7 @@ pub struct IndicesPutMappingPut<'a> {
 }
 
 impl<'a> IndicesPutMappingPut<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -36602,7 +37822,7 @@ impl<'a> IndicesPutMappingPut<'a> {
   }
 
   ///Sends a `PUT` request to `/{index}/_mapping`
-  pub async fn send(self) -> Result<ResponseValue<types::IndicesPutMappingPutResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::IndicesPutMappingPutResponseContent>, Error> {
     let Self {
       client,
       index,
@@ -36661,17 +37881,21 @@ impl<'a> IndicesPutMappingPut<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_put_mapping_post`]
 ///
-///[`Client::indices_put_mapping_post`]: super::Client::indices_put_mapping_post
+///[`Client::indices_put_mapping_post`]: super::OsClient::indices_put_mapping_post
 #[derive(Debug, Clone)]
 pub struct IndicesPutMappingPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesPutMappingPostIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::IndicesPutMappingPostClusterManagerTimeout>, String>,
@@ -36684,7 +37908,7 @@ pub struct IndicesPutMappingPost<'a> {
 }
 
 impl<'a> IndicesPutMappingPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -36787,7 +38011,7 @@ impl<'a> IndicesPutMappingPost<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_mapping`
-  pub async fn send(self) -> Result<ResponseValue<types::IndicesPutMappingPostResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::IndicesPutMappingPostResponseContent>, Error> {
     let Self {
       client,
       index,
@@ -36846,17 +38070,21 @@ impl<'a> IndicesPutMappingPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_field_mapping_with_index`]
 ///
-///[`Client::indices_get_field_mapping_with_index`]: super::Client::indices_get_field_mapping_with_index
+///[`Client::indices_get_field_mapping_with_index`]: super::OsClient::indices_get_field_mapping_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesGetFieldMappingWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesGetFieldMappingWithIndexIndex, String>,
   fields: Result<types::IndicesGetFieldMappingWithIndexFields, String>,
   allow_no_indices: Result<Option<bool>, String>,
@@ -36867,7 +38095,7 @@ pub struct IndicesGetFieldMappingWithIndex<'a> {
 }
 
 impl<'a> IndicesGetFieldMappingWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -36949,7 +38177,7 @@ impl<'a> IndicesGetFieldMappingWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_mapping/field/{fields}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -36994,17 +38222,21 @@ impl<'a> IndicesGetFieldMappingWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::mget_get_with_index`]
 ///
-///[`Client::mget_get_with_index`]: super::Client::mget_get_with_index
+///[`Client::mget_get_with_index`]: super::OsClient::mget_get_with_index
 #[derive(Debug, Clone)]
 pub struct MgetGetWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::MgetGetWithIndexIndex, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
@@ -37017,7 +38249,7 @@ pub struct MgetGetWithIndex<'a> {
 }
 
 impl<'a> MgetGetWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -37122,7 +38354,7 @@ impl<'a> MgetGetWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_mget`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -37175,17 +38407,21 @@ impl<'a> MgetGetWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::mget_post_with_index`]
 ///
-///[`Client::mget_post_with_index`]: super::Client::mget_post_with_index
+///[`Client::mget_post_with_index`]: super::OsClient::mget_post_with_index
 #[derive(Debug, Clone)]
 pub struct MgetPostWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::MgetPostWithIndexIndex, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
@@ -37199,7 +38435,7 @@ pub struct MgetPostWithIndex<'a> {
 }
 
 impl<'a> MgetPostWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -37314,7 +38550,7 @@ impl<'a> MgetPostWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_mget`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -37369,17 +38605,21 @@ impl<'a> MgetPostWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::msearch_get_with_index`]
 ///
-///[`Client::msearch_get_with_index`]: super::Client::msearch_get_with_index
+///[`Client::msearch_get_with_index`]: super::OsClient::msearch_get_with_index
 #[derive(Debug, Clone)]
 pub struct MsearchGetWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::MsearchGetWithIndexIndex, String>,
   ccs_minimize_roundtrips: Result<Option<bool>, String>,
   max_concurrent_searches: Result<Option<i32>, String>,
@@ -37391,7 +38631,7 @@ pub struct MsearchGetWithIndex<'a> {
 }
 
 impl<'a> MsearchGetWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -37485,7 +38725,7 @@ impl<'a> MsearchGetWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_msearch`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -37533,17 +38773,21 @@ impl<'a> MsearchGetWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::msearch_post_with_index`]
 ///
-///[`Client::msearch_post_with_index`]: super::Client::msearch_post_with_index
+///[`Client::msearch_post_with_index`]: super::OsClient::msearch_post_with_index
 #[derive(Debug, Clone)]
 pub struct MsearchPostWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::MsearchPostWithIndexIndex, String>,
   ccs_minimize_roundtrips: Result<Option<bool>, String>,
   max_concurrent_searches: Result<Option<i32>, String>,
@@ -37556,7 +38800,7 @@ pub struct MsearchPostWithIndex<'a> {
 }
 
 impl<'a> MsearchPostWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -37660,7 +38904,7 @@ impl<'a> MsearchPostWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_msearch`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -37710,17 +38954,21 @@ impl<'a> MsearchPostWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::msearch_template_get_with_index`]
 ///
-///[`Client::msearch_template_get_with_index`]: super::Client::msearch_template_get_with_index
+///[`Client::msearch_template_get_with_index`]: super::OsClient::msearch_template_get_with_index
 #[derive(Debug, Clone)]
 pub struct MsearchTemplateGetWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::MsearchTemplateGetWithIndexIndex, String>,
   ccs_minimize_roundtrips: Result<Option<bool>, String>,
   max_concurrent_searches: Result<Option<i32>, String>,
@@ -37730,7 +38978,7 @@ pub struct MsearchTemplateGetWithIndex<'a> {
 }
 
 impl<'a> MsearchTemplateGetWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -37802,7 +39050,7 @@ impl<'a> MsearchTemplateGetWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_msearch/template`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -37844,17 +39092,21 @@ impl<'a> MsearchTemplateGetWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::msearch_template_post_with_index`]
 ///
-///[`Client::msearch_template_post_with_index`]: super::Client::msearch_template_post_with_index
+///[`Client::msearch_template_post_with_index`]: super::OsClient::msearch_template_post_with_index
 #[derive(Debug, Clone)]
 pub struct MsearchTemplatePostWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::MsearchTemplatePostWithIndexIndex, String>,
   ccs_minimize_roundtrips: Result<Option<bool>, String>,
   max_concurrent_searches: Result<Option<i32>, String>,
@@ -37865,7 +39117,7 @@ pub struct MsearchTemplatePostWithIndex<'a> {
 }
 
 impl<'a> MsearchTemplatePostWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -37947,7 +39199,7 @@ impl<'a> MsearchTemplatePostWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_msearch/template`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -37991,17 +39243,21 @@ impl<'a> MsearchTemplatePostWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::mtermvectors_get_with_index`]
 ///
-///[`Client::mtermvectors_get_with_index`]: super::Client::mtermvectors_get_with_index
+///[`Client::mtermvectors_get_with_index`]: super::OsClient::mtermvectors_get_with_index
 #[derive(Debug, Clone)]
 pub struct MtermvectorsGetWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::MtermvectorsGetWithIndexIndex, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
@@ -38018,7 +39274,7 @@ pub struct MtermvectorsGetWithIndex<'a> {
 }
 
 impl<'a> MtermvectorsGetWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -38167,7 +39423,7 @@ impl<'a> MtermvectorsGetWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_mtermvectors`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -38240,17 +39496,21 @@ impl<'a> MtermvectorsGetWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::mtermvectors_post_with_index`]
 ///
-///[`Client::mtermvectors_post_with_index`]: super::Client::mtermvectors_post_with_index
+///[`Client::mtermvectors_post_with_index`]: super::OsClient::mtermvectors_post_with_index
 #[derive(Debug, Clone)]
 pub struct MtermvectorsPostWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::MtermvectorsPostWithIndexIndex, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
@@ -38268,7 +39528,7 @@ pub struct MtermvectorsPostWithIndex<'a> {
 }
 
 impl<'a> MtermvectorsPostWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -38427,7 +39687,7 @@ impl<'a> MtermvectorsPostWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_mtermvectors`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -38502,17 +39762,21 @@ impl<'a> MtermvectorsPostWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_open`]
 ///
-///[`Client::indices_open`]: super::Client::indices_open
+///[`Client::indices_open`]: super::OsClient::indices_open
 #[derive(Debug, Clone)]
 pub struct IndicesOpen<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesOpenIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -38523,7 +39787,7 @@ pub struct IndicesOpen<'a> {
 }
 
 impl<'a> IndicesOpen<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -38606,7 +39870,7 @@ impl<'a> IndicesOpen<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_open`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -38649,17 +39913,21 @@ impl<'a> IndicesOpen<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::rank_eval_get_with_index`]
 ///
-///[`Client::rank_eval_get_with_index`]: super::Client::rank_eval_get_with_index
+///[`Client::rank_eval_get_with_index`]: super::OsClient::rank_eval_get_with_index
 #[derive(Debug, Clone)]
 pub struct RankEvalGetWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::RankEvalGetWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -38668,7 +39936,7 @@ pub struct RankEvalGetWithIndex<'a> {
 }
 
 impl<'a> RankEvalGetWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -38729,7 +39997,7 @@ impl<'a> RankEvalGetWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_rank_eval`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -38762,17 +40030,21 @@ impl<'a> RankEvalGetWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::rank_eval_post_with_index`]
 ///
-///[`Client::rank_eval_post_with_index`]: super::Client::rank_eval_post_with_index
+///[`Client::rank_eval_post_with_index`]: super::OsClient::rank_eval_post_with_index
 #[derive(Debug, Clone)]
 pub struct RankEvalPostWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::RankEvalPostWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -38782,7 +40054,7 @@ pub struct RankEvalPostWithIndex<'a> {
 }
 
 impl<'a> RankEvalPostWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -38853,7 +40125,7 @@ impl<'a> RankEvalPostWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_rank_eval`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -38888,24 +40160,28 @@ impl<'a> RankEvalPostWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_recovery_with_index`]
 ///
-///[`Client::indices_recovery_with_index`]: super::Client::indices_recovery_with_index
+///[`Client::indices_recovery_with_index`]: super::OsClient::indices_recovery_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesRecoveryWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesRecoveryWithIndexIndex, String>,
   active_only: Result<Option<bool>, String>,
   detailed: Result<Option<bool>, String>,
 }
 
 impl<'a> IndicesRecoveryWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -38944,7 +40220,7 @@ impl<'a> IndicesRecoveryWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_recovery`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -38967,17 +40243,21 @@ impl<'a> IndicesRecoveryWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_refresh_get_with_index`]
 ///
-///[`Client::indices_refresh_get_with_index`]: super::Client::indices_refresh_get_with_index
+///[`Client::indices_refresh_get_with_index`]: super::OsClient::indices_refresh_get_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesRefreshGetWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesRefreshGetWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -38985,7 +40265,7 @@ pub struct IndicesRefreshGetWithIndex<'a> {
 }
 
 impl<'a> IndicesRefreshGetWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -39035,7 +40315,7 @@ impl<'a> IndicesRefreshGetWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_refresh`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -39063,17 +40343,21 @@ impl<'a> IndicesRefreshGetWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_refresh_post_with_index`]
 ///
-///[`Client::indices_refresh_post_with_index`]: super::Client::indices_refresh_post_with_index
+///[`Client::indices_refresh_post_with_index`]: super::OsClient::indices_refresh_post_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesRefreshPostWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesRefreshPostWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -39081,7 +40365,7 @@ pub struct IndicesRefreshPostWithIndex<'a> {
 }
 
 impl<'a> IndicesRefreshPostWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -39131,7 +40415,7 @@ impl<'a> IndicesRefreshPostWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_refresh`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -39159,17 +40443,21 @@ impl<'a> IndicesRefreshPostWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::search_post_with_index`]
 ///
-///[`Client::search_post_with_index`]: super::Client::search_post_with_index
+///[`Client::search_post_with_index`]: super::OsClient::search_post_with_index
 #[derive(Debug, Clone)]
 pub struct SearchPostWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::SearchPostWithIndexIndex, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
@@ -39217,7 +40505,7 @@ pub struct SearchPostWithIndex<'a> {
 }
 
 impl<'a> SearchPostWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -39716,7 +41004,7 @@ impl<'a> SearchPostWithIndex<'a> {
   ///Sends a `POST` request to `/{index}/_search`
   pub async fn send<T: DeserializeOwned + std::default::Default>(
     self,
-  ) -> Result<ResponseValue<types::SearchPostWithIndexResponseContent<T>>, Error<()>> {
+  ) -> Result<ResponseValue<types::SearchPostWithIndexResponseContent<T>>, Error> {
     let Self {
       client,
       index,
@@ -39953,17 +41241,21 @@ impl<'a> SearchPostWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::create_pit`]
 ///
-///[`Client::create_pit`]: super::Client::create_pit
+///[`Client::create_pit`]: super::OsClient::create_pit
 #[derive(Debug, Clone)]
 pub struct CreatePit<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::CreatePitIndex, String>,
   allow_partial_pit_creation: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -39973,7 +41265,7 @@ pub struct CreatePit<'a> {
 }
 
 impl<'a> CreatePit<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -40045,7 +41337,7 @@ impl<'a> CreatePit<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_search/point_in_time`
-  pub async fn send(self) -> Result<ResponseValue<types::CreatePitResponseContent>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::CreatePitResponseContent>, Error> {
     let Self {
       client,
       index,
@@ -40095,17 +41387,21 @@ impl<'a> CreatePit<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::search_template_get_with_index`]
 ///
-///[`Client::search_template_get_with_index`]: super::Client::search_template_get_with_index
+///[`Client::search_template_get_with_index`]: super::OsClient::search_template_get_with_index
 #[derive(Debug, Clone)]
 pub struct SearchTemplateGetWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::SearchTemplateGetWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   ccs_minimize_roundtrips: Result<Option<bool>, String>,
@@ -40123,7 +41419,7 @@ pub struct SearchTemplateGetWithIndex<'a> {
 }
 
 impl<'a> SearchTemplateGetWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -40283,7 +41579,7 @@ impl<'a> SearchTemplateGetWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_search/template`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -40365,17 +41661,21 @@ impl<'a> SearchTemplateGetWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::search_template_post_with_index`]
 ///
-///[`Client::search_template_post_with_index`]: super::Client::search_template_post_with_index
+///[`Client::search_template_post_with_index`]: super::OsClient::search_template_post_with_index
 #[derive(Debug, Clone)]
 pub struct SearchTemplatePostWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::SearchTemplatePostWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   ccs_minimize_roundtrips: Result<Option<bool>, String>,
@@ -40394,7 +41694,7 @@ pub struct SearchTemplatePostWithIndex<'a> {
 }
 
 impl<'a> SearchTemplatePostWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -40564,7 +41864,7 @@ impl<'a> SearchTemplatePostWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_search/template`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -40648,17 +41948,21 @@ impl<'a> SearchTemplatePostWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::search_shards_get_with_index`]
 ///
-///[`Client::search_shards_get_with_index`]: super::Client::search_shards_get_with_index
+///[`Client::search_shards_get_with_index`]: super::OsClient::search_shards_get_with_index
 #[derive(Debug, Clone)]
 pub struct SearchShardsGetWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::SearchShardsGetWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -40669,7 +41973,7 @@ pub struct SearchShardsGetWithIndex<'a> {
 }
 
 impl<'a> SearchShardsGetWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -40752,7 +42056,7 @@ impl<'a> SearchShardsGetWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_search_shards`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -40795,17 +42099,21 @@ impl<'a> SearchShardsGetWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::search_shards_post_with_index`]
 ///
-///[`Client::search_shards_post_with_index`]: super::Client::search_shards_post_with_index
+///[`Client::search_shards_post_with_index`]: super::OsClient::search_shards_post_with_index
 #[derive(Debug, Clone)]
 pub struct SearchShardsPostWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::SearchShardsPostWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -40816,7 +42124,7 @@ pub struct SearchShardsPostWithIndex<'a> {
 }
 
 impl<'a> SearchShardsPostWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -40899,7 +42207,7 @@ impl<'a> SearchShardsPostWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_search_shards`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -40942,17 +42250,21 @@ impl<'a> SearchShardsPostWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_segments_with_index`]
 ///
-///[`Client::indices_segments_with_index`]: super::Client::indices_segments_with_index
+///[`Client::indices_segments_with_index`]: super::OsClient::indices_segments_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesSegmentsWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesSegmentsWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -40961,7 +42273,7 @@ pub struct IndicesSegmentsWithIndex<'a> {
 }
 
 impl<'a> IndicesSegmentsWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -41022,7 +42334,7 @@ impl<'a> IndicesSegmentsWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_segments`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -41055,17 +42367,21 @@ impl<'a> IndicesSegmentsWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_settings_with_index`]
 ///
-///[`Client::indices_get_settings_with_index`]: super::Client::indices_get_settings_with_index
+///[`Client::indices_get_settings_with_index`]: super::OsClient::indices_get_settings_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesGetSettingsWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesGetSettingsWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::IndicesGetSettingsWithIndexClusterManagerTimeout>, String>,
@@ -41078,7 +42394,7 @@ pub struct IndicesGetSettingsWithIndex<'a> {
 }
 
 impl<'a> IndicesGetSettingsWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -41182,7 +42498,7 @@ impl<'a> IndicesGetSettingsWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_settings`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -41235,17 +42551,21 @@ impl<'a> IndicesGetSettingsWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_put_settings_with_index`]
 ///
-///[`Client::indices_put_settings_with_index`]: super::Client::indices_put_settings_with_index
+///[`Client::indices_put_settings_with_index`]: super::OsClient::indices_put_settings_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesPutSettingsWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesPutSettingsWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::IndicesPutSettingsWithIndexClusterManagerTimeout>, String>,
@@ -41259,7 +42579,7 @@ pub struct IndicesPutSettingsWithIndex<'a> {
 }
 
 impl<'a> IndicesPutSettingsWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -41373,7 +42693,7 @@ impl<'a> IndicesPutSettingsWithIndex<'a> {
   }
 
   ///Sends a `PUT` request to `/{index}/_settings`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -41428,17 +42748,21 @@ impl<'a> IndicesPutSettingsWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_settings_with_index_name`]
 ///
-///[`Client::indices_get_settings_with_index_name`]: super::Client::indices_get_settings_with_index_name
+///[`Client::indices_get_settings_with_index_name`]: super::OsClient::indices_get_settings_with_index_name
 #[derive(Debug, Clone)]
 pub struct IndicesGetSettingsWithIndexName<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesGetSettingsWithIndexNameIndex, String>,
   name: Result<types::IndicesGetSettingsWithIndexNameName, String>,
   allow_no_indices: Result<Option<bool>, String>,
@@ -41452,7 +42776,7 @@ pub struct IndicesGetSettingsWithIndexName<'a> {
 }
 
 impl<'a> IndicesGetSettingsWithIndexName<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -41566,7 +42890,7 @@ impl<'a> IndicesGetSettingsWithIndexName<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_settings/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -41626,17 +42950,21 @@ impl<'a> IndicesGetSettingsWithIndexName<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_shard_stores_with_index`]
 ///
-///[`Client::indices_shard_stores_with_index`]: super::Client::indices_shard_stores_with_index
+///[`Client::indices_shard_stores_with_index`]: super::OsClient::indices_shard_stores_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesShardStoresWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesShardStoresWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -41645,7 +42973,7 @@ pub struct IndicesShardStoresWithIndex<'a> {
 }
 
 impl<'a> IndicesShardStoresWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -41706,7 +43034,7 @@ impl<'a> IndicesShardStoresWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_shard_stores`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -41739,17 +43067,21 @@ impl<'a> IndicesShardStoresWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_shrink_put`]
 ///
-///[`Client::indices_shrink_put`]: super::Client::indices_shrink_put
+///[`Client::indices_shrink_put`]: super::OsClient::indices_shrink_put
 #[derive(Debug, Clone)]
 pub struct IndicesShrinkPut<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesShrinkPutIndex, String>,
   target: Result<types::IndicesShrinkPutTarget, String>,
   cluster_manager_timeout: Result<Option<types::IndicesShrinkPutClusterManagerTimeout>, String>,
@@ -41761,7 +43093,7 @@ pub struct IndicesShrinkPut<'a> {
 }
 
 impl<'a> IndicesShrinkPut<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -41852,7 +43184,7 @@ impl<'a> IndicesShrinkPut<'a> {
   }
 
   ///Sends a `PUT` request to `/{index}/_shrink/{target}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -41899,17 +43231,21 @@ impl<'a> IndicesShrinkPut<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_shrink_post`]
 ///
-///[`Client::indices_shrink_post`]: super::Client::indices_shrink_post
+///[`Client::indices_shrink_post`]: super::OsClient::indices_shrink_post
 #[derive(Debug, Clone)]
 pub struct IndicesShrinkPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesShrinkPostIndex, String>,
   target: Result<types::IndicesShrinkPostTarget, String>,
   cluster_manager_timeout: Result<Option<types::IndicesShrinkPostClusterManagerTimeout>, String>,
@@ -41921,7 +43257,7 @@ pub struct IndicesShrinkPost<'a> {
 }
 
 impl<'a> IndicesShrinkPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -42012,7 +43348,7 @@ impl<'a> IndicesShrinkPost<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_shrink/{target}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -42059,17 +43395,21 @@ impl<'a> IndicesShrinkPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::get_source`]
 ///
-///[`Client::get_source`]: super::Client::get_source
+///[`Client::get_source`]: super::OsClient::get_source
 #[derive(Debug, Clone)]
 pub struct GetSource<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::GetSourceIndex, String>,
   id: Result<types::GetSourceId, String>,
   source: Result<Option<Vec<String>>, String>,
@@ -42084,7 +43424,7 @@ pub struct GetSource<'a> {
 }
 
 impl<'a> GetSource<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -42210,7 +43550,7 @@ impl<'a> GetSource<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_source/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -42275,17 +43615,21 @@ impl<'a> GetSource<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::exists_source`]
 ///
-///[`Client::exists_source`]: super::Client::exists_source
+///[`Client::exists_source`]: super::OsClient::exists_source
 #[derive(Debug, Clone)]
 pub struct ExistsSource<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::ExistsSourceIndex, String>,
   id: Result<types::ExistsSourceId, String>,
   source: Result<Option<Vec<String>>, String>,
@@ -42300,7 +43644,7 @@ pub struct ExistsSource<'a> {
 }
 
 impl<'a> ExistsSource<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -42426,7 +43770,7 @@ impl<'a> ExistsSource<'a> {
   }
 
   ///Sends a `HEAD` request to `/{index}/_source/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -42491,17 +43835,21 @@ impl<'a> ExistsSource<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_split_put`]
 ///
-///[`Client::indices_split_put`]: super::Client::indices_split_put
+///[`Client::indices_split_put`]: super::OsClient::indices_split_put
 #[derive(Debug, Clone)]
 pub struct IndicesSplitPut<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesSplitPutIndex, String>,
   target: Result<types::IndicesSplitPutTarget, String>,
   cluster_manager_timeout: Result<Option<types::IndicesSplitPutClusterManagerTimeout>, String>,
@@ -42513,7 +43861,7 @@ pub struct IndicesSplitPut<'a> {
 }
 
 impl<'a> IndicesSplitPut<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -42604,7 +43952,7 @@ impl<'a> IndicesSplitPut<'a> {
   }
 
   ///Sends a `PUT` request to `/{index}/_split/{target}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -42651,17 +43999,21 @@ impl<'a> IndicesSplitPut<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_split_post`]
 ///
-///[`Client::indices_split_post`]: super::Client::indices_split_post
+///[`Client::indices_split_post`]: super::OsClient::indices_split_post
 #[derive(Debug, Clone)]
 pub struct IndicesSplitPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesSplitPostIndex, String>,
   target: Result<types::IndicesSplitPostTarget, String>,
   cluster_manager_timeout: Result<Option<types::IndicesSplitPostClusterManagerTimeout>, String>,
@@ -42673,7 +44025,7 @@ pub struct IndicesSplitPost<'a> {
 }
 
 impl<'a> IndicesSplitPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -42764,7 +44116,7 @@ impl<'a> IndicesSplitPost<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_split/{target}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -42811,17 +44163,21 @@ impl<'a> IndicesSplitPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_stats_with_index`]
 ///
-///[`Client::indices_stats_with_index`]: super::Client::indices_stats_with_index
+///[`Client::indices_stats_with_index`]: super::OsClient::indices_stats_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesStatsWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesStatsWithIndexIndex, String>,
   completion_fields: Result<Option<Vec<String>>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -42835,7 +44191,7 @@ pub struct IndicesStatsWithIndex<'a> {
 }
 
 impl<'a> IndicesStatsWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -42951,7 +44307,7 @@ impl<'a> IndicesStatsWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_stats`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -43009,17 +44365,21 @@ impl<'a> IndicesStatsWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_stats_with_index_metric`]
 ///
-///[`Client::indices_stats_with_index_metric`]: super::Client::indices_stats_with_index_metric
+///[`Client::indices_stats_with_index_metric`]: super::OsClient::indices_stats_with_index_metric
 #[derive(Debug, Clone)]
 pub struct IndicesStatsWithIndexMetric<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesStatsWithIndexMetricIndex, String>,
   metric: Result<types::IndicesStatsWithIndexMetricMetric, String>,
   completion_fields: Result<Option<Vec<String>>, String>,
@@ -43034,7 +44394,7 @@ pub struct IndicesStatsWithIndexMetric<'a> {
 }
 
 impl<'a> IndicesStatsWithIndexMetric<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -43160,7 +44520,7 @@ impl<'a> IndicesStatsWithIndexMetric<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_stats/{metric}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -43225,17 +44585,21 @@ impl<'a> IndicesStatsWithIndexMetric<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::termvectors_get`]
 ///
-///[`Client::termvectors_get`]: super::Client::termvectors_get
+///[`Client::termvectors_get`]: super::OsClient::termvectors_get
 #[derive(Debug, Clone)]
 pub struct TermvectorsGet<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::TermvectorsGetIndex, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
@@ -43251,7 +44615,7 @@ pub struct TermvectorsGet<'a> {
 }
 
 impl<'a> TermvectorsGet<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -43389,7 +44753,7 @@ impl<'a> TermvectorsGet<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_termvectors`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -43457,17 +44821,21 @@ impl<'a> TermvectorsGet<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::termvectors_post`]
 ///
-///[`Client::termvectors_post`]: super::Client::termvectors_post
+///[`Client::termvectors_post`]: super::OsClient::termvectors_post
 #[derive(Debug, Clone)]
 pub struct TermvectorsPost<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::TermvectorsPostIndex, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
@@ -43484,7 +44852,7 @@ pub struct TermvectorsPost<'a> {
 }
 
 impl<'a> TermvectorsPost<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -43632,7 +45000,7 @@ impl<'a> TermvectorsPost<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_termvectors`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -43702,17 +45070,21 @@ impl<'a> TermvectorsPost<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::termvectors_get_with_id`]
 ///
-///[`Client::termvectors_get_with_id`]: super::Client::termvectors_get_with_id
+///[`Client::termvectors_get_with_id`]: super::OsClient::termvectors_get_with_id
 #[derive(Debug, Clone)]
 pub struct TermvectorsGetWithId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::TermvectorsGetWithIdIndex, String>,
   id: Result<types::TermvectorsGetWithIdId, String>,
   field_statistics: Result<Option<bool>, String>,
@@ -43729,7 +45101,7 @@ pub struct TermvectorsGetWithId<'a> {
 }
 
 impl<'a> TermvectorsGetWithId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -43877,7 +45249,7 @@ impl<'a> TermvectorsGetWithId<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_termvectors/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -43952,17 +45324,21 @@ impl<'a> TermvectorsGetWithId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::termvectors_post_with_id`]
 ///
-///[`Client::termvectors_post_with_id`]: super::Client::termvectors_post_with_id
+///[`Client::termvectors_post_with_id`]: super::OsClient::termvectors_post_with_id
 #[derive(Debug, Clone)]
 pub struct TermvectorsPostWithId<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::TermvectorsPostWithIdIndex, String>,
   id: Result<types::TermvectorsPostWithIdId, String>,
   field_statistics: Result<Option<bool>, String>,
@@ -43980,7 +45356,7 @@ pub struct TermvectorsPostWithId<'a> {
 }
 
 impl<'a> TermvectorsPostWithId<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -44138,7 +45514,7 @@ impl<'a> TermvectorsPostWithId<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_termvectors/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -44215,17 +45591,21 @@ impl<'a> TermvectorsPostWithId<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::update`]
 ///
-///[`Client::update`]: super::Client::update
+///[`Client::update`]: super::OsClient::update
 #[derive(Debug, Clone)]
 pub struct Update<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::UpdateIndex, String>,
   id: Result<types::UpdateId, String>,
   source: Result<Option<Vec<String>>, String>,
@@ -44244,7 +45624,7 @@ pub struct Update<'a> {
 }
 
 impl<'a> Update<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -44413,7 +45793,7 @@ impl<'a> Update<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_update/{id}`
-  pub async fn send(self) -> Result<ResponseValue<types::IndexResponse>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<types::IndexResponse>, Error> {
     let Self {
       client,
       index,
@@ -44495,17 +45875,21 @@ impl<'a> Update<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::update_by_query`]
 ///
-///[`Client::update_by_query`]: super::Client::update_by_query
+///[`Client::update_by_query`]: super::OsClient::update_by_query
 #[derive(Debug, Clone)]
 pub struct UpdateByQuery<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::UpdateByQueryIndex, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
@@ -44545,7 +45929,7 @@ pub struct UpdateByQuery<'a> {
 }
 
 impl<'a> UpdateByQuery<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -44946,7 +46330,7 @@ impl<'a> UpdateByQuery<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_update_by_query`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -45135,17 +46519,21 @@ impl<'a> UpdateByQuery<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_get_upgrade_with_index`]
 ///
-///[`Client::indices_get_upgrade_with_index`]: super::Client::indices_get_upgrade_with_index
+///[`Client::indices_get_upgrade_with_index`]: super::OsClient::indices_get_upgrade_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesGetUpgradeWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesGetUpgradeWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -45153,7 +46541,7 @@ pub struct IndicesGetUpgradeWithIndex<'a> {
 }
 
 impl<'a> IndicesGetUpgradeWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -45203,7 +46591,7 @@ impl<'a> IndicesGetUpgradeWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_upgrade`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -45231,17 +46619,21 @@ impl<'a> IndicesGetUpgradeWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_upgrade_with_index`]
 ///
-///[`Client::indices_upgrade_with_index`]: super::Client::indices_upgrade_with_index
+///[`Client::indices_upgrade_with_index`]: super::OsClient::indices_upgrade_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesUpgradeWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesUpgradeWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -45251,7 +46643,7 @@ pub struct IndicesUpgradeWithIndex<'a> {
 }
 
 impl<'a> IndicesUpgradeWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -45323,7 +46715,7 @@ impl<'a> IndicesUpgradeWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_upgrade`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -45361,17 +46753,21 @@ impl<'a> IndicesUpgradeWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_validate_query_get_with_index`]
 ///
-///[`Client::indices_validate_query_get_with_index`]: super::Client::indices_validate_query_get_with_index
+///[`Client::indices_validate_query_get_with_index`]: super::OsClient::indices_validate_query_get_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesValidateQueryGetWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesValidateQueryGetWithIndexIndex, String>,
   all_shards: Result<Option<bool>, String>,
   allow_no_indices: Result<Option<bool>, String>,
@@ -45388,7 +46784,7 @@ pub struct IndicesValidateQueryGetWithIndex<'a> {
 }
 
 impl<'a> IndicesValidateQueryGetWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -45537,7 +46933,7 @@ impl<'a> IndicesValidateQueryGetWithIndex<'a> {
   }
 
   ///Sends a `GET` request to `/{index}/_validate/query`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -45610,17 +47006,21 @@ impl<'a> IndicesValidateQueryGetWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }
 
 ///Builder for [`Client::indices_validate_query_post_with_index`]
 ///
-///[`Client::indices_validate_query_post_with_index`]: super::Client::indices_validate_query_post_with_index
+///[`Client::indices_validate_query_post_with_index`]: super::OsClient::indices_validate_query_post_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesValidateQueryPostWithIndex<'a> {
-  client: &'a super::Client,
+  client: &'a super::OsClient,
   index: Result<types::IndicesValidateQueryPostWithIndexIndex, String>,
   all_shards: Result<Option<bool>, String>,
   allow_no_indices: Result<Option<bool>, String>,
@@ -45638,7 +47038,7 @@ pub struct IndicesValidateQueryPostWithIndex<'a> {
 }
 
 impl<'a> IndicesValidateQueryPostWithIndex<'a> {
-  pub fn new(client: &'a super::Client) -> Self {
+  pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
       index: Err("index was not initialized".to_string()),
@@ -45797,7 +47197,7 @@ impl<'a> IndicesValidateQueryPostWithIndex<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_validate/query`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self {
       client,
       index,
@@ -45872,7 +47272,11 @@ impl<'a> IndicesValidateQueryPostWithIndex<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => Ok(ResponseValue::empty(response)),
-      _ => Err(Error::UnexpectedResponse(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
     }
   }
 }

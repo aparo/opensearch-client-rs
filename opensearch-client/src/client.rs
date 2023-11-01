@@ -4,12 +4,20 @@
 
 //! Support code for generated clients.
 
-use std::ops::{Deref, DerefMut};
+use std::{
+  fmt::Display,
+  ops::{Deref, DerefMut},
+};
 
 use bytes::Bytes;
 use futures_core::Stream;
 use reqwest::RequestBuilder;
-use serde::{de::DeserializeOwned, Serialize};
+use serde::{
+  de::{value, DeserializeOwned},
+  Serialize,
+};
+use miette::{Diagnostic, NamedSource, SourceOffset};
+use thiserror::Error;
 
 #[cfg(not(target_arch = "wasm32"))]
 type InnerByteStream = std::pin::Pin<Box<dyn Stream<Item = reqwest::Result<Bytes>> + Send + Sync>>;
@@ -61,7 +69,7 @@ pub struct ResponseValue<T> {
 
 impl<T: DeserializeOwned> ResponseValue<T> {
   #[doc(hidden)]
-  pub async fn from_response<E: std::fmt::Debug>(response: reqwest::Response) -> Result<Self, Error<E>> {
+  pub async fn from_response(response: reqwest::Response) -> Result<Self, Error> {
     let status = response.status();
     let headers = response.headers().clone();
     let inner = response.json().await.map_err(Error::InvalidResponsePayload)?;
@@ -73,7 +81,7 @@ impl<T: DeserializeOwned> ResponseValue<T> {
 #[cfg(not(target_arch = "wasm32"))]
 impl ResponseValue<reqwest::Upgraded> {
   #[doc(hidden)]
-  pub async fn upgrade<E: std::fmt::Debug>(response: reqwest::Response) -> Result<Self, Error<E>> {
+  pub async fn upgrade<E: std::fmt::Debug>(response: reqwest::Response) -> Result<Self, Error> {
     let status = response.status();
     let headers = response.headers().clone();
     if status == reqwest::StatusCode::SWITCHING_PROTOCOLS {
@@ -81,7 +89,9 @@ impl ResponseValue<reqwest::Upgraded> {
 
       Ok(Self { inner, status, headers })
     } else {
-      Err(Error::UnexpectedResponse(response))
+      Err(Error::UnexpectedResponse(
+        ReqwestResponse::from_response(response).await,
+      ))
     }
   }
 }
@@ -116,7 +126,7 @@ impl ResponseValue<()> {
 
 impl ResponseValue<String> {
   #[doc(hidden)]
-  pub async fn text<E: std::fmt::Debug>(response: reqwest::Response) -> Result<Self, Error<E>> {
+  pub async fn text(response: reqwest::Response) -> Result<Self, Error> {
     let status = response.status();
     let headers = response.headers().clone();
     let inner = response.text().await.map_err(Error::InvalidResponsePayload)?;
@@ -202,119 +212,188 @@ impl<T: std::fmt::Debug> std::fmt::Debug for ResponseValue<T> {
   }
 }
 
+#[derive(Debug)]
+struct DocumentedResponseValue {}
+impl DocumentedResponseValue {
+  fn new() -> Self {
+    Self {}
+  }
+}
+
+impl Display for DocumentedResponseValue {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    f.write_str("DocumentedResponseValue")
+  }
+}
+
+#[derive(Debug)]
+pub struct ReqwestResponse {
+  pub status: reqwest::StatusCode,
+  pub headers: reqwest::header::HeaderMap,
+  pub value: String,
+}
+impl ReqwestResponse {
+  pub fn new() -> Self {
+    Self {
+      status: reqwest::StatusCode::OK,
+      headers: reqwest::header::HeaderMap::new(),
+      value: "".to_string(),
+    }
+  }
+
+  pub async fn from_response(response: reqwest::Response) -> ReqwestResponse {
+    let status = response.status();
+    let headers = response.headers().clone();
+    let value = response.text().await.unwrap_or("".to_string());
+    ReqwestResponse { status, headers, value }
+  }
+}
+
+impl Display for ReqwestResponse {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    f.write_str("ReqwestResponse")
+  }
+}
+
 /// Error produced by generated client methods.
 ///
 /// The type parameter may be a struct if there's a single expected error type
 /// or an enum if there are multiple valid error types. It can be the unit type
 /// if there are no structured returns expected.
-pub enum Error<E = ()> {
+#[derive(Error, Debug)]
+pub enum Error {
   /// The request did not conform to API requirements.
+  #[error("Invalid request: {0}")]
   InvalidRequest(String),
-
+  /// An invalid URL was provided.
+  #[error(transparent)]
+  // #[diagnostic(code(oro_client::url_parse_error), url(docsrs))]
+  UrlParseError(url::ParseError),
+  /// There is an error in provided credentials.
+  #[error("Credential error: {0}")]
+  CredentialsConfigError(String),
   /// The request did not conform to API requirements.
-  JsonExceptionError(serde_json::Error),
+  #[error(transparent)]
+  JsonExceptionError(#[from] serde_json::Error),
 
   /// A server error either due to the data, or with the connection.
-  CommunicationError(reqwest::Error),
+  // #[error(transparent)]
+  // CommunicationError(#[from] reqwest::Error),
+
+  /// A server error either due to the data, or with the connection.
+  #[error(transparent)]
+  CommunicationError(#[from] reqwest_middleware::Error),
 
   /// A documented, expected error response.
-  ErrorResponse(ResponseValue<E>),
+  #[error("Document Error: {0}")]
+  ErrorResponse(DocumentedResponseValue),
 
   /// An expected response code whose deserialization failed.
-  // TODO we have stuff from the response; should we include it?
-  InvalidResponsePayload(reqwest::Error),
+  #[error(transparent)]
+  InvalidResponsePayload(#[from] reqwest::Error),
 
   /// A response not listed in the API description. This may represent a
   /// success or failure response; check `status().is_success()`.
-  UnexpectedResponse(reqwest::Response),
+  #[error("UnexpectedResponse: {0}")]
+  UnexpectedResponse(ReqwestResponse),
 }
 
-impl<E> Error<E> {
-  /// Returns the status code, if the error was generated from a response.
-  pub fn status(&self) -> Option<reqwest::StatusCode> {
-    match self {
-      Error::InvalidRequest(_) => None,
-      Error::JsonExceptionError(_) => None,
-      Error::CommunicationError(e) => e.status(),
-      Error::ErrorResponse(rv) => Some(rv.status()),
-      Error::InvalidResponsePayload(e) => e.status(),
-      Error::UnexpectedResponse(r) => Some(r.status()),
-    }
-  }
+// impl<E> Error {
+//   /// Returns the status code, if the error was generated from a response.
+//   pub fn status(&self) -> Option<reqwest::StatusCode> {
+//     match self {
+//       Error::InvalidRequest(_) => None,
+//       Error::CredentialsConfigError(_) => None,
+//       Error::UrlParseError(_) => None,
+//       Error::JsonExceptionError(_) => None,
+//       Error::CommunicationError(e) => e.status(),
+//       Error::ErrorResponse(rv) => Some(rv.status()),
+//       Error::InvalidResponsePayload(e) => e.status(),
+//       Error::UnexpectedResponse(r) => Some(r.status()),
+//     }
+//   }
 
-  /// Converts this error into one without a typed body.
-  ///
-  /// This is useful for unified error handling with APIs that distinguish
-  /// various error response bodies.
-  pub fn into_untyped(self) -> Error {
-    match self {
-      Error::InvalidRequest(s) => Error::InvalidRequest(s),
-      Error::CommunicationError(e) => Error::CommunicationError(e),
-      Error::JsonExceptionError(e) => Error::JsonExceptionError(e),
-      Error::ErrorResponse(ResponseValue {
-        inner: _,
-        status,
-        headers,
-      }) => {
-        Error::ErrorResponse(ResponseValue {
-          inner: (),
-          status,
-          headers,
-        })
-      }
-      Error::InvalidResponsePayload(e) => Error::InvalidResponsePayload(e),
-      Error::UnexpectedResponse(r) => Error::UnexpectedResponse(r),
-    }
-  }
-}
+//   // /// Converts this error into one without a typed body.
+//   // ///
+//   // /// This is useful for unified error handling with APIs that distinguish
+//   // /// various error response bodies.
+//   // pub fn into_untyped(self) -> Error {
+//   //   match self {
+//   //     Error::InvalidRequest(s) => Error::InvalidRequest(s),
+//   //     Error::CredentialsConfigError(s) =>
+// Error::CredentialsConfigError(s),   //     Error::UrlParseError(e) =>
+// Error::UrlParseError(e),   //     Error::CommunicationError(e) =>
+// Error::CommunicationError(e),   //     Error::JsonExceptionError(e) =>
+// Error::JsonExceptionError(e),   //     Error::ErrorResponse(ResponseValue {
+//   //       inner: _,
+//   //       status,
+//   //       headers,
+//   //     }) => {
+//   //       Error::ErrorResponse(ResponseValue {
+//   //         inner: (),
+//   //         status,
+//   //         headers,
+//   //       })
+//   //     }
+//   //     Error::InvalidResponsePayload(e) =>
+// Error::InvalidResponsePayload(e),   //     Error::UnexpectedResponse(r) =>
+// Error::UnexpectedResponse(r),   //   }
+//   // }
+// }
 
-impl<E> From<reqwest::Error> for Error<E> {
-  fn from(e: reqwest::Error) -> Self {
-    Self::CommunicationError(e)
-  }
-}
+// impl<E> From<reqwest::Error> for Error {
+//   fn from(e: reqwest::Error) -> Self {
+//     Self::CommunicationError(e)
+//   }
+// }
 
-impl<E> From<serde_json::Error> for Error<E> {
-  fn from(e: serde_json::Error) -> Self {
-    Self::JsonExceptionError(e)
-  }
-}
+// impl<E> From<serde_json::Error> for Error {
+//   fn from(e: serde_json::Error) -> Self {
+//     Self::JsonExceptionError(e)
+//   }
+// }
 
-impl<E> From<reqwest::header::InvalidHeaderValue> for Error<E> {
-  fn from(e: reqwest::header::InvalidHeaderValue) -> Self {
-    Self::InvalidRequest(e.to_string())
-  }
-}
+// impl<E> From<reqwest::header::InvalidHeaderValue> for Error {
+//   fn from(e: reqwest::header::InvalidHeaderValue) -> Self {
+//     Self::InvalidRequest(e.to_string())
+//   }
+// }
 
-impl<E> std::fmt::Display for Error<E>
-where
-  ResponseValue<E>: ErrorFormat,
-{
-  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-    match self {
-      Error::InvalidRequest(s) => {
-        write!(f, "Invalid Request: {}", s)
-      }
-      Error::JsonExceptionError(s) => {
-        write!(f, "Invalid Foramt for Json: {}", s)
-      }
+// impl<E> std::fmt::Display for Error
+// where
+//   ResponseValue<E>: ErrorFormat,
+// {
+//   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+//     match self {
+//       Error::InvalidRequest(s) => {
+//         write!(f, "Invalid Request: {}", s)
+//       }
+//       Error::CredentialsConfigError(s) => {
+//         write!(f, "Invalid Credentials Configuration: {}", s)
+//       }
+//       Error::UrlParseError(e) => {
+//         write!(f, "Invalid URL: {}", e)
+//       }
+//       Error::JsonExceptionError(s) => {
+//         write!(f, "Invalid Foramt for Json: {}", s)
+//       }
 
-      Error::CommunicationError(e) => {
-        write!(f, "Communication Error: {}", e)
-      }
-      Error::ErrorResponse(rve) => {
-        write!(f, "Error Response: ")?;
-        rve.fmt_info(f)
-      }
-      Error::InvalidResponsePayload(e) => {
-        write!(f, "Invalid Response Payload: {}", e)
-      }
-      Error::UnexpectedResponse(r) => {
-        write!(f, "Unexpected Response: {:?}", r)
-      }
-    }
-  }
-}
+//       Error::CommunicationError(e) => {
+//         write!(f, "Communication Error: {}", e)
+//       }
+//       Error::ErrorResponse(rve) => {
+//         write!(f, "Error Response: ")?;
+//         rve.fmt_info(f)
+//       }
+//       Error::InvalidResponsePayload(e) => {
+//         write!(f, "Invalid Response Payload: {}", e)
+//       }
+//       Error::UnexpectedResponse(r) => {
+//         write!(f, "Unexpected Response: {:?}", r)
+//       }
+//     }
+//   }
+// }
 
 trait ErrorFormat {
   fn fmt_info(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result;
@@ -343,26 +422,26 @@ impl ErrorFormat for ResponseValue<ByteStream> {
   }
 }
 
-impl<E> std::fmt::Debug for Error<E>
-where
-  ResponseValue<E>: ErrorFormat,
-{
-  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-    std::fmt::Display::fmt(self, f)
-  }
-}
-impl<E> std::error::Error for Error<E>
-where
-  ResponseValue<E>: ErrorFormat,
-{
-  fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-    match self {
-      Error::CommunicationError(e) => Some(e),
-      Error::InvalidResponsePayload(e) => Some(e),
-      _ => None,
-    }
-  }
-}
+// impl<E> std::fmt::Debug for Error
+// where
+//   ResponseValue<E>: ErrorFormat,
+// {
+//   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+//     std::fmt::Display::fmt(self, f)
+//   }
+// }
+// impl<E> std::error::Error for Error
+// where
+//   ResponseValue<E>: ErrorFormat,
+// {
+//   fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+//     match self {
+//       Error::CommunicationError(e) => Some(e),
+//       Error::InvalidResponsePayload(e) => Some(e),
+//       _ => None,
+//     }
+//   }
+// }
 
 // See https://url.spec.whatwg.org/#url-path-segment-string
 const PATH_SET: &percent_encoding::AsciiSet = &percent_encoding::CONTROLS
@@ -392,11 +471,11 @@ pub fn encode_path_option_vec_string(pc: &Option<Vec<String>>) -> String {
 
 #[doc(hidden)]
 pub trait RequestBuilderExt<E> {
-  fn form_urlencoded<T: Serialize + ?Sized>(self, body: &T) -> Result<RequestBuilder, Error<E>>;
+  fn form_urlencoded<T: Serialize + ?Sized>(self, body: &T) -> Result<RequestBuilder, Error>;
 }
 
 impl<E> RequestBuilderExt<E> for RequestBuilder {
-  fn form_urlencoded<T: Serialize + ?Sized>(self, body: &T) -> Result<Self, Error<E>> {
+  fn form_urlencoded<T: Serialize + ?Sized>(self, body: &T) -> Result<Self, Error> {
     Ok(
       self
         .header(

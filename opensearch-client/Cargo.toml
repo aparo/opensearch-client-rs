@@ -14,11 +14,29 @@ opensearch-dsl = { path = "../opensearch-dsl/" }
 
 bytes = "1.5.0"
 futures-core = "0.3.29"
-futures= "0.3.29"
+futures = "0.3.29"
 percent-encoding = "2.3.0"
 regress = "0.7.1"
-reqwest = { version = "0.11.22", default-features = false, features = ["json", "stream"] }
+reqwest = { version = "0.11.22", default-features = false, features = [
+    "json",
+    "stream",
+] }
 serde = { version = "1.0.190", features = ["derive"] }
 serde_json = "1.0.108"
 serde_urlencoded = "0.7.1"
-tracing= "0.1.40"
+tracing = "0.1.40"
+thiserror = "1.0.50"
+
+# client stuff
+base64 = "0.21.5"
+task-local-extensions = "0.1.4"
+reqwest-middleware = "0.2.4"
+reqwest-retry = "0.3.0"
+reqwest-tracing = "0.4.6"
+anyhow = "1.0.75"
+async-trait = "0.1.74"
+url = "2.4.1"
+miette = "5.10.0"
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+http-cache-reqwest = "0.11.3"

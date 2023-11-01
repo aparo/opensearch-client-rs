@@ -2,7 +2,7 @@ mod client;
 
 use std::sync::{Arc, Mutex};
 
-use opensearch_dsl::{Search, Sort, Terms, Query, SortCollection};
+use opensearch_dsl::{Query, Search, Sort, SortCollection, Terms};
 #[allow(unused_imports)]
 use client::{encode_path, encode_path_option_vec_string, RequestBuilderExt};
 pub use client::{ByteStream, Error, ResponseValue};
@@ -10469,6 +10469,18 @@ impl Client {
     builder::IndicesValidateQueryPostWithIndex::new(self)
   }
 
+  /// Returns a list of indices in the OpenSearch cluster.
+  ///
+  /// # Example
+  ///
+  /// ```
+  /// # use opensearch_client::OpenSearchClient;
+  /// # async fn dox() -> Result<(), Box<dyn std::error::Error>> {
+  /// # let client = OpenSearchClient::new("http://localhost:9200")?;
+  /// let indices = client.list_indices().await?;
+  /// # Ok(())
+  /// # }
+  /// ```
   pub async fn list_indices(&self) -> Result<Vec<String>, Error> {
     let response = self.cat_indices().s(vec!["i".to_owned()]).send().await?;
     let cat_result = response.into_inner();
@@ -10483,6 +10495,40 @@ impl Client {
     Ok(values)
   }
 
+  /// Sends a bulk index request to OpenSearch with the specified index, id and document body.
+  ///
+  /// # Arguments
+  ///
+  /// * `index` - A string slice that holds the name of the index.
+  /// * `id` - An optional string slice that holds the id of the document.
+  /// * `body` - A reference to a serializable document body.
+  ///
+  /// # Returns
+  ///
+  /// Returns a Result containing a serde_json::Value representing the response from OpenSearch or an Error if the request fails.
+  ///
+  /// # Example
+  ///
+  /// ```
+  /// use opensearch_client::OpenSearchClient;
+  ///
+  /// #[derive(Serialize)]
+  /// struct MyDocument {
+  ///     title: String,
+  ///     content: String,
+  /// }
+  ///
+  /// #[tokio::main]
+  /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
+  ///     let client = OpenSearchClient::new("http://localhost:9200");
+  ///     let document = MyDocument {
+  ///         title: "My Title".to_string(),
+  ///         content: "My Content".to_string(),
+  ///     };
+  ///     let response = client.bulk_index_document("my_index", Some("my_id".to_string()), &document).await?;
+  ///     Ok(())
+  /// }
+  /// ```
   pub async fn bulk_index_document<T: Serialize>(
     &self,
     index: &String,
@@ -10498,6 +10544,36 @@ impl Client {
     self.bulk_action("index", action, Some(&body_json)).await
   }
 
+  /// Sends a bulk action to the OpenSearch server.
+  ///
+  /// # Arguments
+  ///
+  /// * `command` - A string slice that holds the command to be executed.
+  /// * `action` - A `BulkAction` enum that specifies the action to be taken.
+  /// * `body` - An optional `serde_json::Value` that holds the request body.
+  ///
+  /// # Returns
+  ///
+  /// A `Result` containing a `serde_json::Value` object representing the response from the server,
+  /// or an `Error` if the request failed.
+  ///
+  /// # Examples
+  ///
+  /// ```
+  /// use opensearch_client::OpenSearchClient;
+  /// use opensearch_client::BulkAction;
+  ///
+  /// #[tokio::main]
+  /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
+  ///     let client = OpenSearchClient::new("http://localhost:9200")?;
+  ///     let action = BulkAction::Index {
+  ///         index: "my_index".to_string(),
+  ///         id: Some("1".to_string()),
+  ///     };
+  ///     let response = client.bulk_action("index", action, None).await?;
+  ///     Ok(())
+  /// }
+  /// ```
   pub async fn bulk_action(
     &self,
     command: &str,
@@ -10531,6 +10607,17 @@ impl Client {
     Ok(serde_json::Value::Object(m))
   }
 
+  /// Sends a bulk create request to the OpenSearch cluster with the specified index, id and body.
+  /// 
+  /// # Arguments
+  /// 
+  /// * `index` - A string slice that holds the name of the index.
+  /// * `id` - A string slice that holds the id of the document.
+  /// * `body` - A generic type `T` that holds the body of the document to be created.
+  /// 
+  /// # Returns
+  /// 
+  /// Returns a `Result` containing a `serde_json::Value` on success, or an `Error` on failure.
   pub async fn bulk_create_document<T: Serialize>(
     &self,
     index: &String,
@@ -10548,6 +10635,18 @@ impl Client {
     self.bulk_action("create", action, Some(&body_json)).await
   }
 
+  /// Asynchronously updates a document in bulk.
+  ///
+  /// # Arguments
+  ///
+  /// * `index` - A string slice that holds the name of the index.
+  /// * `id` - A string slice that holds the ID of the document to update.
+  /// * `body` - An `UpdateAction` struct that holds the update action to perform.
+  ///
+  /// # Returns
+  ///
+  /// Returns a `Result` containing a `serde_json::Value` on success, or an `Error` on failure.
+  ///
   pub async fn bulk_update_document(
     &self,
     index: &String,
@@ -10563,6 +10662,23 @@ impl Client {
     self.bulk_action("update", action, Some(&j)).await
   }
 
+  /// Sends a bulk request to the OpenSearch server and returns a `BulkResponse`.
+  /// If the bulker size is 0, it returns an empty `BulkResponse`.
+  /// If the bulk request contains errors, it logs the errors and returns the `BulkResponse`.
+  ///
+  /// # Examples
+  ///
+  /// ```no_run
+  /// use opensearch_client::OpenSearchClient;
+  ///
+  /// #[tokio::main]
+  /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
+  ///     let client = OpenSearchClient::new("http://localhost:9200", "user", "password");
+  ///     let response = client.flush_bulk().await?;
+  ///     println!("{:?}", response);
+  ///     Ok(())
+  /// }
+  /// ```
   pub async fn flush_bulk(&self) -> Result<BulkResponse, Error> {
     let bulker_size_arc = Arc::clone(&self.bulker_size);
     let mut bulker_size = bulker_size_arc.lock().unwrap();
@@ -10614,6 +10730,45 @@ impl Client {
     }
   }
 
+  /// Indexes a document in the specified index with the given body and optional ID.
+  ///
+  /// # Arguments
+  ///
+  /// * `index` - A string slice that holds the name of the index to which the document will be added.
+  /// * `body` - A reference to a serializable object that represents the document to be added.
+  /// * `id` - An optional string slice that holds the ID of the document to be added. If not provided, a new ID will be generated.
+  ///
+  /// # Returns
+  ///
+  /// A `Result` containing an `IndexResponse` object if the operation was successful, or an `Error` if an error occurred.
+  ///
+  /// # Examples
+  ///
+  /// ```
+  /// use opensearch_client::Client;
+  ///
+  /// #[derive(Serialize)]
+  /// struct MyDocument {
+  ///     title: String,
+  ///     content: String,
+  /// }
+  ///
+  /// #[tokio::main]
+  /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
+  ///     let client = Client::new("http://localhost:9200")?;
+  ///
+  ///     let document = MyDocument {
+  ///         title: "My Title".to_string(),
+  ///         content: "My Content".to_string(),
+  ///     };
+  ///
+  ///     let response = client.index_document("my_index", &document, None).await?;
+  ///
+  ///     println!("Document ID: {}", response._id);
+  ///
+  ///     Ok(())
+  /// }
+  /// ```
   pub async fn index_document<T: Serialize>(
     &self,
     index: &String,
@@ -10621,10 +10776,52 @@ impl Client {
     id: Option<String>,
   ) -> Result<types::IndexResponse, Error> {
     let body_json = serde_json::to_value(body)?;
-    let response = self.index_post().index(index).body(body_json).send().await?;
+    let partial_request = self.index_post().index(index).body(body_json);
+    let request = match id {
+      None => partial_request,
+      Some(id) => partial_request.id(id),
+    };
+    let response = request.send().await?;
     Ok(response.into_inner())
   }
 
+  /// Creates a new document in the specified index with the given ID and body.
+  ///
+  /// # Arguments
+  ///
+  /// * `index` - A string slice that holds the name of the index.
+  /// * `id` - A string slice that holds the ID of the document.
+  /// * `body` - A generic type `T` that holds the body of the document. The type `T` must implement the `Serialize` trait from the `serde` crate.
+  ///
+  /// # Returns
+  ///
+  /// Returns a `Result` containing an `IndexResponse` on success, or an `Error` on failure.
+  ///
+  /// # Examples
+  ///
+  /// ```rust
+  /// use opensearch_client::OpenSearchClient;
+  ///
+  /// #[derive(Serialize)]
+  /// struct MyDocument {
+  ///     title: String,
+  ///     content: String,
+  /// }
+  ///
+  /// #[tokio::main]
+  /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
+  ///     let client = OpenSearchClient::new("http://localhost:9200")?;
+  ///
+  ///     let document = MyDocument {
+  ///         title: "My Title".to_string(),
+  ///         content: "My Content".to_string(),
+  ///     };
+  ///
+  ///     let response = client.create_document("my_index", "1", &document).await?;
+  ///
+  ///     Ok(())
+  /// }
+  /// ```
   pub async fn create_document<T: Serialize>(
     &self,
     index: &String,
@@ -10639,6 +10836,24 @@ impl Client {
     Ok(result)
   }
 
+  /// Asynchronously retrieves a typed document from the specified index and ID.
+  ///
+  /// # Arguments
+  ///
+  /// * `index` - A string slice that holds the name of the index to retrieve
+  ///   the document from.
+  /// * `id` - A string slice that holds the ID of the document to retrieve.
+  ///
+  /// # Returns
+  ///
+  /// A `Result` containing the deserialized content of the retrieved document,
+  /// or an `Error` if the operation failed.
+  ///
+  /// # Generic Type Parameters
+  ///
+  /// * `T` - The type of the document to retrieve. Must implement the
+  ///   `DeserializeOwned` and
+  /// `std::default::Default` traits.
   pub async fn get_typed<T: DeserializeOwned + std::default::Default>(
     &self,
     index: &String,
@@ -10650,6 +10865,40 @@ impl Client {
     Ok(result)
   }
 
+  /// Updates a document in the specified index with the given ID using the
+  /// provided update action.
+  ///
+  /// # Arguments
+  ///
+  /// * `index` - A string slice that holds the name of the index to update the
+  ///   document in.
+  /// * `id` - A string slice that holds the ID of the document to update.
+  /// * `action` - A reference to an `UpdateAction` enum that specifies the
+  ///   update action to perform.
+  ///
+  /// # Returns
+  ///
+  /// Returns a `Result` containing an `IndexResponse` struct if the update was
+  /// successful, or an `Error` if an error occurred.
+  ///
+  /// # Example
+  ///
+  /// ```rust
+  /// use opensearch_client::{Client, UpdateAction};
+  ///
+  /// #[tokio::main]
+  /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
+  ///     let client = Client::new("http://localhost:9200")?;
+  ///
+  ///     let index = "my_index";
+  ///     let id = "1";
+  ///     let action = UpdateAction::new().doc(json!({"foo": "bar"}));
+  ///
+  ///     let response = client.update_document(index, id, &action).await?;
+  ///
+  ///     Ok(())
+  /// }
+  /// ```
   pub async fn update_document(
     &self,
     index: &String,
@@ -10662,6 +10911,37 @@ impl Client {
     Ok(response.into_inner())
   }
 
+  /// Searches for documents in the specified index and returns a stream of hits.
+  ///
+  /// # Arguments
+  ///
+  /// * `index` - The name of the index to search in.
+  /// * `query` - The query to execute.
+  /// * `sort` - The sort criteria to use.
+  /// * `size` - The maximum number of hits to return.
+  ///
+  /// # Returns
+  ///
+  /// A stream of hits that match the specified search criteria.
+  ///
+  /// # Examples
+  ///
+  /// ```rust
+  /// use opensearch_client::{Client, Query, SortCollection};
+  ///
+  /// #[tokio::main]
+  /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
+  ///     let client = Client::new("http://localhost:9200")?;
+  ///     let query = Query::match_all();
+  ///     let sort = SortCollection::new().add_field("_doc", "asc");
+  ///     let stream = client.search_stream("my_index", &query, &sort, 10).await?;
+  ///     stream.for_each(|hit| {
+  ///         println!("{:?}", hit);
+  ///         futures::future::ready(())
+  ///     }).await;
+  ///     Ok(())
+  /// }
+  /// ```
   pub async fn search_stream<T: DeserializeOwned + std::default::Default>(
     &self,
     index: &String,
@@ -10745,6 +11025,7 @@ impl Client {
   }
 }
 
+/// Represents the state of a search operation that uses the "search after" feature.
 struct SearchAfterState {
   client: Arc<Client>,
   index: String,

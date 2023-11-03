@@ -12971,7 +12971,7 @@ pub struct GetResponseContent<T> {
 
 impl<T> From<&GetResponseContent<T>> for GetResponseContent<T> {
   fn from(value: &GetResponseContent<T>) -> Self {
-    value.clone().into()
+    value.into()
   }
 }
 
@@ -13496,7 +13496,7 @@ pub struct Hit<T> {
 
 impl<T> From<&Hit<T>> for Hit<T> {
   fn from(value: &Hit<T>) -> Self {
-    value.clone().into()
+    value.into()
   }
 }
 
@@ -13518,7 +13518,7 @@ pub struct HitsMetadata<T> {
 
 impl<T> From<&HitsMetadata<T>> for HitsMetadata<T> {
   fn from(value: &HitsMetadata<T>) -> Self {
-    value.clone().into()
+    value.into()
   }
 }
 
@@ -38789,7 +38789,7 @@ pub struct SearchGetResponseContent<T> {
 
 impl<T> From<&SearchGetResponseContent<T>> for SearchGetResponseContent<T> {
   fn from(value: &SearchGetResponseContent<T>) -> Self {
-    value.clone().into()
+    value.into()
   }
 }
 
@@ -39186,7 +39186,7 @@ pub struct SearchPostResponseContent<T> {
 
 impl<T> From<&SearchPostResponseContent<T>> for SearchPostResponseContent<T> {
   fn from(value: &SearchPostResponseContent<T>) -> Self {
-    value.clone().into()
+    value.into()
   }
 }
 
@@ -39432,7 +39432,7 @@ pub struct SearchPostWithIndexResponseContent<T> {
 
 impl<T> From<&SearchPostWithIndexResponseContent<T>> for SearchPostWithIndexResponseContent<T> {
   fn from(value: &SearchPostWithIndexResponseContent<T>) -> Self {
-    value.clone().into()
+    value.into()
   }
 }
 

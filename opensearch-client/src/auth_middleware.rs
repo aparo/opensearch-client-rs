@@ -15,7 +15,8 @@ pub(crate) struct AuthMiddleware(pub(crate) Arc<HashMap<String, Credentials>>);
 impl Middleware for AuthMiddleware {
   async fn handle(&self, mut req: Request, extensions: &mut Extensions, next: Next<'_>) -> Result<Response> {
     let reg = req.url().clone();
-    let credentials = self.0.get(&nerf_dart(&reg));
+    let to_match = nerf_dart(&reg);
+    let credentials = self.0.get(&to_match);
     if let Some(cred) = credentials {
       let auth_header = match cred {
         Credentials::Basic { username, password } => basic_auth(username, password.as_ref()),
@@ -59,5 +60,6 @@ where
 }
 
 pub fn nerf_dart(url: &Url) -> String {
-  format!("//{}{}", url.host_str().unwrap_or(""), url.path())
+  // format!("//{}{}", url.host_str().unwrap_or(""), url.path())
+  format!("//{}/", url.host_str().unwrap_or(""))
 }

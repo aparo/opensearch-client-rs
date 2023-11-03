@@ -654,7 +654,6 @@ impl<'a> IndicesAnalyzePost<'a> {
 #[derive(Debug, Clone)]
 pub struct BulkPost<'a> {
   client: &'a super::OsClient,
-  source: Result<Option<String>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
   pipeline: Result<Option<String>, String>,
@@ -671,7 +670,6 @@ impl<'a> BulkPost<'a> {
   pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
-      source: Ok(None),
       source_excludes: Ok(None),
       source_includes: Ok(None),
       pipeline: Ok(None),
@@ -683,16 +681,6 @@ impl<'a> BulkPost<'a> {
       wait_for_active_shards: Ok(None),
       body: Err("body was not initialized".to_string()),
     }
-  }
-
-  pub fn source<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.source = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Vec < String >` for source failed".to_string());
-    self
   }
 
   pub fn source_excludes<V>(mut self, value: V) -> Self
@@ -798,7 +786,6 @@ impl<'a> BulkPost<'a> {
   pub async fn send(self) -> Result<ResponseValue<BulkResponse>, Error> {
     let Self {
       client,
-      source,
       source_excludes,
       source_includes,
       pipeline,
@@ -810,7 +797,6 @@ impl<'a> BulkPost<'a> {
       wait_for_active_shards,
       body,
     } = self;
-    let source = source.map_err(Error::InvalidRequest)?;
     let source_excludes = source_excludes.map_err(Error::InvalidRequest)?;
     let source_includes = source_includes.map_err(Error::InvalidRequest)?;
     let pipeline = pipeline.map_err(Error::InvalidRequest)?;
@@ -2936,7 +2922,7 @@ impl<'a> CatIndices<'a> {
     let s = s.map_err(Error::InvalidRequest)?;
     let time = time.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/indices", client.baseurl,);
+    let url = client.baseurl.join("/_cat/indices")?;
     let mut query = Vec::with_capacity(14usize);
     if let Some(v) = &bytes {
       query.push(("bytes", v.to_string()));

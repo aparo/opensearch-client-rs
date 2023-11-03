@@ -39,6 +39,7 @@ pub struct BulkAction {
   pub id: Option<String>,
   #[serde(rename = "_index")]
   pub index: String,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
   pub pipeline: Option<String>,
 }
 

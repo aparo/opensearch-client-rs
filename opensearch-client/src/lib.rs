@@ -3,7 +3,7 @@ mod credentials;
 mod auth_middleware;
 use std::sync::{Arc, Mutex};
 
-use opensearch_dsl::{Query, Search, Sort, SortCollection, Terms};
+use opensearch_dsl::{Query, Search, SortCollection, Terms};
 #[allow(unused_imports)]
 use client::{encode_path, encode_path_option_vec_string, RequestBuilderExt};
 pub use client::{ByteStream, Error, ResponseValue};
@@ -272,7 +272,7 @@ impl OsClient {
     builder.build()
   }
 
-  pub fn new_from_environment() -> Result<OsClient, Error> {
+  pub fn from_environment() -> Result<OsClient, Error> {
     let accept_invalid_certificates: bool = match std::env::var("OPENSEARCH_SSL_VERIFY") {
       Ok(value) => value.eq_ignore_ascii_case("false"),
       Err(_) => false,
@@ -10942,7 +10942,7 @@ impl OsClient {
 
       // let request_url = format!("{}/_bulk", self.server);
 
-      match self.bulk().source(bulker.to_owned()).send().await
+      match self.bulk().body(bulker.to_owned()).send().await
         // .client
         // .post(request_url)
         // .basic_auth(self.user.as_str(), Some(self.password.as_str()))

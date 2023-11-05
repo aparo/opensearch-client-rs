@@ -23,7 +23,7 @@ impl<'a> Indices<'a> {
   /// # }
   /// ```
   pub async fn list_indices(&self) -> Result<Vec<String>, Error> {
-    let response = self.indices_get_alias().send().await?;
+    let response = self.get_alias().send().await?;
     let alias_result = response.into_inner();
     // let values: Vec<String> = cat_result
     //   .split('\n')
@@ -52,7 +52,7 @@ impl<'a> Indices<'a> {
   /// - `local`: Return local information, do not retrieve the state from
   ///   cluster-manager node.
   ///```ignore
-  /// let response = client.indices_get_alias()
+  /// let response = client.indices().get_alias()
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
   ///    .ignore_unavailable(ignore_unavailable)
@@ -60,7 +60,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_alias(&self) -> builder::IndicesGetAlias {
+  pub fn get_alias(&self) -> builder::IndicesGetAlias {
     builder::IndicesGetAlias::new(self.os_client)
   }
 
@@ -80,7 +80,7 @@ impl<'a> Indices<'a> {
   /// - `local`: Return local information, do not retrieve the state from
   ///   cluster-manager node.
   ///```ignore
-  /// let response = client.indices_get_alias_with_name()
+  /// let response = client.indices().get_alias_with_name()
   ///    .name(name)
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
@@ -89,7 +89,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_alias_with_name(&self) -> builder::IndicesGetAliasWithName {
+  pub fn get_alias_with_name(&self) -> builder::IndicesGetAliasWithName {
     builder::IndicesGetAliasWithName::new(self.os_client)
   }
 
@@ -109,7 +109,7 @@ impl<'a> Indices<'a> {
   /// - `local`: Return local information, do not retrieve the state from
   ///   cluster-manager node.
   ///```ignore
-  /// let response = client.indices_exists_alias()
+  /// let response = client.indices().exists_alias()
   ///    .name(name)
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
@@ -118,7 +118,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_exists_alias(&self) -> builder::IndicesExistsAlias {
+  pub fn exists_alias(&self) -> builder::IndicesExistsAlias {
     builder::IndicesExistsAlias::new(self.os_client)
   }
 
@@ -133,7 +133,7 @@ impl<'a> Indices<'a> {
   /// - `timeout`: Operation timeout.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_update_aliases()
+  /// let response = client.indices().update_aliases()
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
   ///    .timeout(timeout)
@@ -141,7 +141,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_update_aliases(&self) -> builder::IndicesUpdateAliases {
+  pub fn update_aliases(&self) -> builder::IndicesUpdateAliases {
     builder::IndicesUpdateAliases::new(self.os_client)
   }
 
@@ -153,12 +153,12 @@ impl<'a> Indices<'a> {
   ///Arguments:
   /// - `index`: The name of the index to scope the operation.
   ///```ignore
-  /// let response = client.indices_analyze_get()
+  /// let response = client.indices().analyze_get()
   ///    .index(index)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_analyze_get(&self) -> builder::IndicesAnalyzeGet {
+  pub fn analyze_get(&self) -> builder::IndicesAnalyzeGet {
     builder::IndicesAnalyzeGet::new(self.os_client)
   }
 
@@ -171,13 +171,13 @@ impl<'a> Indices<'a> {
   /// - `index`: The name of the index to scope the operation.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_analyze_post()
+  /// let response = client.indices().analyze_post()
   ///    .index(index)
   ///    .body(body)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_analyze_post(&self) -> builder::IndicesAnalyzePost {
+  pub fn analyze_post(&self) -> builder::IndicesAnalyzePost {
     builder::IndicesAnalyzePost::new(self.os_client)
   }
 
@@ -201,7 +201,7 @@ impl<'a> Indices<'a> {
   /// - `query`: Clear query caches.
   /// - `request`: Clear request cache.
   ///```ignore
-  /// let response = client.indices_clear_cache()
+  /// let response = client.indices().clear_cache()
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
   ///    .fielddata(fielddata)
@@ -213,7 +213,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_clear_cache(&self) -> builder::IndicesClearCache {
+  pub fn clear_cache(&self) -> builder::IndicesClearCache {
     builder::IndicesClearCache::new(self.os_client)
   }
 
@@ -222,11 +222,11 @@ impl<'a> Indices<'a> {
   ///Sends a `GET` request to `/_data_stream`
   ///
   ///```ignore
-  /// let response = client.indices_get_data_stream()
+  /// let response = client.indices().get_data_stream()
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_data_stream(&self) -> builder::IndicesGetDataStream {
+  pub fn get_data_stream(&self) -> builder::IndicesGetDataStream {
     builder::IndicesGetDataStream::new(self.os_client)
   }
 
@@ -235,11 +235,11 @@ impl<'a> Indices<'a> {
   ///Sends a `GET` request to `/_data_stream/_stats`
   ///
   ///```ignore
-  /// let response = client.indices_data_streams_stats()
+  /// let response = client.indices().data_streams_stats()
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_data_streams_stats(&self) -> builder::IndicesDataStreamsStats {
+  pub fn data_streams_stats(&self) -> builder::IndicesDataStreamsStats {
     builder::IndicesDataStreamsStats::new(self.os_client)
   }
 
@@ -251,12 +251,12 @@ impl<'a> Indices<'a> {
   /// - `name`: Comma-separated list of data streams; use `_all` or empty string
   ///   to perform the operation on all data streams.
   ///```ignore
-  /// let response = client.indices_get_data_stream_with_name()
+  /// let response = client.indices().get_data_stream_with_name()
   ///    .name(name)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_data_stream_with_name(&self) -> builder::IndicesGetDataStreamWithName {
+  pub fn get_data_stream_with_name(&self) -> builder::IndicesGetDataStreamWithName {
     builder::IndicesGetDataStreamWithName::new(self.os_client)
   }
 
@@ -268,13 +268,13 @@ impl<'a> Indices<'a> {
   /// - `name`: The name of the data stream.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_create_data_stream()
+  /// let response = client.indices().create_data_stream()
   ///    .name(name)
   ///    .body(body)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_create_data_stream(&self) -> builder::IndicesCreateDataStream {
+  pub fn create_data_stream(&self) -> builder::IndicesCreateDataStream {
     builder::IndicesCreateDataStream::new(self.os_client)
   }
 
@@ -286,12 +286,12 @@ impl<'a> Indices<'a> {
   /// - `name`: Comma-separated list of data streams; use `_all` or empty string
   ///   to perform the operation on all data streams.
   ///```ignore
-  /// let response = client.indices_delete_data_stream()
+  /// let response = client.indices().delete_data_stream()
   ///    .name(name)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_delete_data_stream(&self) -> builder::IndicesDeleteDataStream {
+  pub fn delete_data_stream(&self) -> builder::IndicesDeleteDataStream {
     builder::IndicesDeleteDataStream::new(self.os_client)
   }
 
@@ -303,12 +303,12 @@ impl<'a> Indices<'a> {
   /// - `name`: Comma-separated list of data streams; use `_all` or empty string
   ///   to perform the operation on all data streams.
   ///```ignore
-  /// let response = client.indices_data_streams_stats_with_name()
+  /// let response = client.indices().data_streams_stats_with_name()
   ///    .name(name)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_data_streams_stats_with_name(&self) -> builder::IndicesDataStreamsStatsWithName {
+  pub fn data_streams_stats_with_name(&self) -> builder::IndicesDataStreamsStatsWithName {
     builder::IndicesDataStreamsStatsWithName::new(self.os_client)
   }
 
@@ -333,7 +333,7 @@ impl<'a> Indices<'a> {
   ///   executing. If set to false the flush will be skipped iff if another
   ///   flush operation is already running.
   ///```ignore
-  /// let response = client.indices_flush_get()
+  /// let response = client.indices().flush_get()
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
   ///    .force(force)
@@ -342,7 +342,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_flush_get(&self) -> builder::IndicesFlushGet {
+  pub fn flush_get(&self) -> builder::IndicesFlushGet {
     builder::IndicesFlushGet::new(self.os_client)
   }
 
@@ -367,7 +367,7 @@ impl<'a> Indices<'a> {
   ///   executing. If set to false the flush will be skipped iff if another
   ///   flush operation is already running.
   ///```ignore
-  /// let response = client.indices_flush_post()
+  /// let response = client.indices().flush_post()
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
   ///    .force(force)
@@ -376,7 +376,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_flush_post(&self) -> builder::IndicesFlushPost {
+  pub fn flush_post(&self) -> builder::IndicesFlushPost {
     builder::IndicesFlushPost::new(self.os_client)
   }
 
@@ -399,7 +399,7 @@ impl<'a> Indices<'a> {
   /// - `only_expunge_deletes`: Specify whether the operation should only
   ///   expunge deleted documents.
   ///```ignore
-  /// let response = client.indices_forcemerge()
+  /// let response = client.indices().forcemerge()
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
   ///    .flush(flush)
@@ -409,7 +409,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_forcemerge(&self) -> builder::IndicesForcemerge {
+  pub fn forcemerge(&self) -> builder::IndicesForcemerge {
     builder::IndicesForcemerge::new(self.os_client)
   }
 
@@ -425,7 +425,7 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices_get_index_template()
+  /// let response = client.indices().get_index_template()
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .flat_settings(flat_settings)
   ///    .local(local)
@@ -433,7 +433,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_index_template(&self) -> builder::IndicesGetIndexTemplate {
+  pub fn get_index_template(&self) -> builder::IndicesGetIndexTemplate {
     builder::IndicesGetIndexTemplate::new(self.os_client)
   }
 
@@ -451,7 +451,7 @@ impl<'a> Indices<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_simulate_template()
+  /// let response = client.indices().simulate_template()
   ///    .cause(cause)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .create(create)
@@ -460,7 +460,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_simulate_template(&self) -> builder::IndicesSimulateTemplate {
+  pub fn simulate_template(&self) -> builder::IndicesSimulateTemplate {
     builder::IndicesSimulateTemplate::new(self.os_client)
   }
 
@@ -479,7 +479,7 @@ impl<'a> Indices<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_simulate_template_with_name()
+  /// let response = client.indices().simulate_template_with_name()
   ///    .name(name)
   ///    .cause(cause)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -489,7 +489,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_simulate_template_with_name(&self) -> builder::IndicesSimulateTemplateWithName {
+  pub fn simulate_template_with_name(&self) -> builder::IndicesSimulateTemplateWithName {
     builder::IndicesSimulateTemplateWithName::new(self.os_client)
   }
 
@@ -509,7 +509,7 @@ impl<'a> Indices<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_simulate_index_template()
+  /// let response = client.indices().simulate_index_template()
   ///    .name(name)
   ///    .cause(cause)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -519,7 +519,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_simulate_index_template(&self) -> builder::IndicesSimulateIndexTemplate {
+  pub fn simulate_index_template(&self) -> builder::IndicesSimulateIndexTemplate {
     builder::IndicesSimulateIndexTemplate::new(self.os_client)
   }
 
@@ -536,7 +536,7 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices_get_index_template_with_name()
+  /// let response = client.indices().get_index_template_with_name()
   ///    .name(name)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .flat_settings(flat_settings)
@@ -545,7 +545,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_index_template_with_name(&self) -> builder::IndicesGetIndexTemplateWithName {
+  pub fn get_index_template_with_name(&self) -> builder::IndicesGetIndexTemplateWithName {
     builder::IndicesGetIndexTemplateWithName::new(self.os_client)
   }
 
@@ -563,7 +563,7 @@ impl<'a> Indices<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_put_index_template_put()
+  /// let response = client.indices().put_index_template_put()
   ///    .name(name)
   ///    .cause(cause)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -573,7 +573,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_put_index_template_put(&self) -> builder::IndicesPutIndexTemplatePut {
+  pub fn put_index_template_put(&self) -> builder::IndicesPutIndexTemplatePut {
     builder::IndicesPutIndexTemplatePut::new(self.os_client)
   }
 
@@ -591,7 +591,7 @@ impl<'a> Indices<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_put_index_template_post()
+  /// let response = client.indices().put_index_template_post()
   ///    .name(name)
   ///    .cause(cause)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -601,7 +601,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_put_index_template_post(&self) -> builder::IndicesPutIndexTemplatePost {
+  pub fn put_index_template_post(&self) -> builder::IndicesPutIndexTemplatePost {
     builder::IndicesPutIndexTemplatePost::new(self.os_client)
   }
 
@@ -616,7 +616,7 @@ impl<'a> Indices<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.indices_delete_index_template()
+  /// let response = client.indices().delete_index_template()
   ///    .name(name)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
@@ -624,7 +624,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_delete_index_template(&self) -> builder::IndicesDeleteIndexTemplate {
+  pub fn delete_index_template(&self) -> builder::IndicesDeleteIndexTemplate {
     builder::IndicesDeleteIndexTemplate::new(self.os_client)
   }
 
@@ -639,7 +639,7 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices_exists_index_template()
+  /// let response = client.indices().exists_index_template()
   ///    .name(name)
   ///    .flat_settings(flat_settings)
   ///    .local(local)
@@ -647,7 +647,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_exists_index_template(&self) -> builder::IndicesExistsIndexTemplate {
+  pub fn exists_index_template(&self) -> builder::IndicesExistsIndexTemplate {
     builder::IndicesExistsIndexTemplate::new(self.os_client)
   }
 
@@ -669,7 +669,7 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices_get_mapping()
+  /// let response = client.indices().get_mapping()
   ///    .allow_no_indices(allow_no_indices)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .expand_wildcards(expand_wildcards)
@@ -679,7 +679,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_mapping(&self) -> builder::IndicesGetMapping {
+  pub fn get_mapping(&self) -> builder::IndicesGetMapping {
     builder::IndicesGetMapping::new(self.os_client)
   }
 
@@ -701,7 +701,7 @@ impl<'a> Indices<'a> {
   /// - `local`: Return local information, do not retrieve the state from
   ///   cluster-manager node.
   ///```ignore
-  /// let response = client.indices_get_field_mapping()
+  /// let response = client.indices().get_field_mapping()
   ///    .fields(fields)
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
@@ -711,7 +711,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_field_mapping(&self) -> builder::IndicesGetFieldMapping {
+  pub fn get_field_mapping(&self) -> builder::IndicesGetFieldMapping {
     builder::IndicesGetFieldMapping::new(self.os_client)
   }
 
@@ -725,13 +725,13 @@ impl<'a> Indices<'a> {
   /// - `detailed`: Whether to display detailed information about shard
   ///   recovery.
   ///```ignore
-  /// let response = client.indices_recovery()
+  /// let response = client.indices().recovery()
   ///    .active_only(active_only)
   ///    .detailed(detailed)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_recovery(&self) -> builder::IndicesRecovery {
+  pub fn recovery(&self) -> builder::IndicesRecovery {
     builder::IndicesRecovery::new(self.os_client)
   }
 
@@ -748,14 +748,14 @@ impl<'a> Indices<'a> {
   /// - `ignore_unavailable`: Whether specified concrete indices should be
   ///   ignored when unavailable (missing or closed).
   ///```ignore
-  /// let response = client.indices_refresh_get()
+  /// let response = client.indices().refresh_get()
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
   ///    .ignore_unavailable(ignore_unavailable)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_refresh_get(&self) -> builder::IndicesRefreshGet {
+  pub fn refresh_get(&self) -> builder::IndicesRefreshGet {
     builder::IndicesRefreshGet::new(self.os_client)
   }
 
@@ -772,14 +772,14 @@ impl<'a> Indices<'a> {
   /// - `ignore_unavailable`: Whether specified concrete indices should be
   ///   ignored when unavailable (missing or closed).
   ///```ignore
-  /// let response = client.indices_refresh_post()
+  /// let response = client.indices().refresh_post()
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
   ///    .ignore_unavailable(ignore_unavailable)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_refresh_post(&self) -> builder::IndicesRefreshPost {
+  pub fn refresh_post(&self) -> builder::IndicesRefreshPost {
     builder::IndicesRefreshPost::new(self.os_client)
   }
 
@@ -793,13 +793,13 @@ impl<'a> Indices<'a> {
   /// - `expand_wildcards`: Whether to expand wildcard expression to concrete
   ///   indices that are open, closed or both.
   ///```ignore
-  /// let response = client.indices_resolve_index()
+  /// let response = client.indices().resolve_index()
   ///    .name(name)
   ///    .expand_wildcards(expand_wildcards)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_resolve_index(&self) -> builder::IndicesResolveIndex {
+  pub fn resolve_index(&self) -> builder::IndicesResolveIndex {
     builder::IndicesResolveIndex::new(self.os_client)
   }
 
@@ -817,7 +817,7 @@ impl<'a> Indices<'a> {
   ///   ignored when unavailable (missing or closed).
   /// - `verbose`: Includes detailed memory usage by Lucene.
   ///```ignore
-  /// let response = client.indices_segments()
+  /// let response = client.indices().segments()
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
   ///    .ignore_unavailable(ignore_unavailable)
@@ -825,7 +825,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_segments(&self) -> builder::IndicesSegments {
+  pub fn segments(&self) -> builder::IndicesSegments {
     builder::IndicesSegments::new(self.os_client)
   }
 
@@ -850,7 +850,7 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices_get_settings()
+  /// let response = client.indices().get_settings()
   ///    .allow_no_indices(allow_no_indices)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .expand_wildcards(expand_wildcards)
@@ -862,7 +862,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_settings(&self) -> builder::IndicesGetSettings {
+  pub fn get_settings(&self) -> builder::IndicesGetSettings {
     builder::IndicesGetSettings::new(self.os_client)
   }
 
@@ -887,7 +887,7 @@ impl<'a> Indices<'a> {
   /// - `timeout`: Operation timeout.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_put_settings()
+  /// let response = client.indices().put_settings()
   ///    .allow_no_indices(allow_no_indices)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .expand_wildcards(expand_wildcards)
@@ -900,7 +900,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_put_settings(&self) -> builder::IndicesPutSettings {
+  pub fn put_settings(&self) -> builder::IndicesPutSettings {
     builder::IndicesPutSettings::new(self.os_client)
   }
 
@@ -926,7 +926,7 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices_get_settings_with_name()
+  /// let response = client.indices().get_settings_with_name()
   ///    .name(name)
   ///    .allow_no_indices(allow_no_indices)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -939,7 +939,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_settings_with_name(&self) -> builder::IndicesGetSettingsWithName {
+  pub fn get_settings_with_name(&self) -> builder::IndicesGetSettingsWithName {
     builder::IndicesGetSettingsWithName::new(self.os_client)
   }
 
@@ -958,7 +958,7 @@ impl<'a> Indices<'a> {
   /// - `status`: Comma-separated list of statuses used to filter on shards to
   ///   get store information for.
   ///```ignore
-  /// let response = client.indices_shard_stores()
+  /// let response = client.indices().shard_stores()
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
   ///    .ignore_unavailable(ignore_unavailable)
@@ -966,7 +966,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_shard_stores(&self) -> builder::IndicesShardStores {
+  pub fn shard_stores(&self) -> builder::IndicesShardStores {
     builder::IndicesShardStores::new(self.os_client)
   }
 
@@ -995,7 +995,7 @@ impl<'a> Indices<'a> {
   ///   stats for segments that are not currently loaded into memory.
   /// - `level`: Return stats aggregated at cluster, index or shard level.
   ///```ignore
-  /// let response = client.indices_stats()
+  /// let response = client.indices().stats()
   ///    .completion_fields(completion_fields)
   ///    .expand_wildcards(expand_wildcards)
   ///    .fielddata_fields(fielddata_fields)
@@ -1008,7 +1008,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_stats(&self) -> builder::IndicesStats {
+  pub fn stats(&self) -> builder::IndicesStats {
     builder::IndicesStats::new(self.os_client)
   }
 
@@ -1038,7 +1038,7 @@ impl<'a> Indices<'a> {
   ///   stats for segments that are not currently loaded into memory.
   /// - `level`: Return stats aggregated at cluster, index or shard level.
   ///```ignore
-  /// let response = client.indices_stats_with_metric()
+  /// let response = client.indices().stats_with_metric()
   ///    .metric(metric)
   ///    .completion_fields(completion_fields)
   ///    .expand_wildcards(expand_wildcards)
@@ -1052,7 +1052,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_stats_with_metric(&self) -> builder::IndicesStatsWithMetric {
+  pub fn stats_with_metric(&self) -> builder::IndicesStatsWithMetric {
     builder::IndicesStatsWithMetric::new(self.os_client)
   }
 
@@ -1068,7 +1068,7 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices_get_template()
+  /// let response = client.indices().get_template()
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .flat_settings(flat_settings)
   ///    .local(local)
@@ -1076,7 +1076,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_template(&self) -> builder::IndicesGetTemplate {
+  pub fn get_template(&self) -> builder::IndicesGetTemplate {
     builder::IndicesGetTemplate::new(self.os_client)
   }
 
@@ -1093,7 +1093,7 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices_get_template_with_name()
+  /// let response = client.indices().get_template_with_name()
   ///    .name(name)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .flat_settings(flat_settings)
@@ -1102,7 +1102,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_template_with_name(&self) -> builder::IndicesGetTemplateWithName {
+  pub fn get_template_with_name(&self) -> builder::IndicesGetTemplateWithName {
     builder::IndicesGetTemplateWithName::new(self.os_client)
   }
 
@@ -1121,7 +1121,7 @@ impl<'a> Indices<'a> {
   ///   (higher numbers are merged later, overriding the lower numbers).
   /// - `body`
   ///```ignore
-  /// let response = client.indices_put_template_put()
+  /// let response = client.indices().put_template_put()
   ///    .name(name)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .create(create)
@@ -1131,7 +1131,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_put_template_put(&self) -> builder::IndicesPutTemplatePut {
+  pub fn put_template_put(&self) -> builder::IndicesPutTemplatePut {
     builder::IndicesPutTemplatePut::new(self.os_client)
   }
 
@@ -1150,7 +1150,7 @@ impl<'a> Indices<'a> {
   ///   (higher numbers are merged later, overriding the lower numbers).
   /// - `body`
   ///```ignore
-  /// let response = client.indices_put_template_post()
+  /// let response = client.indices().put_template_post()
   ///    .name(name)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .create(create)
@@ -1160,7 +1160,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_put_template_post(&self) -> builder::IndicesPutTemplatePost {
+  pub fn put_template_post(&self) -> builder::IndicesPutTemplatePost {
     builder::IndicesPutTemplatePost::new(self.os_client)
   }
 
@@ -1175,7 +1175,7 @@ impl<'a> Indices<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.indices_delete_template()
+  /// let response = client.indices().delete_template()
   ///    .name(name)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
@@ -1183,7 +1183,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_delete_template(&self) -> builder::IndicesDeleteTemplate {
+  pub fn delete_template(&self) -> builder::IndicesDeleteTemplate {
     builder::IndicesDeleteTemplate::new(self.os_client)
   }
 
@@ -1198,7 +1198,7 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices_exists_template()
+  /// let response = client.indices().exists_template()
   ///    .name(name)
   ///    .flat_settings(flat_settings)
   ///    .local(local)
@@ -1206,7 +1206,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_exists_template(&self) -> builder::IndicesExistsTemplate {
+  pub fn exists_template(&self) -> builder::IndicesExistsTemplate {
     builder::IndicesExistsTemplate::new(self.os_client)
   }
 
@@ -1223,14 +1223,14 @@ impl<'a> Indices<'a> {
   /// - `ignore_unavailable`: Whether specified concrete indices should be
   ///   ignored when unavailable (missing or closed).
   ///```ignore
-  /// let response = client.indices_get_upgrade()
+  /// let response = client.indices().get_upgrade()
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
   ///    .ignore_unavailable(ignore_unavailable)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_upgrade(&self) -> builder::IndicesGetUpgrade {
+  pub fn get_upgrade(&self) -> builder::IndicesGetUpgrade {
     builder::IndicesGetUpgrade::new(self.os_client)
   }
 
@@ -1251,7 +1251,7 @@ impl<'a> Indices<'a> {
   /// - `wait_for_completion`: Should this request wait until the operation has
   ///   completed before returning.
   ///```ignore
-  /// let response = client.indices_upgrade()
+  /// let response = client.indices().upgrade()
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
   ///    .ignore_unavailable(ignore_unavailable)
@@ -1260,7 +1260,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_upgrade(&self) -> builder::IndicesUpgrade {
+  pub fn upgrade(&self) -> builder::IndicesUpgrade {
     builder::IndicesUpgrade::new(self.os_client)
   }
 
@@ -1293,7 +1293,7 @@ impl<'a> Indices<'a> {
   /// - `rewrite`: Provide a more detailed explanation showing the actual Lucene
   ///   query that will be executed.
   ///```ignore
-  /// let response = client.indices_validate_query_get()
+  /// let response = client.indices().validate_query_get()
   ///    .all_shards(all_shards)
   ///    .allow_no_indices(allow_no_indices)
   ///    .analyze_wildcard(analyze_wildcard)
@@ -1309,7 +1309,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_validate_query_get(&self) -> builder::IndicesValidateQueryGet {
+  pub fn validate_query_get(&self) -> builder::IndicesValidateQueryGet {
     builder::IndicesValidateQueryGet::new(self.os_client)
   }
 
@@ -1343,7 +1343,7 @@ impl<'a> Indices<'a> {
   ///   query that will be executed.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_validate_query_post()
+  /// let response = client.indices().validate_query_post()
   ///    .all_shards(all_shards)
   ///    .allow_no_indices(allow_no_indices)
   ///    .analyze_wildcard(analyze_wildcard)
@@ -1360,7 +1360,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_validate_query_post(&self) -> builder::IndicesValidateQueryPost {
+  pub fn validate_query_post(&self) -> builder::IndicesValidateQueryPost {
     builder::IndicesValidateQueryPost::new(self.os_client)
   }
 
@@ -1381,7 +1381,7 @@ impl<'a> Indices<'a> {
   ///   the newly created rollover index before the operation returns.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_rollover()
+  /// let response = client.indices().rollover()
   ///    .alias(alias)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .dry_run(dry_run)
@@ -1392,7 +1392,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_rollover(&self) -> builder::IndicesRollover {
+  pub fn rollover(&self) -> builder::IndicesRollover {
     builder::IndicesRollover::new(self.os_client)
   }
 
@@ -1414,7 +1414,7 @@ impl<'a> Indices<'a> {
   ///   the newly created rollover index before the operation returns.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_rollover_with_new_index()
+  /// let response = client.indices().rollover_with_new_index()
   ///    .alias(alias)
   ///    .new_index(new_index)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -1426,7 +1426,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_rollover_with_new_index(&self) -> builder::IndicesRolloverWithNewIndex {
+  pub fn rollover_with_new_index(&self) -> builder::IndicesRolloverWithNewIndex {
     builder::IndicesRolloverWithNewIndex::new(self.os_client)
   }
 
@@ -1452,7 +1452,7 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices_get()
+  /// let response = client.indices().get()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -1465,7 +1465,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get(&self) -> builder::IndicesGet {
+  pub fn get(&self) -> builder::IndicesGet {
     builder::IndicesGet::new(self.os_client)
   }
 
@@ -1483,7 +1483,7 @@ impl<'a> Indices<'a> {
   ///   before the operation returns.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_create()
+  /// let response = client.indices().create()
   ///    .index(index)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
@@ -1493,7 +1493,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_create(&self) -> builder::IndicesCreate {
+  pub fn create(&self) -> builder::IndicesCreate {
     builder::IndicesCreate::new(self.os_client)
   }
 
@@ -1514,7 +1514,7 @@ impl<'a> Indices<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.indices_delete()
+  /// let response = client.indices().delete()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
@@ -1524,7 +1524,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_delete(&self) -> builder::IndicesDelete {
+  pub fn delete(&self) -> builder::IndicesDelete {
     builder::IndicesDelete::new(self.os_client)
   }
 
@@ -1547,7 +1547,7 @@ impl<'a> Indices<'a> {
   /// - `local`: Return local information, do not retrieve the state from
   ///   cluster-manager node.
   ///```ignore
-  /// let response = client.indices_exists()
+  /// let response = client.indices().exists()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
@@ -1558,7 +1558,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_exists(&self) -> builder::IndicesExists {
+  pub fn exists(&self) -> builder::IndicesExists {
     builder::IndicesExists::new(self.os_client)
   }
 
@@ -1578,7 +1578,7 @@ impl<'a> Indices<'a> {
   /// - `local`: Return local information, do not retrieve the state from
   ///   cluster-manager node.
   ///```ignore
-  /// let response = client.indices_get_alias_with_index()
+  /// let response = client.indices().get_alias_with_index()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
@@ -1587,7 +1587,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_alias_with_index(&self) -> builder::IndicesGetAliasWithIndex {
+  pub fn get_alias_with_index(&self) -> builder::IndicesGetAliasWithIndex {
     builder::IndicesGetAliasWithIndex::new(self.os_client)
   }
 
@@ -1608,7 +1608,7 @@ impl<'a> Indices<'a> {
   /// - `local`: Return local information, do not retrieve the state from
   ///   cluster-manager node.
   ///```ignore
-  /// let response = client.indices_get_alias_with_index_name()
+  /// let response = client.indices().get_alias_with_index_name()
   ///    .index(index)
   ///    .name(name)
   ///    .allow_no_indices(allow_no_indices)
@@ -1618,7 +1618,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_alias_with_index_name(&self) -> builder::IndicesGetAliasWithIndexName {
+  pub fn get_alias_with_index_name(&self) -> builder::IndicesGetAliasWithIndexName {
     builder::IndicesGetAliasWithIndexName::new(self.os_client)
   }
 
@@ -1636,7 +1636,7 @@ impl<'a> Indices<'a> {
   /// - `timeout`: Operation timeout.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_put_alias_put()
+  /// let response = client.indices().put_alias_put()
   ///    .index(index)
   ///    .name(name)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -1646,7 +1646,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_put_alias_put(&self) -> builder::IndicesPutAliasPut {
+  pub fn put_alias_put(&self) -> builder::IndicesPutAliasPut {
     builder::IndicesPutAliasPut::new(self.os_client)
   }
 
@@ -1664,7 +1664,7 @@ impl<'a> Indices<'a> {
   /// - `timeout`: Operation timeout.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_put_alias_post()
+  /// let response = client.indices().put_alias_post()
   ///    .index(index)
   ///    .name(name)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -1674,7 +1674,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_put_alias_post(&self) -> builder::IndicesPutAliasPost {
+  pub fn put_alias_post(&self) -> builder::IndicesPutAliasPost {
     builder::IndicesPutAliasPost::new(self.os_client)
   }
 
@@ -1692,7 +1692,7 @@ impl<'a> Indices<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.indices_delete_alias()
+  /// let response = client.indices().delete_alias()
   ///    .index(index)
   ///    .name(name)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -1701,7 +1701,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_delete_alias(&self) -> builder::IndicesDeleteAlias {
+  pub fn delete_alias(&self) -> builder::IndicesDeleteAlias {
     builder::IndicesDeleteAlias::new(self.os_client)
   }
 
@@ -1722,7 +1722,7 @@ impl<'a> Indices<'a> {
   /// - `local`: Return local information, do not retrieve the state from
   ///   cluster-manager node.
   ///```ignore
-  /// let response = client.indices_exists_alias_with_index()
+  /// let response = client.indices().exists_alias_with_index()
   ///    .index(index)
   ///    .name(name)
   ///    .allow_no_indices(allow_no_indices)
@@ -1732,7 +1732,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_exists_alias_with_index(&self) -> builder::IndicesExistsAliasWithIndex {
+  pub fn exists_alias_with_index(&self) -> builder::IndicesExistsAliasWithIndex {
     builder::IndicesExistsAliasWithIndex::new(self.os_client)
   }
 
@@ -1750,7 +1750,7 @@ impl<'a> Indices<'a> {
   /// - `timeout`: Operation timeout.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_put_alias_put_plural()
+  /// let response = client.indices().put_alias_put_plural()
   ///    .index(index)
   ///    .name(name)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -1760,7 +1760,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_put_alias_put_plural(&self) -> builder::IndicesPutAliasPutPlural {
+  pub fn put_alias_put_plural(&self) -> builder::IndicesPutAliasPutPlural {
     builder::IndicesPutAliasPutPlural::new(self.os_client)
   }
 
@@ -1778,7 +1778,7 @@ impl<'a> Indices<'a> {
   /// - `timeout`: Operation timeout.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_put_alias_post_plural()
+  /// let response = client.indices().put_alias_post_plural()
   ///    .index(index)
   ///    .name(name)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -1788,7 +1788,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_put_alias_post_plural(&self) -> builder::IndicesPutAliasPostPlural {
+  pub fn put_alias_post_plural(&self) -> builder::IndicesPutAliasPostPlural {
     builder::IndicesPutAliasPostPlural::new(self.os_client)
   }
 
@@ -1806,7 +1806,7 @@ impl<'a> Indices<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.indices_delete_alias_plural()
+  /// let response = client.indices().delete_alias_plural()
   ///    .index(index)
   ///    .name(name)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -1815,7 +1815,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_delete_alias_plural(&self) -> builder::IndicesDeleteAliasPlural {
+  pub fn delete_alias_plural(&self) -> builder::IndicesDeleteAliasPlural {
     builder::IndicesDeleteAliasPlural::new(self.os_client)
   }
 
@@ -1827,12 +1827,12 @@ impl<'a> Indices<'a> {
   ///Arguments:
   /// - `index`: The name of the index to scope the operation.
   ///```ignore
-  /// let response = client.indices_analyze_get_with_index()
+  /// let response = client.indices().analyze_get_with_index()
   ///    .index(index)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_analyze_get_with_index(&self) -> builder::IndicesAnalyzeGetWithIndex {
+  pub fn analyze_get_with_index(&self) -> builder::IndicesAnalyzeGetWithIndex {
     builder::IndicesAnalyzeGetWithIndex::new(self.os_client)
   }
 
@@ -1845,13 +1845,13 @@ impl<'a> Indices<'a> {
   /// - `index`: The name of the index to scope the operation.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_analyze_post_with_index()
+  /// let response = client.indices().analyze_post_with_index()
   ///    .index(index)
   ///    .body(body)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_analyze_post_with_index(&self) -> builder::IndicesAnalyzePostWithIndex {
+  pub fn analyze_post_with_index(&self) -> builder::IndicesAnalyzePostWithIndex {
     builder::IndicesAnalyzePostWithIndex::new(self.os_client)
   }
 
@@ -1874,7 +1874,7 @@ impl<'a> Indices<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.indices_add_block()
+  /// let response = client.indices().add_block()
   ///    .index(index)
   ///    .block(block)
   ///    .allow_no_indices(allow_no_indices)
@@ -1886,7 +1886,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_add_block(&self) -> builder::IndicesAddBlock {
+  pub fn add_block(&self) -> builder::IndicesAddBlock {
     builder::IndicesAddBlock::new(self.os_client)
   }
 
@@ -1910,7 +1910,7 @@ impl<'a> Indices<'a> {
   /// - `query`: Clear query caches.
   /// - `request`: Clear request cache.
   ///```ignore
-  /// let response = client.indices_clear_cache_with_index()
+  /// let response = client.indices().clear_cache_with_index()
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
   ///    .fielddata(fielddata)
@@ -1922,7 +1922,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_clear_cache_with_index(&self) -> builder::IndicesClearCacheWithIndex {
+  pub fn clear_cache_with_index(&self) -> builder::IndicesClearCacheWithIndex {
     builder::IndicesClearCacheWithIndex::new(self.os_client)
   }
 
@@ -1941,7 +1941,7 @@ impl<'a> Indices<'a> {
   ///   the cloned index before the operation returns.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_clone_put()
+  /// let response = client.indices().clone_put()
   ///    .index(index)
   ///    .target(target)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -1952,7 +1952,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_clone_put(&self) -> builder::IndicesClonePut {
+  pub fn clone_put(&self) -> builder::IndicesClonePut {
     builder::IndicesClonePut::new(self.os_client)
   }
 
@@ -1971,7 +1971,7 @@ impl<'a> Indices<'a> {
   ///   the cloned index before the operation returns.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_clone_post()
+  /// let response = client.indices().clone_post()
   ///    .index(index)
   ///    .target(target)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -1982,7 +1982,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_clone_post(&self) -> builder::IndicesClonePost {
+  pub fn clone_post(&self) -> builder::IndicesClonePost {
     builder::IndicesClonePost::new(self.os_client)
   }
 
@@ -2006,7 +2006,7 @@ impl<'a> Indices<'a> {
   /// - `wait_for_active_shards`: Sets the number of active shards to wait for
   ///   before the operation returns.
   ///```ignore
-  /// let response = client.indices_close()
+  /// let response = client.indices().close()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -2018,7 +2018,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_close(&self) -> builder::IndicesClose {
+  pub fn close(&self) -> builder::IndicesClose {
     builder::IndicesClose::new(self.os_client)
   }
 
@@ -2045,7 +2045,7 @@ impl<'a> Indices<'a> {
   ///   executing. If set to false the flush will be skipped iff if another
   ///   flush operation is already running.
   ///```ignore
-  /// let response = client.indices_flush_get_with_index()
+  /// let response = client.indices().flush_get_with_index()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
@@ -2055,7 +2055,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_flush_get_with_index(&self) -> builder::IndicesFlushGetWithIndex {
+  pub fn flush_get_with_index(&self) -> builder::IndicesFlushGetWithIndex {
     builder::IndicesFlushGetWithIndex::new(self.os_client)
   }
 
@@ -2082,7 +2082,7 @@ impl<'a> Indices<'a> {
   ///   executing. If set to false the flush will be skipped iff if another
   ///   flush operation is already running.
   ///```ignore
-  /// let response = client.indices_flush_post_with_index()
+  /// let response = client.indices().flush_post_with_index()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
@@ -2092,7 +2092,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_flush_post_with_index(&self) -> builder::IndicesFlushPostWithIndex {
+  pub fn flush_post_with_index(&self) -> builder::IndicesFlushPostWithIndex {
     builder::IndicesFlushPostWithIndex::new(self.os_client)
   }
 
@@ -2117,7 +2117,7 @@ impl<'a> Indices<'a> {
   /// - `only_expunge_deletes`: Specify whether the operation should only
   ///   expunge deleted documents.
   ///```ignore
-  /// let response = client.indices_forcemerge_with_index()
+  /// let response = client.indices().forcemerge_with_index()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
@@ -2128,7 +2128,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_forcemerge_with_index(&self) -> builder::IndicesForcemergeWithIndex {
+  pub fn forcemerge_with_index(&self) -> builder::IndicesForcemergeWithIndex {
     builder::IndicesForcemergeWithIndex::new(self.os_client)
   }
 
@@ -2151,7 +2151,7 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices_get_mapping_with_index()
+  /// let response = client.indices().get_mapping_with_index()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -2162,7 +2162,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_mapping_with_index(&self) -> builder::IndicesGetMappingWithIndex {
+  pub fn get_mapping_with_index(&self) -> builder::IndicesGetMappingWithIndex {
     builder::IndicesGetMappingWithIndex::new(self.os_client)
   }
 
@@ -2188,7 +2188,7 @@ impl<'a> Indices<'a> {
   ///   of an alias or data stream.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_put_mapping_put()
+  /// let response = client.indices().put_mapping_put()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -2201,7 +2201,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_put_mapping_put(&self) -> builder::IndicesPutMappingPut {
+  pub fn put_mapping_put(&self) -> builder::IndicesPutMappingPut {
     builder::IndicesPutMappingPut::new(self.os_client)
   }
 
@@ -2227,7 +2227,7 @@ impl<'a> Indices<'a> {
   ///   of an alias or data stream.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_put_mapping_post()
+  /// let response = client.indices().put_mapping_post()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -2240,7 +2240,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_put_mapping_post(&self) -> builder::IndicesPutMappingPost {
+  pub fn put_mapping_post(&self) -> builder::IndicesPutMappingPost {
     builder::IndicesPutMappingPost::new(self.os_client)
   }
 
@@ -2263,7 +2263,7 @@ impl<'a> Indices<'a> {
   /// - `local`: Return local information, do not retrieve the state from
   ///   cluster-manager node.
   ///```ignore
-  /// let response = client.indices_get_field_mapping_with_index()
+  /// let response = client.indices().get_field_mapping_with_index()
   ///    .index(index)
   ///    .fields(fields)
   ///    .allow_no_indices(allow_no_indices)
@@ -2274,7 +2274,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_field_mapping_with_index(&self) -> builder::IndicesGetFieldMappingWithIndex {
+  pub fn get_field_mapping_with_index(&self) -> builder::IndicesGetFieldMappingWithIndex {
     builder::IndicesGetFieldMappingWithIndex::new(self.os_client)
   }
 
@@ -2296,7 +2296,7 @@ impl<'a> Indices<'a> {
   /// - `wait_for_active_shards`: Sets the number of active shards to wait for
   ///   before the operation returns.
   ///```ignore
-  /// let response = client.indices_open()
+  /// let response = client.indices().open()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
@@ -2307,7 +2307,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_open(&self) -> builder::IndicesOpen {
+  pub fn open(&self) -> builder::IndicesOpen {
     builder::IndicesOpen::new(self.os_client)
   }
 
@@ -2323,14 +2323,14 @@ impl<'a> Indices<'a> {
   /// - `detailed`: Whether to display detailed information about shard
   ///   recovery.
   ///```ignore
-  /// let response = client.indices_recovery_with_index()
+  /// let response = client.indices().recovery_with_index()
   ///    .index(index)
   ///    .active_only(active_only)
   ///    .detailed(detailed)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_recovery_with_index(&self) -> builder::IndicesRecoveryWithIndex {
+  pub fn recovery_with_index(&self) -> builder::IndicesRecoveryWithIndex {
     builder::IndicesRecoveryWithIndex::new(self.os_client)
   }
 
@@ -2349,7 +2349,7 @@ impl<'a> Indices<'a> {
   /// - `ignore_unavailable`: Whether specified concrete indices should be
   ///   ignored when unavailable (missing or closed).
   ///```ignore
-  /// let response = client.indices_refresh_get_with_index()
+  /// let response = client.indices().refresh_get_with_index()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
@@ -2357,7 +2357,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_refresh_get_with_index(&self) -> builder::IndicesRefreshGetWithIndex {
+  pub fn refresh_get_with_index(&self) -> builder::IndicesRefreshGetWithIndex {
     builder::IndicesRefreshGetWithIndex::new(self.os_client)
   }
 
@@ -2376,7 +2376,7 @@ impl<'a> Indices<'a> {
   /// - `ignore_unavailable`: Whether specified concrete indices should be
   ///   ignored when unavailable (missing or closed).
   ///```ignore
-  /// let response = client.indices_refresh_post_with_index()
+  /// let response = client.indices().refresh_post_with_index()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
@@ -2384,7 +2384,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_refresh_post_with_index(&self) -> builder::IndicesRefreshPostWithIndex {
+  pub fn refresh_post_with_index(&self) -> builder::IndicesRefreshPostWithIndex {
     builder::IndicesRefreshPostWithIndex::new(self.os_client)
   }
 
@@ -2404,7 +2404,7 @@ impl<'a> Indices<'a> {
   ///   ignored when unavailable (missing or closed).
   /// - `verbose`: Includes detailed memory usage by Lucene.
   ///```ignore
-  /// let response = client.indices_segments_with_index()
+  /// let response = client.indices().segments_with_index()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
@@ -2413,7 +2413,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_segments_with_index(&self) -> builder::IndicesSegmentsWithIndex {
+  pub fn segments_with_index(&self) -> builder::IndicesSegmentsWithIndex {
     builder::IndicesSegmentsWithIndex::new(self.os_client)
   }
 
@@ -2440,7 +2440,7 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices_get_settings_with_index()
+  /// let response = client.indices().get_settings_with_index()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -2453,7 +2453,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_settings_with_index(&self) -> builder::IndicesGetSettingsWithIndex {
+  pub fn get_settings_with_index(&self) -> builder::IndicesGetSettingsWithIndex {
     builder::IndicesGetSettingsWithIndex::new(self.os_client)
   }
 
@@ -2480,7 +2480,7 @@ impl<'a> Indices<'a> {
   /// - `timeout`: Operation timeout.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_put_settings_with_index()
+  /// let response = client.indices().put_settings_with_index()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -2494,7 +2494,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_put_settings_with_index(&self) -> builder::IndicesPutSettingsWithIndex {
+  pub fn put_settings_with_index(&self) -> builder::IndicesPutSettingsWithIndex {
     builder::IndicesPutSettingsWithIndex::new(self.os_client)
   }
 
@@ -2522,7 +2522,7 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices_get_settings_with_index_name()
+  /// let response = client.indices().get_settings_with_index_name()
   ///    .index(index)
   ///    .name(name)
   ///    .allow_no_indices(allow_no_indices)
@@ -2536,7 +2536,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_settings_with_index_name(&self) -> builder::IndicesGetSettingsWithIndexName {
+  pub fn get_settings_with_index_name(&self) -> builder::IndicesGetSettingsWithIndexName {
     builder::IndicesGetSettingsWithIndexName::new(self.os_client)
   }
 
@@ -2557,7 +2557,7 @@ impl<'a> Indices<'a> {
   /// - `status`: Comma-separated list of statuses used to filter on shards to
   ///   get store information for.
   ///```ignore
-  /// let response = client.indices_shard_stores_with_index()
+  /// let response = client.indices().shard_stores_with_index()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
@@ -2566,7 +2566,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_shard_stores_with_index(&self) -> builder::IndicesShardStoresWithIndex {
+  pub fn shard_stores_with_index(&self) -> builder::IndicesShardStoresWithIndex {
     builder::IndicesShardStoresWithIndex::new(self.os_client)
   }
 
@@ -2587,7 +2587,7 @@ impl<'a> Indices<'a> {
   ///   the shrunken index before the operation returns.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_shrink_put()
+  /// let response = client.indices().shrink_put()
   ///    .index(index)
   ///    .target(target)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -2599,7 +2599,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_shrink_put(&self) -> builder::IndicesShrinkPut {
+  pub fn shrink_put(&self) -> builder::IndicesShrinkPut {
     builder::IndicesShrinkPut::new(self.os_client)
   }
 
@@ -2620,7 +2620,7 @@ impl<'a> Indices<'a> {
   ///   the shrunken index before the operation returns.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_shrink_post()
+  /// let response = client.indices().shrink_post()
   ///    .index(index)
   ///    .target(target)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -2632,7 +2632,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_shrink_post(&self) -> builder::IndicesShrinkPost {
+  pub fn shrink_post(&self) -> builder::IndicesShrinkPost {
     builder::IndicesShrinkPost::new(self.os_client)
   }
 
@@ -2653,7 +2653,7 @@ impl<'a> Indices<'a> {
   ///   the shrunken index before the operation returns.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_split_put()
+  /// let response = client.indices().split_put()
   ///    .index(index)
   ///    .target(target)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -2665,7 +2665,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_split_put(&self) -> builder::IndicesSplitPut {
+  pub fn split_put(&self) -> builder::IndicesSplitPut {
     builder::IndicesSplitPut::new(self.os_client)
   }
 
@@ -2686,7 +2686,7 @@ impl<'a> Indices<'a> {
   ///   the shrunken index before the operation returns.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_split_post()
+  /// let response = client.indices().split_post()
   ///    .index(index)
   ///    .target(target)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -2698,7 +2698,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_split_post(&self) -> builder::IndicesSplitPost {
+  pub fn split_post(&self) -> builder::IndicesSplitPost {
     builder::IndicesSplitPost::new(self.os_client)
   }
 
@@ -2729,7 +2729,7 @@ impl<'a> Indices<'a> {
   ///   stats for segments that are not currently loaded into memory.
   /// - `level`: Return stats aggregated at cluster, index or shard level.
   ///```ignore
-  /// let response = client.indices_stats_with_index()
+  /// let response = client.indices().stats_with_index()
   ///    .index(index)
   ///    .completion_fields(completion_fields)
   ///    .expand_wildcards(expand_wildcards)
@@ -2743,7 +2743,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_stats_with_index(&self) -> builder::IndicesStatsWithIndex {
+  pub fn stats_with_index(&self) -> builder::IndicesStatsWithIndex {
     builder::IndicesStatsWithIndex::new(self.os_client)
   }
 
@@ -2775,7 +2775,7 @@ impl<'a> Indices<'a> {
   ///   stats for segments that are not currently loaded into memory.
   /// - `level`: Return stats aggregated at cluster, index or shard level.
   ///```ignore
-  /// let response = client.indices_stats_with_index_metric()
+  /// let response = client.indices().stats_with_index_metric()
   ///    .index(index)
   ///    .metric(metric)
   ///    .completion_fields(completion_fields)
@@ -2790,7 +2790,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_stats_with_index_metric(&self) -> builder::IndicesStatsWithIndexMetric {
+  pub fn stats_with_index_metric(&self) -> builder::IndicesStatsWithIndexMetric {
     builder::IndicesStatsWithIndexMetric::new(self.os_client)
   }
 
@@ -2809,7 +2809,7 @@ impl<'a> Indices<'a> {
   /// - `ignore_unavailable`: Whether specified concrete indices should be
   ///   ignored when unavailable (missing or closed).
   ///```ignore
-  /// let response = client.indices_get_upgrade_with_index()
+  /// let response = client.indices().get_upgrade_with_index()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
@@ -2817,7 +2817,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_get_upgrade_with_index(&self) -> builder::IndicesGetUpgradeWithIndex {
+  pub fn get_upgrade_with_index(&self) -> builder::IndicesGetUpgradeWithIndex {
     builder::IndicesGetUpgradeWithIndex::new(self.os_client)
   }
 
@@ -2840,7 +2840,7 @@ impl<'a> Indices<'a> {
   /// - `wait_for_completion`: Should this request wait until the operation has
   ///   completed before returning.
   ///```ignore
-  /// let response = client.indices_upgrade_with_index()
+  /// let response = client.indices().upgrade_with_index()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
@@ -2850,7 +2850,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_upgrade_with_index(&self) -> builder::IndicesUpgradeWithIndex {
+  pub fn upgrade_with_index(&self) -> builder::IndicesUpgradeWithIndex {
     builder::IndicesUpgradeWithIndex::new(self.os_client)
   }
 
@@ -2885,7 +2885,7 @@ impl<'a> Indices<'a> {
   /// - `rewrite`: Provide a more detailed explanation showing the actual Lucene
   ///   query that will be executed.
   ///```ignore
-  /// let response = client.indices_validate_query_get_with_index()
+  /// let response = client.indices().validate_query_get_with_index()
   ///    .index(index)
   ///    .all_shards(all_shards)
   ///    .allow_no_indices(allow_no_indices)
@@ -2902,7 +2902,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_validate_query_get_with_index(&self) -> builder::IndicesValidateQueryGetWithIndex {
+  pub fn validate_query_get_with_index(&self) -> builder::IndicesValidateQueryGetWithIndex {
     builder::IndicesValidateQueryGetWithIndex::new(self.os_client)
   }
 
@@ -2938,7 +2938,7 @@ impl<'a> Indices<'a> {
   ///   query that will be executed.
   /// - `body`
   ///```ignore
-  /// let response = client.indices_validate_query_post_with_index()
+  /// let response = client.indices().validate_query_post_with_index()
   ///    .index(index)
   ///    .all_shards(all_shards)
   ///    .allow_no_indices(allow_no_indices)
@@ -2956,7 +2956,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn indices_validate_query_post_with_index(&self) -> builder::IndicesValidateQueryPostWithIndex {
+  pub fn validate_query_post_with_index(&self) -> builder::IndicesValidateQueryPostWithIndex {
     builder::IndicesValidateQueryPostWithIndex::new(self.os_client)
   }
 }

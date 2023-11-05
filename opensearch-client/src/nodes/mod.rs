@@ -23,7 +23,7 @@ impl<'a> Nodes<'a> {
   /// - `timeout`: Operation timeout.
   /// - `type_`: The type to sample.
   ///```ignore
-  /// let response = client.nodes_hot_threads_deprecated_dash()
+  /// let response = client.nodes().hot_threads_deprecated_dash()
   ///    .ignore_idle_threads(ignore_idle_threads)
   ///    .interval(interval)
   ///    .snapshots(snapshots)
@@ -33,7 +33,7 @@ impl<'a> Nodes<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_hot_threads_deprecated_dash(&self) -> builder::NodesHotThreadsDeprecatedDash {
+  pub fn hot_threads_deprecated_dash(&self) -> builder::NodesHotThreadsDeprecatedDash {
     builder::NodesHotThreadsDeprecatedDash::new(self.os_client)
   }
 
@@ -50,7 +50,7 @@ impl<'a> Nodes<'a> {
   /// - `timeout`: Operation timeout.
   /// - `type_`: The type to sample.
   ///```ignore
-  /// let response = client.nodes_hot_threads_deprecated_cluster()
+  /// let response = client.nodes().hot_threads_deprecated_cluster()
   ///    .ignore_idle_threads(ignore_idle_threads)
   ///    .interval(interval)
   ///    .snapshots(snapshots)
@@ -60,7 +60,7 @@ impl<'a> Nodes<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_hot_threads_deprecated_cluster(&self) -> builder::NodesHotThreadsDeprecatedCluster {
+  pub fn hot_threads_deprecated_cluster(&self) -> builder::NodesHotThreadsDeprecatedCluster {
     builder::NodesHotThreadsDeprecatedCluster::new(self.os_client)
   }
 
@@ -80,7 +80,7 @@ impl<'a> Nodes<'a> {
   /// - `timeout`: Operation timeout.
   /// - `type_`: The type to sample.
   ///```ignore
-  /// let response = client.nodes_hot_threads_with_node_id_deprecated_dash()
+  /// let response = client.nodes().hot_threads_with_node_id_deprecated_dash()
   ///    .node_id(node_id)
   ///    .ignore_idle_threads(ignore_idle_threads)
   ///    .interval(interval)
@@ -91,7 +91,7 @@ impl<'a> Nodes<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_hot_threads_with_node_id_deprecated_dash(&self) -> builder::NodesHotThreadsWithNodeIdDeprecatedDash {
+  pub fn hot_threads_with_node_id_deprecated_dash(&self) -> builder::NodesHotThreadsWithNodeIdDeprecatedDash {
     builder::NodesHotThreadsWithNodeIdDeprecatedDash::new(self.os_client)
   }
 
@@ -111,7 +111,7 @@ impl<'a> Nodes<'a> {
   /// - `timeout`: Operation timeout.
   /// - `type_`: The type to sample.
   ///```ignore
-  /// let response = client.nodes_hot_threads_with_node_id_deprecated_cluster()
+  /// let response = client.nodes().hot_threads_with_node_id_deprecated_cluster()
   ///    .node_id(node_id)
   ///    .ignore_idle_threads(ignore_idle_threads)
   ///    .interval(interval)
@@ -122,9 +122,7 @@ impl<'a> Nodes<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_hot_threads_with_node_id_deprecated_cluster(
-    &self,
-  ) -> builder::NodesHotThreadsWithNodeIdDeprecatedCluster {
+  pub fn hot_threads_with_node_id_deprecated_cluster(&self) -> builder::NodesHotThreadsWithNodeIdDeprecatedCluster {
     builder::NodesHotThreadsWithNodeIdDeprecatedCluster::new(self.os_client)
   }
 
@@ -136,13 +134,13 @@ impl<'a> Nodes<'a> {
   /// - `flat_settings`: Return settings in flat format.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.nodes_info()
+  /// let response = client.nodes().info()
   ///    .flat_settings(flat_settings)
   ///    .timeout(timeout)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_info(&self) -> builder::NodesInfo {
+  pub fn info(&self) -> builder::NodesInfo {
     builder::NodesInfo::new(self.os_client)
   }
 
@@ -159,7 +157,7 @@ impl<'a> Nodes<'a> {
   /// - `timeout`: Operation timeout.
   /// - `type_`: The type to sample.
   ///```ignore
-  /// let response = client.nodes_hot_threads()
+  /// let response = client.nodes().hot_threads()
   ///    .ignore_idle_threads(ignore_idle_threads)
   ///    .interval(interval)
   ///    .snapshots(snapshots)
@@ -169,7 +167,7 @@ impl<'a> Nodes<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_hot_threads(&self) -> builder::NodesHotThreads {
+  pub fn hot_threads(&self) -> builder::NodesHotThreads {
     builder::NodesHotThreads::new(self.os_client)
   }
 
@@ -186,7 +184,7 @@ impl<'a> Nodes<'a> {
   /// - `timeout`: Operation timeout.
   /// - `type_`: The type to sample.
   ///```ignore
-  /// let response = client.nodes_hot_threads_deprecated()
+  /// let response = client.nodes().hot_threads_deprecated()
   ///    .ignore_idle_threads(ignore_idle_threads)
   ///    .interval(interval)
   ///    .snapshots(snapshots)
@@ -196,7 +194,7 @@ impl<'a> Nodes<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_hot_threads_deprecated(&self) -> builder::NodesHotThreadsDeprecated {
+  pub fn hot_threads_deprecated(&self) -> builder::NodesHotThreadsDeprecated {
     builder::NodesHotThreadsDeprecated::new(self.os_client)
   }
 
@@ -208,13 +206,13 @@ impl<'a> Nodes<'a> {
   /// - `timeout`: Operation timeout.
   /// - `body`
   ///```ignore
-  /// let response = client.nodes_reload_secure_settings()
+  /// let response = client.nodes().reload_secure_settings()
   ///    .timeout(timeout)
   ///    .body(body)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_reload_secure_settings(&self) -> builder::NodesReloadSecureSettings {
+  pub fn reload_secure_settings(&self) -> builder::NodesReloadSecureSettings {
     builder::NodesReloadSecureSettings::new(self.os_client)
   }
 
@@ -239,7 +237,7 @@ impl<'a> Nodes<'a> {
   /// - `types`: Comma-separated list of document types for the `indexing` index
   ///   metric.
   ///```ignore
-  /// let response = client.nodes_stats()
+  /// let response = client.nodes().stats()
   ///    .completion_fields(completion_fields)
   ///    .fielddata_fields(fielddata_fields)
   ///    .fields(fields)
@@ -251,7 +249,7 @@ impl<'a> Nodes<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_stats(&self) -> builder::NodesStats {
+  pub fn stats(&self) -> builder::NodesStats {
     builder::NodesStats::new(self.os_client)
   }
 
@@ -277,7 +275,7 @@ impl<'a> Nodes<'a> {
   /// - `types`: Comma-separated list of document types for the `indexing` index
   ///   metric.
   ///```ignore
-  /// let response = client.nodes_stats_with_metric()
+  /// let response = client.nodes().stats_with_metric()
   ///    .metric(metric)
   ///    .completion_fields(completion_fields)
   ///    .fielddata_fields(fielddata_fields)
@@ -290,7 +288,7 @@ impl<'a> Nodes<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_stats_with_metric(&self) -> builder::NodesStatsWithMetric {
+  pub fn stats_with_metric(&self) -> builder::NodesStatsWithMetric {
     builder::NodesStatsWithMetric::new(self.os_client)
   }
 
@@ -319,7 +317,7 @@ impl<'a> Nodes<'a> {
   /// - `types`: Comma-separated list of document types for the `indexing` index
   ///   metric.
   ///```ignore
-  /// let response = client.nodes_stats_with_index_metric_metric()
+  /// let response = client.nodes().stats_with_index_metric_metric()
   ///    .metric(metric)
   ///    .index_metric(index_metric)
   ///    .completion_fields(completion_fields)
@@ -333,7 +331,7 @@ impl<'a> Nodes<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_stats_with_index_metric_metric(&self) -> builder::NodesStatsWithIndexMetricMetric {
+  pub fn stats_with_index_metric_metric(&self) -> builder::NodesStatsWithIndexMetricMetric {
     builder::NodesStatsWithIndexMetricMetric::new(self.os_client)
   }
 
@@ -344,12 +342,12 @@ impl<'a> Nodes<'a> {
   ///Arguments:
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.nodes_usage()
+  /// let response = client.nodes().usage()
   ///    .timeout(timeout)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_usage(&self) -> builder::NodesUsage {
+  pub fn usage(&self) -> builder::NodesUsage {
     builder::NodesUsage::new(self.os_client)
   }
 
@@ -361,13 +359,13 @@ impl<'a> Nodes<'a> {
   /// - `metric`: Limit the information returned to the specified metrics.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.nodes_usage_with_metric()
+  /// let response = client.nodes().usage_with_metric()
   ///    .metric(metric)
   ///    .timeout(timeout)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_usage_with_metric(&self) -> builder::NodesUsageWithMetric {
+  pub fn usage_with_metric(&self) -> builder::NodesUsageWithMetric {
     builder::NodesUsageWithMetric::new(self.os_client)
   }
 
@@ -382,14 +380,14 @@ impl<'a> Nodes<'a> {
   /// - `flat_settings`: Return settings in flat format.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.nodes_info_with_node_id()
+  /// let response = client.nodes().info_with_node_id()
   ///    .node_id(node_id)
   ///    .flat_settings(flat_settings)
   ///    .timeout(timeout)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_info_with_node_id(&self) -> builder::NodesInfoWithNodeId {
+  pub fn info_with_node_id(&self) -> builder::NodesInfoWithNodeId {
     builder::NodesInfoWithNodeId::new(self.os_client)
   }
 
@@ -409,7 +407,7 @@ impl<'a> Nodes<'a> {
   /// - `timeout`: Operation timeout.
   /// - `type_`: The type to sample.
   ///```ignore
-  /// let response = client.nodes_hot_threads_with_node_id()
+  /// let response = client.nodes().hot_threads_with_node_id()
   ///    .node_id(node_id)
   ///    .ignore_idle_threads(ignore_idle_threads)
   ///    .interval(interval)
@@ -420,7 +418,7 @@ impl<'a> Nodes<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_hot_threads_with_node_id(&self) -> builder::NodesHotThreadsWithNodeId {
+  pub fn hot_threads_with_node_id(&self) -> builder::NodesHotThreadsWithNodeId {
     builder::NodesHotThreadsWithNodeId::new(self.os_client)
   }
 
@@ -440,7 +438,7 @@ impl<'a> Nodes<'a> {
   /// - `timeout`: Operation timeout.
   /// - `type_`: The type to sample.
   ///```ignore
-  /// let response = client.nodes_hot_threads_with_node_id_deprecated()
+  /// let response = client.nodes().hot_threads_with_node_id_deprecated()
   ///    .node_id(node_id)
   ///    .ignore_idle_threads(ignore_idle_threads)
   ///    .interval(interval)
@@ -451,7 +449,7 @@ impl<'a> Nodes<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_hot_threads_with_node_id_deprecated(&self) -> builder::NodesHotThreadsWithNodeIdDeprecated {
+  pub fn hot_threads_with_node_id_deprecated(&self) -> builder::NodesHotThreadsWithNodeIdDeprecated {
     builder::NodesHotThreadsWithNodeIdDeprecated::new(self.os_client)
   }
 
@@ -466,14 +464,14 @@ impl<'a> Nodes<'a> {
   /// - `timeout`: Operation timeout.
   /// - `body`
   ///```ignore
-  /// let response = client.nodes_reload_secure_settings_with_node_id()
+  /// let response = client.nodes().reload_secure_settings_with_node_id()
   ///    .node_id(node_id)
   ///    .timeout(timeout)
   ///    .body(body)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_reload_secure_settings_with_node_id(&self) -> builder::NodesReloadSecureSettingsWithNodeId {
+  pub fn reload_secure_settings_with_node_id(&self) -> builder::NodesReloadSecureSettingsWithNodeId {
     builder::NodesReloadSecureSettingsWithNodeId::new(self.os_client)
   }
 
@@ -501,7 +499,7 @@ impl<'a> Nodes<'a> {
   /// - `types`: Comma-separated list of document types for the `indexing` index
   ///   metric.
   ///```ignore
-  /// let response = client.nodes_stats_with_node_id()
+  /// let response = client.nodes().stats_with_node_id()
   ///    .node_id(node_id)
   ///    .completion_fields(completion_fields)
   ///    .fielddata_fields(fielddata_fields)
@@ -514,7 +512,7 @@ impl<'a> Nodes<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_stats_with_node_id(&self) -> builder::NodesStatsWithNodeId {
+  pub fn stats_with_node_id(&self) -> builder::NodesStatsWithNodeId {
     builder::NodesStatsWithNodeId::new(self.os_client)
   }
 
@@ -543,7 +541,7 @@ impl<'a> Nodes<'a> {
   /// - `types`: Comma-separated list of document types for the `indexing` index
   ///   metric.
   ///```ignore
-  /// let response = client.nodes_stats_with_metric_node_id()
+  /// let response = client.nodes().stats_with_metric_node_id()
   ///    .node_id(node_id)
   ///    .metric(metric)
   ///    .completion_fields(completion_fields)
@@ -557,7 +555,7 @@ impl<'a> Nodes<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_stats_with_metric_node_id(&self) -> builder::NodesStatsWithMetricNodeId {
+  pub fn stats_with_metric_node_id(&self) -> builder::NodesStatsWithMetricNodeId {
     builder::NodesStatsWithMetricNodeId::new(self.os_client)
   }
 
@@ -590,7 +588,7 @@ impl<'a> Nodes<'a> {
   /// - `types`: Comma-separated list of document types for the `indexing` index
   ///   metric.
   ///```ignore
-  /// let response = client.nodes_stats_with_index_metric_metric_node_id()
+  /// let response = client.nodes().stats_with_index_metric_metric_node_id()
   ///    .node_id(node_id)
   ///    .metric(metric)
   ///    .index_metric(index_metric)
@@ -605,7 +603,7 @@ impl<'a> Nodes<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_stats_with_index_metric_metric_node_id(&self) -> builder::NodesStatsWithIndexMetricMetricNodeId {
+  pub fn stats_with_index_metric_metric_node_id(&self) -> builder::NodesStatsWithIndexMetricMetricNodeId {
     builder::NodesStatsWithIndexMetricMetricNodeId::new(self.os_client)
   }
 
@@ -619,13 +617,13 @@ impl<'a> Nodes<'a> {
   ///   you're connecting to, leave empty to get information from all nodes.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.nodes_usage_with_node_id()
+  /// let response = client.nodes().usage_with_node_id()
   ///    .node_id(node_id)
   ///    .timeout(timeout)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_usage_with_node_id(&self) -> builder::NodesUsageWithNodeId {
+  pub fn usage_with_node_id(&self) -> builder::NodesUsageWithNodeId {
     builder::NodesUsageWithNodeId::new(self.os_client)
   }
 
@@ -640,14 +638,14 @@ impl<'a> Nodes<'a> {
   /// - `metric`: Limit the information returned to the specified metrics.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.nodes_usage_with_metric_node_id()
+  /// let response = client.nodes().usage_with_metric_node_id()
   ///    .node_id(node_id)
   ///    .metric(metric)
   ///    .timeout(timeout)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_usage_with_metric_node_id(&self) -> builder::NodesUsageWithMetricNodeId {
+  pub fn usage_with_metric_node_id(&self) -> builder::NodesUsageWithMetricNodeId {
     builder::NodesUsageWithMetricNodeId::new(self.os_client)
   }
 
@@ -664,7 +662,7 @@ impl<'a> Nodes<'a> {
   /// - `flat_settings`: Return settings in flat format.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.nodes_info_with_metric_node_id()
+  /// let response = client.nodes().info_with_metric_node_id()
   ///    .node_id(node_id)
   ///    .metric(metric)
   ///    .flat_settings(flat_settings)
@@ -672,7 +670,7 @@ impl<'a> Nodes<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn nodes_info_with_metric_node_id(&self) -> builder::NodesInfoWithMetricNodeId {
+  pub fn info_with_metric_node_id(&self) -> builder::NodesInfoWithMetricNodeId {
     builder::NodesInfoWithMetricNodeId::new(self.os_client)
   }
 }

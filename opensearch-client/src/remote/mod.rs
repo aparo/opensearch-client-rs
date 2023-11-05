@@ -21,14 +21,14 @@ impl<'a> Remote<'a> {
   ///   completed before returning.
   /// - `body`
   ///```ignore
-  /// let response = client.remote_store_restore()
+  /// let response = client.remote().store_restore()
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .wait_for_completion(wait_for_completion)
   ///    .body(body)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn remote_store_restore(&self) -> builder::RemoteStoreRestore {
+  pub fn store_restore(&self) -> builder::RemoteStoreRestore {
     builder::RemoteStoreRestore::new(self.os_client)
   }
 }

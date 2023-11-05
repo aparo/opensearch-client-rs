@@ -11,9 +11,9 @@ use crate::{
   ReqwestResponse, ResponseValue,
 };
 
-///Builder for [`Client::indices_get_alias`]
+///Builder for [`Client::Indices::get_alias`]
 ///
-///[`Client::indices_get_alias`]: super::OsClient::indices_get_alias
+///[`Client::Indices::get_alias`]: super::OsClient::Indices::get_alias
 #[derive(Debug, Clone)]
 pub struct IndicesGetAlias<'a> {
   client: &'a super::OsClient,
@@ -113,9 +113,9 @@ impl<'a> IndicesGetAlias<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_alias_with_name`]
+///Builder for [`Client::Indices::get_alias_with_name`]
 ///
-///[`Client::indices_get_alias_with_name`]: super::OsClient::indices_get_alias_with_name
+///[`Client::Indices::get_alias_with_name`]: super::OsClient::Indices::get_alias_with_name
 #[derive(Debug, Clone)]
 pub struct IndicesGetAliasWithName<'a> {
   client: &'a super::OsClient,
@@ -228,9 +228,9 @@ impl<'a> IndicesGetAliasWithName<'a> {
     }
   }
 }
-///Builder for [`Client::indices_exists_alias`]
+///Builder for [`Client::Indices::exists_alias`]
 ///
-///[`Client::indices_exists_alias`]: super::OsClient::indices_exists_alias
+///[`Client::Indices::exists_alias`]: super::OsClient::Indices::exists_alias
 #[derive(Debug, Clone)]
 pub struct IndicesExistsAlias<'a> {
   client: &'a super::OsClient,
@@ -343,9 +343,9 @@ impl<'a> IndicesExistsAlias<'a> {
     }
   }
 }
-///Builder for [`Client::indices_update_aliases`]
+///Builder for [`Client::Indices::update_aliases`]
 ///
-///[`Client::indices_update_aliases`]: super::OsClient::indices_update_aliases
+///[`Client::Indices::update_aliases`]: super::OsClient::Indices::update_aliases
 #[derive(Debug, Clone)]
 pub struct IndicesUpdateAliases<'a> {
   client: &'a super::OsClient,
@@ -462,9 +462,9 @@ impl<'a> IndicesUpdateAliases<'a> {
     }
   }
 }
-///Builder for [`Client::indices_analyze_get`]
+///Builder for [`Client::Indices::analyze_get`]
 ///
-///[`Client::indices_analyze_get`]: super::OsClient::indices_analyze_get
+///[`Client::Indices::analyze_get`]: super::OsClient::Indices::analyze_get
 #[derive(Debug, Clone)]
 pub struct IndicesAnalyzeGet<'a> {
   client: &'a super::OsClient,
@@ -510,9 +510,9 @@ impl<'a> IndicesAnalyzeGet<'a> {
     }
   }
 }
-///Builder for [`Client::indices_analyze_post`]
+///Builder for [`Client::Indices::analyze_post`]
 ///
-///[`Client::indices_analyze_post`]: super::OsClient::indices_analyze_post
+///[`Client::Indices::analyze_post`]: super::OsClient::Indices::analyze_post
 #[derive(Debug, Clone)]
 pub struct IndicesAnalyzePost<'a> {
   client: &'a super::OsClient,
@@ -570,9 +570,9 @@ impl<'a> IndicesAnalyzePost<'a> {
     }
   }
 }
-///Builder for [`Client::indices_clear_cache`]
+///Builder for [`Client::Indices::clear_cache`]
 ///
-///[`Client::indices_clear_cache`]: super::OsClient::indices_clear_cache
+///[`Client::Indices::clear_cache`]: super::OsClient::Indices::clear_cache
 #[derive(Debug, Clone)]
 pub struct IndicesClearCache<'a> {
   client: &'a super::OsClient,
@@ -740,9 +740,9 @@ impl<'a> IndicesClearCache<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_data_stream`]
+///Builder for [`Client::Indices::get_data_stream`]
 ///
-///[`Client::indices_get_data_stream`]: super::OsClient::indices_get_data_stream
+///[`Client::Indices::get_data_stream`]: super::OsClient::Indices::get_data_stream
 #[derive(Debug, Clone)]
 pub struct IndicesGetDataStream<'a> {
   client: &'a super::OsClient,
@@ -776,9 +776,9 @@ impl<'a> IndicesGetDataStream<'a> {
     }
   }
 }
-///Builder for [`Client::indices_data_streams_stats`]
+///Builder for [`Client::Indices::data_streams_stats`]
 ///
-///[`Client::indices_data_streams_stats`]: super::OsClient::indices_data_streams_stats
+///[`Client::Indices::data_streams_stats`]: super::OsClient::Indices::data_streams_stats
 #[derive(Debug, Clone)]
 pub struct IndicesDataStreamsStats<'a> {
   client: &'a super::OsClient,
@@ -805,9 +805,9 @@ impl<'a> IndicesDataStreamsStats<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_data_stream_with_name`]
+///Builder for [`Client::Indices::get_data_stream_with_name`]
 ///
-///[`Client::indices_get_data_stream_with_name`]: super::OsClient::indices_get_data_stream_with_name
+///[`Client::Indices::get_data_stream_with_name`]: super::OsClient::Indices::get_data_stream_with_name
 #[derive(Debug, Clone)]
 pub struct IndicesGetDataStreamWithName<'a> {
   client: &'a super::OsClient,
@@ -855,9 +855,9 @@ impl<'a> IndicesGetDataStreamWithName<'a> {
     }
   }
 }
-///Builder for [`Client::indices_create_data_stream`]
+///Builder for [`Client::Indices::create_data_stream`]
 ///
-///[`Client::indices_create_data_stream`]: super::OsClient::indices_create_data_stream
+///[`Client::Indices::create_data_stream`]: super::OsClient::Indices::create_data_stream
 #[derive(Debug, Clone)]
 pub struct IndicesCreateDataStream<'a> {
   client: &'a super::OsClient,
@@ -918,9 +918,9 @@ impl<'a> IndicesCreateDataStream<'a> {
     }
   }
 }
-///Builder for [`Client::indices_delete_data_stream`]
+///Builder for [`Client::Indices::delete_data_stream`]
 ///
-///[`Client::indices_delete_data_stream`]: super::OsClient::indices_delete_data_stream
+///[`Client::Indices::delete_data_stream`]: super::OsClient::Indices::delete_data_stream
 #[derive(Debug, Clone)]
 pub struct IndicesDeleteDataStream<'a> {
   client: &'a super::OsClient,
@@ -968,9 +968,9 @@ impl<'a> IndicesDeleteDataStream<'a> {
     }
   }
 }
-///Builder for [`Client::indices_data_streams_stats_with_name`]
+///Builder for [`Client::Indices::data_streams_stats_with_name`]
 ///
-///[`Client::indices_data_streams_stats_with_name`]: super::OsClient::indices_data_streams_stats_with_name
+///[`Client::Indices::data_streams_stats_with_name`]: super::OsClient::Indices::data_streams_stats_with_name
 #[derive(Debug, Clone)]
 pub struct IndicesDataStreamsStatsWithName<'a> {
   client: &'a super::OsClient,
@@ -1015,9 +1015,9 @@ impl<'a> IndicesDataStreamsStatsWithName<'a> {
     }
   }
 }
-///Builder for [`Client::indices_flush_get`]
+///Builder for [`Client::Indices::flush_get`]
 ///
-///[`Client::indices_flush_get`]: super::OsClient::indices_flush_get
+///[`Client::Indices::flush_get`]: super::OsClient::Indices::flush_get
 #[derive(Debug, Clone)]
 pub struct IndicesFlushGet<'a> {
   client: &'a super::OsClient,
@@ -1134,9 +1134,9 @@ impl<'a> IndicesFlushGet<'a> {
     }
   }
 }
-///Builder for [`Client::indices_flush_post`]
+///Builder for [`Client::Indices::flush_post`]
 ///
-///[`Client::indices_flush_post`]: super::OsClient::indices_flush_post
+///[`Client::Indices::flush_post`]: super::OsClient::Indices::flush_post
 #[derive(Debug, Clone)]
 pub struct IndicesFlushPost<'a> {
   client: &'a super::OsClient,
@@ -1253,9 +1253,9 @@ impl<'a> IndicesFlushPost<'a> {
     }
   }
 }
-///Builder for [`Client::indices_forcemerge`]
+///Builder for [`Client::Indices::forcemerge`]
 ///
-///[`Client::indices_forcemerge`]: super::OsClient::indices_forcemerge
+///[`Client::Indices::forcemerge`]: super::OsClient::Indices::forcemerge
 #[derive(Debug, Clone)]
 pub struct IndicesForcemerge<'a> {
   client: &'a super::OsClient,
@@ -1389,9 +1389,9 @@ impl<'a> IndicesForcemerge<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_index_template`]
+///Builder for [`Client::Indices::get_index_template`]
 ///
-///[`Client::indices_get_index_template`]: super::OsClient::indices_get_index_template
+///[`Client::Indices::get_index_template`]: super::OsClient::Indices::get_index_template
 #[derive(Debug, Clone)]
 pub struct IndicesGetIndexTemplate<'a> {
   client: &'a super::OsClient,
@@ -1491,9 +1491,9 @@ impl<'a> IndicesGetIndexTemplate<'a> {
     }
   }
 }
-///Builder for [`Client::indices_simulate_template`]
+///Builder for [`Client::Indices::simulate_template`]
 ///
-///[`Client::indices_simulate_template`]: super::OsClient::indices_simulate_template
+///[`Client::Indices::simulate_template`]: super::OsClient::Indices::simulate_template
 #[derive(Debug, Clone)]
 pub struct IndicesSimulateTemplate<'a> {
   client: &'a super::OsClient,
@@ -1606,9 +1606,9 @@ impl<'a> IndicesSimulateTemplate<'a> {
     }
   }
 }
-///Builder for [`Client::indices_simulate_template_with_name`]
+///Builder for [`Client::Indices::simulate_template_with_name`]
 ///
-///[`Client::indices_simulate_template_with_name`]: super::OsClient::indices_simulate_template_with_name
+///[`Client::Indices::simulate_template_with_name`]: super::OsClient::Indices::simulate_template_with_name
 #[derive(Debug, Clone)]
 pub struct IndicesSimulateTemplateWithName<'a> {
   client: &'a super::OsClient,
@@ -1738,9 +1738,9 @@ impl<'a> IndicesSimulateTemplateWithName<'a> {
     }
   }
 }
-///Builder for [`Client::indices_simulate_index_template`]
+///Builder for [`Client::Indices::simulate_index_template`]
 ///
-///[`Client::indices_simulate_index_template`]: super::OsClient::indices_simulate_index_template
+///[`Client::Indices::simulate_index_template`]: super::OsClient::Indices::simulate_index_template
 #[derive(Debug, Clone)]
 pub struct IndicesSimulateIndexTemplate<'a> {
   client: &'a super::OsClient,
@@ -1870,9 +1870,9 @@ impl<'a> IndicesSimulateIndexTemplate<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_index_template_with_name`]
+///Builder for [`Client::Indices::get_index_template_with_name`]
 ///
-///[`Client::indices_get_index_template_with_name`]: super::OsClient::indices_get_index_template_with_name
+///[`Client::Indices::get_index_template_with_name`]: super::OsClient::Indices::get_index_template_with_name
 #[derive(Debug, Clone)]
 pub struct IndicesGetIndexTemplateWithName<'a> {
   client: &'a super::OsClient,
@@ -1985,9 +1985,9 @@ impl<'a> IndicesGetIndexTemplateWithName<'a> {
     }
   }
 }
-///Builder for [`Client::indices_put_index_template_put`]
+///Builder for [`Client::Indices::put_index_template_put`]
 ///
-///[`Client::indices_put_index_template_put`]: super::OsClient::indices_put_index_template_put
+///[`Client::Indices::put_index_template_put`]: super::OsClient::Indices::put_index_template_put
 #[derive(Debug, Clone)]
 pub struct IndicesPutIndexTemplatePut<'a> {
   client: &'a super::OsClient,
@@ -2113,9 +2113,9 @@ impl<'a> IndicesPutIndexTemplatePut<'a> {
     }
   }
 }
-///Builder for [`Client::indices_put_index_template_post`]
+///Builder for [`Client::Indices::put_index_template_post`]
 ///
-///[`Client::indices_put_index_template_post`]: super::OsClient::indices_put_index_template_post
+///[`Client::Indices::put_index_template_post`]: super::OsClient::Indices::put_index_template_post
 #[derive(Debug, Clone)]
 pub struct IndicesPutIndexTemplatePost<'a> {
   client: &'a super::OsClient,
@@ -2241,9 +2241,9 @@ impl<'a> IndicesPutIndexTemplatePost<'a> {
     }
   }
 }
-///Builder for [`Client::indices_delete_index_template`]
+///Builder for [`Client::Indices::delete_index_template`]
 ///
-///[`Client::indices_delete_index_template`]: super::OsClient::indices_delete_index_template
+///[`Client::Indices::delete_index_template`]: super::OsClient::Indices::delete_index_template
 #[derive(Debug, Clone)]
 pub struct IndicesDeleteIndexTemplate<'a> {
   client: &'a super::OsClient,
@@ -2339,9 +2339,9 @@ impl<'a> IndicesDeleteIndexTemplate<'a> {
     }
   }
 }
-///Builder for [`Client::indices_exists_index_template`]
+///Builder for [`Client::Indices::exists_index_template`]
 ///
-///[`Client::indices_exists_index_template`]: super::OsClient::indices_exists_index_template
+///[`Client::Indices::exists_index_template`]: super::OsClient::Indices::exists_index_template
 #[derive(Debug, Clone)]
 pub struct IndicesExistsIndexTemplate<'a> {
   client: &'a super::OsClient,
@@ -2437,9 +2437,9 @@ impl<'a> IndicesExistsIndexTemplate<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_mapping`]
+///Builder for [`Client::Indices::get_mapping`]
 ///
-///[`Client::indices_get_mapping`]: super::OsClient::indices_get_mapping
+///[`Client::Indices::get_mapping`]: super::OsClient::Indices::get_mapping
 #[derive(Debug, Clone)]
 pub struct IndicesGetMapping<'a> {
   client: &'a super::OsClient,
@@ -2573,9 +2573,9 @@ impl<'a> IndicesGetMapping<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_field_mapping`]
+///Builder for [`Client::Indices::get_field_mapping`]
 ///
-///[`Client::indices_get_field_mapping`]: super::OsClient::indices_get_field_mapping
+///[`Client::Indices::get_field_mapping`]: super::OsClient::Indices::get_field_mapping
 #[derive(Debug, Clone)]
 pub struct IndicesGetFieldMapping<'a> {
   client: &'a super::OsClient,
@@ -2705,9 +2705,9 @@ impl<'a> IndicesGetFieldMapping<'a> {
     }
   }
 }
-///Builder for [`Client::indices_recovery`]
+///Builder for [`Client::Indices::recovery`]
 ///
-///[`Client::indices_recovery`]: super::OsClient::indices_recovery
+///[`Client::Indices::recovery`]: super::OsClient::Indices::recovery
 #[derive(Debug, Clone)]
 pub struct IndicesRecovery<'a> {
   client: &'a super::OsClient,
@@ -2773,9 +2773,9 @@ impl<'a> IndicesRecovery<'a> {
     }
   }
 }
-///Builder for [`Client::indices_refresh_get`]
+///Builder for [`Client::Indices::refresh_get`]
 ///
-///[`Client::indices_refresh_get`]: super::OsClient::indices_refresh_get
+///[`Client::Indices::refresh_get`]: super::OsClient::Indices::refresh_get
 #[derive(Debug, Clone)]
 pub struct IndicesRefreshGet<'a> {
   client: &'a super::OsClient,
@@ -2858,9 +2858,9 @@ impl<'a> IndicesRefreshGet<'a> {
     }
   }
 }
-///Builder for [`Client::indices_refresh_post`]
+///Builder for [`Client::Indices::refresh_post`]
 ///
-///[`Client::indices_refresh_post`]: super::OsClient::indices_refresh_post
+///[`Client::Indices::refresh_post`]: super::OsClient::Indices::refresh_post
 #[derive(Debug, Clone)]
 pub struct IndicesRefreshPost<'a> {
   client: &'a super::OsClient,
@@ -2943,9 +2943,9 @@ impl<'a> IndicesRefreshPost<'a> {
     }
   }
 }
-///Builder for [`Client::indices_resolve_index`]
+///Builder for [`Client::Indices::resolve_index`]
 ///
-///[`Client::indices_resolve_index`]: super::OsClient::indices_resolve_index
+///[`Client::Indices::resolve_index`]: super::OsClient::Indices::resolve_index
 #[derive(Debug, Clone)]
 pub struct IndicesResolveIndex<'a> {
   client: &'a super::OsClient,
@@ -3007,9 +3007,9 @@ impl<'a> IndicesResolveIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_segments`]
+///Builder for [`Client::Indices::segments`]
 ///
-///[`Client::indices_segments`]: super::OsClient::indices_segments
+///[`Client::Indices::segments`]: super::OsClient::Indices::segments
 #[derive(Debug, Clone)]
 pub struct IndicesSegments<'a> {
   client: &'a super::OsClient,
@@ -3109,9 +3109,9 @@ impl<'a> IndicesSegments<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_settings`]
+///Builder for [`Client::Indices::get_settings`]
 ///
-///[`Client::indices_get_settings`]: super::OsClient::indices_get_settings
+///[`Client::Indices::get_settings`]: super::OsClient::Indices::get_settings
 #[derive(Debug, Clone)]
 pub struct IndicesGetSettings<'a> {
   client: &'a super::OsClient,
@@ -3279,9 +3279,9 @@ impl<'a> IndicesGetSettings<'a> {
     }
   }
 }
-///Builder for [`Client::indices_put_settings`]
+///Builder for [`Client::Indices::put_settings`]
 ///
-///[`Client::indices_put_settings`]: super::OsClient::indices_put_settings
+///[`Client::Indices::put_settings`]: super::OsClient::Indices::put_settings
 #[derive(Debug, Clone)]
 pub struct IndicesPutSettings<'a> {
   client: &'a super::OsClient,
@@ -3462,9 +3462,9 @@ impl<'a> IndicesPutSettings<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_settings_with_name`]
+///Builder for [`Client::Indices::get_settings_with_name`]
 ///
-///[`Client::indices_get_settings_with_name`]: super::OsClient::indices_get_settings_with_name
+///[`Client::Indices::get_settings_with_name`]: super::OsClient::Indices::get_settings_with_name
 #[derive(Debug, Clone)]
 pub struct IndicesGetSettingsWithName<'a> {
   client: &'a super::OsClient,
@@ -3645,9 +3645,9 @@ impl<'a> IndicesGetSettingsWithName<'a> {
     }
   }
 }
-///Builder for [`Client::indices_shard_stores`]
+///Builder for [`Client::Indices::shard_stores`]
 ///
-///[`Client::indices_shard_stores`]: super::OsClient::indices_shard_stores
+///[`Client::Indices::shard_stores`]: super::OsClient::Indices::shard_stores
 #[derive(Debug, Clone)]
 pub struct IndicesShardStores<'a> {
   client: &'a super::OsClient,
@@ -3747,9 +3747,9 @@ impl<'a> IndicesShardStores<'a> {
     }
   }
 }
-///Builder for [`Client::indices_stats`]
+///Builder for [`Client::Indices::stats`]
 ///
-///[`Client::indices_stats`]: super::OsClient::indices_stats
+///[`Client::Indices::stats`]: super::OsClient::Indices::stats
 #[derive(Debug, Clone)]
 pub struct IndicesStats<'a> {
   client: &'a super::OsClient,
@@ -3934,9 +3934,9 @@ impl<'a> IndicesStats<'a> {
     }
   }
 }
-///Builder for [`Client::indices_stats_with_metric`]
+///Builder for [`Client::Indices::stats_with_metric`]
 ///
-///[`Client::indices_stats_with_metric`]: super::OsClient::indices_stats_with_metric
+///[`Client::Indices::stats_with_metric`]: super::OsClient::Indices::stats_with_metric
 #[derive(Debug, Clone)]
 pub struct IndicesStatsWithMetric<'a> {
   client: &'a super::OsClient,
@@ -4134,9 +4134,9 @@ impl<'a> IndicesStatsWithMetric<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_template`]
+///Builder for [`Client::Indices::get_template`]
 ///
-///[`Client::indices_get_template`]: super::OsClient::indices_get_template
+///[`Client::Indices::get_template`]: super::OsClient::Indices::get_template
 #[derive(Debug, Clone)]
 pub struct IndicesGetTemplate<'a> {
   client: &'a super::OsClient,
@@ -4236,9 +4236,9 @@ impl<'a> IndicesGetTemplate<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_template_with_name`]
+///Builder for [`Client::Indices::get_template_with_name`]
 ///
-///[`Client::indices_get_template_with_name`]: super::OsClient::indices_get_template_with_name
+///[`Client::Indices::get_template_with_name`]: super::OsClient::Indices::get_template_with_name
 #[derive(Debug, Clone)]
 pub struct IndicesGetTemplateWithName<'a> {
   client: &'a super::OsClient,
@@ -4351,9 +4351,9 @@ impl<'a> IndicesGetTemplateWithName<'a> {
     }
   }
 }
-///Builder for [`Client::indices_put_template_put`]
+///Builder for [`Client::Indices::put_template_put`]
 ///
-///[`Client::indices_put_template_put`]: super::OsClient::indices_put_template_put
+///[`Client::Indices::put_template_put`]: super::OsClient::Indices::put_template_put
 #[derive(Debug, Clone)]
 pub struct IndicesPutTemplatePut<'a> {
   client: &'a super::OsClient,
@@ -4479,9 +4479,9 @@ impl<'a> IndicesPutTemplatePut<'a> {
     }
   }
 }
-///Builder for [`Client::indices_put_template_post`]
+///Builder for [`Client::Indices::put_template_post`]
 ///
-///[`Client::indices_put_template_post`]: super::OsClient::indices_put_template_post
+///[`Client::Indices::put_template_post`]: super::OsClient::Indices::put_template_post
 #[derive(Debug, Clone)]
 pub struct IndicesPutTemplatePost<'a> {
   client: &'a super::OsClient,
@@ -4607,9 +4607,9 @@ impl<'a> IndicesPutTemplatePost<'a> {
     }
   }
 }
-///Builder for [`Client::indices_delete_template`]
+///Builder for [`Client::Indices::delete_template`]
 ///
-///[`Client::indices_delete_template`]: super::OsClient::indices_delete_template
+///[`Client::Indices::delete_template`]: super::OsClient::Indices::delete_template
 #[derive(Debug, Clone)]
 pub struct IndicesDeleteTemplate<'a> {
   client: &'a super::OsClient,
@@ -4705,9 +4705,9 @@ impl<'a> IndicesDeleteTemplate<'a> {
     }
   }
 }
-///Builder for [`Client::indices_exists_template`]
+///Builder for [`Client::Indices::exists_template`]
 ///
-///[`Client::indices_exists_template`]: super::OsClient::indices_exists_template
+///[`Client::Indices::exists_template`]: super::OsClient::Indices::exists_template
 #[derive(Debug, Clone)]
 pub struct IndicesExistsTemplate<'a> {
   client: &'a super::OsClient,
@@ -4803,9 +4803,9 @@ impl<'a> IndicesExistsTemplate<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_upgrade`]
+///Builder for [`Client::Indices::get_upgrade`]
 ///
-///[`Client::indices_get_upgrade`]: super::OsClient::indices_get_upgrade
+///[`Client::Indices::get_upgrade`]: super::OsClient::Indices::get_upgrade
 #[derive(Debug, Clone)]
 pub struct IndicesGetUpgrade<'a> {
   client: &'a super::OsClient,
@@ -4888,9 +4888,9 @@ impl<'a> IndicesGetUpgrade<'a> {
     }
   }
 }
-///Builder for [`Client::indices_upgrade`]
+///Builder for [`Client::Indices::upgrade`]
 ///
-///[`Client::indices_upgrade`]: super::OsClient::indices_upgrade
+///[`Client::Indices::upgrade`]: super::OsClient::Indices::upgrade
 #[derive(Debug, Clone)]
 pub struct IndicesUpgrade<'a> {
   client: &'a super::OsClient,
@@ -5007,9 +5007,9 @@ impl<'a> IndicesUpgrade<'a> {
     }
   }
 }
-///Builder for [`Client::indices_validate_query_get`]
+///Builder for [`Client::Indices::validate_query_get`]
 ///
-///[`Client::indices_validate_query_get`]: super::OsClient::indices_validate_query_get
+///[`Client::Indices::validate_query_get`]: super::OsClient::Indices::validate_query_get
 #[derive(Debug, Clone)]
 pub struct IndicesValidateQueryGet<'a> {
   client: &'a super::OsClient,
@@ -5245,9 +5245,9 @@ impl<'a> IndicesValidateQueryGet<'a> {
     }
   }
 }
-///Builder for [`Client::indices_validate_query_post`]
+///Builder for [`Client::Indices::validate_query_post`]
 ///
-///[`Client::indices_validate_query_post`]: super::OsClient::indices_validate_query_post
+///[`Client::Indices::validate_query_post`]: super::OsClient::Indices::validate_query_post
 #[derive(Debug, Clone)]
 pub struct IndicesValidateQueryPost<'a> {
   client: &'a super::OsClient,
@@ -5496,9 +5496,9 @@ impl<'a> IndicesValidateQueryPost<'a> {
     }
   }
 }
-///Builder for [`Client::indices_rollover`]
+///Builder for [`Client::Indices::rollover`]
 ///
-///[`Client::indices_rollover`]: super::OsClient::indices_rollover
+///[`Client::Indices::rollover`]: super::OsClient::Indices::rollover
 #[derive(Debug, Clone)]
 pub struct IndicesRollover<'a> {
   client: &'a super::OsClient,
@@ -5641,9 +5641,9 @@ impl<'a> IndicesRollover<'a> {
     }
   }
 }
-///Builder for [`Client::indices_rollover_with_new_index`]
+///Builder for [`Client::Indices::rollover_with_new_index`]
 ///
-///[`Client::indices_rollover_with_new_index`]: super::OsClient::indices_rollover_with_new_index
+///[`Client::Indices::rollover_with_new_index`]: super::OsClient::Indices::rollover_with_new_index
 #[derive(Debug, Clone)]
 pub struct IndicesRolloverWithNewIndex<'a> {
   client: &'a super::OsClient,
@@ -5804,9 +5804,9 @@ impl<'a> IndicesRolloverWithNewIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get`]
+///Builder for [`Client::Indices::get`]
 ///
-///[`Client::indices_get`]: super::OsClient::indices_get
+///[`Client::Indices::get`]: super::OsClient::Indices::get
 #[derive(Debug, Clone)]
 pub struct IndicesGet<'a> {
   client: &'a super::OsClient,
@@ -5987,9 +5987,9 @@ impl<'a> IndicesGet<'a> {
     }
   }
 }
-///Builder for [`Client::indices_create`]
+///Builder for [`Client::Indices::create`]
 ///
-///[`Client::indices_create`]: super::OsClient::indices_create
+///[`Client::Indices::create`]: super::OsClient::Indices::create
 #[derive(Debug, Clone)]
 pub struct IndicesCreate<'a> {
   client: &'a super::OsClient,
@@ -6134,9 +6134,9 @@ impl<'a> IndicesCreate<'a> {
     }
   }
 }
-///Builder for [`Client::indices_delete`]
+///Builder for [`Client::Indices::delete`]
 ///
-///[`Client::indices_delete`]: super::OsClient::indices_delete
+///[`Client::Indices::delete`]: super::OsClient::Indices::delete
 #[derive(Debug, Clone)]
 pub struct IndicesDelete<'a> {
   client: &'a super::OsClient,
@@ -6274,9 +6274,9 @@ impl<'a> IndicesDelete<'a> {
     }
   }
 }
-///Builder for [`Client::indices_exists`]
+///Builder for [`Client::Indices::exists`]
 ///
-///[`Client::indices_exists`]: super::OsClient::indices_exists
+///[`Client::Indices::exists`]: super::OsClient::Indices::exists
 #[derive(Debug, Clone)]
 pub struct IndicesExists<'a> {
   client: &'a super::OsClient,
@@ -6423,9 +6423,9 @@ impl<'a> IndicesExists<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_alias_with_index`]
+///Builder for [`Client::Indices::get_alias_with_index`]
 ///
-///[`Client::indices_get_alias_with_index`]: super::OsClient::indices_get_alias_with_index
+///[`Client::Indices::get_alias_with_index`]: super::OsClient::Indices::get_alias_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesGetAliasWithIndex<'a> {
   client: &'a super::OsClient,
@@ -6538,9 +6538,9 @@ impl<'a> IndicesGetAliasWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_alias_with_index_name`]
+///Builder for [`Client::Indices::get_alias_with_index_name`]
 ///
-///[`Client::indices_get_alias_with_index_name`]: super::OsClient::indices_get_alias_with_index_name
+///[`Client::Indices::get_alias_with_index_name`]: super::OsClient::Indices::get_alias_with_index_name
 #[derive(Debug, Clone)]
 pub struct IndicesGetAliasWithIndexName<'a> {
   client: &'a super::OsClient,
@@ -6671,9 +6671,9 @@ impl<'a> IndicesGetAliasWithIndexName<'a> {
     }
   }
 }
-///Builder for [`Client::indices_put_alias_put`]
+///Builder for [`Client::Indices::put_alias_put`]
 ///
-///[`Client::indices_put_alias_put`]: super::OsClient::indices_put_alias_put
+///[`Client::Indices::put_alias_put`]: super::OsClient::Indices::put_alias_put
 #[derive(Debug, Clone)]
 pub struct IndicesPutAliasPut<'a> {
   client: &'a super::OsClient,
@@ -6800,9 +6800,9 @@ impl<'a> IndicesPutAliasPut<'a> {
     }
   }
 }
-///Builder for [`Client::indices_put_alias_post`]
+///Builder for [`Client::Indices::put_alias_post`]
 ///
-///[`Client::indices_put_alias_post`]: super::OsClient::indices_put_alias_post
+///[`Client::Indices::put_alias_post`]: super::OsClient::Indices::put_alias_post
 #[derive(Debug, Clone)]
 pub struct IndicesPutAliasPost<'a> {
   client: &'a super::OsClient,
@@ -6929,9 +6929,9 @@ impl<'a> IndicesPutAliasPost<'a> {
     }
   }
 }
-///Builder for [`Client::indices_delete_alias`]
+///Builder for [`Client::Indices::delete_alias`]
 ///
-///[`Client::indices_delete_alias`]: super::OsClient::indices_delete_alias
+///[`Client::Indices::delete_alias`]: super::OsClient::Indices::delete_alias
 #[derive(Debug, Clone)]
 pub struct IndicesDeleteAlias<'a> {
   client: &'a super::OsClient,
@@ -7045,9 +7045,9 @@ impl<'a> IndicesDeleteAlias<'a> {
     }
   }
 }
-///Builder for [`Client::indices_exists_alias_with_index`]
+///Builder for [`Client::Indices::exists_alias_with_index`]
 ///
-///[`Client::indices_exists_alias_with_index`]: super::OsClient::indices_exists_alias_with_index
+///[`Client::Indices::exists_alias_with_index`]: super::OsClient::Indices::exists_alias_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesExistsAliasWithIndex<'a> {
   client: &'a super::OsClient,
@@ -7178,9 +7178,9 @@ impl<'a> IndicesExistsAliasWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_put_alias_put_plural`]
+///Builder for [`Client::Indices::put_alias_put_plural`]
 ///
-///[`Client::indices_put_alias_put_plural`]: super::OsClient::indices_put_alias_put_plural
+///[`Client::Indices::put_alias_put_plural`]: super::OsClient::Indices::put_alias_put_plural
 #[derive(Debug, Clone)]
 pub struct IndicesPutAliasPutPlural<'a> {
   client: &'a super::OsClient,
@@ -7307,9 +7307,9 @@ impl<'a> IndicesPutAliasPutPlural<'a> {
     }
   }
 }
-///Builder for [`Client::indices_put_alias_post_plural`]
+///Builder for [`Client::Indices::put_alias_post_plural`]
 ///
-///[`Client::indices_put_alias_post_plural`]: super::OsClient::indices_put_alias_post_plural
+///[`Client::Indices::put_alias_post_plural`]: super::OsClient::Indices::put_alias_post_plural
 #[derive(Debug, Clone)]
 pub struct IndicesPutAliasPostPlural<'a> {
   client: &'a super::OsClient,
@@ -7436,9 +7436,9 @@ impl<'a> IndicesPutAliasPostPlural<'a> {
     }
   }
 }
-///Builder for [`Client::indices_delete_alias_plural`]
+///Builder for [`Client::Indices::delete_alias_plural`]
 ///
-///[`Client::indices_delete_alias_plural`]: super::OsClient::indices_delete_alias_plural
+///[`Client::Indices::delete_alias_plural`]: super::OsClient::Indices::delete_alias_plural
 #[derive(Debug, Clone)]
 pub struct IndicesDeleteAliasPlural<'a> {
   client: &'a super::OsClient,
@@ -7552,9 +7552,9 @@ impl<'a> IndicesDeleteAliasPlural<'a> {
     }
   }
 }
-///Builder for [`Client::indices_analyze_get_with_index`]
+///Builder for [`Client::Indices::analyze_get_with_index`]
 ///
-///[`Client::indices_analyze_get_with_index`]: super::OsClient::indices_analyze_get_with_index
+///[`Client::Indices::analyze_get_with_index`]: super::OsClient::Indices::analyze_get_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesAnalyzeGetWithIndex<'a> {
   client: &'a super::OsClient,
@@ -7604,9 +7604,9 @@ impl<'a> IndicesAnalyzeGetWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_analyze_post_with_index`]
+///Builder for [`Client::Indices::analyze_post_with_index`]
 ///
-///[`Client::indices_analyze_post_with_index`]: super::OsClient::indices_analyze_post_with_index
+///[`Client::Indices::analyze_post_with_index`]: super::OsClient::Indices::analyze_post_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesAnalyzePostWithIndex<'a> {
   client: &'a super::OsClient,
@@ -7664,9 +7664,9 @@ impl<'a> IndicesAnalyzePostWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_add_block`]
+///Builder for [`Client::Indices::add_block`]
 ///
-///[`Client::indices_add_block`]: super::OsClient::indices_add_block
+///[`Client::Indices::add_block`]: super::OsClient::Indices::add_block
 #[derive(Debug, Clone)]
 pub struct IndicesAddBlock<'a> {
   client: &'a super::OsClient,
@@ -7831,9 +7831,9 @@ impl<'a> IndicesAddBlock<'a> {
     }
   }
 }
-///Builder for [`Client::indices_clear_cache_with_index`]
+///Builder for [`Client::Indices::clear_cache_with_index`]
 ///
-///[`Client::indices_clear_cache_with_index`]: super::OsClient::indices_clear_cache_with_index
+///[`Client::Indices::clear_cache_with_index`]: super::OsClient::Indices::clear_cache_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesClearCacheWithIndex<'a> {
   client: &'a super::OsClient,
@@ -8010,9 +8010,9 @@ impl<'a> IndicesClearCacheWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_clone_put`]
+///Builder for [`Client::Indices::clone_put`]
 ///
-///[`Client::indices_clone_put`]: super::OsClient::indices_clone_put
+///[`Client::Indices::clone_put`]: super::OsClient::Indices::clone_put
 #[derive(Debug, Clone)]
 pub struct IndicesClonePut<'a> {
   client: &'a super::OsClient,
@@ -8156,9 +8156,9 @@ impl<'a> IndicesClonePut<'a> {
     }
   }
 }
-///Builder for [`Client::indices_clone_post`]
+///Builder for [`Client::Indices::clone_post`]
 ///
-///[`Client::indices_clone_post`]: super::OsClient::indices_clone_post
+///[`Client::Indices::clone_post`]: super::OsClient::Indices::clone_post
 #[derive(Debug, Clone)]
 pub struct IndicesClonePost<'a> {
   client: &'a super::OsClient,
@@ -8302,9 +8302,9 @@ impl<'a> IndicesClonePost<'a> {
     }
   }
 }
-///Builder for [`Client::indices_close`]
+///Builder for [`Client::Indices::close`]
 ///
-///[`Client::indices_close`]: super::OsClient::indices_close
+///[`Client::Indices::close`]: super::OsClient::Indices::close
 #[derive(Debug, Clone)]
 pub struct IndicesClose<'a> {
   client: &'a super::OsClient,
@@ -8468,9 +8468,9 @@ impl<'a> IndicesClose<'a> {
     }
   }
 }
-///Builder for [`Client::indices_flush_get_with_index`]
+///Builder for [`Client::Indices::flush_get_with_index`]
 ///
-///[`Client::indices_flush_get_with_index`]: super::OsClient::indices_flush_get_with_index
+///[`Client::Indices::flush_get_with_index`]: super::OsClient::Indices::flush_get_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesFlushGetWithIndex<'a> {
   client: &'a super::OsClient,
@@ -8600,9 +8600,9 @@ impl<'a> IndicesFlushGetWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_flush_post_with_index`]
+///Builder for [`Client::Indices::flush_post_with_index`]
 ///
-///[`Client::indices_flush_post_with_index`]: super::OsClient::indices_flush_post_with_index
+///[`Client::Indices::flush_post_with_index`]: super::OsClient::Indices::flush_post_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesFlushPostWithIndex<'a> {
   client: &'a super::OsClient,
@@ -8732,9 +8732,9 @@ impl<'a> IndicesFlushPostWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_forcemerge_with_index`]
+///Builder for [`Client::Indices::forcemerge_with_index`]
 ///
-///[`Client::indices_forcemerge_with_index`]: super::OsClient::indices_forcemerge_with_index
+///[`Client::Indices::forcemerge_with_index`]: super::OsClient::Indices::forcemerge_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesForcemergeWithIndex<'a> {
   client: &'a super::OsClient,
@@ -8881,9 +8881,9 @@ impl<'a> IndicesForcemergeWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_mapping_with_index`]
+///Builder for [`Client::Indices::get_mapping_with_index`]
 ///
-///[`Client::indices_get_mapping_with_index`]: super::OsClient::indices_get_mapping_with_index
+///[`Client::Indices::get_mapping_with_index`]: super::OsClient::Indices::get_mapping_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesGetMappingWithIndex<'a> {
   client: &'a super::OsClient,
@@ -9030,9 +9030,9 @@ impl<'a> IndicesGetMappingWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_put_mapping_put`]
+///Builder for [`Client::Indices::put_mapping_put`]
 ///
-///[`Client::indices_put_mapping_put`]: super::OsClient::indices_put_mapping_put
+///[`Client::Indices::put_mapping_put`]: super::OsClient::Indices::put_mapping_put
 #[derive(Debug, Clone)]
 pub struct IndicesPutMappingPut<'a> {
   client: &'a super::OsClient,
@@ -9218,9 +9218,9 @@ impl<'a> IndicesPutMappingPut<'a> {
     }
   }
 }
-///Builder for [`Client::indices_put_mapping_post`]
+///Builder for [`Client::Indices::put_mapping_post`]
 ///
-///[`Client::indices_put_mapping_post`]: super::OsClient::indices_put_mapping_post
+///[`Client::Indices::put_mapping_post`]: super::OsClient::Indices::put_mapping_post
 #[derive(Debug, Clone)]
 pub struct IndicesPutMappingPost<'a> {
   client: &'a super::OsClient,
@@ -9406,9 +9406,9 @@ impl<'a> IndicesPutMappingPost<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_field_mapping_with_index`]
+///Builder for [`Client::Indices::get_field_mapping_with_index`]
 ///
-///[`Client::indices_get_field_mapping_with_index`]: super::OsClient::indices_get_field_mapping_with_index
+///[`Client::Indices::get_field_mapping_with_index`]: super::OsClient::Indices::get_field_mapping_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesGetFieldMappingWithIndex<'a> {
   client: &'a super::OsClient,
@@ -9556,9 +9556,9 @@ impl<'a> IndicesGetFieldMappingWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_open`]
+///Builder for [`Client::Indices::open`]
 ///
-///[`Client::indices_open`]: super::OsClient::indices_open
+///[`Client::Indices::open`]: super::OsClient::Indices::open
 #[derive(Debug, Clone)]
 pub struct IndicesOpen<'a> {
   client: &'a super::OsClient,
@@ -9705,9 +9705,9 @@ impl<'a> IndicesOpen<'a> {
     }
   }
 }
-///Builder for [`Client::indices_recovery_with_index`]
+///Builder for [`Client::Indices::recovery_with_index`]
 ///
-///[`Client::indices_recovery_with_index`]: super::OsClient::indices_recovery_with_index
+///[`Client::Indices::recovery_with_index`]: super::OsClient::Indices::recovery_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesRecoveryWithIndex<'a> {
   client: &'a super::OsClient,
@@ -9786,9 +9786,9 @@ impl<'a> IndicesRecoveryWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_refresh_get_with_index`]
+///Builder for [`Client::Indices::refresh_get_with_index`]
 ///
-///[`Client::indices_refresh_get_with_index`]: super::OsClient::indices_refresh_get_with_index
+///[`Client::Indices::refresh_get_with_index`]: super::OsClient::Indices::refresh_get_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesRefreshGetWithIndex<'a> {
   client: &'a super::OsClient,
@@ -9884,9 +9884,9 @@ impl<'a> IndicesRefreshGetWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_refresh_post_with_index`]
+///Builder for [`Client::Indices::refresh_post_with_index`]
 ///
-///[`Client::indices_refresh_post_with_index`]: super::OsClient::indices_refresh_post_with_index
+///[`Client::Indices::refresh_post_with_index`]: super::OsClient::Indices::refresh_post_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesRefreshPostWithIndex<'a> {
   client: &'a super::OsClient,
@@ -9982,9 +9982,9 @@ impl<'a> IndicesRefreshPostWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_segments_with_index`]
+///Builder for [`Client::Indices::segments_with_index`]
 ///
-///[`Client::indices_segments_with_index`]: super::OsClient::indices_segments_with_index
+///[`Client::Indices::segments_with_index`]: super::OsClient::Indices::segments_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesSegmentsWithIndex<'a> {
   client: &'a super::OsClient,
@@ -10097,9 +10097,9 @@ impl<'a> IndicesSegmentsWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_settings_with_index`]
+///Builder for [`Client::Indices::get_settings_with_index`]
 ///
-///[`Client::indices_get_settings_with_index`]: super::OsClient::indices_get_settings_with_index
+///[`Client::Indices::get_settings_with_index`]: super::OsClient::Indices::get_settings_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesGetSettingsWithIndex<'a> {
   client: &'a super::OsClient,
@@ -10280,9 +10280,9 @@ impl<'a> IndicesGetSettingsWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_put_settings_with_index`]
+///Builder for [`Client::Indices::put_settings_with_index`]
 ///
-///[`Client::indices_put_settings_with_index`]: super::OsClient::indices_put_settings_with_index
+///[`Client::Indices::put_settings_with_index`]: super::OsClient::Indices::put_settings_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesPutSettingsWithIndex<'a> {
   client: &'a super::OsClient,
@@ -10476,9 +10476,9 @@ impl<'a> IndicesPutSettingsWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_settings_with_index_name`]
+///Builder for [`Client::Indices::get_settings_with_index_name`]
 ///
-///[`Client::indices_get_settings_with_index_name`]: super::OsClient::indices_get_settings_with_index_name
+///[`Client::Indices::get_settings_with_index_name`]: super::OsClient::Indices::get_settings_with_index_name
 #[derive(Debug, Clone)]
 pub struct IndicesGetSettingsWithIndexName<'a> {
   client: &'a super::OsClient,
@@ -10677,9 +10677,9 @@ impl<'a> IndicesGetSettingsWithIndexName<'a> {
     }
   }
 }
-///Builder for [`Client::indices_shard_stores_with_index`]
+///Builder for [`Client::Indices::shard_stores_with_index`]
 ///
-///[`Client::indices_shard_stores_with_index`]: super::OsClient::indices_shard_stores_with_index
+///[`Client::Indices::shard_stores_with_index`]: super::OsClient::Indices::shard_stores_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesShardStoresWithIndex<'a> {
   client: &'a super::OsClient,
@@ -10792,9 +10792,9 @@ impl<'a> IndicesShardStoresWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_shrink_put`]
+///Builder for [`Client::Indices::shrink_put`]
 ///
-///[`Client::indices_shrink_put`]: super::OsClient::indices_shrink_put
+///[`Client::Indices::shrink_put`]: super::OsClient::Indices::shrink_put
 #[derive(Debug, Clone)]
 pub struct IndicesShrinkPut<'a> {
   client: &'a super::OsClient,
@@ -10955,9 +10955,9 @@ impl<'a> IndicesShrinkPut<'a> {
     }
   }
 }
-///Builder for [`Client::indices_shrink_post`]
+///Builder for [`Client::Indices::shrink_post`]
 ///
-///[`Client::indices_shrink_post`]: super::OsClient::indices_shrink_post
+///[`Client::Indices::shrink_post`]: super::OsClient::Indices::shrink_post
 #[derive(Debug, Clone)]
 pub struct IndicesShrinkPost<'a> {
   client: &'a super::OsClient,
@@ -11118,9 +11118,9 @@ impl<'a> IndicesShrinkPost<'a> {
     }
   }
 }
-///Builder for [`Client::indices_split_put`]
+///Builder for [`Client::Indices::split_put`]
 ///
-///[`Client::indices_split_put`]: super::OsClient::indices_split_put
+///[`Client::Indices::split_put`]: super::OsClient::Indices::split_put
 #[derive(Debug, Clone)]
 pub struct IndicesSplitPut<'a> {
   client: &'a super::OsClient,
@@ -11281,9 +11281,9 @@ impl<'a> IndicesSplitPut<'a> {
     }
   }
 }
-///Builder for [`Client::indices_split_post`]
+///Builder for [`Client::Indices::split_post`]
 ///
-///[`Client::indices_split_post`]: super::OsClient::indices_split_post
+///[`Client::Indices::split_post`]: super::OsClient::Indices::split_post
 #[derive(Debug, Clone)]
 pub struct IndicesSplitPost<'a> {
   client: &'a super::OsClient,
@@ -11444,9 +11444,9 @@ impl<'a> IndicesSplitPost<'a> {
     }
   }
 }
-///Builder for [`Client::indices_stats_with_index`]
+///Builder for [`Client::Indices::stats_with_index`]
 ///
-///[`Client::indices_stats_with_index`]: super::OsClient::indices_stats_with_index
+///[`Client::Indices::stats_with_index`]: super::OsClient::Indices::stats_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesStatsWithIndex<'a> {
   client: &'a super::OsClient,
@@ -11644,9 +11644,9 @@ impl<'a> IndicesStatsWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_stats_with_index_metric`]
+///Builder for [`Client::Indices::stats_with_index_metric`]
 ///
-///[`Client::indices_stats_with_index_metric`]: super::OsClient::indices_stats_with_index_metric
+///[`Client::Indices::stats_with_index_metric`]: super::OsClient::Indices::stats_with_index_metric
 #[derive(Debug, Clone)]
 pub struct IndicesStatsWithIndexMetric<'a> {
   client: &'a super::OsClient,
@@ -11862,9 +11862,9 @@ impl<'a> IndicesStatsWithIndexMetric<'a> {
     }
   }
 }
-///Builder for [`Client::indices_get_upgrade_with_index`]
+///Builder for [`Client::Indices::get_upgrade_with_index`]
 ///
-///[`Client::indices_get_upgrade_with_index`]: super::OsClient::indices_get_upgrade_with_index
+///[`Client::Indices::get_upgrade_with_index`]: super::OsClient::Indices::get_upgrade_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesGetUpgradeWithIndex<'a> {
   client: &'a super::OsClient,
@@ -11960,9 +11960,9 @@ impl<'a> IndicesGetUpgradeWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_upgrade_with_index`]
+///Builder for [`Client::Indices::upgrade_with_index`]
 ///
-///[`Client::indices_upgrade_with_index`]: super::OsClient::indices_upgrade_with_index
+///[`Client::Indices::upgrade_with_index`]: super::OsClient::Indices::upgrade_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesUpgradeWithIndex<'a> {
   client: &'a super::OsClient,
@@ -12092,9 +12092,9 @@ impl<'a> IndicesUpgradeWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_validate_query_get_with_index`]
+///Builder for [`Client::Indices::validate_query_get_with_index`]
 ///
-///[`Client::indices_validate_query_get_with_index`]: super::OsClient::indices_validate_query_get_with_index
+///[`Client::Indices::validate_query_get_with_index`]: super::OsClient::Indices::validate_query_get_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesValidateQueryGetWithIndex<'a> {
   client: &'a super::OsClient,
@@ -12343,9 +12343,9 @@ impl<'a> IndicesValidateQueryGetWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::indices_validate_query_post_with_index`]
+///Builder for [`Client::Indices::validate_query_post_with_index`]
 ///
-///[`Client::indices_validate_query_post_with_index`]: super::OsClient::indices_validate_query_post_with_index
+///[`Client::Indices::validate_query_post_with_index`]: super::OsClient::Indices::validate_query_post_with_index
 #[derive(Debug, Clone)]
 pub struct IndicesValidateQueryPostWithIndex<'a> {
   client: &'a super::OsClient,

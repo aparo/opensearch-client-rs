@@ -11,9 +11,9 @@ use crate::{
   ReqwestResponse, ResponseValue,
 };
 
-///Builder for [`Client::cluster_allocation_explain_get`]
+///Builder for [`Client::Cluster::allocation_explain_get`]
 ///
-///[`Client::cluster_allocation_explain_get`]: super::OsClient::cluster_allocation_explain_get
+///[`Client::Cluster::allocation_explain_get`]: super::OsClient::Cluster::allocation_explain_get
 #[derive(Debug, Clone)]
 pub struct ClusterAllocationExplainGet<'a> {
   client: &'a super::OsClient,
@@ -79,9 +79,9 @@ impl<'a> ClusterAllocationExplainGet<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_allocation_explain_post`]
+///Builder for [`Client::Cluster::allocation_explain_post`]
 ///
-///[`Client::cluster_allocation_explain_post`]: super::OsClient::cluster_allocation_explain_post
+///[`Client::Cluster::allocation_explain_post`]: super::OsClient::Cluster::allocation_explain_post
 #[derive(Debug, Clone)]
 pub struct ClusterAllocationExplainPost<'a> {
   client: &'a super::OsClient,
@@ -160,9 +160,9 @@ impl<'a> ClusterAllocationExplainPost<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_delete_decommission_awareness`]
+///Builder for [`Client::Cluster::delete_decommission_awareness`]
 ///
-///[`Client::cluster_delete_decommission_awareness`]: super::OsClient::cluster_delete_decommission_awareness
+///[`Client::Cluster::delete_decommission_awareness`]: super::OsClient::Cluster::delete_decommission_awareness
 #[derive(Debug, Clone)]
 pub struct ClusterDeleteDecommissionAwareness<'a> {
   client: &'a super::OsClient,
@@ -189,9 +189,9 @@ impl<'a> ClusterDeleteDecommissionAwareness<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_get_decommission_awareness`]
+///Builder for [`Client::Cluster::get_decommission_awareness`]
 ///
-///[`Client::cluster_get_decommission_awareness`]: super::OsClient::cluster_get_decommission_awareness
+///[`Client::Cluster::get_decommission_awareness`]: super::OsClient::Cluster::get_decommission_awareness
 #[derive(Debug, Clone)]
 pub struct ClusterGetDecommissionAwareness<'a> {
   client: &'a super::OsClient,
@@ -242,9 +242,9 @@ impl<'a> ClusterGetDecommissionAwareness<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_put_decommission_awareness`]
+///Builder for [`Client::Cluster::put_decommission_awareness`]
 ///
-///[`Client::cluster_put_decommission_awareness`]: super::OsClient::cluster_put_decommission_awareness
+///[`Client::Cluster::put_decommission_awareness`]: super::OsClient::Cluster::put_decommission_awareness
 #[derive(Debug, Clone)]
 pub struct ClusterPutDecommissionAwareness<'a> {
   client: &'a super::OsClient,
@@ -310,9 +310,9 @@ impl<'a> ClusterPutDecommissionAwareness<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_health`]
+///Builder for [`Client::Cluster::health`]
 ///
-///[`Client::cluster_health`]: super::OsClient::cluster_health
+///[`Client::Cluster::health`]: super::OsClient::Cluster::health
 #[derive(Debug, Clone)]
 pub struct ClusterHealth<'a> {
   client: &'a super::OsClient,
@@ -582,9 +582,9 @@ impl<'a> ClusterHealth<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_health_with_index`]
+///Builder for [`Client::Cluster::health_with_index`]
 ///
-///[`Client::cluster_health_with_index`]: super::OsClient::cluster_health_with_index
+///[`Client::Cluster::health_with_index`]: super::OsClient::Cluster::health_with_index
 #[derive(Debug, Clone)]
 pub struct ClusterHealthWithIndex<'a> {
   client: &'a super::OsClient,
@@ -867,9 +867,9 @@ impl<'a> ClusterHealthWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_pending_tasks`]
+///Builder for [`Client::Cluster::pending_tasks`]
 ///
-///[`Client::cluster_pending_tasks`]: super::OsClient::cluster_pending_tasks
+///[`Client::Cluster::pending_tasks`]: super::OsClient::Cluster::pending_tasks
 #[derive(Debug, Clone)]
 pub struct ClusterPendingTasks<'a> {
   client: &'a super::OsClient,
@@ -952,9 +952,9 @@ impl<'a> ClusterPendingTasks<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_reroute`]
+///Builder for [`Client::Cluster::reroute`]
 ///
-///[`Client::cluster_reroute`]: super::OsClient::cluster_reroute
+///[`Client::Cluster::reroute`]: super::OsClient::Cluster::reroute
 #[derive(Debug, Clone)]
 pub struct ClusterReroute<'a> {
   client: &'a super::OsClient,
@@ -1118,9 +1118,9 @@ impl<'a> ClusterReroute<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_delete_weighted_routing`]
+///Builder for [`Client::Cluster::delete_weighted_routing`]
 ///
-///[`Client::cluster_delete_weighted_routing`]: super::OsClient::cluster_delete_weighted_routing
+///[`Client::Cluster::delete_weighted_routing`]: super::OsClient::Cluster::delete_weighted_routing
 #[derive(Debug, Clone)]
 pub struct ClusterDeleteWeightedRouting<'a> {
   client: &'a super::OsClient,
@@ -1147,9 +1147,9 @@ impl<'a> ClusterDeleteWeightedRouting<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_get_weighted_routing`]
+///Builder for [`Client::Cluster::get_weighted_routing`]
 ///
-///[`Client::cluster_get_weighted_routing`]: super::OsClient::cluster_get_weighted_routing
+///[`Client::Cluster::get_weighted_routing`]: super::OsClient::Cluster::get_weighted_routing
 #[derive(Debug, Clone)]
 pub struct ClusterGetWeightedRouting<'a> {
   client: &'a super::OsClient,
@@ -1195,9 +1195,9 @@ impl<'a> ClusterGetWeightedRouting<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_put_weighted_routing`]
+///Builder for [`Client::Cluster::put_weighted_routing`]
 ///
-///[`Client::cluster_put_weighted_routing`]: super::OsClient::cluster_put_weighted_routing
+///[`Client::Cluster::put_weighted_routing`]: super::OsClient::Cluster::put_weighted_routing
 #[derive(Debug, Clone)]
 pub struct ClusterPutWeightedRouting<'a> {
   client: &'a super::OsClient,
@@ -1243,9 +1243,9 @@ impl<'a> ClusterPutWeightedRouting<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_get_settings`]
+///Builder for [`Client::Cluster::get_settings`]
 ///
-///[`Client::cluster_get_settings`]: super::OsClient::cluster_get_settings
+///[`Client::Cluster::get_settings`]: super::OsClient::Cluster::get_settings
 #[derive(Debug, Clone)]
 pub struct ClusterGetSettings<'a> {
   client: &'a super::OsClient,
@@ -1370,9 +1370,9 @@ impl<'a> ClusterGetSettings<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_put_settings`]
+///Builder for [`Client::Cluster::put_settings`]
 ///
-///[`Client::cluster_put_settings`]: super::OsClient::cluster_put_settings
+///[`Client::Cluster::put_settings`]: super::OsClient::Cluster::put_settings
 #[derive(Debug, Clone)]
 pub struct ClusterPutSettings<'a> {
   client: &'a super::OsClient,
@@ -1505,9 +1505,9 @@ impl<'a> ClusterPutSettings<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_state`]
+///Builder for [`Client::Cluster::state`]
 ///
-///[`Client::cluster_state`]: super::OsClient::cluster_state
+///[`Client::Cluster::state`]: super::OsClient::Cluster::state
 #[derive(Debug, Clone)]
 pub struct ClusterState<'a> {
   client: &'a super::OsClient,
@@ -1692,9 +1692,9 @@ impl<'a> ClusterState<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_state_with_metric`]
+///Builder for [`Client::Cluster::state_with_metric`]
 ///
-///[`Client::cluster_state_with_metric`]: super::OsClient::cluster_state_with_metric
+///[`Client::Cluster::state_with_metric`]: super::OsClient::Cluster::state_with_metric
 #[derive(Debug, Clone)]
 pub struct ClusterStateWithMetric<'a> {
   client: &'a super::OsClient,
@@ -1892,9 +1892,9 @@ impl<'a> ClusterStateWithMetric<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_state_with_index_metric`]
+///Builder for [`Client::Cluster::state_with_index_metric`]
 ///
-///[`Client::cluster_state_with_index_metric`]: super::OsClient::cluster_state_with_index_metric
+///[`Client::Cluster::state_with_index_metric`]: super::OsClient::Cluster::state_with_index_metric
 #[derive(Debug, Clone)]
 pub struct ClusterStateWithIndexMetric<'a> {
   client: &'a super::OsClient,
@@ -2110,9 +2110,9 @@ impl<'a> ClusterStateWithIndexMetric<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_stats`]
+///Builder for [`Client::Cluster::stats`]
 ///
-///[`Client::cluster_stats`]: super::OsClient::cluster_stats
+///[`Client::Cluster::stats`]: super::OsClient::Cluster::stats
 #[derive(Debug, Clone)]
 pub struct ClusterStats<'a> {
   client: &'a super::OsClient,
@@ -2178,9 +2178,9 @@ impl<'a> ClusterStats<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_stats_with_node_id`]
+///Builder for [`Client::Cluster::stats_with_node_id`]
 ///
-///[`Client::cluster_stats_with_node_id`]: super::OsClient::cluster_stats_with_node_id
+///[`Client::Cluster::stats_with_node_id`]: super::OsClient::Cluster::stats_with_node_id
 #[derive(Debug, Clone)]
 pub struct ClusterStatsWithNodeId<'a> {
   client: &'a super::OsClient,
@@ -2263,9 +2263,9 @@ impl<'a> ClusterStatsWithNodeId<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_post_voting_config_exclusions`]
+///Builder for [`Client::Cluster::post_voting_config_exclusions`]
 ///
-///[`Client::cluster_post_voting_config_exclusions`]: super::OsClient::cluster_post_voting_config_exclusions
+///[`Client::Cluster::post_voting_config_exclusions`]: super::OsClient::Cluster::post_voting_config_exclusions
 #[derive(Debug, Clone)]
 pub struct ClusterPostVotingConfigExclusions<'a> {
   client: &'a super::OsClient,
@@ -2348,9 +2348,9 @@ impl<'a> ClusterPostVotingConfigExclusions<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_delete_voting_config_exclusions`]
+///Builder for [`Client::Cluster::delete_voting_config_exclusions`]
 ///
-///[`Client::cluster_delete_voting_config_exclusions`]: super::OsClient::cluster_delete_voting_config_exclusions
+///[`Client::Cluster::delete_voting_config_exclusions`]: super::OsClient::Cluster::delete_voting_config_exclusions
 #[derive(Debug, Clone)]
 pub struct ClusterDeleteVotingConfigExclusions<'a> {
   client: &'a super::OsClient,
@@ -2399,9 +2399,9 @@ impl<'a> ClusterDeleteVotingConfigExclusions<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_get_component_template`]
+///Builder for [`Client::Cluster::get_component_template`]
 ///
-///[`Client::cluster_get_component_template`]: super::OsClient::cluster_get_component_template
+///[`Client::Cluster::get_component_template`]: super::OsClient::Cluster::get_component_template
 #[derive(Debug, Clone)]
 pub struct ClusterGetComponentTemplate<'a> {
   client: &'a super::OsClient,
@@ -2484,9 +2484,9 @@ impl<'a> ClusterGetComponentTemplate<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_get_component_template_with_name`]
+///Builder for [`Client::Cluster::get_component_template_with_name`]
 ///
-///[`Client::cluster_get_component_template_with_name`]: super::OsClient::cluster_get_component_template_with_name
+///[`Client::Cluster::get_component_template_with_name`]: super::OsClient::Cluster::get_component_template_with_name
 #[derive(Debug, Clone)]
 pub struct ClusterGetComponentTemplateWithName<'a> {
   client: &'a super::OsClient,
@@ -2586,9 +2586,9 @@ impl<'a> ClusterGetComponentTemplateWithName<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_put_component_template_put`]
+///Builder for [`Client::Cluster::put_component_template_put`]
 ///
-///[`Client::cluster_put_component_template_put`]: super::OsClient::cluster_put_component_template_put
+///[`Client::Cluster::put_component_template_put`]: super::OsClient::Cluster::put_component_template_put
 #[derive(Debug, Clone)]
 pub struct ClusterPutComponentTemplatePut<'a> {
   client: &'a super::OsClient,
@@ -2718,9 +2718,9 @@ impl<'a> ClusterPutComponentTemplatePut<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_put_component_template_post`]
+///Builder for [`Client::Cluster::put_component_template_post`]
 ///
-///[`Client::cluster_put_component_template_post`]: super::OsClient::cluster_put_component_template_post
+///[`Client::Cluster::put_component_template_post`]: super::OsClient::Cluster::put_component_template_post
 #[derive(Debug, Clone)]
 pub struct ClusterPutComponentTemplatePost<'a> {
   client: &'a super::OsClient,
@@ -2850,9 +2850,9 @@ impl<'a> ClusterPutComponentTemplatePost<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_delete_component_template`]
+///Builder for [`Client::Cluster::delete_component_template`]
 ///
-///[`Client::cluster_delete_component_template`]: super::OsClient::cluster_delete_component_template
+///[`Client::Cluster::delete_component_template`]: super::OsClient::Cluster::delete_component_template
 #[derive(Debug, Clone)]
 pub struct ClusterDeleteComponentTemplate<'a> {
   client: &'a super::OsClient,
@@ -2952,9 +2952,9 @@ impl<'a> ClusterDeleteComponentTemplate<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_exists_component_template`]
+///Builder for [`Client::Cluster::exists_component_template`]
 ///
-///[`Client::cluster_exists_component_template`]: super::OsClient::cluster_exists_component_template
+///[`Client::Cluster::exists_component_template`]: super::OsClient::Cluster::exists_component_template
 #[derive(Debug, Clone)]
 pub struct ClusterExistsComponentTemplate<'a> {
   client: &'a super::OsClient,
@@ -3037,9 +3037,9 @@ impl<'a> ClusterExistsComponentTemplate<'a> {
     }
   }
 }
-///Builder for [`Client::cluster_remote_info`]
+///Builder for [`Client::Cluster::remote_info`]
 ///
-///[`Client::cluster_remote_info`]: super::OsClient::cluster_remote_info
+///[`Client::Cluster::remote_info`]: super::OsClient::Cluster::remote_info
 #[derive(Debug, Clone)]
 pub struct ClusterRemoteInfo<'a> {
   client: &'a super::OsClient,

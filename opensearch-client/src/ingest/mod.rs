@@ -19,7 +19,7 @@ impl<'a> Ingest<'a> {
   ///   executed pipeline.
   /// - `body`
   ///```ignore
-  /// let response = client.simulate()
+  /// let response = client.ingest().simulate()
   ///    .verbose(verbose)
   ///    .body(body)
   ///    .send()
@@ -39,7 +39,7 @@ impl<'a> Ingest<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.get_pipeline()
+  /// let response = client.ingest().get_pipeline()
   ///    .id(id)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
@@ -62,7 +62,7 @@ impl<'a> Ingest<'a> {
   /// - `timeout`: Operation timeout.
   /// - `body`
   ///```ignore
-  /// let response = client.put_pipeline()
+  /// let response = client.ingest().put_pipeline()
   ///    .id(id)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
@@ -86,7 +86,7 @@ impl<'a> Ingest<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.delete_pipeline()
+  /// let response = client.ingest().delete_pipeline()
   ///    .id(id)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
@@ -108,7 +108,7 @@ impl<'a> Ingest<'a> {
   ///   executed pipeline.
   /// - `body`
   ///```ignore
-  /// let response = client.simulate_with_id()
+  /// let response = client.ingest().simulate_with_id()
   ///    .id(id)
   ///    .verbose(verbose)
   ///    .body(body)
@@ -124,7 +124,7 @@ impl<'a> Ingest<'a> {
   ///Sends a `GET` request to `/_ingest/processor/grok`
   ///
   ///```ignore
-  /// let response = client.processor_grok()
+  /// let response = client.ingest().processor_grok()
   ///    .send()
   ///    .await;
   /// ```

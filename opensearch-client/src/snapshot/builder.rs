@@ -11,9 +11,9 @@ use crate::{
   ReqwestResponse, ResponseValue,
 };
 
-///Builder for [`Client::snapshot_get_repository`]
+///Builder for [`Client::Snapshot::get_repository`]
 ///
-///[`Client::snapshot_get_repository`]: super::OsClient::snapshot_get_repository
+///[`Client::Snapshot::get_repository`]: super::OsClient::Snapshot::get_repository
 #[derive(Debug, Clone)]
 pub struct SnapshotGetRepository<'a> {
   client: &'a super::OsClient,
@@ -96,9 +96,9 @@ impl<'a> SnapshotGetRepository<'a> {
     }
   }
 }
-///Builder for [`Client::snapshot_status`]
+///Builder for [`Client::Snapshot::status`]
 ///
-///[`Client::snapshot_status`]: super::OsClient::snapshot_status
+///[`Client::Snapshot::status`]: super::OsClient::Snapshot::status
 #[derive(Debug, Clone)]
 pub struct SnapshotStatus<'a> {
   client: &'a super::OsClient,
@@ -181,9 +181,9 @@ impl<'a> SnapshotStatus<'a> {
     }
   }
 }
-///Builder for [`Client::snapshot_get_repository_with_repository`]
+///Builder for [`Client::Snapshot::get_repository_with_repository`]
 ///
-///[`Client::snapshot_get_repository_with_repository`]: super::OsClient::snapshot_get_repository_with_repository
+///[`Client::Snapshot::get_repository_with_repository`]: super::OsClient::Snapshot::get_repository_with_repository
 #[derive(Debug, Clone)]
 pub struct SnapshotGetRepositoryWithRepository<'a> {
   client: &'a super::OsClient,
@@ -279,9 +279,9 @@ impl<'a> SnapshotGetRepositoryWithRepository<'a> {
     }
   }
 }
-///Builder for [`Client::snapshot_create_repository_put`]
+///Builder for [`Client::Snapshot::create_repository_put`]
 ///
-///[`Client::snapshot_create_repository_put`]: super::OsClient::snapshot_create_repository_put
+///[`Client::Snapshot::create_repository_put`]: super::OsClient::Snapshot::create_repository_put
 #[derive(Debug, Clone)]
 pub struct SnapshotCreateRepositoryPut<'a> {
   client: &'a super::OsClient,
@@ -407,9 +407,9 @@ impl<'a> SnapshotCreateRepositoryPut<'a> {
     }
   }
 }
-///Builder for [`Client::snapshot_create_repository_post`]
+///Builder for [`Client::Snapshot::create_repository_post`]
 ///
-///[`Client::snapshot_create_repository_post`]: super::OsClient::snapshot_create_repository_post
+///[`Client::Snapshot::create_repository_post`]: super::OsClient::Snapshot::create_repository_post
 #[derive(Debug, Clone)]
 pub struct SnapshotCreateRepositoryPost<'a> {
   client: &'a super::OsClient,
@@ -535,9 +535,9 @@ impl<'a> SnapshotCreateRepositoryPost<'a> {
     }
   }
 }
-///Builder for [`Client::snapshot_delete_repository`]
+///Builder for [`Client::Snapshot::delete_repository`]
 ///
-///[`Client::snapshot_delete_repository`]: super::OsClient::snapshot_delete_repository
+///[`Client::Snapshot::delete_repository`]: super::OsClient::Snapshot::delete_repository
 #[derive(Debug, Clone)]
 pub struct SnapshotDeleteRepository<'a> {
   client: &'a super::OsClient,
@@ -633,9 +633,9 @@ impl<'a> SnapshotDeleteRepository<'a> {
     }
   }
 }
-///Builder for [`Client::snapshot_cleanup_repository`]
+///Builder for [`Client::Snapshot::cleanup_repository`]
 ///
-///[`Client::snapshot_cleanup_repository`]: super::OsClient::snapshot_cleanup_repository
+///[`Client::Snapshot::cleanup_repository`]: super::OsClient::Snapshot::cleanup_repository
 #[derive(Debug, Clone)]
 pub struct SnapshotCleanupRepository<'a> {
   client: &'a super::OsClient,
@@ -735,9 +735,9 @@ impl<'a> SnapshotCleanupRepository<'a> {
     }
   }
 }
-///Builder for [`Client::snapshot_status_with_repository`]
+///Builder for [`Client::Snapshot::status_with_repository`]
 ///
-///[`Client::snapshot_status_with_repository`]: super::OsClient::snapshot_status_with_repository
+///[`Client::Snapshot::status_with_repository`]: super::OsClient::Snapshot::status_with_repository
 #[derive(Debug, Clone)]
 pub struct SnapshotStatusWithRepository<'a> {
   client: &'a super::OsClient,
@@ -837,9 +837,9 @@ impl<'a> SnapshotStatusWithRepository<'a> {
     }
   }
 }
-///Builder for [`Client::snapshot_verify_repository`]
+///Builder for [`Client::Snapshot::verify_repository`]
 ///
-///[`Client::snapshot_verify_repository`]: super::OsClient::snapshot_verify_repository
+///[`Client::Snapshot::verify_repository`]: super::OsClient::Snapshot::verify_repository
 #[derive(Debug, Clone)]
 pub struct SnapshotVerifyRepository<'a> {
   client: &'a super::OsClient,
@@ -939,9 +939,9 @@ impl<'a> SnapshotVerifyRepository<'a> {
     }
   }
 }
-///Builder for [`Client::snapshot_get`]
+///Builder for [`Client::Snapshot::get`]
 ///
-///[`Client::snapshot_get`]: super::OsClient::snapshot_get
+///[`Client::Snapshot::get`]: super::OsClient::Snapshot::get
 #[derive(Debug, Clone)]
 pub struct SnapshotGet<'a> {
   client: &'a super::OsClient,
@@ -1072,9 +1072,9 @@ impl<'a> SnapshotGet<'a> {
     }
   }
 }
-///Builder for [`Client::snapshot_create_put`]
+///Builder for [`Client::Snapshot::create_put`]
 ///
-///[`Client::snapshot_create_put`]: super::OsClient::snapshot_create_put
+///[`Client::Snapshot::create_put`]: super::OsClient::Snapshot::create_put
 #[derive(Debug, Clone)]
 pub struct SnapshotCreatePut<'a> {
   client: &'a super::OsClient,
@@ -1201,9 +1201,9 @@ impl<'a> SnapshotCreatePut<'a> {
     }
   }
 }
-///Builder for [`Client::snapshot_create_post`]
+///Builder for [`Client::Snapshot::create_post`]
 ///
-///[`Client::snapshot_create_post`]: super::OsClient::snapshot_create_post
+///[`Client::Snapshot::create_post`]: super::OsClient::Snapshot::create_post
 #[derive(Debug, Clone)]
 pub struct SnapshotCreatePost<'a> {
   client: &'a super::OsClient,
@@ -1330,9 +1330,9 @@ impl<'a> SnapshotCreatePost<'a> {
     }
   }
 }
-///Builder for [`Client::snapshot_delete`]
+///Builder for [`Client::Snapshot::delete`]
 ///
-///[`Client::snapshot_delete`]: super::OsClient::snapshot_delete
+///[`Client::Snapshot::delete`]: super::OsClient::Snapshot::delete
 #[derive(Debug, Clone)]
 pub struct SnapshotDelete<'a> {
   client: &'a super::OsClient,
@@ -1429,9 +1429,9 @@ impl<'a> SnapshotDelete<'a> {
     }
   }
 }
-///Builder for [`Client::snapshot_clone`]
+///Builder for [`Client::Snapshot::clone`]
 ///
-///[`Client::snapshot_clone`]: super::OsClient::snapshot_clone
+///[`Client::Snapshot::clone`]: super::OsClient::Snapshot::clone
 #[derive(Debug, Clone)]
 pub struct SnapshotClone<'a> {
   client: &'a super::OsClient,
@@ -1556,9 +1556,9 @@ impl<'a> SnapshotClone<'a> {
     }
   }
 }
-///Builder for [`Client::snapshot_restore`]
+///Builder for [`Client::Snapshot::restore`]
 ///
-///[`Client::snapshot_restore`]: super::OsClient::snapshot_restore
+///[`Client::Snapshot::restore`]: super::OsClient::Snapshot::restore
 #[derive(Debug, Clone)]
 pub struct SnapshotRestore<'a> {
   client: &'a super::OsClient,
@@ -1686,9 +1686,9 @@ impl<'a> SnapshotRestore<'a> {
     }
   }
 }
-///Builder for [`Client::snapshot_status_with_repository_snapshot`]
+///Builder for [`Client::Snapshot::status_with_repository_snapshot`]
 ///
-///[`Client::snapshot_status_with_repository_snapshot`]: super::OsClient::snapshot_status_with_repository_snapshot
+///[`Client::Snapshot::status_with_repository_snapshot`]: super::OsClient::Snapshot::status_with_repository_snapshot
 #[derive(Debug, Clone)]
 pub struct SnapshotStatusWithRepositorySnapshot<'a> {
   client: &'a super::OsClient,

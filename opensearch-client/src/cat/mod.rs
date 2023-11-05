@@ -18,13 +18,13 @@ impl<'a> Cat<'a> {
   /// - `help`: Return help information.
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   ///```ignore
-  /// let response = client.cat_help()
+  /// let response = client.cat().help()
   ///    .help(help)
   ///    .s(s)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_help(&self) -> builder::CatHelp {
+  pub fn help(&self) -> builder::CatHelp {
     builder::CatHelp::new(self.os_client)
   }
 
@@ -44,7 +44,7 @@ impl<'a> Cat<'a> {
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_aliases()
+  /// let response = client.cat().aliases()
   ///    .expand_wildcards(expand_wildcards)
   ///    .format(format)
   ///    .h(h)
@@ -55,7 +55,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_aliases(&self) -> builder::CatAliases {
+  pub fn aliases(&self) -> builder::CatAliases {
     builder::CatAliases::new(self.os_client)
   }
 
@@ -76,7 +76,7 @@ impl<'a> Cat<'a> {
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_aliases_with_name()
+  /// let response = client.cat().aliases_with_name()
   ///    .name(name)
   ///    .expand_wildcards(expand_wildcards)
   ///    .format(format)
@@ -88,7 +88,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_aliases_with_name(&self) -> builder::CatAliasesWithName {
+  pub fn aliases_with_name(&self) -> builder::CatAliasesWithName {
     builder::CatAliasesWithName::new(self.os_client)
   }
 
@@ -110,7 +110,7 @@ impl<'a> Cat<'a> {
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_allocation()
+  /// let response = client.cat().allocation()
   ///    .bytes(bytes)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .format(format)
@@ -123,7 +123,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_allocation(&self) -> builder::CatAllocation {
+  pub fn allocation(&self) -> builder::CatAllocation {
     builder::CatAllocation::new(self.os_client)
   }
 
@@ -147,7 +147,7 @@ impl<'a> Cat<'a> {
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_allocation_with_node_id()
+  /// let response = client.cat().allocation_with_node_id()
   ///    .node_id(node_id)
   ///    .bytes(bytes)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -161,7 +161,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_allocation_with_node_id(&self) -> builder::CatAllocationWithNodeId {
+  pub fn allocation_with_node_id(&self) -> builder::CatAllocationWithNodeId {
     builder::CatAllocationWithNodeId::new(self.os_client)
   }
 
@@ -181,7 +181,7 @@ impl<'a> Cat<'a> {
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_cluster_manager()
+  /// let response = client.cat().cluster_manager()
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .format(format)
   ///    .h(h)
@@ -193,7 +193,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_cluster_manager(&self) -> builder::CatClusterManager {
+  pub fn cluster_manager(&self) -> builder::CatClusterManager {
     builder::CatClusterManager::new(self.os_client)
   }
 
@@ -209,7 +209,7 @@ impl<'a> Cat<'a> {
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_count()
+  /// let response = client.cat().count()
   ///    .format(format)
   ///    .h(h)
   ///    .help(help)
@@ -218,7 +218,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_count(&self) -> builder::CatCount {
+  pub fn count(&self) -> builder::CatCount {
     builder::CatCount::new(self.os_client)
   }
 
@@ -236,7 +236,7 @@ impl<'a> Cat<'a> {
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_count_with_index()
+  /// let response = client.cat().count_with_index()
   ///    .index(index)
   ///    .format(format)
   ///    .h(h)
@@ -246,7 +246,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_count_with_index(&self) -> builder::CatCountWithIndex {
+  pub fn count_with_index(&self) -> builder::CatCountWithIndex {
     builder::CatCountWithIndex::new(self.os_client)
   }
 
@@ -264,7 +264,7 @@ impl<'a> Cat<'a> {
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_fielddata()
+  /// let response = client.cat().fielddata()
   ///    .bytes(bytes)
   ///    .fields(fields)
   ///    .format(format)
@@ -275,7 +275,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_fielddata(&self) -> builder::CatFielddata {
+  pub fn fielddata(&self) -> builder::CatFielddata {
     builder::CatFielddata::new(self.os_client)
   }
 
@@ -293,7 +293,7 @@ impl<'a> Cat<'a> {
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_fielddata_with_fields()
+  /// let response = client.cat().fielddata_with_fields()
   ///    .bytes(bytes)
   ///    .fields(fields)
   ///    .format(format)
@@ -304,7 +304,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_fielddata_with_fields(&self) -> builder::CatFielddataWithFields {
+  pub fn fielddata_with_fields(&self) -> builder::CatFielddataWithFields {
     builder::CatFielddataWithFields::new(self.os_client)
   }
 
@@ -321,7 +321,7 @@ impl<'a> Cat<'a> {
   /// - `ts`: Set to false to disable timestamping.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_health()
+  /// let response = client.cat().health()
   ///    .format(format)
   ///    .h(h)
   ///    .help(help)
@@ -332,7 +332,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_health(&self) -> builder::CatHealth {
+  pub fn health(&self) -> builder::CatHealth {
     builder::CatHealth::new(self.os_client)
   }
 
@@ -362,7 +362,7 @@ impl<'a> Cat<'a> {
   /// - `time`: The unit in which to display time values.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_indices()
+  /// let response = client.cat().indices()
   ///    .bytes(bytes)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .expand_wildcards(expand_wildcards)
@@ -380,7 +380,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_indices(&self) -> builder::CatIndices {
+  pub fn indices(&self) -> builder::CatIndices {
     builder::CatIndices::new(self.os_client)
   }
 
@@ -412,7 +412,7 @@ impl<'a> Cat<'a> {
   /// - `time`: The unit in which to display time values.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_indices_with_index()
+  /// let response = client.cat().indices_with_index()
   ///    .index(index)
   ///    .bytes(bytes)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -431,7 +431,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_indices_with_index(&self) -> builder::CatIndicesWithIndex {
+  pub fn indices_with_index(&self) -> builder::CatIndicesWithIndex {
     builder::CatIndicesWithIndex::new(self.os_client)
   }
 
@@ -451,7 +451,7 @@ impl<'a> Cat<'a> {
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_master()
+  /// let response = client.cat().master()
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .format(format)
   ///    .h(h)
@@ -463,7 +463,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_master(&self) -> builder::CatMaster {
+  pub fn master(&self) -> builder::CatMaster {
     builder::CatMaster::new(self.os_client)
   }
 
@@ -483,7 +483,7 @@ impl<'a> Cat<'a> {
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_nodeattrs()
+  /// let response = client.cat().nodeattrs()
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .format(format)
   ///    .h(h)
@@ -495,7 +495,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_nodeattrs(&self) -> builder::CatNodeattrs {
+  pub fn nodeattrs(&self) -> builder::CatNodeattrs {
     builder::CatNodeattrs::new(self.os_client)
   }
 
@@ -518,7 +518,7 @@ impl<'a> Cat<'a> {
   /// - `time`: The unit in which to display time values.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_nodes()
+  /// let response = client.cat().nodes()
   ///    .bytes(bytes)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .format(format)
@@ -533,7 +533,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_nodes(&self) -> builder::CatNodes {
+  pub fn nodes(&self) -> builder::CatNodes {
     builder::CatNodes::new(self.os_client)
   }
 
@@ -554,7 +554,7 @@ impl<'a> Cat<'a> {
   /// - `time`: The unit in which to display time values.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_pending_tasks()
+  /// let response = client.cat().pending_tasks()
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .format(format)
   ///    .h(h)
@@ -567,7 +567,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_pending_tasks(&self) -> builder::CatPendingTasks {
+  pub fn pending_tasks(&self) -> builder::CatPendingTasks {
     builder::CatPendingTasks::new(self.os_client)
   }
 
@@ -576,12 +576,12 @@ impl<'a> Cat<'a> {
   ///Sends a `GET` request to `/_cat/pit_segments`
   ///
   ///```ignore
-  /// let response = client.cat_pit_segments()
+  /// let response = client.cat().pit_segments()
   ///    .body(body)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_pit_segments(&self) -> builder::CatPitSegments {
+  pub fn pit_segments(&self) -> builder::CatPitSegments {
     builder::CatPitSegments::new(self.os_client)
   }
 
@@ -590,11 +590,11 @@ impl<'a> Cat<'a> {
   ///Sends a `GET` request to `/_cat/pit_segments/_all`
   ///
   ///```ignore
-  /// let response = client.cat_all_pit_segments()
+  /// let response = client.cat().all_pit_segments()
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_all_pit_segments(&self) -> builder::CatAllPitSegments {
+  pub fn all_pit_segments(&self) -> builder::CatAllPitSegments {
     builder::CatAllPitSegments::new(self.os_client)
   }
 
@@ -614,7 +614,7 @@ impl<'a> Cat<'a> {
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_plugins()
+  /// let response = client.cat().plugins()
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .format(format)
   ///    .h(h)
@@ -626,7 +626,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_plugins(&self) -> builder::CatPlugins {
+  pub fn plugins(&self) -> builder::CatPlugins {
     builder::CatPlugins::new(self.os_client)
   }
 
@@ -650,7 +650,7 @@ impl<'a> Cat<'a> {
   /// - `time`: The unit in which to display time values.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_recovery()
+  /// let response = client.cat().recovery()
   ///    .active_only(active_only)
   ///    .bytes(bytes)
   ///    .detailed(detailed)
@@ -664,7 +664,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_recovery(&self) -> builder::CatRecovery {
+  pub fn recovery(&self) -> builder::CatRecovery {
     builder::CatRecovery::new(self.os_client)
   }
 
@@ -688,7 +688,7 @@ impl<'a> Cat<'a> {
   /// - `time`: The unit in which to display time values.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_recovery_with_index()
+  /// let response = client.cat().recovery_with_index()
   ///    .active_only(active_only)
   ///    .bytes(bytes)
   ///    .detailed(detailed)
@@ -702,7 +702,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_recovery_with_index(&self) -> builder::CatRecoveryWithIndex {
+  pub fn recovery_with_index(&self) -> builder::CatRecoveryWithIndex {
     builder::CatRecoveryWithIndex::new(self.os_client)
   }
 
@@ -723,7 +723,7 @@ impl<'a> Cat<'a> {
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_repositories()
+  /// let response = client.cat().repositories()
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .format(format)
   ///    .h(h)
@@ -735,7 +735,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_repositories(&self) -> builder::CatRepositories {
+  pub fn repositories(&self) -> builder::CatRepositories {
     builder::CatRepositories::new(self.os_client)
   }
 
@@ -762,7 +762,7 @@ impl<'a> Cat<'a> {
   /// - `time`: The unit in which to display time values.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_segment_replication()
+  /// let response = client.cat().segment_replication()
   ///    .active_only(active_only)
   ///    .bytes(bytes)
   ///    .completed_only(completed_only)
@@ -778,7 +778,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_segment_replication(&self) -> builder::CatSegmentReplication {
+  pub fn segment_replication(&self) -> builder::CatSegmentReplication {
     builder::CatSegmentReplication::new(self.os_client)
   }
 
@@ -805,7 +805,7 @@ impl<'a> Cat<'a> {
   /// - `time`: The unit in which to display time values.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_segment_replication_with_index()
+  /// let response = client.cat().segment_replication_with_index()
   ///    .active_only(active_only)
   ///    .bytes(bytes)
   ///    .completed_only(completed_only)
@@ -821,7 +821,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_segment_replication_with_index(&self) -> builder::CatSegmentReplicationWithIndex {
+  pub fn segment_replication_with_index(&self) -> builder::CatSegmentReplicationWithIndex {
     builder::CatSegmentReplicationWithIndex::new(self.os_client)
   }
 
@@ -841,7 +841,7 @@ impl<'a> Cat<'a> {
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_segments()
+  /// let response = client.cat().segments()
   ///    .bytes(bytes)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .format(format)
@@ -853,7 +853,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_segments(&self) -> builder::CatSegments {
+  pub fn segments(&self) -> builder::CatSegments {
     builder::CatSegments::new(self.os_client)
   }
 
@@ -875,7 +875,7 @@ impl<'a> Cat<'a> {
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_segments_with_index()
+  /// let response = client.cat().segments_with_index()
   ///    .index(index)
   ///    .bytes(bytes)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -888,7 +888,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_segments_with_index(&self) -> builder::CatSegmentsWithIndex {
+  pub fn segments_with_index(&self) -> builder::CatSegmentsWithIndex {
     builder::CatSegmentsWithIndex::new(self.os_client)
   }
 
@@ -910,7 +910,7 @@ impl<'a> Cat<'a> {
   /// - `time`: The unit in which to display time values.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_shards()
+  /// let response = client.cat().shards()
   ///    .bytes(bytes)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .format(format)
@@ -924,7 +924,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_shards(&self) -> builder::CatShards {
+  pub fn shards(&self) -> builder::CatShards {
     builder::CatShards::new(self.os_client)
   }
 
@@ -948,7 +948,7 @@ impl<'a> Cat<'a> {
   /// - `time`: The unit in which to display time values.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_shards_with_index()
+  /// let response = client.cat().shards_with_index()
   ///    .index(index)
   ///    .bytes(bytes)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -963,7 +963,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_shards_with_index(&self) -> builder::CatShardsWithIndex {
+  pub fn shards_with_index(&self) -> builder::CatShardsWithIndex {
     builder::CatShardsWithIndex::new(self.os_client)
   }
 
@@ -984,7 +984,7 @@ impl<'a> Cat<'a> {
   /// - `time`: The unit in which to display time values.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_snapshots()
+  /// let response = client.cat().snapshots()
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .format(format)
   ///    .h(h)
@@ -997,7 +997,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_snapshots(&self) -> builder::CatSnapshots {
+  pub fn snapshots(&self) -> builder::CatSnapshots {
     builder::CatSnapshots::new(self.os_client)
   }
 
@@ -1019,7 +1019,7 @@ impl<'a> Cat<'a> {
   /// - `time`: The unit in which to display time values.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_snapshots_with_repository()
+  /// let response = client.cat().snapshots_with_repository()
   ///    .repository(repository)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .format(format)
@@ -1033,7 +1033,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_snapshots_with_repository(&self) -> builder::CatSnapshotsWithRepository {
+  pub fn snapshots_with_repository(&self) -> builder::CatSnapshotsWithRepository {
     builder::CatSnapshotsWithRepository::new(self.os_client)
   }
 
@@ -1058,7 +1058,7 @@ impl<'a> Cat<'a> {
   /// - `time`: The unit in which to display time values.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_tasks()
+  /// let response = client.cat().tasks()
   ///    .actions(actions)
   ///    .detailed(detailed)
   ///    .format(format)
@@ -1072,7 +1072,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_tasks(&self) -> builder::CatTasks {
+  pub fn tasks(&self) -> builder::CatTasks {
     builder::CatTasks::new(self.os_client)
   }
 
@@ -1092,7 +1092,7 @@ impl<'a> Cat<'a> {
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_templates()
+  /// let response = client.cat().templates()
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .format(format)
   ///    .h(h)
@@ -1104,7 +1104,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_templates(&self) -> builder::CatTemplates {
+  pub fn templates(&self) -> builder::CatTemplates {
     builder::CatTemplates::new(self.os_client)
   }
 
@@ -1125,7 +1125,7 @@ impl<'a> Cat<'a> {
   /// - `s`: Comma-separated list of column names or column aliases to sort by.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_templates_with_name()
+  /// let response = client.cat().templates_with_name()
   ///    .name(name)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .format(format)
@@ -1138,7 +1138,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_templates_with_name(&self) -> builder::CatTemplatesWithName {
+  pub fn templates_with_name(&self) -> builder::CatTemplatesWithName {
     builder::CatTemplatesWithName::new(self.os_client)
   }
 
@@ -1161,7 +1161,7 @@ impl<'a> Cat<'a> {
   /// - `size`: The multiplier in which to display values.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_thread_pool()
+  /// let response = client.cat().thread_pool()
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .format(format)
   ///    .h(h)
@@ -1174,7 +1174,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_thread_pool(&self) -> builder::CatThreadPool {
+  pub fn thread_pool(&self) -> builder::CatThreadPool {
     builder::CatThreadPool::new(self.os_client)
   }
 
@@ -1199,7 +1199,7 @@ impl<'a> Cat<'a> {
   /// - `size`: The multiplier in which to display values.
   /// - `v`: Verbose mode. Display column headers.
   ///```ignore
-  /// let response = client.cat_thread_pool_with_thread_pool_patterns()
+  /// let response = client.cat().thread_pool_with_thread_pool_patterns()
   ///    .thread_pool_patterns(thread_pool_patterns)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .format(format)
@@ -1213,7 +1213,7 @@ impl<'a> Cat<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn cat_thread_pool_with_thread_pool_patterns(&self) -> builder::CatThreadPoolWithThreadPoolPatterns {
+  pub fn thread_pool_with_thread_pool_patterns(&self) -> builder::CatThreadPoolWithThreadPoolPatterns {
     builder::CatThreadPoolWithThreadPoolPatterns::new(self.os_client)
   }
 }

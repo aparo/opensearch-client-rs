@@ -11,9 +11,9 @@ use crate::{
   ReqwestResponse, ResponseValue,
 };
 
-///Builder for [`Client::nodes_hot_threads_deprecated_dash`]
+///Builder for [`Client::Nodes::hot_threads_deprecated_dash`]
 ///
-///[`Client::nodes_hot_threads_deprecated_dash`]: super::OsClient::nodes_hot_threads_deprecated_dash
+///[`Client::Nodes::hot_threads_deprecated_dash`]: super::OsClient::Nodes::hot_threads_deprecated_dash
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsDeprecatedDash<'a> {
   client: &'a super::OsClient,
@@ -147,9 +147,9 @@ impl<'a> NodesHotThreadsDeprecatedDash<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_hot_threads_deprecated_cluster`]
+///Builder for [`Client::Nodes::hot_threads_deprecated_cluster`]
 ///
-///[`Client::nodes_hot_threads_deprecated_cluster`]: super::OsClient::nodes_hot_threads_deprecated_cluster
+///[`Client::Nodes::hot_threads_deprecated_cluster`]: super::OsClient::Nodes::hot_threads_deprecated_cluster
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsDeprecatedCluster<'a> {
   client: &'a super::OsClient,
@@ -283,9 +283,9 @@ impl<'a> NodesHotThreadsDeprecatedCluster<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_hot_threads_with_node_id_deprecated_dash`]
+///Builder for [`Client::Nodes::hot_threads_with_node_id_deprecated_dash`]
 ///
-///[`Client::nodes_hot_threads_with_node_id_deprecated_dash`]: super::OsClient::nodes_hot_threads_with_node_id_deprecated_dash
+///[`Client::Nodes::hot_threads_with_node_id_deprecated_dash`]: super::OsClient::Nodes::hot_threads_with_node_id_deprecated_dash
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsWithNodeIdDeprecatedDash<'a> {
   client: &'a super::OsClient,
@@ -437,9 +437,9 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecatedDash<'a> {
   }
 }
 ///Builder for
-/// [`Client::nodes_hot_threads_with_node_id_deprecated_cluster`]
+/// [`Client::Nodes::hot_threads_with_node_id_deprecated_cluster`]
 ///
-///[`Client::nodes_hot_threads_with_node_id_deprecated_cluster`]: super::OsClient::nodes_hot_threads_with_node_id_deprecated_cluster
+///[`Client::Nodes::hot_threads_with_node_id_deprecated_cluster`]: super::OsClient::Nodes::hot_threads_with_node_id_deprecated_cluster
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsWithNodeIdDeprecatedCluster<'a> {
   client: &'a super::OsClient,
@@ -589,9 +589,9 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecatedCluster<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_info`]
+///Builder for [`Client::Nodes::info`]
 ///
-///[`Client::nodes_info`]: super::OsClient::nodes_info
+///[`Client::Nodes::info`]: super::OsClient::Nodes::info
 #[derive(Debug, Clone)]
 pub struct NodesInfo<'a> {
   client: &'a super::OsClient,
@@ -657,9 +657,9 @@ impl<'a> NodesInfo<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_hot_threads`]
+///Builder for [`Client::Nodes::hot_threads`]
 ///
-///[`Client::nodes_hot_threads`]: super::OsClient::nodes_hot_threads
+///[`Client::Nodes::hot_threads`]: super::OsClient::Nodes::hot_threads
 #[derive(Debug, Clone)]
 pub struct NodesHotThreads<'a> {
   client: &'a super::OsClient,
@@ -793,9 +793,9 @@ impl<'a> NodesHotThreads<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_hot_threads_deprecated`]
+///Builder for [`Client::Nodes::hot_threads_deprecated`]
 ///
-///[`Client::nodes_hot_threads_deprecated`]: super::OsClient::nodes_hot_threads_deprecated
+///[`Client::Nodes::hot_threads_deprecated`]: super::OsClient::Nodes::hot_threads_deprecated
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsDeprecated<'a> {
   client: &'a super::OsClient,
@@ -929,9 +929,9 @@ impl<'a> NodesHotThreadsDeprecated<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_reload_secure_settings`]
+///Builder for [`Client::Nodes::reload_secure_settings`]
 ///
-///[`Client::nodes_reload_secure_settings`]: super::OsClient::nodes_reload_secure_settings
+///[`Client::Nodes::reload_secure_settings`]: super::OsClient::Nodes::reload_secure_settings
 #[derive(Debug, Clone)]
 pub struct NodesReloadSecureSettings<'a> {
   client: &'a super::OsClient,
@@ -989,9 +989,9 @@ impl<'a> NodesReloadSecureSettings<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_stats`]
+///Builder for [`Client::Nodes::stats`]
 ///
-///[`Client::nodes_stats`]: super::OsClient::nodes_stats
+///[`Client::Nodes::stats`]: super::OsClient::Nodes::stats
 #[derive(Debug, Clone)]
 pub struct NodesStats<'a> {
   client: &'a super::OsClient,
@@ -1159,9 +1159,9 @@ impl<'a> NodesStats<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_stats_with_metric`]
+///Builder for [`Client::Nodes::stats_with_metric`]
 ///
-///[`Client::nodes_stats_with_metric`]: super::OsClient::nodes_stats_with_metric
+///[`Client::Nodes::stats_with_metric`]: super::OsClient::Nodes::stats_with_metric
 #[derive(Debug, Clone)]
 pub struct NodesStatsWithMetric<'a> {
   client: &'a super::OsClient,
@@ -1342,9 +1342,9 @@ impl<'a> NodesStatsWithMetric<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_stats_with_index_metric_metric`]
+///Builder for [`Client::Nodes::stats_with_index_metric_metric`]
 ///
-///[`Client::nodes_stats_with_index_metric_metric`]: super::OsClient::nodes_stats_with_index_metric_metric
+///[`Client::Nodes::stats_with_index_metric_metric`]: super::OsClient::Nodes::stats_with_index_metric_metric
 #[derive(Debug, Clone)]
 pub struct NodesStatsWithIndexMetricMetric<'a> {
   client: &'a super::OsClient,
@@ -1543,9 +1543,9 @@ impl<'a> NodesStatsWithIndexMetricMetric<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_usage`]
+///Builder for [`Client::Nodes::usage`]
 ///
-///[`Client::nodes_usage`]: super::OsClient::nodes_usage
+///[`Client::Nodes::usage`]: super::OsClient::Nodes::usage
 #[derive(Debug, Clone)]
 pub struct NodesUsage<'a> {
   client: &'a super::OsClient,
@@ -1591,9 +1591,9 @@ impl<'a> NodesUsage<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_usage_with_metric`]
+///Builder for [`Client::Nodes::usage_with_metric`]
 ///
-///[`Client::nodes_usage_with_metric`]: super::OsClient::nodes_usage_with_metric
+///[`Client::Nodes::usage_with_metric`]: super::OsClient::Nodes::usage_with_metric
 #[derive(Debug, Clone)]
 pub struct NodesUsageWithMetric<'a> {
   client: &'a super::OsClient,
@@ -1655,9 +1655,9 @@ impl<'a> NodesUsageWithMetric<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_info_with_node_id`]
+///Builder for [`Client::Nodes::info_with_node_id`]
 ///
-///[`Client::nodes_info_with_node_id`]: super::OsClient::nodes_info_with_node_id
+///[`Client::Nodes::info_with_node_id`]: super::OsClient::Nodes::info_with_node_id
 #[derive(Debug, Clone)]
 pub struct NodesInfoWithNodeId<'a> {
   client: &'a super::OsClient,
@@ -1736,9 +1736,9 @@ impl<'a> NodesInfoWithNodeId<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_hot_threads_with_node_id`]
+///Builder for [`Client::Nodes::hot_threads_with_node_id`]
 ///
-///[`Client::nodes_hot_threads_with_node_id`]: super::OsClient::nodes_hot_threads_with_node_id
+///[`Client::Nodes::hot_threads_with_node_id`]: super::OsClient::Nodes::hot_threads_with_node_id
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsWithNodeId<'a> {
   client: &'a super::OsClient,
@@ -1889,9 +1889,9 @@ impl<'a> NodesHotThreadsWithNodeId<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_hot_threads_with_node_id_deprecated`]
+///Builder for [`Client::Nodes::hot_threads_with_node_id_deprecated`]
 ///
-///[`Client::nodes_hot_threads_with_node_id_deprecated`]: super::OsClient::nodes_hot_threads_with_node_id_deprecated
+///[`Client::Nodes::hot_threads_with_node_id_deprecated`]: super::OsClient::Nodes::hot_threads_with_node_id_deprecated
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsWithNodeIdDeprecated<'a> {
   client: &'a super::OsClient,
@@ -2042,9 +2042,9 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecated<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_reload_secure_settings_with_node_id`]
+///Builder for [`Client::Nodes::reload_secure_settings_with_node_id`]
 ///
-///[`Client::nodes_reload_secure_settings_with_node_id`]: super::OsClient::nodes_reload_secure_settings_with_node_id
+///[`Client::Nodes::reload_secure_settings_with_node_id`]: super::OsClient::Nodes::reload_secure_settings_with_node_id
 #[derive(Debug, Clone)]
 pub struct NodesReloadSecureSettingsWithNodeId<'a> {
   client: &'a super::OsClient,
@@ -2123,9 +2123,9 @@ impl<'a> NodesReloadSecureSettingsWithNodeId<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_stats_with_node_id`]
+///Builder for [`Client::Nodes::stats_with_node_id`]
 ///
-///[`Client::nodes_stats_with_node_id`]: super::OsClient::nodes_stats_with_node_id
+///[`Client::Nodes::stats_with_node_id`]: super::OsClient::Nodes::stats_with_node_id
 #[derive(Debug, Clone)]
 pub struct NodesStatsWithNodeId<'a> {
   client: &'a super::OsClient,
@@ -2306,9 +2306,9 @@ impl<'a> NodesStatsWithNodeId<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_stats_with_metric_node_id`]
+///Builder for [`Client::Nodes::stats_with_metric_node_id`]
 ///
-///[`Client::nodes_stats_with_metric_node_id`]: super::OsClient::nodes_stats_with_metric_node_id
+///[`Client::Nodes::stats_with_metric_node_id`]: super::OsClient::Nodes::stats_with_metric_node_id
 #[derive(Debug, Clone)]
 pub struct NodesStatsWithMetricNodeId<'a> {
   client: &'a super::OsClient,
@@ -2507,9 +2507,9 @@ impl<'a> NodesStatsWithMetricNodeId<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_stats_with_index_metric_metric_node_id`]
+///Builder for [`Client::Nodes::stats_with_index_metric_metric_node_id`]
 ///
-///[`Client::nodes_stats_with_index_metric_metric_node_id`]: super::OsClient::nodes_stats_with_index_metric_metric_node_id
+///[`Client::Nodes::stats_with_index_metric_metric_node_id`]: super::OsClient::Nodes::stats_with_index_metric_metric_node_id
 #[derive(Debug, Clone)]
 pub struct NodesStatsWithIndexMetricMetricNodeId<'a> {
   client: &'a super::OsClient,
@@ -2723,9 +2723,9 @@ impl<'a> NodesStatsWithIndexMetricMetricNodeId<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_usage_with_node_id`]
+///Builder for [`Client::Nodes::usage_with_node_id`]
 ///
-///[`Client::nodes_usage_with_node_id`]: super::OsClient::nodes_usage_with_node_id
+///[`Client::Nodes::usage_with_node_id`]: super::OsClient::Nodes::usage_with_node_id
 #[derive(Debug, Clone)]
 pub struct NodesUsageWithNodeId<'a> {
   client: &'a super::OsClient,
@@ -2787,9 +2787,9 @@ impl<'a> NodesUsageWithNodeId<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_usage_with_metric_node_id`]
+///Builder for [`Client::Nodes::usage_with_metric_node_id`]
 ///
-///[`Client::nodes_usage_with_metric_node_id`]: super::OsClient::nodes_usage_with_metric_node_id
+///[`Client::Nodes::usage_with_metric_node_id`]: super::OsClient::Nodes::usage_with_metric_node_id
 #[derive(Debug, Clone)]
 pub struct NodesUsageWithMetricNodeId<'a> {
   client: &'a super::OsClient,
@@ -2869,9 +2869,9 @@ impl<'a> NodesUsageWithMetricNodeId<'a> {
     }
   }
 }
-///Builder for [`Client::nodes_info_with_metric_node_id`]
+///Builder for [`Client::Nodes::info_with_metric_node_id`]
 ///
-///[`Client::nodes_info_with_metric_node_id`]: super::OsClient::nodes_info_with_metric_node_id
+///[`Client::Nodes::info_with_metric_node_id`]: super::OsClient::Nodes::info_with_metric_node_id
 #[derive(Debug, Clone)]
 pub struct NodesInfoWithMetricNodeId<'a> {
   client: &'a super::OsClient,

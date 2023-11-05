@@ -21,14 +21,14 @@ impl<'a> Snapshot<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.snapshot_get_repository()
+  /// let response = client.snapshot().get_repository()
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .local(local)
   ///    .master_timeout(master_timeout)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn snapshot_get_repository(&self) -> builder::SnapshotGetRepository {
+  pub fn get_repository(&self) -> builder::SnapshotGetRepository {
     builder::SnapshotGetRepository::new(self.os_client)
   }
 
@@ -43,14 +43,14 @@ impl<'a> Snapshot<'a> {
   ///   to false which means a SnapshotMissingException is thrown.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.snapshot_status()
+  /// let response = client.snapshot().status()
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .ignore_unavailable(ignore_unavailable)
   ///    .master_timeout(master_timeout)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn snapshot_status(&self) -> builder::SnapshotStatus {
+  pub fn status(&self) -> builder::SnapshotStatus {
     builder::SnapshotStatus::new(self.os_client)
   }
 
@@ -66,7 +66,7 @@ impl<'a> Snapshot<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.snapshot_get_repository_with_repository()
+  /// let response = client.snapshot().get_repository_with_repository()
   ///    .repository(repository)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .local(local)
@@ -74,7 +74,7 @@ impl<'a> Snapshot<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn snapshot_get_repository_with_repository(&self) -> builder::SnapshotGetRepositoryWithRepository {
+  pub fn get_repository_with_repository(&self) -> builder::SnapshotGetRepositoryWithRepository {
     builder::SnapshotGetRepositoryWithRepository::new(self.os_client)
   }
 
@@ -91,7 +91,7 @@ impl<'a> Snapshot<'a> {
   /// - `verify`: Whether to verify the repository after creation.
   /// - `body`
   ///```ignore
-  /// let response = client.snapshot_create_repository_put()
+  /// let response = client.snapshot().create_repository_put()
   ///    .repository(repository)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
@@ -101,7 +101,7 @@ impl<'a> Snapshot<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn snapshot_create_repository_put(&self) -> builder::SnapshotCreateRepositoryPut {
+  pub fn create_repository_put(&self) -> builder::SnapshotCreateRepositoryPut {
     builder::SnapshotCreateRepositoryPut::new(self.os_client)
   }
 
@@ -118,7 +118,7 @@ impl<'a> Snapshot<'a> {
   /// - `verify`: Whether to verify the repository after creation.
   /// - `body`
   ///```ignore
-  /// let response = client.snapshot_create_repository_post()
+  /// let response = client.snapshot().create_repository_post()
   ///    .repository(repository)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
@@ -128,7 +128,7 @@ impl<'a> Snapshot<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn snapshot_create_repository_post(&self) -> builder::SnapshotCreateRepositoryPost {
+  pub fn create_repository_post(&self) -> builder::SnapshotCreateRepositoryPost {
     builder::SnapshotCreateRepositoryPost::new(self.os_client)
   }
 
@@ -144,7 +144,7 @@ impl<'a> Snapshot<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.snapshot_delete_repository()
+  /// let response = client.snapshot().delete_repository()
   ///    .repository(repository)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
@@ -152,7 +152,7 @@ impl<'a> Snapshot<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn snapshot_delete_repository(&self) -> builder::SnapshotDeleteRepository {
+  pub fn delete_repository(&self) -> builder::SnapshotDeleteRepository {
     builder::SnapshotDeleteRepository::new(self.os_client)
   }
 
@@ -167,7 +167,7 @@ impl<'a> Snapshot<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.snapshot_cleanup_repository()
+  /// let response = client.snapshot().cleanup_repository()
   ///    .repository(repository)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
@@ -175,7 +175,7 @@ impl<'a> Snapshot<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn snapshot_cleanup_repository(&self) -> builder::SnapshotCleanupRepository {
+  pub fn cleanup_repository(&self) -> builder::SnapshotCleanupRepository {
     builder::SnapshotCleanupRepository::new(self.os_client)
   }
 
@@ -191,7 +191,7 @@ impl<'a> Snapshot<'a> {
   ///   to false which means a SnapshotMissingException is thrown.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.snapshot_status_with_repository()
+  /// let response = client.snapshot().status_with_repository()
   ///    .repository(repository)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .ignore_unavailable(ignore_unavailable)
@@ -199,7 +199,7 @@ impl<'a> Snapshot<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn snapshot_status_with_repository(&self) -> builder::SnapshotStatusWithRepository {
+  pub fn status_with_repository(&self) -> builder::SnapshotStatusWithRepository {
     builder::SnapshotStatusWithRepository::new(self.os_client)
   }
 
@@ -214,7 +214,7 @@ impl<'a> Snapshot<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.snapshot_verify_repository()
+  /// let response = client.snapshot().verify_repository()
   ///    .repository(repository)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
@@ -222,7 +222,7 @@ impl<'a> Snapshot<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn snapshot_verify_repository(&self) -> builder::SnapshotVerifyRepository {
+  pub fn verify_repository(&self) -> builder::SnapshotVerifyRepository {
     builder::SnapshotVerifyRepository::new(self.os_client)
   }
 
@@ -241,7 +241,7 @@ impl<'a> Snapshot<'a> {
   /// - `verbose`: Whether to show verbose snapshot info or only show the basic
   ///   info found in the repository index blob.
   ///```ignore
-  /// let response = client.snapshot_get()
+  /// let response = client.snapshot().get()
   ///    .repository(repository)
   ///    .snapshot(snapshot)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -251,7 +251,7 @@ impl<'a> Snapshot<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn snapshot_get(&self) -> builder::SnapshotGet {
+  pub fn get(&self) -> builder::SnapshotGet {
     builder::SnapshotGet::new(self.os_client)
   }
 
@@ -269,7 +269,7 @@ impl<'a> Snapshot<'a> {
   ///   completed before returning.
   /// - `body`
   ///```ignore
-  /// let response = client.snapshot_create_put()
+  /// let response = client.snapshot().create_put()
   ///    .repository(repository)
   ///    .snapshot(snapshot)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -279,7 +279,7 @@ impl<'a> Snapshot<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn snapshot_create_put(&self) -> builder::SnapshotCreatePut {
+  pub fn create_put(&self) -> builder::SnapshotCreatePut {
     builder::SnapshotCreatePut::new(self.os_client)
   }
 
@@ -297,7 +297,7 @@ impl<'a> Snapshot<'a> {
   ///   completed before returning.
   /// - `body`
   ///```ignore
-  /// let response = client.snapshot_create_post()
+  /// let response = client.snapshot().create_post()
   ///    .repository(repository)
   ///    .snapshot(snapshot)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -307,7 +307,7 @@ impl<'a> Snapshot<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn snapshot_create_post(&self) -> builder::SnapshotCreatePost {
+  pub fn create_post(&self) -> builder::SnapshotCreatePost {
     builder::SnapshotCreatePost::new(self.os_client)
   }
 
@@ -322,7 +322,7 @@ impl<'a> Snapshot<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.snapshot_delete()
+  /// let response = client.snapshot().delete()
   ///    .repository(repository)
   ///    .snapshot(snapshot)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -330,7 +330,7 @@ impl<'a> Snapshot<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn snapshot_delete(&self) -> builder::SnapshotDelete {
+  pub fn delete(&self) -> builder::SnapshotDelete {
     builder::SnapshotDelete::new(self.os_client)
   }
 
@@ -349,7 +349,7 @@ impl<'a> Snapshot<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `body`
   ///```ignore
-  /// let response = client.snapshot_clone()
+  /// let response = client.snapshot().clone()
   ///    .repository(repository)
   ///    .snapshot(snapshot)
   ///    .target_snapshot(target_snapshot)
@@ -359,7 +359,7 @@ impl<'a> Snapshot<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn snapshot_clone(&self) -> builder::SnapshotClone {
+  pub fn clone(&self) -> builder::SnapshotClone {
     builder::SnapshotClone::new(self.os_client)
   }
 
@@ -377,7 +377,7 @@ impl<'a> Snapshot<'a> {
   ///   completed before returning.
   /// - `body`
   ///```ignore
-  /// let response = client.snapshot_restore()
+  /// let response = client.snapshot().restore()
   ///    .repository(repository)
   ///    .snapshot(snapshot)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -387,7 +387,7 @@ impl<'a> Snapshot<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn snapshot_restore(&self) -> builder::SnapshotRestore {
+  pub fn restore(&self) -> builder::SnapshotRestore {
     builder::SnapshotRestore::new(self.os_client)
   }
 
@@ -404,7 +404,7 @@ impl<'a> Snapshot<'a> {
   ///   to false which means a SnapshotMissingException is thrown.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.snapshot_status_with_repository_snapshot()
+  /// let response = client.snapshot().status_with_repository_snapshot()
   ///    .repository(repository)
   ///    .snapshot(snapshot)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -413,7 +413,7 @@ impl<'a> Snapshot<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn snapshot_status_with_repository_snapshot(&self) -> builder::SnapshotStatusWithRepositorySnapshot {
+  pub fn status_with_repository_snapshot(&self) -> builder::SnapshotStatusWithRepositorySnapshot {
     builder::SnapshotStatusWithRepositorySnapshot::new(self.os_client)
   }
 }

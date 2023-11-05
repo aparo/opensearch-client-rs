@@ -11,9 +11,9 @@ use crate::{
   ReqwestResponse, ResponseValue,
 };
 
-///Builder for [`Client::remote_store_restore`]
+///Builder for [`Client::Remote::store_restore`]
 ///
-///[`Client::remote_store_restore`]: super::OsClient::remote_store_restore
+///[`Client::Remote::store_restore`]: super::OsClient::Remote::store_restore
 #[derive(Debug, Clone)]
 pub struct RemoteStoreRestore<'a> {
   client: &'a super::OsClient,

@@ -11,9 +11,9 @@ use crate::{
   ReqwestResponse, ResponseValue,
 };
 
-///Builder for [`Client::cat_help`]
+///Builder for [`Client::Cat::help`]
 ///
-///[`Client::cat_help`]: super::OsClient::cat_help
+///[`Client::Cat::help`]: super::OsClient::Cat::help
 #[derive(Debug, Clone)]
 pub struct CatHelp<'a> {
   client: &'a super::OsClient,
@@ -75,9 +75,9 @@ impl<'a> CatHelp<'a> {
     }
   }
 }
-///Builder for [`Client::cat_aliases`]
+///Builder for [`Client::Cat::aliases`]
 ///
-///[`Client::cat_aliases`]: super::OsClient::cat_aliases
+///[`Client::Cat::aliases`]: super::OsClient::Cat::aliases
 #[derive(Debug, Clone)]
 pub struct CatAliases<'a> {
   client: &'a super::OsClient,
@@ -228,9 +228,9 @@ impl<'a> CatAliases<'a> {
     }
   }
 }
-///Builder for [`Client::cat_aliases_with_name`]
+///Builder for [`Client::Cat::aliases_with_name`]
 ///
-///[`Client::cat_aliases_with_name`]: super::OsClient::cat_aliases_with_name
+///[`Client::Cat::aliases_with_name`]: super::OsClient::Cat::aliases_with_name
 #[derive(Debug, Clone)]
 pub struct CatAliasesWithName<'a> {
   client: &'a super::OsClient,
@@ -394,9 +394,9 @@ impl<'a> CatAliasesWithName<'a> {
     }
   }
 }
-///Builder for [`Client::cat_allocation`]
+///Builder for [`Client::Cat::allocation`]
 ///
-///[`Client::cat_allocation`]: super::OsClient::cat_allocation
+///[`Client::Cat::allocation`]: super::OsClient::Cat::allocation
 #[derive(Debug, Clone)]
 pub struct CatAllocation<'a> {
   client: &'a super::OsClient,
@@ -581,9 +581,9 @@ impl<'a> CatAllocation<'a> {
     }
   }
 }
-///Builder for [`Client::cat_allocation_with_node_id`]
+///Builder for [`Client::Cat::allocation_with_node_id`]
 ///
-///[`Client::cat_allocation_with_node_id`]: super::OsClient::cat_allocation_with_node_id
+///[`Client::Cat::allocation_with_node_id`]: super::OsClient::Cat::allocation_with_node_id
 #[derive(Debug, Clone)]
 pub struct CatAllocationWithNodeId<'a> {
   client: &'a super::OsClient,
@@ -785,9 +785,9 @@ impl<'a> CatAllocationWithNodeId<'a> {
     }
   }
 }
-///Builder for [`Client::cat_cluster_manager`]
+///Builder for [`Client::Cat::cluster_manager`]
 ///
-///[`Client::cat_cluster_manager`]: super::OsClient::cat_cluster_manager
+///[`Client::Cat::cluster_manager`]: super::OsClient::Cat::cluster_manager
 #[derive(Debug, Clone)]
 pub struct CatClusterManager<'a> {
   client: &'a super::OsClient,
@@ -955,9 +955,9 @@ impl<'a> CatClusterManager<'a> {
     }
   }
 }
-///Builder for [`Client::cat_count`]
+///Builder for [`Client::Cat::count`]
 ///
-///[`Client::cat_count`]: super::OsClient::cat_count
+///[`Client::Cat::count`]: super::OsClient::Cat::count
 #[derive(Debug, Clone)]
 pub struct CatCount<'a> {
   client: &'a super::OsClient,
@@ -1074,9 +1074,9 @@ impl<'a> CatCount<'a> {
     }
   }
 }
-///Builder for [`Client::cat_count_with_index`]
+///Builder for [`Client::Cat::count_with_index`]
 ///
-///[`Client::cat_count_with_index`]: super::OsClient::cat_count_with_index
+///[`Client::Cat::count_with_index`]: super::OsClient::Cat::count_with_index
 #[derive(Debug, Clone)]
 pub struct CatCountWithIndex<'a> {
   client: &'a super::OsClient,
@@ -1206,9 +1206,9 @@ impl<'a> CatCountWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::cat_fielddata`]
+///Builder for [`Client::Cat::fielddata`]
 ///
-///[`Client::cat_fielddata`]: super::OsClient::cat_fielddata
+///[`Client::Cat::fielddata`]: super::OsClient::Cat::fielddata
 #[derive(Debug, Clone)]
 pub struct CatFielddata<'a> {
   client: &'a super::OsClient,
@@ -1359,9 +1359,9 @@ impl<'a> CatFielddata<'a> {
     }
   }
 }
-///Builder for [`Client::cat_fielddata_with_fields`]
+///Builder for [`Client::Cat::fielddata_with_fields`]
 ///
-///[`Client::cat_fielddata_with_fields`]: super::OsClient::cat_fielddata_with_fields
+///[`Client::Cat::fielddata_with_fields`]: super::OsClient::Cat::fielddata_with_fields
 #[derive(Debug, Clone)]
 pub struct CatFielddataWithFields<'a> {
   client: &'a super::OsClient,
@@ -1516,9 +1516,9 @@ impl<'a> CatFielddataWithFields<'a> {
     }
   }
 }
-///Builder for [`Client::cat_health`]
+///Builder for [`Client::Cat::health`]
 ///
-///[`Client::cat_health`]: super::OsClient::cat_health
+///[`Client::Cat::health`]: super::OsClient::Cat::health
 #[derive(Debug, Clone)]
 pub struct CatHealth<'a> {
   client: &'a super::OsClient,
@@ -1669,9 +1669,9 @@ impl<'a> CatHealth<'a> {
     }
   }
 }
-///Builder for [`Client::cat_indices`]
+///Builder for [`Client::Cat::indices`]
 ///
-///[`Client::cat_indices`]: super::OsClient::cat_indices
+///[`Client::Cat::indices`]: super::OsClient::Cat::indices
 #[derive(Debug, Clone)]
 pub struct CatIndices<'a> {
   client: &'a super::OsClient,
@@ -1941,9 +1941,9 @@ impl<'a> CatIndices<'a> {
     }
   }
 }
-///Builder for [`Client::cat_indices_with_index`]
+///Builder for [`Client::Cat::indices_with_index`]
 ///
-///[`Client::cat_indices_with_index`]: super::OsClient::cat_indices_with_index
+///[`Client::Cat::indices_with_index`]: super::OsClient::Cat::indices_with_index
 #[derive(Debug, Clone)]
 pub struct CatIndicesWithIndex<'a> {
   client: &'a super::OsClient,
@@ -2226,9 +2226,9 @@ impl<'a> CatIndicesWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::cat_master`]
+///Builder for [`Client::Cat::master`]
 ///
-///[`Client::cat_master`]: super::OsClient::cat_master
+///[`Client::Cat::master`]: super::OsClient::Cat::master
 #[derive(Debug, Clone)]
 pub struct CatMaster<'a> {
   client: &'a super::OsClient,
@@ -2396,9 +2396,9 @@ impl<'a> CatMaster<'a> {
     }
   }
 }
-///Builder for [`Client::cat_nodeattrs`]
+///Builder for [`Client::Cat::nodeattrs`]
 ///
-///[`Client::cat_nodeattrs`]: super::OsClient::cat_nodeattrs
+///[`Client::Cat::nodeattrs`]: super::OsClient::Cat::nodeattrs
 #[derive(Debug, Clone)]
 pub struct CatNodeattrs<'a> {
   client: &'a super::OsClient,
@@ -2566,9 +2566,9 @@ impl<'a> CatNodeattrs<'a> {
     }
   }
 }
-///Builder for [`Client::cat_nodes`]
+///Builder for [`Client::Cat::nodes`]
 ///
-///[`Client::cat_nodes`]: super::OsClient::cat_nodes
+///[`Client::Cat::nodes`]: super::OsClient::Cat::nodes
 #[derive(Debug, Clone)]
 pub struct CatNodes<'a> {
   client: &'a super::OsClient,
@@ -2787,9 +2787,9 @@ impl<'a> CatNodes<'a> {
     }
   }
 }
-///Builder for [`Client::cat_pending_tasks`]
+///Builder for [`Client::Cat::pending_tasks`]
 ///
-///[`Client::cat_pending_tasks`]: super::OsClient::cat_pending_tasks
+///[`Client::Cat::pending_tasks`]: super::OsClient::Cat::pending_tasks
 #[derive(Debug, Clone)]
 pub struct CatPendingTasks<'a> {
   client: &'a super::OsClient,
@@ -2974,9 +2974,9 @@ impl<'a> CatPendingTasks<'a> {
     }
   }
 }
-///Builder for [`Client::cat_pit_segments`]
+///Builder for [`Client::Cat::pit_segments`]
 ///
-///[`Client::cat_pit_segments`]: super::OsClient::cat_pit_segments
+///[`Client::Cat::pit_segments`]: super::OsClient::Cat::pit_segments
 #[derive(Debug, Clone)]
 pub struct CatPitSegments<'a> {
   client: &'a super::OsClient,
@@ -3035,9 +3035,9 @@ impl<'a> CatPitSegments<'a> {
     }
   }
 }
-///Builder for [`Client::cat_all_pit_segments`]
+///Builder for [`Client::Cat::all_pit_segments`]
 ///
-///[`Client::cat_all_pit_segments`]: super::OsClient::cat_all_pit_segments
+///[`Client::Cat::all_pit_segments`]: super::OsClient::Cat::all_pit_segments
 #[derive(Debug, Clone)]
 pub struct CatAllPitSegments<'a> {
   client: &'a super::OsClient,
@@ -3071,9 +3071,9 @@ impl<'a> CatAllPitSegments<'a> {
     }
   }
 }
-///Builder for [`Client::cat_plugins`]
+///Builder for [`Client::Cat::plugins`]
 ///
-///[`Client::cat_plugins`]: super::OsClient::cat_plugins
+///[`Client::Cat::plugins`]: super::OsClient::Cat::plugins
 #[derive(Debug, Clone)]
 pub struct CatPlugins<'a> {
   client: &'a super::OsClient,
@@ -3241,9 +3241,9 @@ impl<'a> CatPlugins<'a> {
     }
   }
 }
-///Builder for [`Client::cat_recovery`]
+///Builder for [`Client::Cat::recovery`]
 ///
-///[`Client::cat_recovery`]: super::OsClient::cat_recovery
+///[`Client::Cat::recovery`]: super::OsClient::Cat::recovery
 #[derive(Debug, Clone)]
 pub struct CatRecovery<'a> {
   client: &'a super::OsClient,
@@ -3445,9 +3445,9 @@ impl<'a> CatRecovery<'a> {
     }
   }
 }
-///Builder for [`Client::cat_recovery_with_index`]
+///Builder for [`Client::Cat::recovery_with_index`]
 ///
-///[`Client::cat_recovery_with_index`]: super::OsClient::cat_recovery_with_index
+///[`Client::Cat::recovery_with_index`]: super::OsClient::Cat::recovery_with_index
 #[derive(Debug, Clone)]
 pub struct CatRecoveryWithIndex<'a> {
   client: &'a super::OsClient,
@@ -3658,9 +3658,9 @@ impl<'a> CatRecoveryWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::cat_repositories`]
+///Builder for [`Client::Cat::repositories`]
 ///
-///[`Client::cat_repositories`]: super::OsClient::cat_repositories
+///[`Client::Cat::repositories`]: super::OsClient::Cat::repositories
 #[derive(Debug, Clone)]
 pub struct CatRepositories<'a> {
   client: &'a super::OsClient,
@@ -3828,9 +3828,9 @@ impl<'a> CatRepositories<'a> {
     }
   }
 }
-///Builder for [`Client::cat_segment_replication`]
+///Builder for [`Client::Cat::segment_replication`]
 ///
-///[`Client::cat_segment_replication`]: super::OsClient::cat_segment_replication
+///[`Client::Cat::segment_replication`]: super::OsClient::Cat::segment_replication
 #[derive(Debug, Clone)]
 pub struct CatSegmentReplication<'a> {
   client: &'a super::OsClient,
@@ -4066,9 +4066,9 @@ impl<'a> CatSegmentReplication<'a> {
     }
   }
 }
-///Builder for [`Client::cat_segment_replication_with_index`]
+///Builder for [`Client::Cat::segment_replication_with_index`]
 ///
-///[`Client::cat_segment_replication_with_index`]: super::OsClient::cat_segment_replication_with_index
+///[`Client::Cat::segment_replication_with_index`]: super::OsClient::Cat::segment_replication_with_index
 #[derive(Debug, Clone)]
 pub struct CatSegmentReplicationWithIndex<'a> {
   client: &'a super::OsClient,
@@ -4314,9 +4314,9 @@ impl<'a> CatSegmentReplicationWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::cat_segments`]
+///Builder for [`Client::Cat::segments`]
 ///
-///[`Client::cat_segments`]: super::OsClient::cat_segments
+///[`Client::Cat::segments`]: super::OsClient::Cat::segments
 #[derive(Debug, Clone)]
 pub struct CatSegments<'a> {
   client: &'a super::OsClient,
@@ -4484,9 +4484,9 @@ impl<'a> CatSegments<'a> {
     }
   }
 }
-///Builder for [`Client::cat_segments_with_index`]
+///Builder for [`Client::Cat::segments_with_index`]
 ///
-///[`Client::cat_segments_with_index`]: super::OsClient::cat_segments_with_index
+///[`Client::Cat::segments_with_index`]: super::OsClient::Cat::segments_with_index
 #[derive(Debug, Clone)]
 pub struct CatSegmentsWithIndex<'a> {
   client: &'a super::OsClient,
@@ -4668,9 +4668,9 @@ impl<'a> CatSegmentsWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::cat_shards`]
+///Builder for [`Client::Cat::shards`]
 ///
-///[`Client::cat_shards`]: super::OsClient::cat_shards
+///[`Client::Cat::shards`]: super::OsClient::Cat::shards
 #[derive(Debug, Clone)]
 pub struct CatShards<'a> {
   client: &'a super::OsClient,
@@ -4872,9 +4872,9 @@ impl<'a> CatShards<'a> {
     }
   }
 }
-///Builder for [`Client::cat_shards_with_index`]
+///Builder for [`Client::Cat::shards_with_index`]
 ///
-///[`Client::cat_shards_with_index`]: super::OsClient::cat_shards_with_index
+///[`Client::Cat::shards_with_index`]: super::OsClient::Cat::shards_with_index
 #[derive(Debug, Clone)]
 pub struct CatShardsWithIndex<'a> {
   client: &'a super::OsClient,
@@ -5089,9 +5089,9 @@ impl<'a> CatShardsWithIndex<'a> {
     }
   }
 }
-///Builder for [`Client::cat_snapshots`]
+///Builder for [`Client::Cat::snapshots`]
 ///
-///[`Client::cat_snapshots`]: super::OsClient::cat_snapshots
+///[`Client::Cat::snapshots`]: super::OsClient::Cat::snapshots
 #[derive(Debug, Clone)]
 pub struct CatSnapshots<'a> {
   client: &'a super::OsClient,
@@ -5276,9 +5276,9 @@ impl<'a> CatSnapshots<'a> {
     }
   }
 }
-///Builder for [`Client::cat_snapshots_with_repository`]
+///Builder for [`Client::Cat::snapshots_with_repository`]
 ///
-///[`Client::cat_snapshots_with_repository`]: super::OsClient::cat_snapshots_with_repository
+///[`Client::Cat::snapshots_with_repository`]: super::OsClient::Cat::snapshots_with_repository
 #[derive(Debug, Clone)]
 pub struct CatSnapshotsWithRepository<'a> {
   client: &'a super::OsClient,
@@ -5480,9 +5480,9 @@ impl<'a> CatSnapshotsWithRepository<'a> {
     }
   }
 }
-///Builder for [`Client::cat_tasks`]
+///Builder for [`Client::Cat::tasks`]
 ///
-///[`Client::cat_tasks`]: super::OsClient::cat_tasks
+///[`Client::Cat::tasks`]: super::OsClient::Cat::tasks
 #[derive(Debug, Clone)]
 pub struct CatTasks<'a> {
   client: &'a super::OsClient,
@@ -5684,9 +5684,9 @@ impl<'a> CatTasks<'a> {
     }
   }
 }
-///Builder for [`Client::cat_templates`]
+///Builder for [`Client::Cat::templates`]
 ///
-///[`Client::cat_templates`]: super::OsClient::cat_templates
+///[`Client::Cat::templates`]: super::OsClient::Cat::templates
 #[derive(Debug, Clone)]
 pub struct CatTemplates<'a> {
   client: &'a super::OsClient,
@@ -5854,9 +5854,9 @@ impl<'a> CatTemplates<'a> {
     }
   }
 }
-///Builder for [`Client::cat_templates_with_name`]
+///Builder for [`Client::Cat::templates_with_name`]
 ///
-///[`Client::cat_templates_with_name`]: super::OsClient::cat_templates_with_name
+///[`Client::Cat::templates_with_name`]: super::OsClient::Cat::templates_with_name
 #[derive(Debug, Clone)]
 pub struct CatTemplatesWithName<'a> {
   client: &'a super::OsClient,
@@ -6037,9 +6037,9 @@ impl<'a> CatTemplatesWithName<'a> {
     }
   }
 }
-///Builder for [`Client::cat_thread_pool`]
+///Builder for [`Client::Cat::thread_pool`]
 ///
-///[`Client::cat_thread_pool`]: super::OsClient::cat_thread_pool
+///[`Client::Cat::thread_pool`]: super::OsClient::Cat::thread_pool
 #[derive(Debug, Clone)]
 pub struct CatThreadPool<'a> {
   client: &'a super::OsClient,
@@ -6224,9 +6224,9 @@ impl<'a> CatThreadPool<'a> {
     }
   }
 }
-///Builder for [`Client::cat_thread_pool_with_thread_pool_patterns`]
+///Builder for [`Client::Cat::thread_pool_with_thread_pool_patterns`]
 ///
-///[`Client::cat_thread_pool_with_thread_pool_patterns`]: super::OsClient::cat_thread_pool_with_thread_pool_patterns
+///[`Client::Cat::thread_pool_with_thread_pool_patterns`]: super::OsClient::Cat::thread_pool_with_thread_pool_patterns
 #[derive(Debug, Clone)]
 pub struct CatThreadPoolWithThreadPoolPatterns<'a> {
   client: &'a super::OsClient,

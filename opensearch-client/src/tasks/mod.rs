@@ -28,7 +28,7 @@ impl<'a> Tasks<'a> {
   /// - `wait_for_completion`: Should this request wait until the operation has
   ///   completed before returning.
   ///```ignore
-  /// let response = client.tasks_list()
+  /// let response = client.tasks().list()
   ///    .actions(actions)
   ///    .detailed(detailed)
   ///    .group_by(group_by)
@@ -39,7 +39,7 @@ impl<'a> Tasks<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn tasks_list(&self) -> builder::TasksList {
+  pub fn list(&self) -> builder::TasksList {
     builder::TasksList::new(self.os_client)
   }
 
@@ -58,7 +58,7 @@ impl<'a> Tasks<'a> {
   /// - `wait_for_completion`: Should this request wait until the operation has
   ///   completed before returning.
   ///```ignore
-  /// let response = client.tasks_cancel()
+  /// let response = client.tasks().cancel()
   ///    .actions(actions)
   ///    .nodes(nodes)
   ///    .parent_task_id(parent_task_id)
@@ -66,7 +66,7 @@ impl<'a> Tasks<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn tasks_cancel(&self) -> builder::TasksCancel {
+  pub fn cancel(&self) -> builder::TasksCancel {
     builder::TasksCancel::new(self.os_client)
   }
 
@@ -80,14 +80,14 @@ impl<'a> Tasks<'a> {
   /// - `wait_for_completion`: Should this request wait until the operation has
   ///   completed before returning.
   ///```ignore
-  /// let response = client.tasks_get()
+  /// let response = client.tasks().get()
   ///    .task_id(task_id)
   ///    .timeout(timeout)
   ///    .wait_for_completion(wait_for_completion)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn tasks_get(&self) -> builder::TasksGet {
+  pub fn get(&self) -> builder::TasksGet {
     builder::TasksGet::new(self.os_client)
   }
 
@@ -107,7 +107,7 @@ impl<'a> Tasks<'a> {
   /// - `wait_for_completion`: Should this request wait until the operation has
   ///   completed before returning.
   ///```ignore
-  /// let response = client.tasks_cancel_with_task_id()
+  /// let response = client.tasks().cancel_with_task_id()
   ///    .task_id(task_id)
   ///    .actions(actions)
   ///    .nodes(nodes)
@@ -116,7 +116,7 @@ impl<'a> Tasks<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn tasks_cancel_with_task_id(&self) -> builder::TasksCancelWithTaskId {
+  pub fn cancel_with_task_id(&self) -> builder::TasksCancelWithTaskId {
     builder::TasksCancelWithTaskId::new(self.os_client)
   }
 }

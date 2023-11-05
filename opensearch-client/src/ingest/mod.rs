@@ -1,7 +1,4 @@
-use std::sync::Arc;
-
 use crate::OsClient;
-
 mod builder;
 mod types;
 pub struct Ingest<'a> {
@@ -13,42 +10,6 @@ impl<'a> Ingest<'a> {
     Self { os_client }
   }
 
-  ///Returns a pipeline.
-  ///
-  ///Sends a `GET` request to `/_ingest/pipeline`
-  ///
-  ///Arguments:
-  /// - `cluster_manager_timeout`: Operation timeout for connection to
-  ///   cluster-manager node.
-  /// - `master_timeout`: Operation timeout for connection to master node.
-  ///```ignore
-  /// let response = client.get_pipeline()
-  ///    .cluster_manager_timeout(cluster_manager_timeout)
-  ///    .master_timeout(master_timeout)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn get_pipeline(&self) -> builder::IngestGetPipeline {
-    builder::IngestGetPipeline::new(self.os_client)
-  }
-
-  ///Allows to simulate a pipeline with example documents.
-  ///
-  ///Sends a `GET` request to `/_ingest/pipeline/_simulate`
-  ///
-  ///Arguments:
-  /// - `verbose`: Verbose mode. Display data output for each processor in
-  ///   executed pipeline.
-  ///```ignore
-  /// let response = client.ingest_simulate_get()
-  ///    .verbose(verbose)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn ingest_simulate_get(&self) -> builder::IngestSimulateGet {
-    builder::IngestSimulateGet::new(self.os_client)
-  }
-
   ///Allows to simulate a pipeline with example documents.
   ///
   ///Sends a `POST` request to `/_ingest/pipeline/_simulate`
@@ -58,14 +19,14 @@ impl<'a> Ingest<'a> {
   ///   executed pipeline.
   /// - `body`
   ///```ignore
-  /// let response = client.ingest_simulate_post()
+  /// let response = client.simulate()
   ///    .verbose(verbose)
   ///    .body(body)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn ingest_simulate_post(&self) -> builder::IngestSimulatePost {
-    builder::IngestSimulatePost::new(self.os_client)
+  pub fn simulate(&self) -> builder::Simulate {
+    builder::Simulate::new(self.os_client)
   }
 
   ///Returns a pipeline.
@@ -78,15 +39,15 @@ impl<'a> Ingest<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.ingest_get_pipeline_with_id()
+  /// let response = client.get_pipeline()
   ///    .id(id)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn ingest_get_pipeline_with_id(&self) -> builder::IngestGetPipelineWithId {
-    builder::IngestGetPipelineWithId::new(self.os_client)
+  pub fn get_pipeline(&self) -> builder::IngestGetPipeline {
+    builder::IngestGetPipeline::new(self.os_client)
   }
 
   ///Creates or updates a pipeline.
@@ -101,7 +62,7 @@ impl<'a> Ingest<'a> {
   /// - `timeout`: Operation timeout.
   /// - `body`
   ///```ignore
-  /// let response = client.ingest_put_pipeline()
+  /// let response = client.put_pipeline()
   ///    .id(id)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
@@ -110,7 +71,7 @@ impl<'a> Ingest<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn ingest_put_pipeline(&self) -> builder::IngestPutPipeline {
+  pub fn put_pipeline(&self) -> builder::IngestPutPipeline {
     builder::IngestPutPipeline::new(self.os_client)
   }
 
@@ -125,7 +86,7 @@ impl<'a> Ingest<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.ingest_delete_pipeline()
+  /// let response = client.delete_pipeline()
   ///    .id(id)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
@@ -133,27 +94,8 @@ impl<'a> Ingest<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn ingest_delete_pipeline(&self) -> builder::IngestDeletePipeline {
+  pub fn delete_pipeline(&self) -> builder::IngestDeletePipeline {
     builder::IngestDeletePipeline::new(self.os_client)
-  }
-
-  ///Allows to simulate a pipeline with example documents.
-  ///
-  ///Sends a `GET` request to `/_ingest/pipeline/{id}/_simulate`
-  ///
-  ///Arguments:
-  /// - `id`: Pipeline ID.
-  /// - `verbose`: Verbose mode. Display data output for each processor in
-  ///   executed pipeline.
-  ///```ignore
-  /// let response = client.ingest_simulate_get_with_id()
-  ///    .id(id)
-  ///    .verbose(verbose)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn ingest_simulate_get_with_id(&self) -> builder::IngestSimulateGetWithId {
-    builder::IngestSimulateGetWithId::new(self.os_client)
   }
 
   ///Allows to simulate a pipeline with example documents.
@@ -166,15 +108,15 @@ impl<'a> Ingest<'a> {
   ///   executed pipeline.
   /// - `body`
   ///```ignore
-  /// let response = client.ingest_simulate_post_with_id()
+  /// let response = client.simulate_with_id()
   ///    .id(id)
   ///    .verbose(verbose)
   ///    .body(body)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn ingest_simulate_post_with_id(&self) -> builder::IngestSimulatePostWithId {
-    builder::IngestSimulatePostWithId::new(self.os_client)
+  pub fn simulate_with_id(&self) -> builder::IngestSimulateWithId {
+    builder::IngestSimulateWithId::new(self.os_client)
   }
 
   ///Returns a list of the built-in patterns.
@@ -182,11 +124,11 @@ impl<'a> Ingest<'a> {
   ///Sends a `GET` request to `/_ingest/processor/grok`
   ///
   ///```ignore
-  /// let response = client.ingest_processor_grok()
+  /// let response = client.processor_grok()
   ///    .send()
   ///    .await;
   /// ```
-  pub fn ingest_processor_grok(&self) -> builder::IngestProcessorGrok {
+  pub fn processor_grok(&self) -> builder::IngestProcessorGrok {
     builder::IngestProcessorGrok::new(self.os_client)
   }
 }

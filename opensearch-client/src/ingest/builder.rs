@@ -1,152 +1,25 @@
 use std::collections::HashMap;
 
-use reqwest::Body;
 use serde::{de::DeserializeOwned, Serialize};
-use opensearch_dsl::Search;
+use serde_json::Value;
 
-use crate::types::bulk::BulkResponse;
 use super::types;
 #[allow(unused_imports)]
 use crate::{
   encode_path, encode_path_option_vec_string, ByteStream, Error, HeaderMap, HeaderValue, RequestBuilderExt,
   ReqwestResponse, ResponseValue,
 };
-///Builder for [`Client::get_pipeline`]
+///Builder for [`Client::simulate`]
 ///
-///[`Client::get_pipeline`]: super::OsClient::get_pipeline
+///[`Client::simulate`]: super::OsClient::simulate
 #[derive(Debug, Clone)]
-pub struct IngestGetPipeline<'a> {
-  client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::IngestGetPipelineClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::IngestGetPipelineMasterTimeout>, String>,
-  name: Result<Option<String>, String>,
-}
-
-impl<'a> IngestGetPipeline<'a> {
-  pub fn new(client: &'a super::OsClient) -> Self {
-    Self {
-      client,
-      cluster_manager_timeout: Ok(None),
-      master_timeout: Ok(None),
-      name: Ok(None),
-    }
-  }
-
-  pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::IngestGetPipelineClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IngestGetPipelineClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
-    self
-  }
-
-  pub fn master_timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::IngestGetPipelineMasterTimeout>, {
-    self.master_timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `IngestGetPipelineMasterTimeout` for master_timeout failed".to_string());
-    self
-  }
-
-  ///Sends a `GET` request to `/_ingest/pipeline`
-  pub async fn send(self) -> Result<ResponseValue<HashMap<String, serde_json::Value>>, Error> {
-    let Self {
-      client,
-      cluster_manager_timeout,
-      master_timeout,
-      name,
-    } = self;
-    let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
-    let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = match name.map_err(Error::InvalidRequest)? {
-      Some(name) => format!("{}/_ingest/pipeline/{}", client.baseurl, encode_path(&name.to_string()),),
-      None => format!("{}/_ingest/pipeline", client.baseurl,),
-    };
-    let mut query = Vec::with_capacity(2usize);
-    if let Some(v) = &cluster_manager_timeout {
-      query.push(("cluster_manager_timeout", v.to_string()));
-    }
-    if let Some(v) = &master_timeout {
-      query.push(("master_timeout", v.to_string()));
-    }
-    let request = client.client.get(url).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => ResponseValue::from_response(response).await,
-      _ => {
-        Err(Error::UnexpectedResponse(
-          ReqwestResponse::from_response(response).await,
-        ))
-      }
-    }
-  }
-}
-
-///Builder for [`Client::ingest_simulate_get`]
-///
-///[`Client::ingest_simulate_get`]: super::OsClient::ingest_simulate_get
-#[derive(Debug, Clone)]
-pub struct IngestSimulateGet<'a> {
-  client: &'a super::OsClient,
-  verbose: Result<Option<bool>, String>,
-}
-
-impl<'a> IngestSimulateGet<'a> {
-  pub fn new(client: &'a super::OsClient) -> Self {
-    Self {
-      client,
-      verbose: Ok(None),
-    }
-  }
-
-  pub fn verbose<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.verbose = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for verbose failed".to_string());
-    self
-  }
-
-  ///Sends a `GET` request to `/_ingest/pipeline/_simulate`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
-    let Self { client, verbose } = self;
-    let verbose = verbose.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_ingest/pipeline/_simulate", client.baseurl,);
-    let mut query = Vec::with_capacity(1usize);
-    if let Some(v) = &verbose {
-      query.push(("verbose", v.to_string()));
-    }
-    let request = client.client.get(url).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => {
-        Err(Error::UnexpectedResponse(
-          ReqwestResponse::from_response(response).await,
-        ))
-      }
-    }
-  }
-}
-
-///Builder for [`Client::ingest_simulate_post`]
-///
-///[`Client::ingest_simulate_post`]: super::OsClient::ingest_simulate_post
-#[derive(Debug, Clone)]
-pub struct IngestSimulatePost<'a> {
+pub struct Simulate<'a> {
   client: &'a super::OsClient,
   verbose: Result<Option<bool>, String>,
   body: Result<types::IngestSimulateBodyParams, String>,
 }
 
-impl<'a> IngestSimulatePost<'a> {
+impl<'a> Simulate<'a> {
   pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
@@ -198,22 +71,22 @@ impl<'a> IngestSimulatePost<'a> {
   }
 }
 
-///Builder for [`Client::ingest_get_pipeline_with_id`]
+///Builder for [`Client::get_pipeline`]
 ///
-///[`Client::ingest_get_pipeline_with_id`]: super::OsClient::ingest_get_pipeline_with_id
+///[`Client::get_pipeline`]: super::OsClient::get_pipeline
 #[derive(Debug, Clone)]
-pub struct IngestGetPipelineWithId<'a> {
+pub struct IngestGetPipeline<'a> {
   client: &'a super::OsClient,
-  id: Result<types::IngestGetPipelineWithIdId, String>,
+  id: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<types::IngestGetPipelineWithIdClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IngestGetPipelineWithIdMasterTimeout>, String>,
 }
 
-impl<'a> IngestGetPipelineWithId<'a> {
+impl<'a> IngestGetPipeline<'a> {
   pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
-      id: Err("id was not initialized".to_string()),
+      id: Ok(None),
       cluster_manager_timeout: Ok(None),
       master_timeout: Ok(None),
     }
@@ -221,7 +94,7 @@ impl<'a> IngestGetPipelineWithId<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IngestGetPipelineWithIdId>, {
+    V: std::convert::TryInto<Option<String>>, {
     self.id = value
       .try_into()
       .map_err(|_| "conversion to `IngestGetPipelineWithIdId` for id failed".to_string());
@@ -248,7 +121,7 @@ impl<'a> IngestGetPipelineWithId<'a> {
   }
 
   ///Sends a `GET` request to `/_ingest/pipeline/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
+  pub async fn send(self) -> Result<ResponseValue<HashMap<String, Value>>, Error> {
     let Self {
       client,
       id,
@@ -258,7 +131,11 @@ impl<'a> IngestGetPipelineWithId<'a> {
     let id = id.map_err(Error::InvalidRequest)?;
     let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_ingest/pipeline/{}", client.baseurl, encode_path(&id.to_string()),);
+    let url = if let Some(id) = id {
+      format!("{}/_ingest/pipeline/{}", client.baseurl, encode_path(&id.to_string()),)
+    } else {
+      format!("{}/_ingest/pipeline", client.baseurl,)
+    };
     let mut query = Vec::with_capacity(2usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -270,7 +147,7 @@ impl<'a> IngestGetPipelineWithId<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::from_response(response).await,
       _ => {
         Err(Error::UnexpectedResponse(
           ReqwestResponse::from_response(response).await,
@@ -280,9 +157,9 @@ impl<'a> IngestGetPipelineWithId<'a> {
   }
 }
 
-///Builder for [`Client::ingest_put_pipeline`]
+///Builder for [`Client::put_pipeline`]
 ///
-///[`Client::ingest_put_pipeline`]: super::OsClient::ingest_put_pipeline
+///[`Client::put_pipeline`]: super::OsClient::put_pipeline
 #[derive(Debug, Clone)]
 pub struct IngestPutPipeline<'a> {
   client: &'a super::OsClient,
@@ -392,9 +269,9 @@ impl<'a> IngestPutPipeline<'a> {
   }
 }
 
-///Builder for [`Client::ingest_delete_pipeline`]
+///Builder for [`Client::delete_pipeline`]
 ///
-///[`Client::ingest_delete_pipeline`]: super::OsClient::ingest_delete_pipeline
+///[`Client::delete_pipeline`]: super::OsClient::delete_pipeline
 #[derive(Debug, Clone)]
 pub struct IngestDeletePipeline<'a> {
   client: &'a super::OsClient,
@@ -491,84 +368,18 @@ impl<'a> IngestDeletePipeline<'a> {
   }
 }
 
-///Builder for [`Client::ingest_simulate_get_with_id`]
+///Builder for [`Client::simulate_with_id`]
 ///
-///[`Client::ingest_simulate_get_with_id`]: super::OsClient::ingest_simulate_get_with_id
+///[`Client::simulate_with_id`]: super::OsClient::simulate_with_id
 #[derive(Debug, Clone)]
-pub struct IngestSimulateGetWithId<'a> {
-  client: &'a super::OsClient,
-  id: Result<types::IngestSimulateGetWithIdId, String>,
-  verbose: Result<Option<bool>, String>,
-}
-
-impl<'a> IngestSimulateGetWithId<'a> {
-  pub fn new(client: &'a super::OsClient) -> Self {
-    Self {
-      client,
-      id: Err("id was not initialized".to_string()),
-      verbose: Ok(None),
-    }
-  }
-
-  pub fn id<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::IngestSimulateGetWithIdId>, {
-    self.id = value
-      .try_into()
-      .map_err(|_| "conversion to `IngestSimulateGetWithIdId` for id failed".to_string());
-    self
-  }
-
-  pub fn verbose<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.verbose = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for verbose failed".to_string());
-    self
-  }
-
-  ///Sends a `GET` request to `/_ingest/pipeline/{id}/_simulate`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
-    let Self { client, id, verbose } = self;
-    let id = id.map_err(Error::InvalidRequest)?;
-    let verbose = verbose.map_err(Error::InvalidRequest)?;
-    let url = format!(
-      "{}/_ingest/pipeline/{}/_simulate",
-      client.baseurl,
-      encode_path(&id.to_string()),
-    );
-    let mut query = Vec::with_capacity(1usize);
-    if let Some(v) = &verbose {
-      query.push(("verbose", v.to_string()));
-    }
-    let request = client.client.get(url).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => {
-        Err(Error::UnexpectedResponse(
-          ReqwestResponse::from_response(response).await,
-        ))
-      }
-    }
-  }
-}
-
-///Builder for [`Client::ingest_simulate_post_with_id`]
-///
-///[`Client::ingest_simulate_post_with_id`]: super::OsClient::ingest_simulate_post_with_id
-#[derive(Debug, Clone)]
-pub struct IngestSimulatePostWithId<'a> {
+pub struct IngestSimulateWithId<'a> {
   client: &'a super::OsClient,
   id: Result<types::IngestSimulatePostWithIdId, String>,
   verbose: Result<Option<bool>, String>,
   body: Result<types::IngestSimulateBodyParams, String>,
 }
 
-impl<'a> IngestSimulatePostWithId<'a> {
+impl<'a> IngestSimulateWithId<'a> {
   pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
@@ -640,9 +451,9 @@ impl<'a> IngestSimulatePostWithId<'a> {
   }
 }
 
-///Builder for [`Client::ingest_processor_grok`]
+///Builder for [`Client::processor_grok`]
 ///
-///[`Client::ingest_processor_grok`]: super::OsClient::ingest_processor_grok
+///[`Client::processor_grok`]: super::OsClient::processor_grok
 #[derive(Debug, Clone)]
 pub struct IngestProcessorGrok<'a> {
   client: &'a super::OsClient,

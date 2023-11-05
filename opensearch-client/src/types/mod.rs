@@ -195,35 +195,77 @@ impl AuditLogsConfig {
   }
 }
 
-///The operation definition and data (action-data pairs), separated by
-/// newlines
-// #[derive(Clone, Debug, Deserialize, Serialize)]
-// pub struct BulkBodyParams(String);
-// // impl std::ops::Deref for BulkBodyParams {
-// //   type Target = serde_json::Map<String, serde_json::Value>;
+///Operation timeout for connection to cluster-manager node.
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct ClusterManagerTimeout(String);
+impl std::ops::Deref for ClusterManagerTimeout {
+  type Target = String;
 
-// //   fn deref(&self) -> &serde_json::Map<String, serde_json::Value> {
-// //     &self.0
-// //   }
-// // }
+  fn deref(&self) -> &String {
+    &self.0
+  }
+}
 
-// // impl From<BulkBodyParams> for serde_json::Map<String, serde_json::Value> {
-// //   fn from(value: BulkBodyParams) -> Self {
-// //     value.0
-// //   }
-// // }
+impl From<ClusterManagerTimeout> for String {
+  fn from(value: ClusterManagerTimeout) -> Self {
+    value.0
+  }
+}
 
-// impl From<&BulkBodyParams> for BulkBodyParams {
-//   fn from(value: &BulkBodyParams) -> Self {
-//     value.clone()
-//   }
-// }
+impl From<&ClusterManagerTimeout> for ClusterManagerTimeout {
+  fn from(value: &ClusterManagerTimeout) -> Self {
+    value.clone()
+  }
+}
 
-// impl From<serde_json::Map<String, serde_json::Value>> for BulkBodyParams {
-//   fn from(value: serde_json::Map<String, serde_json::Value>) -> Self {
-//     Self(value)
-//   }
-// }
+impl std::str::FromStr for ClusterManagerTimeout {
+  type Err = &'static str;
+
+  fn from_str(value: &str) -> Result<Self, &'static str> {
+    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
+      .unwrap()
+      .find(value)
+      .is_none()
+    {
+      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
+    }
+    Ok(Self(value.to_string()))
+  }
+}
+
+impl std::convert::TryFrom<&str> for ClusterManagerTimeout {
+  type Error = &'static str;
+
+  fn try_from(value: &str) -> Result<Self, &'static str> {
+    value.parse()
+  }
+}
+
+impl std::convert::TryFrom<&String> for ClusterManagerTimeout {
+  type Error = &'static str;
+
+  fn try_from(value: &String) -> Result<Self, &'static str> {
+    value.parse()
+  }
+}
+
+impl std::convert::TryFrom<String> for ClusterManagerTimeout {
+  type Error = &'static str;
+
+  fn try_from(value: String) -> Result<Self, &'static str> {
+    value.parse()
+  }
+}
+
+impl<'de> serde::Deserialize<'de> for ClusterManagerTimeout {
+  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+  where
+    D: serde::Deserializer<'de>, {
+    String::deserialize(deserializer)?
+      .parse()
+      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
+  }
+}
 
 ///Operation timeout.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -482,78 +524,6 @@ impl From<&CatAllPitSegmentsResponseContent> for CatAllPitSegmentsResponseConten
 impl CatAllPitSegmentsResponseContent {
   pub fn builder() -> builder::CatAllPitSegmentsResponseContent {
     builder::CatAllPitSegmentsResponseContent::default()
-  }
-}
-
-///Operation timeout for connection to cluster-manager node.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct CatAllocationClusterManagerTimeout(String);
-impl std::ops::Deref for CatAllocationClusterManagerTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<CatAllocationClusterManagerTimeout> for String {
-  fn from(value: CatAllocationClusterManagerTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&CatAllocationClusterManagerTimeout> for CatAllocationClusterManagerTimeout {
-  fn from(value: &CatAllocationClusterManagerTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for CatAllocationClusterManagerTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for CatAllocationClusterManagerTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for CatAllocationClusterManagerTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for CatAllocationClusterManagerTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for CatAllocationClusterManagerTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
 

@@ -8,11 +8,7 @@ use opensearch::{Error, OsClient};
 use tokio::fs::File;
 
 pub async fn dump_pipelines(client: &OsClient, output: PathBuf) -> anyhow::Result<()> {
-<<<<<<< Updated upstream
   let pipelines = client.ingest().get_pipeline().send().await?;
-=======
-  let pipelines = client.ingest().ingest_get_pipeline().send().await?;
->>>>>>> Stashed changes
   let pipeline_path = output.join("pipelines");
   // we create the dir in not exists
   fs::create_dir_all(&pipeline_path).unwrap_or_else(|error| {

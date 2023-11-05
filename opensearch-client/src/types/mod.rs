@@ -636,80 +636,6 @@ impl<'de> serde::Deserialize<'de> for DocumentId {
   }
 }
 
-///Index name.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct CreatePutIndex(String);
-impl std::ops::Deref for CreatePutIndex {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<CreatePutIndex> for String {
-  fn from(value: CreatePutIndex) -> Self {
-    value.0
-  }
-}
-
-impl From<&CreatePutIndex> for CreatePutIndex {
-  fn from(value: &CreatePutIndex) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for CreatePutIndex {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for CreatePutIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for CreatePutIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for CreatePutIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for CreatePutIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
 ///The UUID of the dangling index.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct DanglingIndicesDeleteDanglingIndexIndexUuid(String);
@@ -1316,82 +1242,6 @@ impl<'de> serde::Deserialize<'de> for DeleteByQueryScroll {
   }
 }
 
-///Time each individual bulk request should wait for shards that are
-
-///Index name.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct DeleteIndex(String);
-impl std::ops::Deref for DeleteIndex {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<DeleteIndex> for String {
-  fn from(value: DeleteIndex) -> Self {
-    value.0
-  }
-}
-
-impl From<&DeleteIndex> for DeleteIndex {
-  fn from(value: &DeleteIndex) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for DeleteIndex {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for DeleteIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for DeleteIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for DeleteIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for DeleteIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct DeletePitBodyParams {
   pub pit_id: Vec<String>,
@@ -1523,8 +1373,8 @@ impl DeletedPit {
 
 ///Index name.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ExistsIndex(String);
-impl std::ops::Deref for ExistsIndex {
+pub struct IndexName(String);
+impl std::ops::Deref for IndexName {
   type Target = String;
 
   fn deref(&self) -> &String {
@@ -1532,19 +1382,19 @@ impl std::ops::Deref for ExistsIndex {
   }
 }
 
-impl From<ExistsIndex> for String {
-  fn from(value: ExistsIndex) -> Self {
+impl From<IndexName> for String {
+  fn from(value: IndexName) -> Self {
     value.0
   }
 }
 
-impl From<&ExistsIndex> for ExistsIndex {
-  fn from(value: &ExistsIndex) -> Self {
+impl From<&IndexName> for IndexName {
+  fn from(value: &IndexName) -> Self {
     value.clone()
   }
 }
 
-impl std::str::FromStr for ExistsIndex {
+impl std::str::FromStr for IndexName {
   type Err = &'static str;
 
   fn from_str(value: &str) -> Result<Self, &'static str> {
@@ -1561,7 +1411,7 @@ impl std::str::FromStr for ExistsIndex {
   }
 }
 
-impl std::convert::TryFrom<&str> for ExistsIndex {
+impl std::convert::TryFrom<&str> for IndexName {
   type Error = &'static str;
 
   fn try_from(value: &str) -> Result<Self, &'static str> {
@@ -1569,7 +1419,7 @@ impl std::convert::TryFrom<&str> for ExistsIndex {
   }
 }
 
-impl std::convert::TryFrom<&String> for ExistsIndex {
+impl std::convert::TryFrom<&String> for IndexName {
   type Error = &'static str;
 
   fn try_from(value: &String) -> Result<Self, &'static str> {
@@ -1577,7 +1427,7 @@ impl std::convert::TryFrom<&String> for ExistsIndex {
   }
 }
 
-impl std::convert::TryFrom<String> for ExistsIndex {
+impl std::convert::TryFrom<String> for IndexName {
   type Error = &'static str;
 
   fn try_from(value: String) -> Result<Self, &'static str> {
@@ -1585,81 +1435,7 @@ impl std::convert::TryFrom<String> for ExistsIndex {
   }
 }
 
-impl<'de> serde::Deserialize<'de> for ExistsIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
-///Index name.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ExistsSourceIndex(String);
-impl std::ops::Deref for ExistsSourceIndex {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<ExistsSourceIndex> for String {
-  fn from(value: ExistsSourceIndex) -> Self {
-    value.0
-  }
-}
-
-impl From<&ExistsSourceIndex> for ExistsSourceIndex {
-  fn from(value: &ExistsSourceIndex) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for ExistsSourceIndex {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for ExistsSourceIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for ExistsSourceIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for ExistsSourceIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ExistsSourceIndex {
+impl<'de> serde::Deserialize<'de> for IndexName {
   fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
   where
     D: serde::Deserializer<'de>, {
@@ -1768,154 +1544,6 @@ impl From<&ExplainBodyParams> for ExplainBodyParams {
 impl From<serde_json::Map<String, serde_json::Value>> for ExplainBodyParams {
   fn from(value: serde_json::Map<String, serde_json::Value>) -> Self {
     Self(value)
-  }
-}
-
-///Index name.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ExplainGetIndex(String);
-impl std::ops::Deref for ExplainGetIndex {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<ExplainGetIndex> for String {
-  fn from(value: ExplainGetIndex) -> Self {
-    value.0
-  }
-}
-
-impl From<&ExplainGetIndex> for ExplainGetIndex {
-  fn from(value: &ExplainGetIndex) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for ExplainGetIndex {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for ExplainGetIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for ExplainGetIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for ExplainGetIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ExplainGetIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
-///Index name.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ExplainPostIndex(String);
-impl std::ops::Deref for ExplainPostIndex {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<ExplainPostIndex> for String {
-  fn from(value: ExplainPostIndex) -> Self {
-    value.0
-  }
-}
-
-impl From<&ExplainPostIndex> for ExplainPostIndex {
-  fn from(value: &ExplainPostIndex) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for ExplainPostIndex {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for ExplainPostIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for ExplainPostIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for ExplainPostIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ExplainPostIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
 
@@ -2116,80 +1744,6 @@ impl GetAllPitsResponseContent {
   }
 }
 
-///Index name.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct GetIndex(String);
-impl std::ops::Deref for GetIndex {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<GetIndex> for String {
-  fn from(value: GetIndex) -> Self {
-    value.0
-  }
-}
-
-impl From<&GetIndex> for GetIndex {
-  fn from(value: &GetIndex) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for GetIndex {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for GetIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for GetIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for GetIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for GetIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct GetResponseContent<T> {
   #[serde(rename = "_fields", default, skip_serializing_if = "Option::is_none")]
@@ -2290,80 +1844,6 @@ impl std::convert::TryFrom<String> for GetScriptId {
 }
 
 impl<'de> serde::Deserialize<'de> for GetScriptId {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
-///Index name.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct GetSourceIndex(String);
-impl std::ops::Deref for GetSourceIndex {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<GetSourceIndex> for String {
-  fn from(value: GetSourceIndex) -> Self {
-    value.0
-  }
-}
-
-impl From<&GetSourceIndex> for GetSourceIndex {
-  fn from(value: &GetSourceIndex) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for GetSourceIndex {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for GetSourceIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for GetSourceIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for GetSourceIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for GetSourceIndex {
   fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
   where
     D: serde::Deserializer<'de>, {
@@ -2583,154 +2063,6 @@ impl From<serde_json::Value> for IndexBodyParams {
   }
 }
 
-///Index name.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndexPostIndex(String);
-impl std::ops::Deref for IndexPostIndex {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<IndexPostIndex> for String {
-  fn from(value: IndexPostIndex) -> Self {
-    value.0
-  }
-}
-
-impl From<&IndexPostIndex> for IndexPostIndex {
-  fn from(value: &IndexPostIndex) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for IndexPostIndex {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for IndexPostIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndexPostIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndexPostIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndexPostIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
-///Index name.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndexPutWithIdIndex(String);
-impl std::ops::Deref for IndexPutWithIdIndex {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<IndexPutWithIdIndex> for String {
-  fn from(value: IndexPutWithIdIndex) -> Self {
-    value.0
-  }
-}
-
-impl From<&IndexPutWithIdIndex> for IndexPutWithIdIndex {
-  fn from(value: &IndexPutWithIdIndex) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for IndexPutWithIdIndex {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for IndexPutWithIdIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndexPutWithIdIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndexPutWithIdIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndexPutWithIdIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct InfoResponseContent {
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2818,154 +2150,6 @@ impl From<&MgetBodyParams> for MgetBodyParams {
 impl From<serde_json::Map<String, serde_json::Value>> for MgetBodyParams {
   fn from(value: serde_json::Map<String, serde_json::Value>) -> Self {
     Self(value)
-  }
-}
-
-///Index name.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct MgetGetWithIndexIndex(String);
-impl std::ops::Deref for MgetGetWithIndexIndex {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<MgetGetWithIndexIndex> for String {
-  fn from(value: MgetGetWithIndexIndex) -> Self {
-    value.0
-  }
-}
-
-impl From<&MgetGetWithIndexIndex> for MgetGetWithIndexIndex {
-  fn from(value: &MgetGetWithIndexIndex) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for MgetGetWithIndexIndex {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for MgetGetWithIndexIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for MgetGetWithIndexIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for MgetGetWithIndexIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for MgetGetWithIndexIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
-///Index name.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct MgetPostWithIndexIndex(String);
-impl std::ops::Deref for MgetPostWithIndexIndex {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<MgetPostWithIndexIndex> for String {
-  fn from(value: MgetPostWithIndexIndex) -> Self {
-    value.0
-  }
-}
-
-impl From<&MgetPostWithIndexIndex> for MgetPostWithIndexIndex {
-  fn from(value: &MgetPostWithIndexIndex) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for MgetPostWithIndexIndex {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for MgetPostWithIndexIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for MgetPostWithIndexIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for MgetPostWithIndexIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for MgetPostWithIndexIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
 
@@ -7249,80 +6433,6 @@ impl std::convert::TryFrom<String> for UpdateByQueryScroll {
 }
 
 impl<'de> serde::Deserialize<'de> for UpdateByQueryScroll {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
-///Index name.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct UpdateIndex(String);
-impl std::ops::Deref for UpdateIndex {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<UpdateIndex> for String {
-  fn from(value: UpdateIndex) -> Self {
-    value.0
-  }
-}
-
-impl From<&UpdateIndex> for UpdateIndex {
-  fn from(value: &UpdateIndex) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for UpdateIndex {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for UpdateIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for UpdateIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for UpdateIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for UpdateIndex {
   fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
   where
     D: serde::Deserializer<'de>, {

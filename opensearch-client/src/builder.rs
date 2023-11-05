@@ -5865,7 +5865,7 @@ impl<'a> Count<'a> {
 #[derive(Debug, Clone)]
 pub struct CreatePut<'a> {
   client: &'a super::OsClient,
-  index: Result<types::CreatePutIndex, String>,
+  index: Result<types::IndexName, String>,
   id: Result<types::DocumentId, String>,
   pipeline: Result<Option<String>, String>,
   refresh: Result<Option<types::RefreshEnum>, String>,
@@ -5896,10 +5896,10 @@ impl<'a> CreatePut<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CreatePutIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `CreatePutIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -6691,7 +6691,7 @@ impl<'a> DeleteByQuery<'a> {
 #[derive(Debug, Clone)]
 pub struct Get<'a> {
   client: &'a super::OsClient,
-  index: Result<types::GetIndex, String>,
+  index: Result<types::IndexName, String>,
   id: Result<types::DocumentId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
@@ -6726,10 +6726,10 @@ impl<'a> Get<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::GetIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `GetIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -6938,7 +6938,7 @@ impl<'a> Get<'a> {
 #[derive(Debug, Clone)]
 pub struct IndexPutWithId<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexPutWithIdIndex, String>,
+  index: Result<types::IndexName, String>,
   id: Result<types::DocumentId, String>,
   if_primary_term: Result<Option<i32>, String>,
   if_seq_no: Result<Option<i32>, String>,
@@ -6977,10 +6977,10 @@ impl<'a> IndexPutWithId<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexPutWithIdIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexPutWithIdIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -7205,7 +7205,7 @@ impl<'a> IndexPutWithId<'a> {
 #[derive(Debug, Clone)]
 pub struct IndexPost<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexPostIndex, String>,
+  index: Result<types::IndexName, String>,
   id: Result<Option<String>, String>,
   if_primary_term: Result<Option<i32>, String>,
   if_seq_no: Result<Option<i32>, String>,
@@ -7244,10 +7244,10 @@ impl<'a> IndexPost<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexPostIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexPostIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -7476,7 +7476,7 @@ impl<'a> IndexPost<'a> {
 #[derive(Debug, Clone)]
 pub struct Delete<'a> {
   client: &'a super::OsClient,
-  index: Result<types::DeleteIndex, String>,
+  index: Result<types::IndexName, String>,
   id: Result<types::DocumentId, String>,
   if_primary_term: Result<Option<i32>, String>,
   if_seq_no: Result<Option<i32>, String>,
@@ -7507,10 +7507,10 @@ impl<'a> Delete<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DeleteIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `DeleteIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -7679,7 +7679,7 @@ impl<'a> Delete<'a> {
 #[derive(Debug, Clone)]
 pub struct Exists<'a> {
   client: &'a super::OsClient,
-  index: Result<types::ExistsIndex, String>,
+  index: Result<types::IndexName, String>,
   id: Result<types::DocumentId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
@@ -7714,10 +7714,10 @@ impl<'a> Exists<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ExistsIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `ExistsIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -7916,7 +7916,7 @@ impl<'a> Exists<'a> {
 #[derive(Debug, Clone)]
 pub struct ExplainGet<'a> {
   client: &'a super::OsClient,
-  index: Result<types::ExplainGetIndex, String>,
+  index: Result<types::IndexName, String>,
   id: Result<types::DocumentId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
@@ -7955,10 +7955,10 @@ impl<'a> ExplainGet<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ExplainGetIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `ExplainGetIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -8187,7 +8187,7 @@ impl<'a> ExplainGet<'a> {
 #[derive(Debug, Clone)]
 pub struct ExplainPost<'a> {
   client: &'a super::OsClient,
-  index: Result<types::ExplainPostIndex, String>,
+  index: Result<types::IndexName, String>,
   id: Result<types::DocumentId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
@@ -8228,10 +8228,10 @@ impl<'a> ExplainPost<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ExplainPostIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `ExplainPostIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -8752,7 +8752,7 @@ impl<'a> FieldCapsPostWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct MgetGetWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::MgetGetWithIndexIndex, String>,
+  index: Result<types::IndexName, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -8781,10 +8781,10 @@ impl<'a> MgetGetWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::MgetGetWithIndexIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `MgetGetWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -8937,7 +8937,7 @@ impl<'a> MgetGetWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct MgetPostWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::MgetPostWithIndexIndex, String>,
+  index: Result<types::IndexName, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -8968,10 +8968,10 @@ impl<'a> MgetPostWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::MgetPostWithIndexIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `MgetPostWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -11827,7 +11827,7 @@ impl<'a> SearchShardsPostWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct GetSource<'a> {
   client: &'a super::OsClient,
-  index: Result<types::GetSourceIndex, String>,
+  index: Result<types::IndexName, String>,
   id: Result<types::DocumentId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
@@ -11860,10 +11860,10 @@ impl<'a> GetSource<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::GetSourceIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `GetSourceIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -12047,7 +12047,7 @@ impl<'a> GetSource<'a> {
 #[derive(Debug, Clone)]
 pub struct ExistsSource<'a> {
   client: &'a super::OsClient,
-  index: Result<types::ExistsSourceIndex, String>,
+  index: Result<types::IndexName, String>,
   id: Result<types::DocumentId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
@@ -12080,10 +12080,10 @@ impl<'a> ExistsSource<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ExistsSourceIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `ExistsSourceIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -13273,7 +13273,7 @@ impl<'a> TermvectorsPostWithId<'a> {
 #[derive(Debug, Clone)]
 pub struct Update<'a> {
   client: &'a super::OsClient,
-  index: Result<types::UpdateIndex, String>,
+  index: Result<types::IndexName, String>,
   id: Result<types::DocumentId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
@@ -13314,10 +13314,10 @@ impl<'a> Update<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::UpdateIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `UpdateIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 

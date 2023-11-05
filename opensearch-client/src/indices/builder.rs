@@ -5993,7 +5993,7 @@ impl<'a> IndicesGet<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesCreate<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesCreateIndex, String>,
+  index: Result<IndexName, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -6015,7 +6015,7 @@ impl<'a> IndicesCreate<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesCreateIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
       .map_err(|_| "conversion to `IndicesCreateIndex` for index failed".to_string());

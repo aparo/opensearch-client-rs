@@ -472,116 +472,6 @@ impl OsClient {
     builder::BulkPost::new(self)
   }
 
-  ///Returns number of documents matching a query.
-  ///
-  ///Sends a `GET` request to `/_count`
-  ///
-  ///Arguments:
-  /// - `allow_no_indices`: Whether to ignore if a wildcard indices expression
-  ///   resolves into no concrete indices. (This includes `_all` string or when
-  ///   no indices have been specified).
-  /// - `analyze_wildcard`: Specify whether wildcard and prefix queries should
-  ///   be analyzed.
-  /// - `analyzer`: The analyzer to use for the query string.
-  /// - `default_operator`: The default operator for query string query (AND or
-  ///   OR).
-  /// - `df`: The field to use as default where no field prefix is given in the
-  ///   query string.
-  /// - `expand_wildcards`: Whether to expand wildcard expression to concrete
-  ///   indices that are open, closed or both.
-  /// - `ignore_throttled`: Whether specified concrete, expanded or aliased
-  ///   indices should be ignored when throttled.
-  /// - `ignore_unavailable`: Whether specified concrete indices should be
-  ///   ignored when unavailable (missing or closed).
-  /// - `lenient`: Specify whether format-based query failures (such as
-  ///   providing text to a numeric field) should be ignored.
-  /// - `min_score`: Include only documents with a specific `_score` value in
-  ///   the result.
-  /// - `preference`: Specify the node or shard the operation should be
-  ///   performed on.
-  /// - `q`: Query in the Lucene query string syntax.
-  /// - `routing`: Comma-separated list of specific routing values.
-  /// - `terminate_after`: The maximum number of documents to collect for each
-  ///   shard, upon reaching which the query execution will terminate early.
-  ///```ignore
-  /// let response = client.count_get()
-  ///    .allow_no_indices(allow_no_indices)
-  ///    .analyze_wildcard(analyze_wildcard)
-  ///    .analyzer(analyzer)
-  ///    .default_operator(default_operator)
-  ///    .df(df)
-  ///    .expand_wildcards(expand_wildcards)
-  ///    .ignore_throttled(ignore_throttled)
-  ///    .ignore_unavailable(ignore_unavailable)
-  ///    .lenient(lenient)
-  ///    .min_score(min_score)
-  ///    .preference(preference)
-  ///    .q(q)
-  ///    .routing(routing)
-  ///    .terminate_after(terminate_after)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn count_get(&self) -> builder::CountGet {
-    builder::CountGet::new(self)
-  }
-
-  ///Returns number of documents matching a query.
-  ///
-  ///Sends a `POST` request to `/_count`
-  ///
-  ///Arguments:
-  /// - `allow_no_indices`: Whether to ignore if a wildcard indices expression
-  ///   resolves into no concrete indices. (This includes `_all` string or when
-  ///   no indices have been specified).
-  /// - `analyze_wildcard`: Specify whether wildcard and prefix queries should
-  ///   be analyzed.
-  /// - `analyzer`: The analyzer to use for the query string.
-  /// - `default_operator`: The default operator for query string query (AND or
-  ///   OR).
-  /// - `df`: The field to use as default where no field prefix is given in the
-  ///   query string.
-  /// - `expand_wildcards`: Whether to expand wildcard expression to concrete
-  ///   indices that are open, closed or both.
-  /// - `ignore_throttled`: Whether specified concrete, expanded or aliased
-  ///   indices should be ignored when throttled.
-  /// - `ignore_unavailable`: Whether specified concrete indices should be
-  ///   ignored when unavailable (missing or closed).
-  /// - `lenient`: Specify whether format-based query failures (such as
-  ///   providing text to a numeric field) should be ignored.
-  /// - `min_score`: Include only documents with a specific `_score` value in
-  ///   the result.
-  /// - `preference`: Specify the node or shard the operation should be
-  ///   performed on.
-  /// - `q`: Query in the Lucene query string syntax.
-  /// - `routing`: Comma-separated list of specific routing values.
-  /// - `terminate_after`: The maximum number of documents to collect for each
-  ///   shard, upon reaching which the query execution will terminate early.
-  /// - `body`
-  ///```ignore
-  /// let response = client.count_post()
-  ///    .allow_no_indices(allow_no_indices)
-  ///    .analyze_wildcard(analyze_wildcard)
-  ///    .analyzer(analyzer)
-  ///    .default_operator(default_operator)
-  ///    .df(df)
-  ///    .expand_wildcards(expand_wildcards)
-  ///    .ignore_throttled(ignore_throttled)
-  ///    .ignore_unavailable(ignore_unavailable)
-  ///    .lenient(lenient)
-  ///    .min_score(min_score)
-  ///    .preference(preference)
-  ///    .q(q)
-  ///    .routing(routing)
-  ///    .terminate_after(terminate_after)
-  ///    .body(body)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn count_post(&self) -> builder::CountPost {
-    builder::CountPost::new(self)
-  }
-
   ///Returns all dangling indices.
   ///
   ///Sends a `GET` request to `/_dangling`
@@ -1827,62 +1717,6 @@ impl OsClient {
 
   ///Returns number of documents matching a query.
   ///
-  ///Sends a `GET` request to `/{index}/_count`
-  ///
-  ///Arguments:
-  /// - `index`: Comma-separated list of indices to restrict the results.
-  /// - `allow_no_indices`: Whether to ignore if a wildcard indices expression
-  ///   resolves into no concrete indices. (This includes `_all` string or when
-  ///   no indices have been specified).
-  /// - `analyze_wildcard`: Specify whether wildcard and prefix queries should
-  ///   be analyzed.
-  /// - `analyzer`: The analyzer to use for the query string.
-  /// - `default_operator`: The default operator for query string query (AND or
-  ///   OR).
-  /// - `df`: The field to use as default where no field prefix is given in the
-  ///   query string.
-  /// - `expand_wildcards`: Whether to expand wildcard expression to concrete
-  ///   indices that are open, closed or both.
-  /// - `ignore_throttled`: Whether specified concrete, expanded or aliased
-  ///   indices should be ignored when throttled.
-  /// - `ignore_unavailable`: Whether specified concrete indices should be
-  ///   ignored when unavailable (missing or closed).
-  /// - `lenient`: Specify whether format-based query failures (such as
-  ///   providing text to a numeric field) should be ignored.
-  /// - `min_score`: Include only documents with a specific `_score` value in
-  ///   the result.
-  /// - `preference`: Specify the node or shard the operation should be
-  ///   performed on.
-  /// - `q`: Query in the Lucene query string syntax.
-  /// - `routing`: Comma-separated list of specific routing values.
-  /// - `terminate_after`: The maximum number of documents to collect for each
-  ///   shard, upon reaching which the query execution will terminate early.
-  ///```ignore
-  /// let response = client.count_get_with_index()
-  ///    .index(index)
-  ///    .allow_no_indices(allow_no_indices)
-  ///    .analyze_wildcard(analyze_wildcard)
-  ///    .analyzer(analyzer)
-  ///    .default_operator(default_operator)
-  ///    .df(df)
-  ///    .expand_wildcards(expand_wildcards)
-  ///    .ignore_throttled(ignore_throttled)
-  ///    .ignore_unavailable(ignore_unavailable)
-  ///    .lenient(lenient)
-  ///    .min_score(min_score)
-  ///    .preference(preference)
-  ///    .q(q)
-  ///    .routing(routing)
-  ///    .terminate_after(terminate_after)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn count_get_with_index(&self) -> builder::CountGetWithIndex {
-    builder::CountGetWithIndex::new(self)
-  }
-
-  ///Returns number of documents matching a query.
-  ///
   ///Sends a `POST` request to `/{index}/_count`
   ///
   ///Arguments:
@@ -1935,8 +1769,8 @@ impl OsClient {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn count_post_with_index(&self) -> builder::CountPostWithIndex {
-    builder::CountPostWithIndex::new(self)
+  pub fn count_post_with_index(&self) -> builder::Count {
+    builder::Count::new(self)
   }
 
   ///Creates a new document in the index.

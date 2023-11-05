@@ -364,8 +364,8 @@ impl From<serde_json::Map<String, serde_json::Value>> for CountBodyParams {
 
 ///Comma-separated list of indices to restrict the results.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct CountGetWithIndexIndex(String);
-impl std::ops::Deref for CountGetWithIndexIndex {
+pub struct CountIndex(String);
+impl std::ops::Deref for CountIndex {
   type Target = String;
 
   fn deref(&self) -> &String {
@@ -373,19 +373,19 @@ impl std::ops::Deref for CountGetWithIndexIndex {
   }
 }
 
-impl From<CountGetWithIndexIndex> for String {
-  fn from(value: CountGetWithIndexIndex) -> Self {
+impl From<CountIndex> for String {
+  fn from(value: CountIndex) -> Self {
     value.0
   }
 }
 
-impl From<&CountGetWithIndexIndex> for CountGetWithIndexIndex {
-  fn from(value: &CountGetWithIndexIndex) -> Self {
+impl From<&CountIndex> for CountIndex {
+  fn from(value: &CountIndex) -> Self {
     value.clone()
   }
 }
 
-impl std::str::FromStr for CountGetWithIndexIndex {
+impl std::str::FromStr for CountIndex {
   type Err = &'static str;
 
   fn from_str(value: &str) -> Result<Self, &'static str> {
@@ -402,7 +402,7 @@ impl std::str::FromStr for CountGetWithIndexIndex {
   }
 }
 
-impl std::convert::TryFrom<&str> for CountGetWithIndexIndex {
+impl std::convert::TryFrom<&str> for CountIndex {
   type Error = &'static str;
 
   fn try_from(value: &str) -> Result<Self, &'static str> {
@@ -410,7 +410,7 @@ impl std::convert::TryFrom<&str> for CountGetWithIndexIndex {
   }
 }
 
-impl std::convert::TryFrom<&String> for CountGetWithIndexIndex {
+impl std::convert::TryFrom<&String> for CountIndex {
   type Error = &'static str;
 
   fn try_from(value: &String) -> Result<Self, &'static str> {
@@ -418,7 +418,7 @@ impl std::convert::TryFrom<&String> for CountGetWithIndexIndex {
   }
 }
 
-impl std::convert::TryFrom<String> for CountGetWithIndexIndex {
+impl std::convert::TryFrom<String> for CountIndex {
   type Error = &'static str;
 
   fn try_from(value: String) -> Result<Self, &'static str> {
@@ -426,81 +426,7 @@ impl std::convert::TryFrom<String> for CountGetWithIndexIndex {
   }
 }
 
-impl<'de> serde::Deserialize<'de> for CountGetWithIndexIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
-///Comma-separated list of indices to restrict the results.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct CountPostWithIndexIndex(String);
-impl std::ops::Deref for CountPostWithIndexIndex {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<CountPostWithIndexIndex> for String {
-  fn from(value: CountPostWithIndexIndex) -> Self {
-    value.0
-  }
-}
-
-impl From<&CountPostWithIndexIndex> for CountPostWithIndexIndex {
-  fn from(value: &CountPostWithIndexIndex) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for CountPostWithIndexIndex {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for CountPostWithIndexIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for CountPostWithIndexIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for CountPostWithIndexIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for CountPostWithIndexIndex {
+impl<'de> serde::Deserialize<'de> for CountIndex {
   fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
   where
     D: serde::Deserializer<'de>, {

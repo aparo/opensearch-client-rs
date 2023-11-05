@@ -11,6 +11,8 @@ mod indices;
 mod ingest;
 #[cfg(feature = "nodes")]
 mod nodes;
+#[cfg(feature = "mtermvectors")]
+mod mtermvectors;
 #[cfg(feature = "remote")]
 mod remote;
 #[cfg(feature = "snapshot")]
@@ -342,6 +344,11 @@ impl OsClient {
   #[cfg(feature = "ingest")]
   pub fn ingest(&self) -> ingest::Ingest {
     ingest::Ingest::new(&self)
+  }
+
+  #[cfg(feature = "mtermvectors")]
+  pub fn mtermvectors(&self) -> mtermvectors::Mtermvectors {
+    mtermvectors::Mtermvectors::new(&self)
   }
 
   #[cfg(feature = "nodes")]
@@ -929,120 +936,6 @@ impl OsClient {
   /// ```
   pub fn msearch_template_post(&self) -> builder::MsearchTemplatePost {
     builder::MsearchTemplatePost::new(self)
-  }
-
-  ///Returns multiple termvectors in one request.
-  ///
-  ///Sends a `GET` request to `/_mtermvectors`
-  ///
-  ///Arguments:
-  /// - `field_statistics`: Specifies if document count, sum of document
-  ///   frequencies and sum of total term frequencies should be returned.
-  ///   Applies to all returned documents unless otherwise specified in body
-  ///   'params' or 'docs'.
-  /// - `fields`: Comma-separated list of fields to return. Applies to all
-  ///   returned documents unless otherwise specified in body 'params' or
-  ///   'docs'.
-  /// - `ids`: Comma-separated list of documents ids. You must define ids as
-  ///   parameter or set 'ids' or 'docs' in the request body.
-  /// - `offsets`: Specifies if term offsets should be returned. Applies to all
-  ///   returned documents unless otherwise specified in body 'params' or
-  ///   'docs'.
-  /// - `payloads`: Specifies if term payloads should be returned. Applies to
-  ///   all returned documents unless otherwise specified in body 'params' or
-  ///   'docs'.
-  /// - `positions`: Specifies if term positions should be returned. Applies to
-  ///   all returned documents unless otherwise specified in body 'params' or
-  ///   'docs'.
-  /// - `preference`: Specify the node or shard the operation should be
-  ///   performed on. Applies to all returned documents unless otherwise
-  ///   specified in body 'params' or 'docs'.
-  /// - `realtime`: Specifies if requests are real-time as opposed to
-  ///   near-real-time.
-  /// - `routing`: Routing value. Applies to all returned documents unless
-  ///   otherwise specified in body 'params' or 'docs'.
-  /// - `term_statistics`: Specifies if total term frequency and document
-  ///   frequency should be returned. Applies to all returned documents unless
-  ///   otherwise specified in body 'params' or 'docs'.
-  /// - `version`: Explicit version number for concurrency control.
-  /// - `version_type`: Specific version type.
-  ///```ignore
-  /// let response = client.mtermvectors_get()
-  ///    .field_statistics(field_statistics)
-  ///    .fields(fields)
-  ///    .ids(ids)
-  ///    .offsets(offsets)
-  ///    .payloads(payloads)
-  ///    .positions(positions)
-  ///    .preference(preference)
-  ///    .realtime(realtime)
-  ///    .routing(routing)
-  ///    .term_statistics(term_statistics)
-  ///    .version(version)
-  ///    .version_type(version_type)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn mtermvectors_get(&self) -> builder::MtermvectorsGet {
-    builder::MtermvectorsGet::new(self)
-  }
-
-  ///Returns multiple termvectors in one request.
-  ///
-  ///Sends a `POST` request to `/_mtermvectors`
-  ///
-  ///Arguments:
-  /// - `field_statistics`: Specifies if document count, sum of document
-  ///   frequencies and sum of total term frequencies should be returned.
-  ///   Applies to all returned documents unless otherwise specified in body
-  ///   'params' or 'docs'.
-  /// - `fields`: Comma-separated list of fields to return. Applies to all
-  ///   returned documents unless otherwise specified in body 'params' or
-  ///   'docs'.
-  /// - `ids`: Comma-separated list of documents ids. You must define ids as
-  ///   parameter or set 'ids' or 'docs' in the request body.
-  /// - `offsets`: Specifies if term offsets should be returned. Applies to all
-  ///   returned documents unless otherwise specified in body 'params' or
-  ///   'docs'.
-  /// - `payloads`: Specifies if term payloads should be returned. Applies to
-  ///   all returned documents unless otherwise specified in body 'params' or
-  ///   'docs'.
-  /// - `positions`: Specifies if term positions should be returned. Applies to
-  ///   all returned documents unless otherwise specified in body 'params' or
-  ///   'docs'.
-  /// - `preference`: Specify the node or shard the operation should be
-  ///   performed on. Applies to all returned documents unless otherwise
-  ///   specified in body 'params' or 'docs'.
-  /// - `realtime`: Specifies if requests are real-time as opposed to
-  ///   near-real-time.
-  /// - `routing`: Routing value. Applies to all returned documents unless
-  ///   otherwise specified in body 'params' or 'docs'.
-  /// - `term_statistics`: Specifies if total term frequency and document
-  ///   frequency should be returned. Applies to all returned documents unless
-  ///   otherwise specified in body 'params' or 'docs'.
-  /// - `version`: Explicit version number for concurrency control.
-  /// - `version_type`: Specific version type.
-  /// - `body`
-  ///```ignore
-  /// let response = client.mtermvectors_post()
-  ///    .field_statistics(field_statistics)
-  ///    .fields(fields)
-  ///    .ids(ids)
-  ///    .offsets(offsets)
-  ///    .payloads(payloads)
-  ///    .positions(positions)
-  ///    .preference(preference)
-  ///    .realtime(realtime)
-  ///    .routing(routing)
-  ///    .term_statistics(term_statistics)
-  ///    .version(version)
-  ///    .version_type(version_type)
-  ///    .body(body)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn mtermvectors_post(&self) -> builder::MtermvectorsPost {
-    builder::MtermvectorsPost::new(self)
   }
 
   ///Returns account details for the current user.
@@ -3568,124 +3461,6 @@ impl OsClient {
   /// ```
   pub fn msearch_template_post_with_index(&self) -> builder::MsearchTemplatePostWithIndex {
     builder::MsearchTemplatePostWithIndex::new(self)
-  }
-
-  ///Returns multiple termvectors in one request.
-  ///
-  ///Sends a `GET` request to `/{index}/_mtermvectors`
-  ///
-  ///Arguments:
-  /// - `index`: The index in which the document resides.
-  /// - `field_statistics`: Specifies if document count, sum of document
-  ///   frequencies and sum of total term frequencies should be returned.
-  ///   Applies to all returned documents unless otherwise specified in body
-  ///   'params' or 'docs'.
-  /// - `fields`: Comma-separated list of fields to return. Applies to all
-  ///   returned documents unless otherwise specified in body 'params' or
-  ///   'docs'.
-  /// - `ids`: Comma-separated list of documents ids. You must define ids as
-  ///   parameter or set 'ids' or 'docs' in the request body.
-  /// - `offsets`: Specifies if term offsets should be returned. Applies to all
-  ///   returned documents unless otherwise specified in body 'params' or
-  ///   'docs'.
-  /// - `payloads`: Specifies if term payloads should be returned. Applies to
-  ///   all returned documents unless otherwise specified in body 'params' or
-  ///   'docs'.
-  /// - `positions`: Specifies if term positions should be returned. Applies to
-  ///   all returned documents unless otherwise specified in body 'params' or
-  ///   'docs'.
-  /// - `preference`: Specify the node or shard the operation should be
-  ///   performed on. Applies to all returned documents unless otherwise
-  ///   specified in body 'params' or 'docs'.
-  /// - `realtime`: Specifies if requests are real-time as opposed to
-  ///   near-real-time.
-  /// - `routing`: Routing value. Applies to all returned documents unless
-  ///   otherwise specified in body 'params' or 'docs'.
-  /// - `term_statistics`: Specifies if total term frequency and document
-  ///   frequency should be returned. Applies to all returned documents unless
-  ///   otherwise specified in body 'params' or 'docs'.
-  /// - `version`: Explicit version number for concurrency control.
-  /// - `version_type`: Specific version type.
-  ///```ignore
-  /// let response = client.mtermvectors_get_with_index()
-  ///    .index(index)
-  ///    .field_statistics(field_statistics)
-  ///    .fields(fields)
-  ///    .ids(ids)
-  ///    .offsets(offsets)
-  ///    .payloads(payloads)
-  ///    .positions(positions)
-  ///    .preference(preference)
-  ///    .realtime(realtime)
-  ///    .routing(routing)
-  ///    .term_statistics(term_statistics)
-  ///    .version(version)
-  ///    .version_type(version_type)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn mtermvectors_get_with_index(&self) -> builder::MtermvectorsGetWithIndex {
-    builder::MtermvectorsGetWithIndex::new(self)
-  }
-
-  ///Returns multiple termvectors in one request.
-  ///
-  ///Sends a `POST` request to `/{index}/_mtermvectors`
-  ///
-  ///Arguments:
-  /// - `index`: The index in which the document resides.
-  /// - `field_statistics`: Specifies if document count, sum of document
-  ///   frequencies and sum of total term frequencies should be returned.
-  ///   Applies to all returned documents unless otherwise specified in body
-  ///   'params' or 'docs'.
-  /// - `fields`: Comma-separated list of fields to return. Applies to all
-  ///   returned documents unless otherwise specified in body 'params' or
-  ///   'docs'.
-  /// - `ids`: Comma-separated list of documents ids. You must define ids as
-  ///   parameter or set 'ids' or 'docs' in the request body.
-  /// - `offsets`: Specifies if term offsets should be returned. Applies to all
-  ///   returned documents unless otherwise specified in body 'params' or
-  ///   'docs'.
-  /// - `payloads`: Specifies if term payloads should be returned. Applies to
-  ///   all returned documents unless otherwise specified in body 'params' or
-  ///   'docs'.
-  /// - `positions`: Specifies if term positions should be returned. Applies to
-  ///   all returned documents unless otherwise specified in body 'params' or
-  ///   'docs'.
-  /// - `preference`: Specify the node or shard the operation should be
-  ///   performed on. Applies to all returned documents unless otherwise
-  ///   specified in body 'params' or 'docs'.
-  /// - `realtime`: Specifies if requests are real-time as opposed to
-  ///   near-real-time.
-  /// - `routing`: Routing value. Applies to all returned documents unless
-  ///   otherwise specified in body 'params' or 'docs'.
-  /// - `term_statistics`: Specifies if total term frequency and document
-  ///   frequency should be returned. Applies to all returned documents unless
-  ///   otherwise specified in body 'params' or 'docs'.
-  /// - `version`: Explicit version number for concurrency control.
-  /// - `version_type`: Specific version type.
-  /// - `body`
-  ///```ignore
-  /// let response = client.mtermvectors_post_with_index()
-  ///    .index(index)
-  ///    .field_statistics(field_statistics)
-  ///    .fields(fields)
-  ///    .ids(ids)
-  ///    .offsets(offsets)
-  ///    .payloads(payloads)
-  ///    .positions(positions)
-  ///    .preference(preference)
-  ///    .realtime(realtime)
-  ///    .routing(routing)
-  ///    .term_statistics(term_statistics)
-  ///    .version(version)
-  ///    .version_type(version_type)
-  ///    .body(body)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn mtermvectors_post_with_index(&self) -> builder::MtermvectorsPostWithIndex {
-    builder::MtermvectorsPostWithIndex::new(self)
   }
 
   ///Allows to evaluate the quality of ranked search results over a set of

@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::Value;
 
-use crate::types::ClusterManagerTimeout;
+use crate::types::{ClusterManagerTimeout, MasterTimeout};
 use super::types;
 #[allow(unused_imports)]
 use crate::{
@@ -80,7 +80,7 @@ pub struct IngestGetPipeline<'a> {
   client: &'a super::OsClient,
   id: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::IngestGetPipelineWithIdMasterTimeout>, String>,
+  master_timeout: Result<Option<MasterTimeout>, String>,
 }
 
 impl<'a> IngestGetPipeline<'a> {
@@ -114,11 +114,11 @@ impl<'a> IngestGetPipeline<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IngestGetPipelineWithIdMasterTimeout>, {
+    V: std::convert::TryInto<MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IngestGetPipelineWithIdMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -167,7 +167,7 @@ pub struct IngestPutPipeline<'a> {
   client: &'a super::OsClient,
   id: Result<types::IngestPutPipelineId, String>,
   cluster_manager_timeout: Result<Option<ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::IngestPutPipelineMasterTimeout>, String>,
+  master_timeout: Result<Option<MasterTimeout>, String>,
   timeout: Result<Option<types::IngestPutPipelineTimeout>, String>,
   body: Result<types::IngestPutPipelineBodyParams, String>,
 }
@@ -205,11 +205,11 @@ impl<'a> IngestPutPipeline<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IngestPutPipelineMasterTimeout>, {
+    V: std::convert::TryInto<MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IngestPutPipelineMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -280,7 +280,7 @@ pub struct IngestDeletePipeline<'a> {
   client: &'a super::OsClient,
   id: Result<types::IngestDeletePipelineId, String>,
   cluster_manager_timeout: Result<Option<ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::IngestDeletePipelineMasterTimeout>, String>,
+  master_timeout: Result<Option<MasterTimeout>, String>,
   timeout: Result<Option<types::IngestDeletePipelineTimeout>, String>,
 }
 
@@ -316,11 +316,11 @@ impl<'a> IngestDeletePipeline<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IngestDeletePipelineMasterTimeout>, {
+    V: std::convert::TryInto<MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IngestDeletePipelineMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 

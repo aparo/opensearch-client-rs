@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use reqwest::Body;
 use serde::{de::DeserializeOwned, Serialize};
 use opensearch_dsl::Search;
@@ -425,7 +423,7 @@ impl<'a> IndicesExistsAlias<'a> {
 pub struct IndicesUpdateAliases<'a> {
   client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::IndicesUpdateAliasesMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesUpdateAliasesTimeout>, String>,
   body: Result<types::builder::IndicesUpdateAliasesBodyParams, String>,
 }
@@ -453,11 +451,11 @@ impl<'a> IndicesUpdateAliases<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesUpdateAliasesMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesUpdateAliasesMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -1432,7 +1430,7 @@ pub struct CatAllocation<'a> {
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatAllocationMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   v: Result<Option<bool>, String>,
 }
@@ -1515,11 +1513,11 @@ impl<'a> CatAllocation<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatAllocationMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatAllocationMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -1622,7 +1620,7 @@ pub struct CatAllocationWithNodeId<'a> {
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatAllocationWithNodeIdMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   v: Result<Option<bool>, String>,
 }
@@ -1715,11 +1713,11 @@ impl<'a> CatAllocationWithNodeId<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatAllocationWithNodeIdMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatAllocationWithNodeIdMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -1826,7 +1824,7 @@ pub struct CatClusterManager<'a> {
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatClusterManagerMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   v: Result<Option<bool>, String>,
 }
@@ -1898,11 +1896,11 @@ impl<'a> CatClusterManager<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatClusterManagerMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatClusterManagerMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -2726,7 +2724,7 @@ pub struct CatIndices<'a> {
   help: Result<Option<bool>, String>,
   include_unloaded_segments: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatIndicesMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   pri: Result<Option<bool>, String>,
   s: Result<Option<Vec<String>>, String>,
   time: Result<Option<types::Time>, String>,
@@ -2846,11 +2844,11 @@ impl<'a> CatIndices<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatIndicesMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatIndicesMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -3001,7 +2999,7 @@ pub struct CatIndicesWithIndex<'a> {
   help: Result<Option<bool>, String>,
   include_unloaded_segments: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatIndicesWithIndexMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   pri: Result<Option<bool>, String>,
   s: Result<Option<Vec<String>>, String>,
   time: Result<Option<types::Time>, String>,
@@ -3131,11 +3129,11 @@ impl<'a> CatIndicesWithIndex<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatIndicesWithIndexMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatIndicesWithIndexMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -3283,7 +3281,7 @@ pub struct CatMaster<'a> {
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatMasterMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   v: Result<Option<bool>, String>,
 }
@@ -3355,11 +3353,11 @@ impl<'a> CatMaster<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatMasterMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatMasterMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -3455,7 +3453,7 @@ pub struct CatNodeattrs<'a> {
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatNodeattrsMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   v: Result<Option<bool>, String>,
 }
@@ -3527,11 +3525,11 @@ impl<'a> CatNodeattrs<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatNodeattrsMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatNodeattrsMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -3629,7 +3627,7 @@ pub struct CatNodes<'a> {
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatNodesMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   time: Result<Option<types::Time>, String>,
   v: Result<Option<bool>, String>,
@@ -3725,11 +3723,11 @@ impl<'a> CatNodes<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatNodesMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatNodesMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -3850,7 +3848,7 @@ pub struct CatPendingTasks<'a> {
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatPendingTasksMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   time: Result<Option<types::Time>, String>,
   v: Result<Option<bool>, String>,
@@ -3924,11 +3922,11 @@ impl<'a> CatPendingTasks<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatPendingTasksMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatPendingTasksMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -4140,7 +4138,7 @@ pub struct CatPlugins<'a> {
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatPluginsMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   v: Result<Option<bool>, String>,
 }
@@ -4212,11 +4210,11 @@ impl<'a> CatPlugins<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatPluginsMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatPluginsMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -4733,7 +4731,7 @@ pub struct CatRepositories<'a> {
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatRepositoriesMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   v: Result<Option<bool>, String>,
 }
@@ -4805,11 +4803,11 @@ impl<'a> CatRepositories<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatRepositoriesMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatRepositoriesMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -5395,7 +5393,7 @@ pub struct CatSegments<'a> {
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatSegmentsMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   v: Result<Option<bool>, String>,
 }
@@ -5467,11 +5465,11 @@ impl<'a> CatSegments<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatSegmentsMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatSegmentsMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -5568,7 +5566,7 @@ pub struct CatSegmentsWithIndex<'a> {
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatSegmentsWithIndexMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   v: Result<Option<bool>, String>,
 }
@@ -5650,11 +5648,11 @@ impl<'a> CatSegmentsWithIndex<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatSegmentsWithIndexMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatSegmentsWithIndexMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -5754,7 +5752,7 @@ pub struct CatShards<'a> {
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatShardsMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   time: Result<Option<types::Time>, String>,
   v: Result<Option<bool>, String>,
@@ -5839,11 +5837,11 @@ impl<'a> CatShards<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatShardsMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatShardsMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -5961,7 +5959,7 @@ pub struct CatShardsWithIndex<'a> {
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatShardsWithIndexMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   time: Result<Option<types::Time>, String>,
   v: Result<Option<bool>, String>,
@@ -6056,11 +6054,11 @@ impl<'a> CatShardsWithIndex<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatShardsWithIndexMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatShardsWithIndexMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -6178,7 +6176,7 @@ pub struct CatSnapshots<'a> {
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatSnapshotsMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   time: Result<Option<types::Time>, String>,
   v: Result<Option<bool>, String>,
@@ -6252,11 +6250,11 @@ impl<'a> CatSnapshots<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatSnapshotsMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatSnapshotsMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -6368,7 +6366,7 @@ pub struct CatSnapshotsWithRepository<'a> {
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatSnapshotsWithRepositoryMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   time: Result<Option<types::Time>, String>,
   v: Result<Option<bool>, String>,
@@ -6452,11 +6450,11 @@ impl<'a> CatSnapshotsWithRepository<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatSnapshotsWithRepositoryMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatSnapshotsWithRepositoryMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -6779,7 +6777,7 @@ pub struct CatTemplates<'a> {
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatTemplatesMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   v: Result<Option<bool>, String>,
 }
@@ -6851,11 +6849,11 @@ impl<'a> CatTemplates<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatTemplatesMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatTemplatesMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -6952,7 +6950,7 @@ pub struct CatTemplatesWithName<'a> {
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatTemplatesWithNameMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   v: Result<Option<bool>, String>,
 }
@@ -7034,11 +7032,11 @@ impl<'a> CatTemplatesWithName<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatTemplatesWithNameMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatTemplatesWithNameMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -7136,7 +7134,7 @@ pub struct CatThreadPool<'a> {
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatThreadPoolMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   size: Result<Option<i32>, String>,
   v: Result<Option<bool>, String>,
@@ -7210,11 +7208,11 @@ impl<'a> CatThreadPool<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatThreadPoolMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatThreadPoolMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -7326,7 +7324,7 @@ pub struct CatThreadPoolWithThreadPoolPatterns<'a> {
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::CatThreadPoolWithThreadPoolPatternsMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   s: Result<Option<Vec<String>>, String>,
   size: Result<Option<i32>, String>,
   v: Result<Option<bool>, String>,
@@ -7411,10 +7409,11 @@ impl<'a> CatThreadPoolWithThreadPoolPatterns<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatThreadPoolWithThreadPoolPatternsMasterTimeout>, {
-    self.master_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `CatThreadPoolWithThreadPoolPatternsMasterTimeout` for master_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::MasterTimeout>, {
+    self.master_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -7841,7 +7840,7 @@ pub struct ClusterHealth<'a> {
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   level: Result<Option<types::ClusterHealthLevel>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::ClusterHealthMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::ClusterHealthTimeout>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
   wait_for_events: Result<Option<types::WaitForEvents>, String>,
@@ -7934,11 +7933,11 @@ impl<'a> ClusterHealth<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterHealthMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `ClusterHealthMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -8116,7 +8115,7 @@ pub struct ClusterHealthWithIndex<'a> {
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   level: Result<Option<types::ClusterHealthLevel>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::ClusterHealthWithIndexMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::ClusterHealthWithIndexTimeout>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
   wait_for_events: Result<Option<types::WaitForEvents>, String>,
@@ -8219,11 +8218,11 @@ impl<'a> ClusterHealthWithIndex<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterHealthWithIndexMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `ClusterHealthWithIndexMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -8984,7 +8983,7 @@ pub struct ClusterPendingTasks<'a> {
   client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::ClusterPendingTasksMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> ClusterPendingTasks<'a> {
@@ -9019,11 +9018,11 @@ impl<'a> ClusterPendingTasks<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterPendingTasksMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `ClusterPendingTasksMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -9072,7 +9071,7 @@ pub struct ClusterReroute<'a> {
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   dry_run: Result<Option<bool>, String>,
   explain: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::ClusterRerouteMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   metric: Result<Option<Vec<types::ClusterRerouteMetricMember>>, String>,
   retry_failed: Result<Option<bool>, String>,
   timeout: Result<Option<types::ClusterRerouteTimeout>, String>,
@@ -9126,11 +9125,11 @@ impl<'a> ClusterReroute<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterRerouteMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `ClusterRerouteMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -9371,7 +9370,7 @@ pub struct ClusterGetSettings<'a> {
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   include_defaults: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::ClusterGetSettingsMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::ClusterGetSettingsTimeout>, String>,
 }
 
@@ -9419,11 +9418,11 @@ impl<'a> ClusterGetSettings<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterGetSettingsMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `ClusterGetSettingsMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -9499,7 +9498,7 @@ pub struct ClusterPutSettings<'a> {
   client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::ClusterPutSettingsMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::ClusterPutSettingsTimeout>, String>,
   body: Result<types::builder::ClusterPutSettingsBodyParams, String>,
 }
@@ -9538,11 +9537,11 @@ impl<'a> ClusterPutSettings<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterPutSettingsMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `ClusterPutSettingsMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -9640,7 +9639,7 @@ pub struct ClusterState<'a> {
   flat_settings: Result<Option<bool>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::ClusterStateMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   wait_for_metadata_version: Result<Option<i32>, String>,
   wait_for_timeout: Result<Option<types::ClusterStateWaitForTimeout>, String>,
 }
@@ -9723,11 +9722,11 @@ impl<'a> ClusterState<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterStateMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `ClusterStateMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -9830,7 +9829,7 @@ pub struct ClusterStateWithMetric<'a> {
   flat_settings: Result<Option<bool>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::ClusterStateWithMetricMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   wait_for_metadata_version: Result<Option<i32>, String>,
   wait_for_timeout: Result<Option<types::ClusterStateWithMetricWaitForTimeout>, String>,
 }
@@ -9923,11 +9922,11 @@ impl<'a> ClusterStateWithMetric<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterStateWithMetricMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `ClusterStateWithMetricMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -10033,7 +10032,7 @@ pub struct ClusterStateWithIndexMetric<'a> {
   flat_settings: Result<Option<bool>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::ClusterStateWithIndexMetricMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   wait_for_metadata_version: Result<Option<i32>, String>,
   wait_for_timeout: Result<Option<types::ClusterStateWithIndexMetricWaitForTimeout>, String>,
 }
@@ -10136,11 +10135,11 @@ impl<'a> ClusterStateWithIndexMetric<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterStateWithIndexMetricMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `ClusterStateWithIndexMetricMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -10544,7 +10543,7 @@ pub struct ClusterGetComponentTemplate<'a> {
   client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::ClusterGetComponentTemplateMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> ClusterGetComponentTemplate<'a> {
@@ -10579,11 +10578,11 @@ impl<'a> ClusterGetComponentTemplate<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterGetComponentTemplateMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `ClusterGetComponentTemplateMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -10632,7 +10631,7 @@ pub struct ClusterGetComponentTemplateWithName<'a> {
   name: Result<types::ClusterGetComponentTemplateWithNameName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::ClusterGetComponentTemplateWithNameMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> ClusterGetComponentTemplateWithName<'a> {
@@ -10677,10 +10676,11 @@ impl<'a> ClusterGetComponentTemplateWithName<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterGetComponentTemplateWithNameMasterTimeout>, {
-    self.master_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `ClusterGetComponentTemplateWithNameMasterTimeout` for master_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::MasterTimeout>, {
+    self.master_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -10735,7 +10735,7 @@ pub struct ClusterPutComponentTemplatePut<'a> {
   name: Result<types::ClusterPutComponentTemplatePutName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::ClusterPutComponentTemplatePutMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::ClusterPutComponentTemplatePutTimeout>, String>,
   body: Result<types::ClusterPutComponentTemplateBodyParams, String>,
 }
@@ -10784,11 +10784,11 @@ impl<'a> ClusterPutComponentTemplatePut<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterPutComponentTemplatePutMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `ClusterPutComponentTemplatePutMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -10869,7 +10869,7 @@ pub struct ClusterPutComponentTemplatePost<'a> {
   name: Result<types::ClusterPutComponentTemplatePostName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::ClusterPutComponentTemplatePostMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::ClusterPutComponentTemplatePostTimeout>, String>,
   body: Result<types::ClusterPutComponentTemplateBodyParams, String>,
 }
@@ -10918,10 +10918,11 @@ impl<'a> ClusterPutComponentTemplatePost<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterPutComponentTemplatePostMasterTimeout>, {
-    self.master_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `ClusterPutComponentTemplatePostMasterTimeout` for master_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::MasterTimeout>, {
+    self.master_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -11001,7 +11002,7 @@ pub struct ClusterDeleteComponentTemplate<'a> {
   client: &'a super::OsClient,
   name: Result<types::ClusterDeleteComponentTemplateName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::ClusterDeleteComponentTemplateMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::ClusterDeleteComponentTemplateTimeout>, String>,
 }
 
@@ -11037,11 +11038,11 @@ impl<'a> ClusterDeleteComponentTemplate<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterDeleteComponentTemplateMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `ClusterDeleteComponentTemplateMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -11105,7 +11106,7 @@ pub struct ClusterExistsComponentTemplate<'a> {
   client: &'a super::OsClient,
   name: Result<types::ClusterExistsComponentTemplateName, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::ClusterExistsComponentTemplateMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> ClusterExistsComponentTemplate<'a> {
@@ -11139,11 +11140,11 @@ impl<'a> ClusterExistsComponentTemplate<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterExistsComponentTemplateMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `ClusterExistsComponentTemplateMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -11785,7 +11786,7 @@ pub struct DanglingIndicesImportDanglingIndex<'a> {
   index_uuid: Result<types::DanglingIndicesImportDanglingIndexIndexUuid, String>,
   accept_data_loss: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::DanglingIndicesImportDanglingIndexMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::DanglingIndicesImportDanglingIndexTimeout>, String>,
 }
 
@@ -11832,10 +11833,11 @@ impl<'a> DanglingIndicesImportDanglingIndex<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DanglingIndicesImportDanglingIndexMasterTimeout>, {
-    self.master_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `DanglingIndicesImportDanglingIndexMasterTimeout` for master_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::MasterTimeout>, {
+    self.master_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -11901,7 +11903,7 @@ pub struct DanglingIndicesDeleteDanglingIndex<'a> {
   index_uuid: Result<types::DanglingIndicesDeleteDanglingIndexIndexUuid, String>,
   accept_data_loss: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::DanglingIndicesDeleteDanglingIndexMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::DanglingIndicesDeleteDanglingIndexTimeout>, String>,
 }
 
@@ -11948,10 +11950,11 @@ impl<'a> DanglingIndicesDeleteDanglingIndex<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DanglingIndicesDeleteDanglingIndexMasterTimeout>, {
-    self.master_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `DanglingIndicesDeleteDanglingIndexMasterTimeout` for master_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::MasterTimeout>, {
+    self.master_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -13006,7 +13009,7 @@ pub struct IndicesGetIndexTemplate<'a> {
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesGetIndexTemplateMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> IndicesGetIndexTemplate<'a> {
@@ -13052,11 +13055,11 @@ impl<'a> IndicesGetIndexTemplate<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetIndexTemplateMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesGetIndexTemplateMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -13110,7 +13113,7 @@ pub struct IndicesSimulateTemplate<'a> {
   cause: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesSimulateTemplateMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   body: Result<types::IndicesSimulateTemplateBodyParams, String>,
 }
 
@@ -13158,11 +13161,11 @@ impl<'a> IndicesSimulateTemplate<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesSimulateTemplateMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesSimulateTemplateMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -13228,7 +13231,7 @@ pub struct IndicesSimulateTemplateWithName<'a> {
   cause: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesSimulateTemplateWithNameMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   body: Result<types::IndicesSimulateTemplateBodyParams, String>,
 }
 
@@ -13286,10 +13289,11 @@ impl<'a> IndicesSimulateTemplateWithName<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesSimulateTemplateWithNameMasterTimeout>, {
-    self.master_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesSimulateTemplateWithNameMasterTimeout` for master_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::MasterTimeout>, {
+    self.master_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -13361,7 +13365,7 @@ pub struct IndicesSimulateIndexTemplate<'a> {
   cause: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesSimulateIndexTemplateMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   body: Result<types::IndicesSimulateIndexTemplateBodyParams, String>,
 }
 
@@ -13419,11 +13423,11 @@ impl<'a> IndicesSimulateIndexTemplate<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesSimulateIndexTemplateMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesSimulateIndexTemplateMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -13495,7 +13499,7 @@ pub struct IndicesGetIndexTemplateWithName<'a> {
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesGetIndexTemplateWithNameMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> IndicesGetIndexTemplateWithName<'a> {
@@ -13551,10 +13555,11 @@ impl<'a> IndicesGetIndexTemplateWithName<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetIndexTemplateWithNameMasterTimeout>, {
-    self.master_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesGetIndexTemplateWithNameMasterTimeout` for master_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::MasterTimeout>, {
+    self.master_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -13611,7 +13616,7 @@ pub struct IndicesPutIndexTemplatePut<'a> {
   cause: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesPutIndexTemplatePutMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   body: Result<types::IndicesPutIndexTemplateBodyParams, String>,
 }
 
@@ -13669,11 +13674,11 @@ impl<'a> IndicesPutIndexTemplatePut<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutIndexTemplatePutMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesPutIndexTemplatePutMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -13741,7 +13746,7 @@ pub struct IndicesPutIndexTemplatePost<'a> {
   cause: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesPutIndexTemplatePostMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   body: Result<types::IndicesPutIndexTemplateBodyParams, String>,
 }
 
@@ -13799,11 +13804,11 @@ impl<'a> IndicesPutIndexTemplatePost<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutIndexTemplatePostMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesPutIndexTemplatePostMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -13869,7 +13874,7 @@ pub struct IndicesDeleteIndexTemplate<'a> {
   client: &'a super::OsClient,
   name: Result<types::IndicesDeleteIndexTemplateName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::IndicesDeleteIndexTemplateMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesDeleteIndexTemplateTimeout>, String>,
 }
 
@@ -13905,11 +13910,11 @@ impl<'a> IndicesDeleteIndexTemplate<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesDeleteIndexTemplateMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesDeleteIndexTemplateMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -13970,7 +13975,7 @@ pub struct IndicesExistsIndexTemplate<'a> {
   name: Result<types::IndicesExistsIndexTemplateName, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesExistsIndexTemplateMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> IndicesExistsIndexTemplate<'a> {
@@ -14015,11 +14020,11 @@ impl<'a> IndicesExistsIndexTemplate<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesExistsIndexTemplateMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesExistsIndexTemplateMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -14072,7 +14077,7 @@ pub struct IndicesGetMapping<'a> {
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesGetMappingMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> IndicesGetMapping<'a> {
@@ -14140,11 +14145,11 @@ impl<'a> IndicesGetMapping<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetMappingMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesGetMappingMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -22080,7 +22085,7 @@ pub struct GetScript<'a> {
   client: &'a super::OsClient,
   id: Result<types::GetScriptId, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::GetScriptMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> GetScript<'a> {
@@ -22114,11 +22119,11 @@ impl<'a> GetScript<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::GetScriptMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `GetScriptMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -22163,7 +22168,7 @@ pub struct PutScriptPut<'a> {
   client: &'a super::OsClient,
   id: Result<types::PutScriptPutId, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::PutScriptPutMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::PutScriptPutTimeout>, String>,
   body: Result<types::PutScriptBodyParams, String>,
 }
@@ -22201,11 +22206,11 @@ impl<'a> PutScriptPut<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::PutScriptPutMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `PutScriptPutMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -22276,7 +22281,7 @@ pub struct PutScriptPost<'a> {
   client: &'a super::OsClient,
   id: Result<types::PutScriptPostId, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::PutScriptPostMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::PutScriptPostTimeout>, String>,
   body: Result<types::PutScriptBodyParams, String>,
 }
@@ -22314,11 +22319,11 @@ impl<'a> PutScriptPost<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::PutScriptPostMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `PutScriptPostMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -22389,7 +22394,7 @@ pub struct DeleteScript<'a> {
   client: &'a super::OsClient,
   id: Result<types::DeleteScriptId, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::DeleteScriptMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::DeleteScriptTimeout>, String>,
 }
 
@@ -22425,11 +22430,11 @@ impl<'a> DeleteScript<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DeleteScriptMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `DeleteScriptMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -22490,7 +22495,7 @@ pub struct PutScriptPutWithContext<'a> {
   id: Result<types::PutScriptPutWithContextId, String>,
   context: Result<types::PutScriptPutWithContextContext, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::PutScriptPutWithContextMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::PutScriptPutWithContextTimeout>, String>,
   body: Result<types::PutScriptBodyParams, String>,
 }
@@ -22538,11 +22543,11 @@ impl<'a> PutScriptPutWithContext<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::PutScriptPutWithContextMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `PutScriptPutWithContextMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -22621,7 +22626,7 @@ pub struct PutScriptPostWithContext<'a> {
   id: Result<types::PutScriptPostWithContextId, String>,
   context: Result<types::PutScriptPostWithContextContext, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::PutScriptPostWithContextMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::PutScriptPostWithContextTimeout>, String>,
   body: Result<types::PutScriptBodyParams, String>,
 }
@@ -22669,11 +22674,11 @@ impl<'a> PutScriptPostWithContext<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::PutScriptPostWithContextMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `PutScriptPostWithContextMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -25079,7 +25084,7 @@ pub struct IndicesGetSettings<'a> {
   ignore_unavailable: Result<Option<bool>, String>,
   include_defaults: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesGetSettingsMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> IndicesGetSettings<'a> {
@@ -25169,11 +25174,11 @@ impl<'a> IndicesGetSettings<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetSettingsMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesGetSettingsMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -25249,7 +25254,7 @@ pub struct IndicesPutSettings<'a> {
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   flat_settings: Result<Option<bool>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesPutSettingsMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   preserve_existing: Result<Option<bool>, String>,
   timeout: Result<Option<types::IndicesPutSettingsTimeout>, String>,
   body: Result<types::IndicesPutSettingsBodyParams, String>,
@@ -25323,11 +25328,11 @@ impl<'a> IndicesPutSettings<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutSettingsMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesPutSettingsMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -25437,7 +25442,7 @@ pub struct IndicesGetSettingsWithName<'a> {
   ignore_unavailable: Result<Option<bool>, String>,
   include_defaults: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesGetSettingsWithNameMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> IndicesGetSettingsWithName<'a> {
@@ -25537,11 +25542,11 @@ impl<'a> IndicesGetSettingsWithName<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetSettingsWithNameMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesGetSettingsWithNameMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -25720,7 +25725,7 @@ pub struct SnapshotGetRepository<'a> {
   client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::SnapshotGetRepositoryMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> SnapshotGetRepository<'a> {
@@ -25755,11 +25760,11 @@ impl<'a> SnapshotGetRepository<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotGetRepositoryMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `SnapshotGetRepositoryMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -25807,7 +25812,7 @@ pub struct SnapshotStatus<'a> {
   client: &'a super::OsClient,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::SnapshotStatusMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> SnapshotStatus<'a> {
@@ -25842,11 +25847,11 @@ impl<'a> SnapshotStatus<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotStatusMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `SnapshotStatusMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -25895,7 +25900,7 @@ pub struct SnapshotGetRepositoryWithRepository<'a> {
   repository: Result<types::SnapshotGetRepositoryWithRepositoryRepository, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::SnapshotGetRepositoryWithRepositoryMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> SnapshotGetRepositoryWithRepository<'a> {
@@ -25940,10 +25945,11 @@ impl<'a> SnapshotGetRepositoryWithRepository<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotGetRepositoryWithRepositoryMasterTimeout>, {
-    self.master_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `SnapshotGetRepositoryWithRepositoryMasterTimeout` for master_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::MasterTimeout>, {
+    self.master_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -25993,7 +25999,7 @@ pub struct SnapshotCreateRepositoryPut<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotCreateRepositoryPutRepository, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::SnapshotCreateRepositoryPutMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::SnapshotCreateRepositoryPutTimeout>, String>,
   verify: Result<Option<bool>, String>,
   body: Result<types::SnapshotCreateRepositoryBodyParams, String>,
@@ -26033,11 +26039,11 @@ impl<'a> SnapshotCreateRepositoryPut<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCreateRepositoryPutMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `SnapshotCreateRepositoryPutMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -26123,7 +26129,7 @@ pub struct SnapshotCreateRepositoryPost<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotCreateRepositoryPostRepository, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::SnapshotCreateRepositoryPostMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::SnapshotCreateRepositoryPostTimeout>, String>,
   verify: Result<Option<bool>, String>,
   body: Result<types::SnapshotCreateRepositoryBodyParams, String>,
@@ -26163,11 +26169,11 @@ impl<'a> SnapshotCreateRepositoryPost<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCreateRepositoryPostMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `SnapshotCreateRepositoryPostMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -26253,7 +26259,7 @@ pub struct SnapshotDeleteRepository<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotDeleteRepositoryRepository, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::SnapshotDeleteRepositoryMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::SnapshotDeleteRepositoryTimeout>, String>,
 }
 
@@ -26289,11 +26295,11 @@ impl<'a> SnapshotDeleteRepository<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotDeleteRepositoryMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `SnapshotDeleteRepositoryMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -26353,7 +26359,7 @@ pub struct SnapshotCleanupRepository<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotCleanupRepositoryRepository, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::SnapshotCleanupRepositoryMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::SnapshotCleanupRepositoryTimeout>, String>,
 }
 
@@ -26389,11 +26395,11 @@ impl<'a> SnapshotCleanupRepository<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCleanupRepositoryMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `SnapshotCleanupRepositoryMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -26458,7 +26464,7 @@ pub struct SnapshotStatusWithRepository<'a> {
   repository: Result<types::SnapshotStatusWithRepositoryRepository, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::SnapshotStatusWithRepositoryMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> SnapshotStatusWithRepository<'a> {
@@ -26503,11 +26509,11 @@ impl<'a> SnapshotStatusWithRepository<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotStatusWithRepositoryMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `SnapshotStatusWithRepositoryMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -26561,7 +26567,7 @@ pub struct SnapshotVerifyRepository<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotVerifyRepositoryRepository, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::SnapshotVerifyRepositoryMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::SnapshotVerifyRepositoryTimeout>, String>,
 }
 
@@ -26597,11 +26603,11 @@ impl<'a> SnapshotVerifyRepository<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotVerifyRepositoryMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `SnapshotVerifyRepositoryMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -26667,7 +26673,7 @@ pub struct SnapshotGet<'a> {
   snapshot: Result<types::SnapshotGetSnapshot, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::SnapshotGetMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   verbose: Result<Option<bool>, String>,
 }
 
@@ -26724,11 +26730,11 @@ impl<'a> SnapshotGet<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotGetMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `SnapshotGetMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -26801,7 +26807,7 @@ pub struct SnapshotCreatePut<'a> {
   repository: Result<types::SnapshotCreatePutRepository, String>,
   snapshot: Result<types::SnapshotCreatePutSnapshot, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::SnapshotCreatePutMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   wait_for_completion: Result<Option<bool>, String>,
   body: Result<types::SnapshotCreateBodyParams, String>,
 }
@@ -26849,11 +26855,11 @@ impl<'a> SnapshotCreatePut<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCreatePutMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `SnapshotCreatePutMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -26932,7 +26938,7 @@ pub struct SnapshotCreatePost<'a> {
   repository: Result<types::SnapshotCreatePostRepository, String>,
   snapshot: Result<types::SnapshotCreatePostSnapshot, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::SnapshotCreatePostMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   wait_for_completion: Result<Option<bool>, String>,
   body: Result<types::SnapshotCreateBodyParams, String>,
 }
@@ -26980,11 +26986,11 @@ impl<'a> SnapshotCreatePost<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCreatePostMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `SnapshotCreatePostMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -27063,7 +27069,7 @@ pub struct SnapshotDelete<'a> {
   repository: Result<types::SnapshotDeleteRepository, String>,
   snapshot: Result<types::SnapshotDeleteSnapshot, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::SnapshotDeleteMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> SnapshotDelete<'a> {
@@ -27107,11 +27113,11 @@ impl<'a> SnapshotDelete<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotDeleteMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `SnapshotDeleteMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -27165,7 +27171,7 @@ pub struct SnapshotClone<'a> {
   snapshot: Result<types::SnapshotCloneSnapshot, String>,
   target_snapshot: Result<types::SnapshotCloneTargetSnapshot, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::SnapshotCloneMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   body: Result<types::SnapshotCloneBodyParams, String>,
 }
 
@@ -27221,11 +27227,11 @@ impl<'a> SnapshotClone<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCloneMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `SnapshotCloneMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -27293,7 +27299,7 @@ pub struct SnapshotRestore<'a> {
   repository: Result<types::SnapshotRestoreRepository, String>,
   snapshot: Result<types::SnapshotRestoreSnapshot, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::SnapshotRestoreMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   wait_for_completion: Result<Option<bool>, String>,
   body: Result<types::SnapshotRestoreBodyParams, String>,
 }
@@ -27341,11 +27347,11 @@ impl<'a> SnapshotRestore<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotRestoreMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `SnapshotRestoreMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -27426,7 +27432,7 @@ pub struct SnapshotStatusWithRepositorySnapshot<'a> {
   snapshot: Result<types::SnapshotStatusWithRepositorySnapshotSnapshot, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::SnapshotStatusWithRepositorySnapshotMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> SnapshotStatusWithRepositorySnapshot<'a> {
@@ -27481,10 +27487,11 @@ impl<'a> SnapshotStatusWithRepositorySnapshot<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotStatusWithRepositorySnapshotMasterTimeout>, {
-    self.master_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `SnapshotStatusWithRepositorySnapshotMasterTimeout` for master_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::MasterTimeout>, {
+    self.master_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -28397,7 +28404,7 @@ pub struct IndicesGetTemplate<'a> {
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesGetTemplateMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> IndicesGetTemplate<'a> {
@@ -28443,11 +28450,11 @@ impl<'a> IndicesGetTemplate<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetTemplateMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesGetTemplateMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -28502,7 +28509,7 @@ pub struct IndicesGetTemplateWithName<'a> {
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesGetTemplateWithNameMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> IndicesGetTemplateWithName<'a> {
@@ -28558,11 +28565,11 @@ impl<'a> IndicesGetTemplateWithName<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetTemplateWithNameMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesGetTemplateWithNameMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -28618,7 +28625,7 @@ pub struct IndicesPutTemplatePut<'a> {
   name: Result<types::IndicesPutTemplatePutName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesPutTemplatePutMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   order: Result<Option<i32>, String>,
   body: Result<types::IndicesPutTemplateBodyParams, String>,
 }
@@ -28667,11 +28674,11 @@ impl<'a> IndicesPutTemplatePut<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutTemplatePutMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesPutTemplatePutMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -28748,7 +28755,7 @@ pub struct IndicesPutTemplatePost<'a> {
   name: Result<types::IndicesPutTemplatePostName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesPutTemplatePostMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   order: Result<Option<i32>, String>,
   body: Result<types::IndicesPutTemplateBodyParams, String>,
 }
@@ -28797,11 +28804,11 @@ impl<'a> IndicesPutTemplatePost<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutTemplatePostMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesPutTemplatePostMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -28877,7 +28884,7 @@ pub struct IndicesDeleteTemplate<'a> {
   client: &'a super::OsClient,
   name: Result<types::IndicesDeleteTemplateName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::IndicesDeleteTemplateMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesDeleteTemplateTimeout>, String>,
 }
 
@@ -28913,11 +28920,11 @@ impl<'a> IndicesDeleteTemplate<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesDeleteTemplateMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesDeleteTemplateMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -28978,7 +28985,7 @@ pub struct IndicesExistsTemplate<'a> {
   name: Result<types::IndicesExistsTemplateName, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesExistsTemplateMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> IndicesExistsTemplate<'a> {
@@ -29023,11 +29030,11 @@ impl<'a> IndicesExistsTemplate<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesExistsTemplateMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesExistsTemplateMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -29846,7 +29853,7 @@ pub struct IndicesRollover<'a> {
   alias: Result<types::IndicesRolloverAlias, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   dry_run: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesRolloverMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesRolloverTimeout>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
   body: Result<types::IndicesRolloverBodyParams, String>,
@@ -29897,11 +29904,11 @@ impl<'a> IndicesRollover<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesRolloverMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesRolloverMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -29994,7 +30001,7 @@ pub struct IndicesRolloverWithNewIndex<'a> {
   new_index: Result<types::IndicesRolloverWithNewIndexNewIndex, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   dry_run: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesRolloverWithNewIndexMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesRolloverWithNewIndexTimeout>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
   body: Result<types::IndicesRolloverBodyParams, String>,
@@ -30055,11 +30062,11 @@ impl<'a> IndicesRolloverWithNewIndex<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesRolloverWithNewIndexMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesRolloverWithNewIndexMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -30163,7 +30170,7 @@ pub struct IndicesGet<'a> {
   ignore_unavailable: Result<Option<bool>, String>,
   include_defaults: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesGetMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> IndicesGet<'a> {
@@ -30263,11 +30270,11 @@ impl<'a> IndicesGet<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesGetMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -30342,7 +30349,7 @@ pub struct IndicesCreate<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesCreateIndex, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::IndicesCreateMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesCreateTimeout>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
   body: Result<types::builder::IndicesCreateBodyParams, String>,
@@ -30382,11 +30389,11 @@ impl<'a> IndicesCreate<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesCreateMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesCreateMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -30493,7 +30500,7 @@ pub struct IndicesDelete<'a> {
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesDeleteMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesDeleteTimeout>, String>,
 }
 
@@ -30551,11 +30558,11 @@ impl<'a> IndicesDelete<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesDeleteMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesDeleteMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -31037,7 +31044,7 @@ pub struct IndicesPutAliasPut<'a> {
   index: Result<types::IndicesPutAliasPutIndex, String>,
   name: Result<types::IndicesPutAliasPutName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::IndicesPutAliasPutMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesPutAliasPutTimeout>, String>,
   body: Result<types::IndicesPutAliasBodyParams, String>,
 }
@@ -31085,11 +31092,11 @@ impl<'a> IndicesPutAliasPut<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutAliasPutMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesPutAliasPutMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -31168,7 +31175,7 @@ pub struct IndicesPutAliasPost<'a> {
   index: Result<types::IndicesPutAliasPostIndex, String>,
   name: Result<types::IndicesPutAliasPostName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::IndicesPutAliasPostMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesPutAliasPostTimeout>, String>,
   body: Result<types::IndicesPutAliasBodyParams, String>,
 }
@@ -31216,11 +31223,11 @@ impl<'a> IndicesPutAliasPost<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutAliasPostMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesPutAliasPostMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -31299,7 +31306,7 @@ pub struct IndicesDeleteAlias<'a> {
   index: Result<types::IndicesDeleteAliasIndex, String>,
   name: Result<types::IndicesDeleteAliasName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::IndicesDeleteAliasMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesDeleteAliasTimeout>, String>,
 }
 
@@ -31345,11 +31352,11 @@ impl<'a> IndicesDeleteAlias<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesDeleteAliasMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesDeleteAliasMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -31552,7 +31559,7 @@ pub struct IndicesPutAliasPutPlural<'a> {
   index: Result<types::IndicesPutAliasPutPluralIndex, String>,
   name: Result<types::IndicesPutAliasPutPluralName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::IndicesPutAliasPutPluralMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesPutAliasPutPluralTimeout>, String>,
   body: Result<types::IndicesPutAliasBodyParams, String>,
 }
@@ -31600,11 +31607,11 @@ impl<'a> IndicesPutAliasPutPlural<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutAliasPutPluralMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesPutAliasPutPluralMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -31683,7 +31690,7 @@ pub struct IndicesPutAliasPostPlural<'a> {
   index: Result<types::IndicesPutAliasPostPluralIndex, String>,
   name: Result<types::IndicesPutAliasPostPluralName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::IndicesPutAliasPostPluralMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesPutAliasPostPluralTimeout>, String>,
   body: Result<types::IndicesPutAliasBodyParams, String>,
 }
@@ -31731,11 +31738,11 @@ impl<'a> IndicesPutAliasPostPlural<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutAliasPostPluralMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesPutAliasPostPluralMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -31814,7 +31821,7 @@ pub struct IndicesDeleteAliasPlural<'a> {
   index: Result<types::IndicesDeleteAliasPluralIndex, String>,
   name: Result<types::IndicesDeleteAliasPluralName, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::IndicesDeleteAliasPluralMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesDeleteAliasPluralTimeout>, String>,
 }
 
@@ -31860,11 +31867,11 @@ impl<'a> IndicesDeleteAliasPlural<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesDeleteAliasPluralMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesDeleteAliasPluralMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -32051,7 +32058,7 @@ pub struct IndicesAddBlock<'a> {
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesAddBlockMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesAddBlockTimeout>, String>,
 }
 
@@ -32130,11 +32137,11 @@ impl<'a> IndicesAddBlock<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesAddBlockMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesAddBlockMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -32397,7 +32404,7 @@ pub struct IndicesClonePut<'a> {
   index: Result<types::IndicesClonePutIndex, String>,
   target: Result<types::IndicesClonePutTarget, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::IndicesClonePutMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesClonePutTimeout>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
   body: Result<types::IndicesCloneBodyParams, String>,
@@ -32447,11 +32454,11 @@ impl<'a> IndicesClonePut<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesClonePutMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesClonePutMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -32545,7 +32552,7 @@ pub struct IndicesClonePost<'a> {
   index: Result<types::IndicesClonePostIndex, String>,
   target: Result<types::IndicesClonePostTarget, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
-  master_timeout: Result<Option<types::IndicesClonePostMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesClonePostTimeout>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
   body: Result<types::IndicesCloneBodyParams, String>,
@@ -32595,11 +32602,11 @@ impl<'a> IndicesClonePost<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesClonePostMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesClonePostMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -32695,7 +32702,7 @@ pub struct IndicesClose<'a> {
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesCloseMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesCloseTimeout>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
 }
@@ -32766,11 +32773,11 @@ impl<'a> IndicesClose<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesCloseMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesCloseMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -36956,7 +36963,7 @@ pub struct IndicesGetMappingWithIndex<'a> {
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesGetMappingWithIndexMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> IndicesGetMappingWithIndex<'a> {
@@ -37034,11 +37041,11 @@ impl<'a> IndicesGetMappingWithIndex<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetMappingWithIndexMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesGetMappingWithIndexMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -37106,7 +37113,7 @@ pub struct IndicesPutMappingPut<'a> {
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesPutMappingPutMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesPutMappingPutTimeout>, String>,
   write_index_only: Result<Option<bool>, String>,
   body: Result<types::IndicesPutMappingBodyParams, String>,
@@ -37179,11 +37186,11 @@ impl<'a> IndicesPutMappingPut<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutMappingPutMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesPutMappingPutMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -37296,7 +37303,7 @@ pub struct IndicesPutMappingPost<'a> {
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesPutMappingPostMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesPutMappingPostTimeout>, String>,
   write_index_only: Result<Option<bool>, String>,
   body: Result<types::IndicesPutMappingBodyParams, String>,
@@ -37369,11 +37376,11 @@ impl<'a> IndicesPutMappingPost<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutMappingPostMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesPutMappingPostMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -39177,7 +39184,7 @@ pub struct IndicesOpen<'a> {
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesOpenMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesOpenTimeout>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
 }
@@ -39237,11 +39244,11 @@ impl<'a> IndicesOpen<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesOpenMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesOpenMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -41786,7 +41793,7 @@ pub struct IndicesGetSettingsWithIndex<'a> {
   ignore_unavailable: Result<Option<bool>, String>,
   include_defaults: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesGetSettingsWithIndexMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> IndicesGetSettingsWithIndex<'a> {
@@ -41886,11 +41893,11 @@ impl<'a> IndicesGetSettingsWithIndex<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetSettingsWithIndexMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesGetSettingsWithIndexMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -41969,7 +41976,7 @@ pub struct IndicesPutSettingsWithIndex<'a> {
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   flat_settings: Result<Option<bool>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesPutSettingsWithIndexMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   preserve_existing: Result<Option<bool>, String>,
   timeout: Result<Option<types::IndicesPutSettingsWithIndexTimeout>, String>,
   body: Result<types::IndicesPutSettingsBodyParams, String>,
@@ -42053,11 +42060,11 @@ impl<'a> IndicesPutSettingsWithIndex<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutSettingsWithIndexMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesPutSettingsWithIndexMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -42170,7 +42177,7 @@ pub struct IndicesGetSettingsWithIndexName<'a> {
   ignore_unavailable: Result<Option<bool>, String>,
   include_defaults: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesGetSettingsWithIndexNameMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
 }
 
 impl<'a> IndicesGetSettingsWithIndexName<'a> {
@@ -42280,10 +42287,11 @@ impl<'a> IndicesGetSettingsWithIndexName<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetSettingsWithIndexNameMasterTimeout>, {
-    self.master_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesGetSettingsWithIndexNameMasterTimeout` for master_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::MasterTimeout>, {
+    self.master_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -42484,7 +42492,7 @@ pub struct IndicesShrinkPut<'a> {
   target: Result<types::IndicesShrinkPutTarget, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   copy_settings: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesShrinkPutMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesShrinkPutTimeout>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
   body: Result<types::IndicesShrinkBodyParams, String>,
@@ -42545,11 +42553,11 @@ impl<'a> IndicesShrinkPut<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesShrinkPutMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesShrinkPutMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -42649,7 +42657,7 @@ pub struct IndicesShrinkPost<'a> {
   target: Result<types::IndicesShrinkPostTarget, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   copy_settings: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesShrinkPostMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesShrinkPostTimeout>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
   body: Result<types::IndicesShrinkBodyParams, String>,
@@ -42710,11 +42718,11 @@ impl<'a> IndicesShrinkPost<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesShrinkPostMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesShrinkPostMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -43254,7 +43262,7 @@ pub struct IndicesSplitPut<'a> {
   target: Result<types::IndicesSplitPutTarget, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   copy_settings: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesSplitPutMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesSplitPutTimeout>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
   body: Result<types::IndicesSplitBodyParams, String>,
@@ -43315,11 +43323,11 @@ impl<'a> IndicesSplitPut<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesSplitPutMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesSplitPutMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 
@@ -43419,7 +43427,7 @@ pub struct IndicesSplitPost<'a> {
   target: Result<types::IndicesSplitPostTarget, String>,
   cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   copy_settings: Result<Option<bool>, String>,
-  master_timeout: Result<Option<types::IndicesSplitPostMasterTimeout>, String>,
+  master_timeout: Result<Option<types::MasterTimeout>, String>,
   timeout: Result<Option<types::IndicesSplitPostTimeout>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
   body: Result<types::IndicesSplitBodyParams, String>,
@@ -43480,11 +43488,11 @@ impl<'a> IndicesSplitPost<'a> {
 
   pub fn master_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesSplitPostMasterTimeout>, {
+    V: std::convert::TryInto<types::MasterTimeout>, {
     self.master_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesSplitPostMasterTimeout` for master_timeout failed".to_string());
+      .map_err(|_| "conversion to `MasterTimeout` for master_timeout failed".to_string());
     self
   }
 

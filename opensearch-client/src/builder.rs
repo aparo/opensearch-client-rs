@@ -5866,7 +5866,7 @@ impl<'a> Count<'a> {
 pub struct CreatePut<'a> {
   client: &'a super::OsClient,
   index: Result<types::CreatePutIndex, String>,
-  id: Result<types::CreatePutId, String>,
+  id: Result<types::DocumentId, String>,
   pipeline: Result<Option<String>, String>,
   refresh: Result<Option<types::RefreshEnum>, String>,
   routing: Result<Option<String>, String>,
@@ -5905,10 +5905,10 @@ impl<'a> CreatePut<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CreatePutId>, {
+    V: std::convert::TryInto<types::DocumentId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `CreatePutId` for id failed".to_string());
+      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
     self
   }
 
@@ -6049,205 +6049,6 @@ impl<'a> CreatePut<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
-      _ => {
-        Err(Error::UnexpectedResponse(
-          ReqwestResponse::from_response(response).await,
-        ))
-      }
-    }
-  }
-}
-
-///Builder for [`Client::create_post`]
-///
-///[`Client::create_post`]: super::OsClient::create_post
-#[derive(Debug, Clone)]
-pub struct CreatePost<'a> {
-  client: &'a super::OsClient,
-  index: Result<types::CreatePostIndex, String>,
-  id: Result<types::CreatePostId, String>,
-  pipeline: Result<Option<String>, String>,
-  refresh: Result<Option<types::RefreshEnum>, String>,
-  routing: Result<Option<String>, String>,
-  timeout: Result<Option<types::Timeout>, String>,
-  version: Result<Option<i32>, String>,
-  version_type: Result<Option<types::VersionType>, String>,
-  wait_for_active_shards: Result<Option<String>, String>,
-  body: Result<types::CreateBodyParams, String>,
-}
-
-impl<'a> CreatePost<'a> {
-  pub fn new(client: &'a super::OsClient) -> Self {
-    Self {
-      client,
-      index: Err("index was not initialized".to_string()),
-      id: Err("id was not initialized".to_string()),
-      pipeline: Ok(None),
-      refresh: Ok(None),
-      routing: Ok(None),
-      timeout: Ok(None),
-      version: Ok(None),
-      version_type: Ok(None),
-      wait_for_active_shards: Ok(None),
-      body: Err("body was not initialized".to_string()),
-    }
-  }
-
-  pub fn index<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::CreatePostIndex>, {
-    self.index = value
-      .try_into()
-      .map_err(|_| "conversion to `CreatePostIndex` for index failed".to_string());
-    self
-  }
-
-  pub fn id<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::CreatePostId>, {
-    self.id = value
-      .try_into()
-      .map_err(|_| "conversion to `CreatePostId` for id failed".to_string());
-    self
-  }
-
-  pub fn pipeline<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.pipeline = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for pipeline failed".to_string());
-    self
-  }
-
-  pub fn refresh<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::RefreshEnum>, {
-    self.refresh = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `RefreshEnum` for refresh failed".to_string());
-    self
-  }
-
-  pub fn routing<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.routing = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for routing failed".to_string());
-    self
-  }
-
-  pub fn timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::Timeout>, {
-    self.timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Timeout` for timeout failed".to_string());
-    self
-  }
-
-  pub fn version<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<i32>, {
-    self.version = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `i32` for version failed".to_string());
-    self
-  }
-
-  pub fn version_type<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::VersionType>, {
-    self.version_type = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `VersionType` for version_type failed".to_string());
-    self
-  }
-
-  pub fn wait_for_active_shards<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.wait_for_active_shards = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for wait_for_active_shards failed".to_string());
-    self
-  }
-
-  pub fn body<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::CreateBodyParams>, {
-    self.body = value
-      .try_into()
-      .map_err(|_| "conversion to `CreateBodyParams` for body failed".to_string());
-    self
-  }
-
-  ///Sends a `POST` request to `/{index}/_create/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
-    let Self {
-      client,
-      index,
-      id,
-      pipeline,
-      refresh,
-      routing,
-      timeout,
-      version,
-      version_type,
-      wait_for_active_shards,
-      body,
-    } = self;
-    let index = index.map_err(Error::InvalidRequest)?;
-    let id = id.map_err(Error::InvalidRequest)?;
-    let pipeline = pipeline.map_err(Error::InvalidRequest)?;
-    let refresh = refresh.map_err(Error::InvalidRequest)?;
-    let routing = routing.map_err(Error::InvalidRequest)?;
-    let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let version = version.map_err(Error::InvalidRequest)?;
-    let version_type = version_type.map_err(Error::InvalidRequest)?;
-    let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
-    let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!(
-      "{}/{}/_create/{}",
-      client.baseurl,
-      encode_path(&index.to_string()),
-      encode_path(&id.to_string()),
-    );
-    let mut query = Vec::with_capacity(7usize);
-    if let Some(v) = &pipeline {
-      query.push(("pipeline", v.to_string()));
-    }
-    if let Some(v) = &refresh {
-      query.push(("refresh", v.to_string()));
-    }
-    if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
-    }
-    if let Some(v) = &timeout {
-      query.push(("timeout", v.to_string()));
-    }
-    if let Some(v) = &version {
-      query.push(("version", v.to_string()));
-    }
-    if let Some(v) = &version_type {
-      query.push(("version_type", v.to_string()));
-    }
-    if let Some(v) = &wait_for_active_shards {
-      query.push(("wait_for_active_shards", v.to_string()));
-    }
-    let request = client.client.post(url).json(&body).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
       _ => {
         Err(Error::UnexpectedResponse(
           ReqwestResponse::from_response(response).await,
@@ -6891,7 +6692,7 @@ impl<'a> DeleteByQuery<'a> {
 pub struct Get<'a> {
   client: &'a super::OsClient,
   index: Result<types::GetIndex, String>,
-  id: Result<types::GetId, String>,
+  id: Result<types::DocumentId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -6934,10 +6735,10 @@ impl<'a> Get<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::GetId>, {
+    V: std::convert::TryInto<types::DocumentId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `GetId` for id failed".to_string());
+      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
     self
   }
 
@@ -7138,7 +6939,7 @@ impl<'a> Get<'a> {
 pub struct IndexPutWithId<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndexPutWithIdIndex, String>,
-  id: Result<types::IndexPutWithIdId, String>,
+  id: Result<types::DocumentId, String>,
   if_primary_term: Result<Option<i32>, String>,
   if_seq_no: Result<Option<i32>, String>,
   op_type: Result<Option<types::OpType>, String>,
@@ -7185,10 +6986,10 @@ impl<'a> IndexPutWithId<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexPutWithIdId>, {
+    V: std::convert::TryInto<types::DocumentId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `IndexPutWithIdId` for id failed".to_string());
+      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
     self
   }
 
@@ -7676,7 +7477,7 @@ impl<'a> IndexPost<'a> {
 pub struct Delete<'a> {
   client: &'a super::OsClient,
   index: Result<types::DeleteIndex, String>,
-  id: Result<types::DeleteId, String>,
+  id: Result<types::DocumentId, String>,
   if_primary_term: Result<Option<i32>, String>,
   if_seq_no: Result<Option<i32>, String>,
   refresh: Result<Option<types::RefreshEnum>, String>,
@@ -7715,10 +7516,10 @@ impl<'a> Delete<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DeleteId>, {
+    V: std::convert::TryInto<types::DocumentId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `DeleteId` for id failed".to_string());
+      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
     self
   }
 
@@ -7879,7 +7680,7 @@ impl<'a> Delete<'a> {
 pub struct Exists<'a> {
   client: &'a super::OsClient,
   index: Result<types::ExistsIndex, String>,
-  id: Result<types::ExistsId, String>,
+  id: Result<types::DocumentId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -7922,10 +7723,10 @@ impl<'a> Exists<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ExistsId>, {
+    V: std::convert::TryInto<types::DocumentId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `ExistsId` for id failed".to_string());
+      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
     self
   }
 
@@ -8116,7 +7917,7 @@ impl<'a> Exists<'a> {
 pub struct ExplainGet<'a> {
   client: &'a super::OsClient,
   index: Result<types::ExplainGetIndex, String>,
-  id: Result<types::ExplainGetId, String>,
+  id: Result<types::DocumentId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -8163,10 +7964,10 @@ impl<'a> ExplainGet<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ExplainGetId>, {
+    V: std::convert::TryInto<types::DocumentId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `ExplainGetId` for id failed".to_string());
+      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
     self
   }
 
@@ -8387,7 +8188,7 @@ impl<'a> ExplainGet<'a> {
 pub struct ExplainPost<'a> {
   client: &'a super::OsClient,
   index: Result<types::ExplainPostIndex, String>,
-  id: Result<types::ExplainPostId, String>,
+  id: Result<types::DocumentId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -8436,10 +8237,10 @@ impl<'a> ExplainPost<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ExplainPostId>, {
+    V: std::convert::TryInto<types::DocumentId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `ExplainPostId` for id failed".to_string());
+      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
     self
   }
 
@@ -12027,7 +11828,7 @@ impl<'a> SearchShardsPostWithIndex<'a> {
 pub struct GetSource<'a> {
   client: &'a super::OsClient,
   index: Result<types::GetSourceIndex, String>,
-  id: Result<types::GetSourceId, String>,
+  id: Result<types::DocumentId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -12068,10 +11869,10 @@ impl<'a> GetSource<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::GetSourceId>, {
+    V: std::convert::TryInto<types::DocumentId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `GetSourceId` for id failed".to_string());
+      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
     self
   }
 
@@ -12247,7 +12048,7 @@ impl<'a> GetSource<'a> {
 pub struct ExistsSource<'a> {
   client: &'a super::OsClient,
   index: Result<types::ExistsSourceIndex, String>,
-  id: Result<types::ExistsSourceId, String>,
+  id: Result<types::DocumentId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -12288,10 +12089,10 @@ impl<'a> ExistsSource<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ExistsSourceId>, {
+    V: std::convert::TryInto<types::DocumentId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `ExistsSourceId` for id failed".to_string());
+      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
     self
   }
 
@@ -12952,7 +12753,7 @@ impl<'a> TermvectorsPost<'a> {
 pub struct TermvectorsGetWithId<'a> {
   client: &'a super::OsClient,
   index: Result<types::TermvectorsGetWithIdIndex, String>,
-  id: Result<types::TermvectorsGetWithIdId, String>,
+  id: Result<types::DocumentId, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
   offsets: Result<Option<bool>, String>,
@@ -12997,10 +12798,10 @@ impl<'a> TermvectorsGetWithId<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::TermvectorsGetWithIdId>, {
+    V: std::convert::TryInto<types::DocumentId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `TermvectorsGetWithIdId` for id failed".to_string());
+      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
     self
   }
 
@@ -13206,7 +13007,7 @@ impl<'a> TermvectorsGetWithId<'a> {
 pub struct TermvectorsPostWithId<'a> {
   client: &'a super::OsClient,
   index: Result<types::TermvectorsPostWithIdIndex, String>,
-  id: Result<types::TermvectorsPostWithIdId, String>,
+  id: Result<types::DocumentId, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
   offsets: Result<Option<bool>, String>,
@@ -13253,10 +13054,10 @@ impl<'a> TermvectorsPostWithId<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::TermvectorsPostWithIdId>, {
+    V: std::convert::TryInto<types::DocumentId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `TermvectorsPostWithIdId` for id failed".to_string());
+      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
     self
   }
 
@@ -13473,7 +13274,7 @@ impl<'a> TermvectorsPostWithId<'a> {
 pub struct Update<'a> {
   client: &'a super::OsClient,
   index: Result<types::UpdateIndex, String>,
-  id: Result<types::UpdateId, String>,
+  id: Result<types::DocumentId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -13522,10 +13323,10 @@ impl<'a> Update<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::UpdateId>, {
+    V: std::convert::TryInto<types::DocumentId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `UpdateId` for id failed".to_string());
+      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
     self
   }
 

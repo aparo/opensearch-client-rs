@@ -1817,50 +1817,6 @@ impl OsClient {
     builder::CreatePut::new(self)
   }
 
-  ///Creates a new document in the index.
-  ///
-  ///Returns a 409 response when a document with a same ID already exists in
-  /// the index.
-  ///
-  ///Sends a `POST` request to `/{index}/_create/{id}`
-  ///
-  ///Arguments:
-  /// - `index`: Index name.
-  /// - `id`: Document ID.
-  /// - `pipeline`: The pipeline id to preprocess incoming documents with.
-  /// - `refresh`: If `true` then refresh the affected shards to make this
-  ///   operation visible to search, if `wait_for` then wait for a refresh to
-  ///   make this operation visible to search, if `false` (the default) then do
-  ///   nothing with refreshes.
-  /// - `routing`: Routing value.
-  /// - `timeout`: Operation timeout.
-  /// - `version`: Explicit version number for concurrency control.
-  /// - `version_type`: Specific version type.
-  /// - `wait_for_active_shards`: Sets the number of shard copies that must be
-  ///   active before proceeding with the operation. Defaults to 1, meaning the
-  ///   primary shard only. Set to `all` for all shard copies, otherwise set to
-  ///   any non-negative value less than or equal to the total number of copies
-  ///   for the shard (number of replicas + 1).
-  /// - `body`
-  ///```ignore
-  /// let response = client.create_post()
-  ///    .index(index)
-  ///    .id(id)
-  ///    .pipeline(pipeline)
-  ///    .refresh(refresh)
-  ///    .routing(routing)
-  ///    .timeout(timeout)
-  ///    .version(version)
-  ///    .version_type(version_type)
-  ///    .wait_for_active_shards(wait_for_active_shards)
-  ///    .body(body)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn create_post(&self) -> builder::CreatePost {
-    builder::CreatePost::new(self)
-  }
-
   ///Deletes documents matching the provided query.
   ///
   ///Sends a `POST` request to `/{index}/_delete_by_query`

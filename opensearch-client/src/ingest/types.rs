@@ -93,77 +93,13 @@ impl<'de> serde::Deserialize<'de> for IngestDeletePipelineId {
 
 
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IngestDeletePipelineTimeout(String);
-impl std::ops::Deref for IngestDeletePipelineTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IngestDeletePipelineTimeout> for String {
-  fn from(value: IngestDeletePipelineTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IngestDeletePipelineTimeout> for IngestDeletePipelineTimeout {
-  fn from(value: &IngestDeletePipelineTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IngestDeletePipelineTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IngestDeletePipelineTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IngestDeletePipelineTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IngestDeletePipelineTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IngestDeletePipelineTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 
 
@@ -382,77 +318,13 @@ impl<'de> serde::Deserialize<'de> for IngestPutPipelineId {
 
 
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IngestPutPipelineTimeout(String);
-impl std::ops::Deref for IngestPutPipelineTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IngestPutPipelineTimeout> for String {
-  fn from(value: IngestPutPipelineTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IngestPutPipelineTimeout> for IngestPutPipelineTimeout {
-  fn from(value: &IngestPutPipelineTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IngestPutPipelineTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IngestPutPipelineTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IngestPutPipelineTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IngestPutPipelineTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IngestPutPipelineTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The simulate definition
 #[derive(Clone, Debug, Deserialize, Serialize)]

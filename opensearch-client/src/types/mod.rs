@@ -195,221 +195,29 @@ impl AuditLogsConfig {
   }
 }
 
-///Operation timeout for connection to master node.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct MasterTimeout(String);
-impl std::ops::Deref for MasterTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<MasterTimeout> for String {
-  fn from(value: MasterTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&MasterTimeout> for MasterTimeout {
-  fn from(value: &MasterTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for MasterTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for MasterTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<&String> for MasterTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<String> for MasterTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl<'de> serde::Deserialize<'de> for MasterTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
-///Operation timeout for connection to cluster-manager node.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ClusterManagerTimeout(String);
-impl std::ops::Deref for ClusterManagerTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<ClusterManagerTimeout> for String {
-  fn from(value: ClusterManagerTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&ClusterManagerTimeout> for ClusterManagerTimeout {
-  fn from(value: &ClusterManagerTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for ClusterManagerTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for ClusterManagerTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<&String> for ClusterManagerTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<String> for ClusterManagerTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ClusterManagerTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct BulkPostTimeout(String);
-impl std::ops::Deref for BulkPostTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<BulkPostTimeout> for String {
-  fn from(value: BulkPostTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&BulkPostTimeout> for BulkPostTimeout {
-  fn from(value: &BulkPostTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for BulkPostTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for BulkPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for BulkPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for BulkPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for BulkPostTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The unit in which to display byte values.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -599,22 +407,6 @@ impl CatAllPitSegmentsResponseContent {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ///Comma-separated list of node IDs or names to limit the returned
 /// information.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -690,14 +482,6 @@ impl<'de> serde::Deserialize<'de> for CatAllocationWithNodeIdNodeId {
   }
 }
 
-
-
-
-
-
-
-
-
 ///Comma-separated list of indices to limit the returned information.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct CatCountWithIndexIndex(String);
@@ -772,14 +556,6 @@ impl<'de> serde::Deserialize<'de> for CatCountWithIndexIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 ///Comma-separated list of indices to limit the returned information.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct CatIndicesWithIndexIndex(String);
@@ -853,46 +629,6 @@ impl<'de> serde::Deserialize<'de> for CatIndicesWithIndexIndex {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct CatPitSegment {
@@ -974,30 +710,6 @@ impl CatPitSegmentsResponseContent {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ///Comma-separated list of indices to limit the returned information.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct CatSegmentsWithIndexIndex(String);
@@ -1071,22 +783,6 @@ impl<'de> serde::Deserialize<'de> for CatSegmentsWithIndexIndex {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ///Comma-separated list of indices to limit the returned information.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -1162,30 +858,6 @@ impl<'de> serde::Deserialize<'de> for CatShardsWithIndexIndex {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ///Comma-separated list of repository names.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct CatSnapshotsWithRepositoryRepository(String);
@@ -1260,22 +932,6 @@ impl<'de> serde::Deserialize<'de> for CatSnapshotsWithRepositoryRepository {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ///The name of the template.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct CatTemplatesWithNameName(String);
@@ -1349,22 +1005,6 @@ impl<'de> serde::Deserialize<'de> for CatTemplatesWithNameName {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ///Comma-separated list of regular-expressions to filter the thread pools
 /// in the output.
@@ -1645,14 +1285,6 @@ impl From<serde_json::Map<String, serde_json::Value>> for ClusterAllocationExpla
   }
 }
 
-
-
-
-
-
-
-
-
 ///The name of the template.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct ClusterDeleteComponentTemplateName(String);
@@ -1718,78 +1350,6 @@ impl std::convert::TryFrom<String> for ClusterDeleteComponentTemplateName {
 }
 
 impl<'de> serde::Deserialize<'de> for ClusterDeleteComponentTemplateName {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ClusterDeleteComponentTemplateTimeout(String);
-impl std::ops::Deref for ClusterDeleteComponentTemplateTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<ClusterDeleteComponentTemplateTimeout> for String {
-  fn from(value: ClusterDeleteComponentTemplateTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&ClusterDeleteComponentTemplateTimeout> for ClusterDeleteComponentTemplateTimeout {
-  fn from(value: &ClusterDeleteComponentTemplateTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for ClusterDeleteComponentTemplateTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for ClusterDeleteComponentTemplateTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for ClusterDeleteComponentTemplateTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for ClusterDeleteComponentTemplateTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ClusterDeleteComponentTemplateTimeout {
   fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
   where
     D: serde::Deserializer<'de>, {
@@ -1880,22 +1440,6 @@ impl<'de> serde::Deserialize<'de> for ClusterExistsComponentTemplateName {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ///The Comma-separated names of the component templates.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -2047,14 +1591,6 @@ impl<'de> serde::Deserialize<'de> for ClusterGetDecommissionAwarenessAwarenessAt
   }
 }
 
-
-
-
-
-
-
-
-
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ClusterGetSettingsResponseContent {
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2077,77 +1613,13 @@ impl ClusterGetSettingsResponseContent {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ClusterGetSettingsTimeout(String);
-impl std::ops::Deref for ClusterGetSettingsTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<ClusterGetSettingsTimeout> for String {
-  fn from(value: ClusterGetSettingsTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&ClusterGetSettingsTimeout> for ClusterGetSettingsTimeout {
-  fn from(value: &ClusterGetSettingsTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for ClusterGetSettingsTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for ClusterGetSettingsTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for ClusterGetSettingsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for ClusterGetSettingsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ClusterGetSettingsTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Awareness attribute name.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -2299,78 +1771,6 @@ impl std::convert::TryFrom<String> for ClusterHealthLevel {
 
 
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ClusterHealthTimeout(String);
-impl std::ops::Deref for ClusterHealthTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<ClusterHealthTimeout> for String {
-  fn from(value: ClusterHealthTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&ClusterHealthTimeout> for ClusterHealthTimeout {
-  fn from(value: &ClusterHealthTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for ClusterHealthTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for ClusterHealthTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for ClusterHealthTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for ClusterHealthTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ClusterHealthTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
 ///Limit the information returned to specific indicies.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct ClusterHealthWithIndexIndex(String);
@@ -2453,77 +1853,6 @@ impl<'de> serde::Deserialize<'de> for ClusterHealthWithIndexIndex {
 
 
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ClusterHealthWithIndexTimeout(String);
-impl std::ops::Deref for ClusterHealthWithIndexTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<ClusterHealthWithIndexTimeout> for String {
-  fn from(value: ClusterHealthWithIndexTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&ClusterHealthWithIndexTimeout> for ClusterHealthWithIndexTimeout {
-  fn from(value: &ClusterHealthWithIndexTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for ClusterHealthWithIndexTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for ClusterHealthWithIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for ClusterHealthWithIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for ClusterHealthWithIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ClusterHealthWithIndexTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 
 
@@ -2531,79 +1860,6 @@ impl<'de> serde::Deserialize<'de> for ClusterHealthWithIndexTimeout {
 
 
 
-
-
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ClusterPostVotingConfigExclusionsTimeout(String);
-impl std::ops::Deref for ClusterPostVotingConfigExclusionsTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<ClusterPostVotingConfigExclusionsTimeout> for String {
-  fn from(value: ClusterPostVotingConfigExclusionsTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&ClusterPostVotingConfigExclusionsTimeout> for ClusterPostVotingConfigExclusionsTimeout {
-  fn from(value: &ClusterPostVotingConfigExclusionsTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for ClusterPostVotingConfigExclusionsTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for ClusterPostVotingConfigExclusionsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for ClusterPostVotingConfigExclusionsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for ClusterPostVotingConfigExclusionsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ClusterPostVotingConfigExclusionsTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The template definition
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -2633,14 +1889,6 @@ impl From<serde_json::Map<String, serde_json::Value>> for ClusterPutComponentTem
     Self(value)
   }
 }
-
-
-
-
-
-
-
-
 
 ///The name of the template.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -2707,78 +1955,6 @@ impl std::convert::TryFrom<String> for ClusterPutComponentTemplatePostName {
 }
 
 impl<'de> serde::Deserialize<'de> for ClusterPutComponentTemplatePostName {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ClusterPutComponentTemplatePostTimeout(String);
-impl std::ops::Deref for ClusterPutComponentTemplatePostTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<ClusterPutComponentTemplatePostTimeout> for String {
-  fn from(value: ClusterPutComponentTemplatePostTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&ClusterPutComponentTemplatePostTimeout> for ClusterPutComponentTemplatePostTimeout {
-  fn from(value: &ClusterPutComponentTemplatePostTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for ClusterPutComponentTemplatePostTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for ClusterPutComponentTemplatePostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for ClusterPutComponentTemplatePostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for ClusterPutComponentTemplatePostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ClusterPutComponentTemplatePostTimeout {
   fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
   where
     D: serde::Deserializer<'de>, {
@@ -2870,77 +2046,13 @@ impl<'de> serde::Deserialize<'de> for ClusterPutComponentTemplatePutName {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ClusterPutComponentTemplatePutTimeout(String);
-impl std::ops::Deref for ClusterPutComponentTemplatePutTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<ClusterPutComponentTemplatePutTimeout> for String {
-  fn from(value: ClusterPutComponentTemplatePutTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&ClusterPutComponentTemplatePutTimeout> for ClusterPutComponentTemplatePutTimeout {
-  fn from(value: &ClusterPutComponentTemplatePutTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for ClusterPutComponentTemplatePutTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for ClusterPutComponentTemplatePutTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for ClusterPutComponentTemplatePutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for ClusterPutComponentTemplatePutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ClusterPutComponentTemplatePutTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Awareness attribute name.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -3116,14 +2228,6 @@ impl ClusterPutSettingsBodyParams {
   }
 }
 
-
-
-
-
-
-
-
-
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ClusterPutSettingsResponseContent {
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -3146,77 +2250,13 @@ impl ClusterPutSettingsResponseContent {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ClusterPutSettingsTimeout(String);
-impl std::ops::Deref for ClusterPutSettingsTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<ClusterPutSettingsTimeout> for String {
-  fn from(value: ClusterPutSettingsTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&ClusterPutSettingsTimeout> for ClusterPutSettingsTimeout {
-  fn from(value: &ClusterPutSettingsTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for ClusterPutSettingsTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for ClusterPutSettingsTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for ClusterPutSettingsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for ClusterPutSettingsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ClusterPutSettingsTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Awareness attribute name.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -3321,14 +2361,6 @@ impl From<serde_json::Map<String, serde_json::Value>> for ClusterRerouteBodyPara
   }
 }
 
-
-
-
-
-
-
-
-
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum ClusterRerouteMetricMember {
   #[serde(rename = "_all")]
@@ -3412,78 +2444,6 @@ impl std::convert::TryFrom<String> for ClusterRerouteMetricMember {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ClusterRerouteTimeout(String);
-impl std::ops::Deref for ClusterRerouteTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<ClusterRerouteTimeout> for String {
-  fn from(value: ClusterRerouteTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&ClusterRerouteTimeout> for ClusterRerouteTimeout {
-  fn from(value: &ClusterRerouteTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for ClusterRerouteTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for ClusterRerouteTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for ClusterRerouteTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for ClusterRerouteTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ClusterRerouteTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
 
 
 
@@ -3493,77 +2453,13 @@ impl<'de> serde::Deserialize<'de> for ClusterRerouteTimeout {
 
 
 ///The maximum time to wait for wait_for_metadata_version before timing
-/// out.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ClusterStateWaitForTimeout(String);
-impl std::ops::Deref for ClusterStateWaitForTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<ClusterStateWaitForTimeout> for String {
-  fn from(value: ClusterStateWaitForTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&ClusterStateWaitForTimeout> for ClusterStateWaitForTimeout {
-  fn from(value: &ClusterStateWaitForTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for ClusterStateWaitForTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for ClusterStateWaitForTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for ClusterStateWaitForTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for ClusterStateWaitForTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ClusterStateWaitForTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of indices; use `_all` or empty string to perform
 /// the operation on all indices.
@@ -3640,14 +2536,6 @@ impl<'de> serde::Deserialize<'de> for ClusterStateWithIndexMetricIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 ///Limit the information returned to the specified metrics.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct ClusterStateWithIndexMetricMetric(String);
@@ -3723,78 +2611,6 @@ impl<'de> serde::Deserialize<'de> for ClusterStateWithIndexMetricMetric {
 }
 
 ///The maximum time to wait for wait_for_metadata_version before timing
-/// out.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ClusterStateWithIndexMetricWaitForTimeout(String);
-impl std::ops::Deref for ClusterStateWithIndexMetricWaitForTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<ClusterStateWithIndexMetricWaitForTimeout> for String {
-  fn from(value: ClusterStateWithIndexMetricWaitForTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&ClusterStateWithIndexMetricWaitForTimeout> for ClusterStateWithIndexMetricWaitForTimeout {
-  fn from(value: &ClusterStateWithIndexMetricWaitForTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for ClusterStateWithIndexMetricWaitForTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for ClusterStateWithIndexMetricWaitForTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for ClusterStateWithIndexMetricWaitForTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for ClusterStateWithIndexMetricWaitForTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ClusterStateWithIndexMetricWaitForTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
 
 
 
@@ -3878,149 +2694,21 @@ impl<'de> serde::Deserialize<'de> for ClusterStateWithMetricMetric {
 }
 
 ///The maximum time to wait for wait_for_metadata_version before timing
-/// out.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ClusterStateWithMetricWaitForTimeout(String);
-impl std::ops::Deref for ClusterStateWithMetricWaitForTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<ClusterStateWithMetricWaitForTimeout> for String {
-  fn from(value: ClusterStateWithMetricWaitForTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&ClusterStateWithMetricWaitForTimeout> for ClusterStateWithMetricWaitForTimeout {
-  fn from(value: &ClusterStateWithMetricWaitForTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for ClusterStateWithMetricWaitForTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for ClusterStateWithMetricWaitForTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<&String> for ClusterStateWithMetricWaitForTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<String> for ClusterStateWithMetricWaitForTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl<'de> serde::Deserialize<'de> for ClusterStateWithMetricWaitForTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ClusterStatsTimeout(String);
-impl std::ops::Deref for ClusterStatsTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<ClusterStatsTimeout> for String {
-  fn from(value: ClusterStatsTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&ClusterStatsTimeout> for ClusterStatsTimeout {
-  fn from(value: &ClusterStatsTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for ClusterStatsTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for ClusterStatsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for ClusterStatsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for ClusterStatsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ClusterStatsTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of node IDs or names to limit the returned
 /// information; use `_local` to return information from the node you're
@@ -4098,77 +2786,13 @@ impl<'de> serde::Deserialize<'de> for ClusterStatsWithNodeIdNodeId {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ClusterStatsWithNodeIdTimeout(String);
-impl std::ops::Deref for ClusterStatsWithNodeIdTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<ClusterStatsWithNodeIdTimeout> for String {
-  fn from(value: ClusterStatsWithNodeIdTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&ClusterStatsWithNodeIdTimeout> for ClusterStatsWithNodeIdTimeout {
-  fn from(value: &ClusterStatsWithNodeIdTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for ClusterStatsWithNodeIdTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for ClusterStatsWithNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for ClusterStatsWithNodeIdTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for ClusterStatsWithNodeIdTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ClusterStatsWithNodeIdTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ComplianceConfig {
@@ -4739,77 +3363,13 @@ impl<'de> serde::Deserialize<'de> for CreatePostIndex {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct CreatePostTimeout(String);
-impl std::ops::Deref for CreatePostTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<CreatePostTimeout> for String {
-  fn from(value: CreatePostTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&CreatePostTimeout> for CreatePostTimeout {
-  fn from(value: &CreatePostTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for CreatePostTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for CreatePostTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for CreatePostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for CreatePostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for CreatePostTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Document ID.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -4959,77 +3519,13 @@ impl<'de> serde::Deserialize<'de> for CreatePutIndex {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct CreatePutTimeout(String);
-impl std::ops::Deref for CreatePutTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<CreatePutTimeout> for String {
-  fn from(value: CreatePutTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&CreatePutTimeout> for CreatePutTimeout {
-  fn from(value: &CreatePutTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for CreatePutTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for CreatePutTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for CreatePutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for CreatePutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for CreatePutTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct CreateRoleMappingResponseContent {
@@ -5219,78 +3715,6 @@ impl<'de> serde::Deserialize<'de> for DanglingIndicesDeleteDanglingIndexIndexUui
 
 
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct DanglingIndicesDeleteDanglingIndexTimeout(String);
-impl std::ops::Deref for DanglingIndicesDeleteDanglingIndexTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<DanglingIndicesDeleteDanglingIndexTimeout> for String {
-  fn from(value: DanglingIndicesDeleteDanglingIndexTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&DanglingIndicesDeleteDanglingIndexTimeout> for DanglingIndicesDeleteDanglingIndexTimeout {
-  fn from(value: &DanglingIndicesDeleteDanglingIndexTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for DanglingIndicesDeleteDanglingIndexTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for DanglingIndicesDeleteDanglingIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for DanglingIndicesDeleteDanglingIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for DanglingIndicesDeleteDanglingIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for DanglingIndicesDeleteDanglingIndexTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
 ///The UUID of the dangling index.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct DanglingIndicesImportDanglingIndexIndexUuid(String);
@@ -5372,78 +3796,6 @@ impl<'de> serde::Deserialize<'de> for DanglingIndicesImportDanglingIndexIndexUui
 
 
 
-
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct DanglingIndicesImportDanglingIndexTimeout(String);
-impl std::ops::Deref for DanglingIndicesImportDanglingIndexTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<DanglingIndicesImportDanglingIndexTimeout> for String {
-  fn from(value: DanglingIndicesImportDanglingIndexTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&DanglingIndicesImportDanglingIndexTimeout> for DanglingIndicesImportDanglingIndexTimeout {
-  fn from(value: &DanglingIndicesImportDanglingIndexTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for DanglingIndicesImportDanglingIndexTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for DanglingIndicesImportDanglingIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for DanglingIndicesImportDanglingIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for DanglingIndicesImportDanglingIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for DanglingIndicesImportDanglingIndexTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct DataStream {
@@ -5925,156 +4277,23 @@ impl<'de> serde::Deserialize<'de> for DeleteByQueryScroll {
   }
 }
 
-///Explicit timeout for each search request. Defaults to no timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct DeleteByQuerySearchTimeout(String);
-impl std::ops::Deref for DeleteByQuerySearchTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<DeleteByQuerySearchTimeout> for String {
-  fn from(value: DeleteByQuerySearchTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&DeleteByQuerySearchTimeout> for DeleteByQuerySearchTimeout {
-  fn from(value: &DeleteByQuerySearchTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for DeleteByQuerySearchTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for DeleteByQuerySearchTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for DeleteByQuerySearchTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for DeleteByQuerySearchTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for DeleteByQuerySearchTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Time each individual bulk request should wait for shards that are
-/// unavailable.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct DeleteByQueryTimeout(String);
-impl std::ops::Deref for DeleteByQueryTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<DeleteByQueryTimeout> for String {
-  fn from(value: DeleteByQueryTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&DeleteByQueryTimeout> for DeleteByQueryTimeout {
-  fn from(value: &DeleteByQueryTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl Default for DeleteByQueryTimeout {
-  fn default() -> Self {
-    DeleteByQueryTimeout("1m".to_string())
-  }
-}
 
-impl std::str::FromStr for DeleteByQueryTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for DeleteByQueryTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for DeleteByQueryTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for DeleteByQueryTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for DeleteByQueryTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct DeleteDistinguishedNamesResponseContent {
@@ -6407,78 +4626,6 @@ impl<'de> serde::Deserialize<'de> for DeleteScriptId {
 
 
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct DeleteScriptTimeout(String);
-impl std::ops::Deref for DeleteScriptTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<DeleteScriptTimeout> for String {
-  fn from(value: DeleteScriptTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&DeleteScriptTimeout> for DeleteScriptTimeout {
-  fn from(value: &DeleteScriptTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for DeleteScriptTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for DeleteScriptTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for DeleteScriptTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for DeleteScriptTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for DeleteScriptTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct DeleteTenantResponseContent {
   ///Security Operation Message
@@ -6501,77 +4648,13 @@ impl DeleteTenantResponseContent {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct DeleteTimeout(String);
-impl std::ops::Deref for DeleteTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<DeleteTimeout> for String {
-  fn from(value: DeleteTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&DeleteTimeout> for DeleteTimeout {
-  fn from(value: &DeleteTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for DeleteTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for DeleteTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for DeleteTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for DeleteTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for DeleteTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct DeleteUserResponseContent {
@@ -7923,14 +6006,6 @@ impl<'de> serde::Deserialize<'de> for GetScriptId {
   }
 }
 
-
-
-
-
-
-
-
-
 ///Document ID.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct GetSourceId(String);
@@ -8467,77 +6542,13 @@ impl<'de> serde::Deserialize<'de> for IndexPostIndex {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndexPostTimeout(String);
-impl std::ops::Deref for IndexPostTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndexPostTimeout> for String {
-  fn from(value: IndexPostTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IndexPostTimeout> for IndexPostTimeout {
-  fn from(value: &IndexPostTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IndexPostTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IndexPostTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndexPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndexPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndexPostTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Document ID.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -8687,77 +6698,13 @@ impl<'de> serde::Deserialize<'de> for IndexPutWithIdIndex {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndexPutWithIdTimeout(String);
-impl std::ops::Deref for IndexPutWithIdTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndexPutWithIdTimeout> for String {
-  fn from(value: IndexPutWithIdTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IndexPutWithIdTimeout> for IndexPutWithIdTimeout {
-  fn from(value: &IndexPutWithIdTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IndexPutWithIdTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IndexPutWithIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndexPutWithIdTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndexPutWithIdTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndexPutWithIdTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The block to add (one of read, write, read_only or metadata).
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -8915,78 +6862,6 @@ impl<'de> serde::Deserialize<'de> for IndicesAddBlockIndex {
 
 
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesAddBlockTimeout(String);
-impl std::ops::Deref for IndicesAddBlockTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<IndicesAddBlockTimeout> for String {
-  fn from(value: IndicesAddBlockTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&IndicesAddBlockTimeout> for IndicesAddBlockTimeout {
-  fn from(value: &IndicesAddBlockTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for IndicesAddBlockTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for IndicesAddBlockTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesAddBlockTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesAddBlockTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesAddBlockTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
 ///Define analyzer/tokenizer parameters and the text on which the analysis
 /// should be performed
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -9120,14 +6995,6 @@ impl<'de> serde::Deserialize<'de> for IndicesClonePostIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 ///The name of the target index.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct IndicesClonePostTarget(String);
@@ -9202,77 +7069,13 @@ impl<'de> serde::Deserialize<'de> for IndicesClonePostTarget {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesClonePostTimeout(String);
-impl std::ops::Deref for IndicesClonePostTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndicesClonePostTimeout> for String {
-  fn from(value: IndicesClonePostTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IndicesClonePostTimeout> for IndicesClonePostTimeout {
-  fn from(value: &IndicesClonePostTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IndicesClonePostTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IndicesClonePostTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesClonePostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesClonePostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesClonePostTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The name of the source index to clone.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -9348,14 +7151,6 @@ impl<'de> serde::Deserialize<'de> for IndicesClonePutIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 ///The name of the target index.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct IndicesClonePutTarget(String);
@@ -9430,77 +7225,13 @@ impl<'de> serde::Deserialize<'de> for IndicesClonePutTarget {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesClonePutTimeout(String);
-impl std::ops::Deref for IndicesClonePutTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndicesClonePutTimeout> for String {
-  fn from(value: IndicesClonePutTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IndicesClonePutTimeout> for IndicesClonePutTimeout {
-  fn from(value: &IndicesClonePutTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IndicesClonePutTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IndicesClonePutTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesClonePutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesClonePutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesClonePutTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of indices to close.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -9583,78 +7314,6 @@ impl<'de> serde::Deserialize<'de> for IndicesCloseIndex {
 
 
 
-
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesCloseTimeout(String);
-impl std::ops::Deref for IndicesCloseTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<IndicesCloseTimeout> for String {
-  fn from(value: IndicesCloseTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&IndicesCloseTimeout> for IndicesCloseTimeout {
-  fn from(value: &IndicesCloseTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for IndicesCloseTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for IndicesCloseTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesCloseTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesCloseTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesCloseTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The configuration for the index (`settings` and `mappings`)
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -9874,14 +7533,6 @@ impl<'de> serde::Deserialize<'de> for IndicesCreateIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct IndicesCreateResponseContent {
   pub acknowledged: bool,
@@ -9901,77 +7552,13 @@ impl IndicesCreateResponseContent {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesCreateTimeout(String);
-impl std::ops::Deref for IndicesCreateTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndicesCreateTimeout> for String {
-  fn from(value: IndicesCreateTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IndicesCreateTimeout> for IndicesCreateTimeout {
-  fn from(value: &IndicesCreateTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IndicesCreateTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IndicesCreateTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesCreateTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesCreateTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesCreateTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of data streams; use `_all` or empty string to
 /// perform the operation on all data streams.
@@ -10123,14 +7710,6 @@ impl<'de> serde::Deserialize<'de> for IndicesDeleteAliasIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 ///Comma-separated list of aliases to delete (supports wildcards); use
 /// `_all` to delete all aliases for the specified indices.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -10281,14 +7860,6 @@ impl<'de> serde::Deserialize<'de> for IndicesDeleteAliasPluralIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 ///Comma-separated list of aliases to delete (supports wildcards); use
 /// `_all` to delete all aliases for the specified indices.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -10364,149 +7935,21 @@ impl<'de> serde::Deserialize<'de> for IndicesDeleteAliasPluralName {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesDeleteAliasPluralTimeout(String);
-impl std::ops::Deref for IndicesDeleteAliasPluralTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndicesDeleteAliasPluralTimeout> for String {
-  fn from(value: IndicesDeleteAliasPluralTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IndicesDeleteAliasPluralTimeout> for IndicesDeleteAliasPluralTimeout {
-  fn from(value: &IndicesDeleteAliasPluralTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IndicesDeleteAliasPluralTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IndicesDeleteAliasPluralTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<&String> for IndicesDeleteAliasPluralTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<String> for IndicesDeleteAliasPluralTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl<'de> serde::Deserialize<'de> for IndicesDeleteAliasPluralTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesDeleteAliasTimeout(String);
-impl std::ops::Deref for IndicesDeleteAliasTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndicesDeleteAliasTimeout> for String {
-  fn from(value: IndicesDeleteAliasTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&IndicesDeleteAliasTimeout> for IndicesDeleteAliasTimeout {
-  fn from(value: &IndicesDeleteAliasTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for IndicesDeleteAliasTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for IndicesDeleteAliasTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesDeleteAliasTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesDeleteAliasTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesDeleteAliasTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of data streams; use `_all` or empty string to
 /// perform the operation on all data streams.
@@ -10676,14 +8119,6 @@ impl<'de> serde::Deserialize<'de> for IndicesDeleteIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 ///The name of the template.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct IndicesDeleteIndexTemplateName(String);
@@ -10758,78 +8193,6 @@ impl<'de> serde::Deserialize<'de> for IndicesDeleteIndexTemplateName {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesDeleteIndexTemplateTimeout(String);
-impl std::ops::Deref for IndicesDeleteIndexTemplateTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<IndicesDeleteIndexTemplateTimeout> for String {
-  fn from(value: IndicesDeleteIndexTemplateTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&IndicesDeleteIndexTemplateTimeout> for IndicesDeleteIndexTemplateTimeout {
-  fn from(value: &IndicesDeleteIndexTemplateTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for IndicesDeleteIndexTemplateTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for IndicesDeleteIndexTemplateTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesDeleteIndexTemplateTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesDeleteIndexTemplateTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesDeleteIndexTemplateTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
 
 
 
@@ -10855,14 +8218,6 @@ impl IndicesDeleteResponseContent {
     builder::IndicesDeleteResponseContent::default()
   }
 }
-
-
-
-
-
-
-
-
 
 ///The name of the template.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -10938,10 +8293,18 @@ impl<'de> serde::Deserialize<'de> for IndicesDeleteTemplateName {
   }
 }
 
+
+
+
+
+
+
+
+
 ///Operation timeout.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesDeleteTemplateTimeout(String);
-impl std::ops::Deref for IndicesDeleteTemplateTimeout {
+pub struct IndicesTimeout(String);
+impl std::ops::Deref for IndicesTimeout {
   type Target = String;
 
   fn deref(&self) -> &String {
@@ -10949,19 +8312,19 @@ impl std::ops::Deref for IndicesDeleteTemplateTimeout {
   }
 }
 
-impl From<IndicesDeleteTemplateTimeout> for String {
-  fn from(value: IndicesDeleteTemplateTimeout) -> Self {
+impl From<IndicesTimeout> for String {
+  fn from(value: IndicesTimeout) -> Self {
     value.0
   }
 }
 
-impl From<&IndicesDeleteTemplateTimeout> for IndicesDeleteTemplateTimeout {
-  fn from(value: &IndicesDeleteTemplateTimeout) -> Self {
+impl From<&IndicesTimeout> for IndicesTimeout {
+  fn from(value: &IndicesTimeout) -> Self {
     value.clone()
   }
 }
 
-impl std::str::FromStr for IndicesDeleteTemplateTimeout {
+impl std::str::FromStr for IndicesTimeout {
   type Err = &'static str;
 
   fn from_str(value: &str) -> Result<Self, &'static str> {
@@ -10976,7 +8339,7 @@ impl std::str::FromStr for IndicesDeleteTemplateTimeout {
   }
 }
 
-impl std::convert::TryFrom<&str> for IndicesDeleteTemplateTimeout {
+impl std::convert::TryFrom<&str> for IndicesTimeout {
   type Error = &'static str;
 
   fn try_from(value: &str) -> Result<Self, &'static str> {
@@ -10984,7 +8347,7 @@ impl std::convert::TryFrom<&str> for IndicesDeleteTemplateTimeout {
   }
 }
 
-impl std::convert::TryFrom<&String> for IndicesDeleteTemplateTimeout {
+impl std::convert::TryFrom<&String> for IndicesTimeout {
   type Error = &'static str;
 
   fn try_from(value: &String) -> Result<Self, &'static str> {
@@ -10992,7 +8355,7 @@ impl std::convert::TryFrom<&String> for IndicesDeleteTemplateTimeout {
   }
 }
 
-impl std::convert::TryFrom<String> for IndicesDeleteTemplateTimeout {
+impl std::convert::TryFrom<String> for IndicesTimeout {
   type Error = &'static str;
 
   fn try_from(value: String) -> Result<Self, &'static str> {
@@ -11000,79 +8363,7 @@ impl std::convert::TryFrom<String> for IndicesDeleteTemplateTimeout {
   }
 }
 
-impl<'de> serde::Deserialize<'de> for IndicesDeleteTemplateTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesDeleteTimeout(String);
-impl std::ops::Deref for IndicesDeleteTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<IndicesDeleteTimeout> for String {
-  fn from(value: IndicesDeleteTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&IndicesDeleteTimeout> for IndicesDeleteTimeout {
-  fn from(value: &IndicesDeleteTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for IndicesDeleteTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for IndicesDeleteTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesDeleteTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesDeleteTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesDeleteTimeout {
+impl<'de> serde::Deserialize<'de> for IndicesTimeout {
   fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
   where
     D: serde::Deserializer<'de>, {
@@ -11378,14 +8669,6 @@ impl<'de> serde::Deserialize<'de> for IndicesExistsIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 ///The name of the template.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct IndicesExistsIndexTemplateName(String);
@@ -11459,14 +8742,6 @@ impl<'de> serde::Deserialize<'de> for IndicesExistsIndexTemplateName {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
-
-
-
-
-
-
-
 
 ///Comma-separated names of the index templates.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -12470,22 +9745,6 @@ impl<'de> serde::Deserialize<'de> for IndicesGetIndex {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ///Comma-separated names of the index templates.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct IndicesGetIndexTemplateWithNameName(String);
@@ -12560,14 +9819,6 @@ impl<'de> serde::Deserialize<'de> for IndicesGetIndexTemplateWithNameName {
   }
 }
 
-
-
-
-
-
-
-
-
 ///Comma-separated list of indices.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct IndicesGetMappingWithIndexIndex(String);
@@ -12641,30 +9892,6 @@ impl<'de> serde::Deserialize<'de> for IndicesGetMappingWithIndexIndex {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ///Comma-separated list of indices; use `_all` or empty string to perform
 /// the operation on all indices.
@@ -12741,14 +9968,6 @@ impl<'de> serde::Deserialize<'de> for IndicesGetSettingsWithIndexIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 ///Comma-separated list of indices; use `_all` or empty string to perform
 /// the operation on all indices.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -12824,14 +10043,6 @@ impl<'de> serde::Deserialize<'de> for IndicesGetSettingsWithIndexNameIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 ///Comma-separated list of settings.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct IndicesGetSettingsWithIndexNameName(String);
@@ -12906,14 +10117,6 @@ impl<'de> serde::Deserialize<'de> for IndicesGetSettingsWithIndexNameName {
   }
 }
 
-
-
-
-
-
-
-
-
 ///Comma-separated list of settings.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct IndicesGetSettingsWithNameName(String);
@@ -12987,22 +10190,6 @@ impl<'de> serde::Deserialize<'de> for IndicesGetSettingsWithNameName {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ///Comma-separated names of the index templates.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -13235,78 +10422,6 @@ impl<'de> serde::Deserialize<'de> for IndicesOpenIndex {
 
 
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesOpenTimeout(String);
-impl std::ops::Deref for IndicesOpenTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<IndicesOpenTimeout> for String {
-  fn from(value: IndicesOpenTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&IndicesOpenTimeout> for IndicesOpenTimeout {
-  fn from(value: &IndicesOpenTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for IndicesOpenTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for IndicesOpenTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesOpenTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesOpenTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesOpenTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
 ///The settings for the alias, such as `routing` or `filter`
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct IndicesPutAliasBodyParams(pub serde_json::Map<String, serde_json::Value>);
@@ -13410,14 +10525,6 @@ impl<'de> serde::Deserialize<'de> for IndicesPutAliasPostIndex {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
-
-
-
-
-
-
-
 
 ///The name of the alias to be created or updated.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -13568,14 +10675,6 @@ impl<'de> serde::Deserialize<'de> for IndicesPutAliasPostPluralIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 ///The name of the alias to be created or updated.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct IndicesPutAliasPostPluralName(String);
@@ -13650,149 +10749,21 @@ impl<'de> serde::Deserialize<'de> for IndicesPutAliasPostPluralName {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesPutAliasPostPluralTimeout(String);
-impl std::ops::Deref for IndicesPutAliasPostPluralTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndicesPutAliasPostPluralTimeout> for String {
-  fn from(value: IndicesPutAliasPostPluralTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IndicesPutAliasPostPluralTimeout> for IndicesPutAliasPostPluralTimeout {
-  fn from(value: &IndicesPutAliasPostPluralTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IndicesPutAliasPostPluralTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IndicesPutAliasPostPluralTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<&String> for IndicesPutAliasPostPluralTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<String> for IndicesPutAliasPostPluralTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl<'de> serde::Deserialize<'de> for IndicesPutAliasPostPluralTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesPutAliasPostTimeout(String);
-impl std::ops::Deref for IndicesPutAliasPostTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndicesPutAliasPostTimeout> for String {
-  fn from(value: IndicesPutAliasPostTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&IndicesPutAliasPostTimeout> for IndicesPutAliasPostTimeout {
-  fn from(value: &IndicesPutAliasPostTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for IndicesPutAliasPostTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for IndicesPutAliasPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesPutAliasPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesPutAliasPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesPutAliasPostTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of indices; use `_all` or empty string to perform
 /// the operation on all indices.
@@ -13868,14 +10839,6 @@ impl<'de> serde::Deserialize<'de> for IndicesPutAliasPutIndex {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
-
-
-
-
-
-
-
 
 ///The name of the alias to be created or updated.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -14026,14 +10989,6 @@ impl<'de> serde::Deserialize<'de> for IndicesPutAliasPutPluralIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 ///The name of the alias to be created or updated.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct IndicesPutAliasPutPluralName(String);
@@ -14108,149 +11063,21 @@ impl<'de> serde::Deserialize<'de> for IndicesPutAliasPutPluralName {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesPutAliasPutPluralTimeout(String);
-impl std::ops::Deref for IndicesPutAliasPutPluralTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndicesPutAliasPutPluralTimeout> for String {
-  fn from(value: IndicesPutAliasPutPluralTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IndicesPutAliasPutPluralTimeout> for IndicesPutAliasPutPluralTimeout {
-  fn from(value: &IndicesPutAliasPutPluralTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IndicesPutAliasPutPluralTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IndicesPutAliasPutPluralTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<&String> for IndicesPutAliasPutPluralTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<String> for IndicesPutAliasPutPluralTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl<'de> serde::Deserialize<'de> for IndicesPutAliasPutPluralTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesPutAliasPutTimeout(String);
-impl std::ops::Deref for IndicesPutAliasPutTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndicesPutAliasPutTimeout> for String {
-  fn from(value: IndicesPutAliasPutTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&IndicesPutAliasPutTimeout> for IndicesPutAliasPutTimeout {
-  fn from(value: &IndicesPutAliasPutTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for IndicesPutAliasPutTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for IndicesPutAliasPutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesPutAliasPutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesPutAliasPutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesPutAliasPutTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The template definition
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -14280,14 +11107,6 @@ impl From<serde_json::Map<String, serde_json::Value>> for IndicesPutIndexTemplat
     Self(value)
   }
 }
-
-
-
-
-
-
-
-
 
 ///The name of the template.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -14362,14 +11181,6 @@ impl<'de> serde::Deserialize<'de> for IndicesPutIndexTemplatePostName {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
-
-
-
-
-
-
-
 
 ///The name of the template.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -14549,14 +11360,6 @@ impl<'de> serde::Deserialize<'de> for IndicesPutMappingPostIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct IndicesPutMappingPostResponseContent {
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -14575,77 +11378,13 @@ impl IndicesPutMappingPostResponseContent {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesPutMappingPostTimeout(String);
-impl std::ops::Deref for IndicesPutMappingPostTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndicesPutMappingPostTimeout> for String {
-  fn from(value: IndicesPutMappingPostTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IndicesPutMappingPostTimeout> for IndicesPutMappingPostTimeout {
-  fn from(value: &IndicesPutMappingPostTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IndicesPutMappingPostTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IndicesPutMappingPostTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesPutMappingPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesPutMappingPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesPutMappingPostTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of indices; use `_all` or empty string to perform
 /// the operation on all indices.
@@ -14722,14 +11461,6 @@ impl<'de> serde::Deserialize<'de> for IndicesPutMappingPutIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct IndicesPutMappingPutResponseContent {
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -14748,77 +11479,13 @@ impl IndicesPutMappingPutResponseContent {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesPutMappingPutTimeout(String);
-impl std::ops::Deref for IndicesPutMappingPutTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndicesPutMappingPutTimeout> for String {
-  fn from(value: IndicesPutMappingPutTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IndicesPutMappingPutTimeout> for IndicesPutMappingPutTimeout {
-  fn from(value: &IndicesPutMappingPutTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IndicesPutMappingPutTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IndicesPutMappingPutTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesPutMappingPutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesPutMappingPutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesPutMappingPutTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The index settings to be updated
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -14856,78 +11523,6 @@ impl From<serde_json::Map<String, serde_json::Value>> for IndicesPutSettingsBody
 
 
 
-
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesPutSettingsTimeout(String);
-impl std::ops::Deref for IndicesPutSettingsTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<IndicesPutSettingsTimeout> for String {
-  fn from(value: IndicesPutSettingsTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&IndicesPutSettingsTimeout> for IndicesPutSettingsTimeout {
-  fn from(value: &IndicesPutSettingsTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for IndicesPutSettingsTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for IndicesPutSettingsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesPutSettingsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesPutSettingsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesPutSettingsTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of indices; use `_all` or empty string to perform
 /// the operation on all indices.
@@ -15012,78 +11607,6 @@ impl<'de> serde::Deserialize<'de> for IndicesPutSettingsWithIndexIndex {
 
 
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesPutSettingsWithIndexTimeout(String);
-impl std::ops::Deref for IndicesPutSettingsWithIndexTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<IndicesPutSettingsWithIndexTimeout> for String {
-  fn from(value: IndicesPutSettingsWithIndexTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&IndicesPutSettingsWithIndexTimeout> for IndicesPutSettingsWithIndexTimeout {
-  fn from(value: &IndicesPutSettingsWithIndexTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for IndicesPutSettingsWithIndexTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for IndicesPutSettingsWithIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesPutSettingsWithIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesPutSettingsWithIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesPutSettingsWithIndexTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
 ///The template definition
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct IndicesPutTemplateBodyParams(pub serde_json::Map<String, serde_json::Value>);
@@ -15112,14 +11635,6 @@ impl From<serde_json::Map<String, serde_json::Value>> for IndicesPutTemplateBody
     Self(value)
   }
 }
-
-
-
-
-
-
-
-
 
 ///The name of the template.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -15194,14 +11709,6 @@ impl<'de> serde::Deserialize<'de> for IndicesPutTemplatePostName {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
-
-
-
-
-
-
-
 
 ///The name of the template.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -15687,78 +12194,6 @@ impl From<serde_json::Map<String, serde_json::Value>> for IndicesRolloverBodyPar
 
 
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesRolloverTimeout(String);
-impl std::ops::Deref for IndicesRolloverTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<IndicesRolloverTimeout> for String {
-  fn from(value: IndicesRolloverTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&IndicesRolloverTimeout> for IndicesRolloverTimeout {
-  fn from(value: &IndicesRolloverTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for IndicesRolloverTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for IndicesRolloverTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesRolloverTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesRolloverTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesRolloverTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
 ///The name of the alias to rollover.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct IndicesRolloverWithNewIndexAlias(String);
@@ -15832,14 +12267,6 @@ impl<'de> serde::Deserialize<'de> for IndicesRolloverWithNewIndexAlias {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
-
-
-
-
-
-
-
 
 ///The name of the rollover index.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -15915,77 +12342,13 @@ impl<'de> serde::Deserialize<'de> for IndicesRolloverWithNewIndexNewIndex {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesRolloverWithNewIndexTimeout(String);
-impl std::ops::Deref for IndicesRolloverWithNewIndexTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndicesRolloverWithNewIndexTimeout> for String {
-  fn from(value: IndicesRolloverWithNewIndexTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IndicesRolloverWithNewIndexTimeout> for IndicesRolloverWithNewIndexTimeout {
-  fn from(value: &IndicesRolloverWithNewIndexTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IndicesRolloverWithNewIndexTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IndicesRolloverWithNewIndexTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesRolloverWithNewIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesRolloverWithNewIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesRolloverWithNewIndexTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of indices; use `_all` or empty string to perform
 /// the operation on all indices.
@@ -16240,14 +12603,6 @@ impl<'de> serde::Deserialize<'de> for IndicesShrinkPostIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 ///The name of the target index.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct IndicesShrinkPostTarget(String);
@@ -16322,77 +12677,13 @@ impl<'de> serde::Deserialize<'de> for IndicesShrinkPostTarget {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesShrinkPostTimeout(String);
-impl std::ops::Deref for IndicesShrinkPostTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndicesShrinkPostTimeout> for String {
-  fn from(value: IndicesShrinkPostTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IndicesShrinkPostTimeout> for IndicesShrinkPostTimeout {
-  fn from(value: &IndicesShrinkPostTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IndicesShrinkPostTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IndicesShrinkPostTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesShrinkPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesShrinkPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesShrinkPostTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The name of the source index to shrink.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -16468,14 +12759,6 @@ impl<'de> serde::Deserialize<'de> for IndicesShrinkPutIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 ///The name of the target index.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct IndicesShrinkPutTarget(String);
@@ -16550,77 +12833,13 @@ impl<'de> serde::Deserialize<'de> for IndicesShrinkPutTarget {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesShrinkPutTimeout(String);
-impl std::ops::Deref for IndicesShrinkPutTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndicesShrinkPutTimeout> for String {
-  fn from(value: IndicesShrinkPutTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IndicesShrinkPutTimeout> for IndicesShrinkPutTimeout {
-  fn from(value: &IndicesShrinkPutTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IndicesShrinkPutTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IndicesShrinkPutTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesShrinkPutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesShrinkPutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesShrinkPutTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///New index template definition, which will be included in the simulation,
 /// as if it already exists in the system
@@ -16651,14 +12870,6 @@ impl From<serde_json::Map<String, serde_json::Value>> for IndicesSimulateIndexTe
     Self(value)
   }
 }
-
-
-
-
-
-
-
-
 
 ///The name of the index (it must be a concrete index name).
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -16763,22 +12974,6 @@ impl From<serde_json::Map<String, serde_json::Value>> for IndicesSimulateTemplat
     Self(value)
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ///The name of the template.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -16957,14 +13152,6 @@ impl<'de> serde::Deserialize<'de> for IndicesSplitPostIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 ///The name of the target index.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct IndicesSplitPostTarget(String);
@@ -17039,77 +13226,13 @@ impl<'de> serde::Deserialize<'de> for IndicesSplitPostTarget {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesSplitPostTimeout(String);
-impl std::ops::Deref for IndicesSplitPostTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndicesSplitPostTimeout> for String {
-  fn from(value: IndicesSplitPostTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IndicesSplitPostTimeout> for IndicesSplitPostTimeout {
-  fn from(value: &IndicesSplitPostTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IndicesSplitPostTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IndicesSplitPostTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesSplitPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesSplitPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesSplitPostTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The name of the source index to split.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -17185,14 +13308,6 @@ impl<'de> serde::Deserialize<'de> for IndicesSplitPutIndex {
   }
 }
 
-
-
-
-
-
-
-
-
 ///The name of the target index.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct IndicesSplitPutTarget(String);
@@ -17267,77 +13382,13 @@ impl<'de> serde::Deserialize<'de> for IndicesSplitPutTarget {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesSplitPutTimeout(String);
-impl std::ops::Deref for IndicesSplitPutTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndicesSplitPutTimeout> for String {
-  fn from(value: IndicesSplitPutTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IndicesSplitPutTimeout> for IndicesSplitPutTimeout {
-  fn from(value: &IndicesSplitPutTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IndicesSplitPutTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IndicesSplitPutTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesSplitPutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesSplitPutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesSplitPutTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of indices; use `_all` or empty string to perform
 /// the operation on all indices.
@@ -17673,77 +13724,13 @@ impl IndicesUpdateAliasesResponseContent {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IndicesUpdateAliasesTimeout(String);
-impl std::ops::Deref for IndicesUpdateAliasesTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IndicesUpdateAliasesTimeout> for String {
-  fn from(value: IndicesUpdateAliasesTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IndicesUpdateAliasesTimeout> for IndicesUpdateAliasesTimeout {
-  fn from(value: &IndicesUpdateAliasesTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IndicesUpdateAliasesTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IndicesUpdateAliasesTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IndicesUpdateAliasesTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IndicesUpdateAliasesTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IndicesUpdateAliasesTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of indices; use `_all` or empty string to perform
 /// the operation on all indices.
@@ -18910,8 +14897,8 @@ impl<'de> serde::Deserialize<'de> for NodesHotThreadsDeprecatedClusterInterval {
 
 ///Operation timeout.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesHotThreadsDeprecatedClusterTimeout(String);
-impl std::ops::Deref for NodesHotThreadsDeprecatedClusterTimeout {
+pub struct Timeout(String);
+impl std::ops::Deref for Timeout {
   type Target = String;
 
   fn deref(&self) -> &String {
@@ -18919,19 +14906,19 @@ impl std::ops::Deref for NodesHotThreadsDeprecatedClusterTimeout {
   }
 }
 
-impl From<NodesHotThreadsDeprecatedClusterTimeout> for String {
-  fn from(value: NodesHotThreadsDeprecatedClusterTimeout) -> Self {
+impl From<Timeout> for String {
+  fn from(value: Timeout) -> Self {
     value.0
   }
 }
 
-impl From<&NodesHotThreadsDeprecatedClusterTimeout> for NodesHotThreadsDeprecatedClusterTimeout {
-  fn from(value: &NodesHotThreadsDeprecatedClusterTimeout) -> Self {
+impl From<&Timeout> for Timeout {
+  fn from(value: &Timeout) -> Self {
     value.clone()
   }
 }
 
-impl std::str::FromStr for NodesHotThreadsDeprecatedClusterTimeout {
+impl std::str::FromStr for Timeout {
   type Err = &'static str;
 
   fn from_str(value: &str) -> Result<Self, &'static str> {
@@ -18946,7 +14933,7 @@ impl std::str::FromStr for NodesHotThreadsDeprecatedClusterTimeout {
   }
 }
 
-impl std::convert::TryFrom<&str> for NodesHotThreadsDeprecatedClusterTimeout {
+impl std::convert::TryFrom<&str> for Timeout {
   type Error = &'static str;
 
   fn try_from(value: &str) -> Result<Self, &'static str> {
@@ -18954,7 +14941,7 @@ impl std::convert::TryFrom<&str> for NodesHotThreadsDeprecatedClusterTimeout {
   }
 }
 
-impl std::convert::TryFrom<&String> for NodesHotThreadsDeprecatedClusterTimeout {
+impl std::convert::TryFrom<&String> for Timeout {
   type Error = &'static str;
 
   fn try_from(value: &String) -> Result<Self, &'static str> {
@@ -18962,7 +14949,7 @@ impl std::convert::TryFrom<&String> for NodesHotThreadsDeprecatedClusterTimeout 
   }
 }
 
-impl std::convert::TryFrom<String> for NodesHotThreadsDeprecatedClusterTimeout {
+impl std::convert::TryFrom<String> for Timeout {
   type Error = &'static str;
 
   fn try_from(value: String) -> Result<Self, &'static str> {
@@ -18970,7 +14957,7 @@ impl std::convert::TryFrom<String> for NodesHotThreadsDeprecatedClusterTimeout {
   }
 }
 
-impl<'de> serde::Deserialize<'de> for NodesHotThreadsDeprecatedClusterTimeout {
+impl<'de> serde::Deserialize<'de> for Timeout {
   fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
   where
     D: serde::Deserializer<'de>, {
@@ -19052,77 +15039,13 @@ impl<'de> serde::Deserialize<'de> for NodesHotThreadsDeprecatedDashInterval {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesHotThreadsDeprecatedDashTimeout(String);
-impl std::ops::Deref for NodesHotThreadsDeprecatedDashTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesHotThreadsDeprecatedDashTimeout> for String {
-  fn from(value: NodesHotThreadsDeprecatedDashTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&NodesHotThreadsDeprecatedDashTimeout> for NodesHotThreadsDeprecatedDashTimeout {
-  fn from(value: &NodesHotThreadsDeprecatedDashTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for NodesHotThreadsDeprecatedDashTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for NodesHotThreadsDeprecatedDashTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for NodesHotThreadsDeprecatedDashTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for NodesHotThreadsDeprecatedDashTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for NodesHotThreadsDeprecatedDashTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The interval for the second sampling of threads.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -19196,77 +15119,13 @@ impl<'de> serde::Deserialize<'de> for NodesHotThreadsDeprecatedInterval {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesHotThreadsDeprecatedTimeout(String);
-impl std::ops::Deref for NodesHotThreadsDeprecatedTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesHotThreadsDeprecatedTimeout> for String {
-  fn from(value: NodesHotThreadsDeprecatedTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&NodesHotThreadsDeprecatedTimeout> for NodesHotThreadsDeprecatedTimeout {
-  fn from(value: &NodesHotThreadsDeprecatedTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for NodesHotThreadsDeprecatedTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for NodesHotThreadsDeprecatedTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for NodesHotThreadsDeprecatedTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for NodesHotThreadsDeprecatedTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for NodesHotThreadsDeprecatedTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The interval for the second sampling of threads.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -19340,77 +15199,13 @@ impl<'de> serde::Deserialize<'de> for NodesHotThreadsInterval {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesHotThreadsTimeout(String);
-impl std::ops::Deref for NodesHotThreadsTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesHotThreadsTimeout> for String {
-  fn from(value: NodesHotThreadsTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&NodesHotThreadsTimeout> for NodesHotThreadsTimeout {
-  fn from(value: &NodesHotThreadsTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for NodesHotThreadsTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for NodesHotThreadsTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for NodesHotThreadsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for NodesHotThreadsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for NodesHotThreadsTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The interval for the second sampling of threads.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -19560,77 +15355,13 @@ impl<'de> serde::Deserialize<'de> for NodesHotThreadsWithNodeIdDeprecatedCluster
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesHotThreadsWithNodeIdDeprecatedClusterTimeout(String);
-impl std::ops::Deref for NodesHotThreadsWithNodeIdDeprecatedClusterTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesHotThreadsWithNodeIdDeprecatedClusterTimeout> for String {
-  fn from(value: NodesHotThreadsWithNodeIdDeprecatedClusterTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&NodesHotThreadsWithNodeIdDeprecatedClusterTimeout> for NodesHotThreadsWithNodeIdDeprecatedClusterTimeout {
-  fn from(value: &NodesHotThreadsWithNodeIdDeprecatedClusterTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for NodesHotThreadsWithNodeIdDeprecatedClusterTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for NodesHotThreadsWithNodeIdDeprecatedClusterTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for NodesHotThreadsWithNodeIdDeprecatedClusterTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for NodesHotThreadsWithNodeIdDeprecatedClusterTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for NodesHotThreadsWithNodeIdDeprecatedClusterTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The interval for the second sampling of threads.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -19780,77 +15511,13 @@ impl<'de> serde::Deserialize<'de> for NodesHotThreadsWithNodeIdDeprecatedDashNod
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesHotThreadsWithNodeIdDeprecatedDashTimeout(String);
-impl std::ops::Deref for NodesHotThreadsWithNodeIdDeprecatedDashTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesHotThreadsWithNodeIdDeprecatedDashTimeout> for String {
-  fn from(value: NodesHotThreadsWithNodeIdDeprecatedDashTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&NodesHotThreadsWithNodeIdDeprecatedDashTimeout> for NodesHotThreadsWithNodeIdDeprecatedDashTimeout {
-  fn from(value: &NodesHotThreadsWithNodeIdDeprecatedDashTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for NodesHotThreadsWithNodeIdDeprecatedDashTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for NodesHotThreadsWithNodeIdDeprecatedDashTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for NodesHotThreadsWithNodeIdDeprecatedDashTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for NodesHotThreadsWithNodeIdDeprecatedDashTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for NodesHotThreadsWithNodeIdDeprecatedDashTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The interval for the second sampling of threads.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -20000,77 +15667,13 @@ impl<'de> serde::Deserialize<'de> for NodesHotThreadsWithNodeIdDeprecatedNodeId 
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesHotThreadsWithNodeIdDeprecatedTimeout(String);
-impl std::ops::Deref for NodesHotThreadsWithNodeIdDeprecatedTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesHotThreadsWithNodeIdDeprecatedTimeout> for String {
-  fn from(value: NodesHotThreadsWithNodeIdDeprecatedTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&NodesHotThreadsWithNodeIdDeprecatedTimeout> for NodesHotThreadsWithNodeIdDeprecatedTimeout {
-  fn from(value: &NodesHotThreadsWithNodeIdDeprecatedTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for NodesHotThreadsWithNodeIdDeprecatedTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for NodesHotThreadsWithNodeIdDeprecatedTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for NodesHotThreadsWithNodeIdDeprecatedTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for NodesHotThreadsWithNodeIdDeprecatedTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for NodesHotThreadsWithNodeIdDeprecatedTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The interval for the second sampling of threads.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -20220,149 +15823,21 @@ impl<'de> serde::Deserialize<'de> for NodesHotThreadsWithNodeIdNodeId {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesHotThreadsWithNodeIdTimeout(String);
-impl std::ops::Deref for NodesHotThreadsWithNodeIdTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesHotThreadsWithNodeIdTimeout> for String {
-  fn from(value: NodesHotThreadsWithNodeIdTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&NodesHotThreadsWithNodeIdTimeout> for NodesHotThreadsWithNodeIdTimeout {
-  fn from(value: &NodesHotThreadsWithNodeIdTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for NodesHotThreadsWithNodeIdTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for NodesHotThreadsWithNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<&String> for NodesHotThreadsWithNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<String> for NodesHotThreadsWithNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl<'de> serde::Deserialize<'de> for NodesHotThreadsWithNodeIdTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesInfoTimeout(String);
-impl std::ops::Deref for NodesInfoTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesInfoTimeout> for String {
-  fn from(value: NodesInfoTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&NodesInfoTimeout> for NodesInfoTimeout {
-  fn from(value: &NodesInfoTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for NodesInfoTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for NodesInfoTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for NodesInfoTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for NodesInfoTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for NodesInfoTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of metrics you wish returned. Leave empty to return
 /// all.
@@ -20515,77 +15990,13 @@ impl<'de> serde::Deserialize<'de> for NodesInfoWithMetricNodeIdNodeId {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesInfoWithMetricNodeIdTimeout(String);
-impl std::ops::Deref for NodesInfoWithMetricNodeIdTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesInfoWithMetricNodeIdTimeout> for String {
-  fn from(value: NodesInfoWithMetricNodeIdTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&NodesInfoWithMetricNodeIdTimeout> for NodesInfoWithMetricNodeIdTimeout {
-  fn from(value: &NodesInfoWithMetricNodeIdTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for NodesInfoWithMetricNodeIdTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for NodesInfoWithMetricNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for NodesInfoWithMetricNodeIdTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for NodesInfoWithMetricNodeIdTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for NodesInfoWithMetricNodeIdTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of node IDs or names to limit the returned
 /// information; use `_local` to return information from the node you're
@@ -20663,77 +16074,13 @@ impl<'de> serde::Deserialize<'de> for NodesInfoWithNodeIdNodeId {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesInfoWithNodeIdTimeout(String);
-impl std::ops::Deref for NodesInfoWithNodeIdTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesInfoWithNodeIdTimeout> for String {
-  fn from(value: NodesInfoWithNodeIdTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&NodesInfoWithNodeIdTimeout> for NodesInfoWithNodeIdTimeout {
-  fn from(value: &NodesInfoWithNodeIdTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for NodesInfoWithNodeIdTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for NodesInfoWithNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for NodesInfoWithNodeIdTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for NodesInfoWithNodeIdTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for NodesInfoWithNodeIdTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///An object containing the password for the opensearch keystore
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -20764,77 +16111,13 @@ impl From<serde_json::Map<String, serde_json::Value>> for NodesReloadSecureSetti
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesReloadSecureSettingsTimeout(String);
-impl std::ops::Deref for NodesReloadSecureSettingsTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesReloadSecureSettingsTimeout> for String {
-  fn from(value: NodesReloadSecureSettingsTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&NodesReloadSecureSettingsTimeout> for NodesReloadSecureSettingsTimeout {
-  fn from(value: &NodesReloadSecureSettingsTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for NodesReloadSecureSettingsTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for NodesReloadSecureSettingsTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for NodesReloadSecureSettingsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for NodesReloadSecureSettingsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for NodesReloadSecureSettingsTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of node IDs to span the reload/reinit call. Should
 /// stay empty because reloading usually involves all cluster nodes.
@@ -20911,77 +16194,13 @@ impl<'de> serde::Deserialize<'de> for NodesReloadSecureSettingsWithNodeIdNodeId 
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesReloadSecureSettingsWithNodeIdTimeout(String);
-impl std::ops::Deref for NodesReloadSecureSettingsWithNodeIdTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesReloadSecureSettingsWithNodeIdTimeout> for String {
-  fn from(value: NodesReloadSecureSettingsWithNodeIdTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&NodesReloadSecureSettingsWithNodeIdTimeout> for NodesReloadSecureSettingsWithNodeIdTimeout {
-  fn from(value: &NodesReloadSecureSettingsWithNodeIdTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for NodesReloadSecureSettingsWithNodeIdTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for NodesReloadSecureSettingsWithNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for NodesReloadSecureSettingsWithNodeIdTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for NodesReloadSecureSettingsWithNodeIdTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for NodesReloadSecureSettingsWithNodeIdTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Return indices stats aggregated at index, node or shard level.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -21047,77 +16266,13 @@ impl std::convert::TryFrom<String> for NodesStatLevel {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesStatsTimeout(String);
-impl std::ops::Deref for NodesStatsTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesStatsTimeout> for String {
-  fn from(value: NodesStatsTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&NodesStatsTimeout> for NodesStatsTimeout {
-  fn from(value: &NodesStatsTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for NodesStatsTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for NodesStatsTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for NodesStatsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for NodesStatsTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for NodesStatsTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Limit the information returned for `indices` metric to the specific
 /// index metrics. Isn't used if `indices` (or `all`) metric isn't
@@ -21495,149 +16650,21 @@ impl<'de> serde::Deserialize<'de> for NodesStatsWithIndexMetricMetricNodeIdNodeI
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesStatsWithIndexMetricMetricNodeIdTimeout(String);
-impl std::ops::Deref for NodesStatsWithIndexMetricMetricNodeIdTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesStatsWithIndexMetricMetricNodeIdTimeout> for String {
-  fn from(value: NodesStatsWithIndexMetricMetricNodeIdTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&NodesStatsWithIndexMetricMetricNodeIdTimeout> for NodesStatsWithIndexMetricMetricNodeIdTimeout {
-  fn from(value: &NodesStatsWithIndexMetricMetricNodeIdTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for NodesStatsWithIndexMetricMetricNodeIdTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for NodesStatsWithIndexMetricMetricNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<&String> for NodesStatsWithIndexMetricMetricNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<String> for NodesStatsWithIndexMetricMetricNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl<'de> serde::Deserialize<'de> for NodesStatsWithIndexMetricMetricNodeIdTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesStatsWithIndexMetricMetricTimeout(String);
-impl std::ops::Deref for NodesStatsWithIndexMetricMetricTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesStatsWithIndexMetricMetricTimeout> for String {
-  fn from(value: NodesStatsWithIndexMetricMetricTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&NodesStatsWithIndexMetricMetricTimeout> for NodesStatsWithIndexMetricMetricTimeout {
-  fn from(value: &NodesStatsWithIndexMetricMetricTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for NodesStatsWithIndexMetricMetricTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for NodesStatsWithIndexMetricMetricTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for NodesStatsWithIndexMetricMetricTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for NodesStatsWithIndexMetricMetricTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for NodesStatsWithIndexMetricMetricTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Limit the information returned to the specified metrics.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -21863,149 +16890,21 @@ impl<'de> serde::Deserialize<'de> for NodesStatsWithMetricNodeIdNodeId {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesStatsWithMetricNodeIdTimeout(String);
-impl std::ops::Deref for NodesStatsWithMetricNodeIdTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesStatsWithMetricNodeIdTimeout> for String {
-  fn from(value: NodesStatsWithMetricNodeIdTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&NodesStatsWithMetricNodeIdTimeout> for NodesStatsWithMetricNodeIdTimeout {
-  fn from(value: &NodesStatsWithMetricNodeIdTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for NodesStatsWithMetricNodeIdTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for NodesStatsWithMetricNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<&String> for NodesStatsWithMetricNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<String> for NodesStatsWithMetricNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl<'de> serde::Deserialize<'de> for NodesStatsWithMetricNodeIdTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesStatsWithMetricTimeout(String);
-impl std::ops::Deref for NodesStatsWithMetricTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesStatsWithMetricTimeout> for String {
-  fn from(value: NodesStatsWithMetricTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&NodesStatsWithMetricTimeout> for NodesStatsWithMetricTimeout {
-  fn from(value: &NodesStatsWithMetricTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for NodesStatsWithMetricTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for NodesStatsWithMetricTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for NodesStatsWithMetricTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for NodesStatsWithMetricTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for NodesStatsWithMetricTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of node IDs or names to limit the returned
 /// information; use `_local` to return information from the node you're
@@ -22083,149 +16982,21 @@ impl<'de> serde::Deserialize<'de> for NodesStatsWithNodeIdNodeId {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesStatsWithNodeIdTimeout(String);
-impl std::ops::Deref for NodesStatsWithNodeIdTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesStatsWithNodeIdTimeout> for String {
-  fn from(value: NodesStatsWithNodeIdTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&NodesStatsWithNodeIdTimeout> for NodesStatsWithNodeIdTimeout {
-  fn from(value: &NodesStatsWithNodeIdTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for NodesStatsWithNodeIdTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for NodesStatsWithNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<&String> for NodesStatsWithNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<String> for NodesStatsWithNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl<'de> serde::Deserialize<'de> for NodesStatsWithNodeIdTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesUsageTimeout(String);
-impl std::ops::Deref for NodesUsageTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesUsageTimeout> for String {
-  fn from(value: NodesUsageTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&NodesUsageTimeout> for NodesUsageTimeout {
-  fn from(value: &NodesUsageTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for NodesUsageTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for NodesUsageTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for NodesUsageTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for NodesUsageTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for NodesUsageTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Limit the information returned to the specified metrics.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -22451,149 +17222,21 @@ impl<'de> serde::Deserialize<'de> for NodesUsageWithMetricNodeIdNodeId {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesUsageWithMetricNodeIdTimeout(String);
-impl std::ops::Deref for NodesUsageWithMetricNodeIdTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesUsageWithMetricNodeIdTimeout> for String {
-  fn from(value: NodesUsageWithMetricNodeIdTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&NodesUsageWithMetricNodeIdTimeout> for NodesUsageWithMetricNodeIdTimeout {
-  fn from(value: &NodesUsageWithMetricNodeIdTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for NodesUsageWithMetricNodeIdTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for NodesUsageWithMetricNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<&String> for NodesUsageWithMetricNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<String> for NodesUsageWithMetricNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl<'de> serde::Deserialize<'de> for NodesUsageWithMetricNodeIdTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesUsageWithMetricTimeout(String);
-impl std::ops::Deref for NodesUsageWithMetricTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesUsageWithMetricTimeout> for String {
-  fn from(value: NodesUsageWithMetricTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&NodesUsageWithMetricTimeout> for NodesUsageWithMetricTimeout {
-  fn from(value: &NodesUsageWithMetricTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for NodesUsageWithMetricTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for NodesUsageWithMetricTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for NodesUsageWithMetricTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for NodesUsageWithMetricTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for NodesUsageWithMetricTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of node IDs or names to limit the returned
 /// information; use `_local` to return information from the node you're
@@ -22671,77 +17314,13 @@ impl<'de> serde::Deserialize<'de> for NodesUsageWithNodeIdNodeId {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct NodesUsageWithNodeIdTimeout(String);
-impl std::ops::Deref for NodesUsageWithNodeIdTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<NodesUsageWithNodeIdTimeout> for String {
-  fn from(value: NodesUsageWithNodeIdTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&NodesUsageWithNodeIdTimeout> for NodesUsageWithNodeIdTimeout {
-  fn from(value: &NodesUsageWithNodeIdTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for NodesUsageWithNodeIdTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for NodesUsageWithNodeIdTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for NodesUsageWithNodeIdTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for NodesUsageWithNodeIdTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for NodesUsageWithNodeIdTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Explicit operation type. Defaults to `index` for requests with an
 /// explicit document ID, and to `create`for requests without an explicit
@@ -23610,78 +18189,6 @@ impl<'de> serde::Deserialize<'de> for PutScriptPostId {
 
 
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct PutScriptPostTimeout(String);
-impl std::ops::Deref for PutScriptPostTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<PutScriptPostTimeout> for String {
-  fn from(value: PutScriptPostTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&PutScriptPostTimeout> for PutScriptPostTimeout {
-  fn from(value: &PutScriptPostTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for PutScriptPostTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for PutScriptPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for PutScriptPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for PutScriptPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for PutScriptPostTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
 ///Script context.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct PutScriptPostWithContextContext(String);
@@ -23838,78 +18345,6 @@ impl<'de> serde::Deserialize<'de> for PutScriptPostWithContextId {
 
 
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct PutScriptPostWithContextTimeout(String);
-impl std::ops::Deref for PutScriptPostWithContextTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<PutScriptPostWithContextTimeout> for String {
-  fn from(value: PutScriptPostWithContextTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&PutScriptPostWithContextTimeout> for PutScriptPostWithContextTimeout {
-  fn from(value: &PutScriptPostWithContextTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for PutScriptPostWithContextTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for PutScriptPostWithContextTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for PutScriptPostWithContextTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for PutScriptPostWithContextTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for PutScriptPostWithContextTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
 ///Script ID.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct PutScriptPutId(String);
@@ -23991,78 +18426,6 @@ impl<'de> serde::Deserialize<'de> for PutScriptPutId {
 
 
 
-
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct PutScriptPutTimeout(String);
-impl std::ops::Deref for PutScriptPutTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<PutScriptPutTimeout> for String {
-  fn from(value: PutScriptPutTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&PutScriptPutTimeout> for PutScriptPutTimeout {
-  fn from(value: &PutScriptPutTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for PutScriptPutTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for PutScriptPutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for PutScriptPutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for PutScriptPutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for PutScriptPutTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Script context.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -24219,78 +18582,6 @@ impl<'de> serde::Deserialize<'de> for PutScriptPutWithContextId {
 
 
 
-
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct PutScriptPutWithContextTimeout(String);
-impl std::ops::Deref for PutScriptPutWithContextTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<PutScriptPutWithContextTimeout> for String {
-  fn from(value: PutScriptPutWithContextTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&PutScriptPutWithContextTimeout> for PutScriptPutWithContextTimeout {
-  fn from(value: &PutScriptPutWithContextTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for PutScriptPutWithContextTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for PutScriptPutWithContextTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for PutScriptPutWithContextTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for PutScriptPutWithContextTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for PutScriptPutWithContextTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The ranking evaluation search definition, including search requests,
 /// document ratings and ranking metric definition.
@@ -24717,83 +19008,14 @@ impl<'de> serde::Deserialize<'de> for ReindexScroll {
 }
 
 ///Time each individual bulk request should wait for shards that are
-/// unavailable.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ReindexTimeout(String);
-impl std::ops::Deref for ReindexTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<ReindexTimeout> for String {
-  fn from(value: ReindexTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&ReindexTimeout> for ReindexTimeout {
-  fn from(value: &ReindexTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl Default for ReindexTimeout {
-  fn default() -> Self {
-    ReindexTimeout("1m".to_string())
-  }
-}
 
-impl std::str::FromStr for ReindexTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for ReindexTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for ReindexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for ReindexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for ReindexTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum Relation {
@@ -25858,77 +20080,13 @@ impl<'de> serde::Deserialize<'de> for SearchGetScroll {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct SearchGetTimeout(String);
-impl std::ops::Deref for SearchGetTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<SearchGetTimeout> for String {
-  fn from(value: SearchGetTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&SearchGetTimeout> for SearchGetTimeout {
-  fn from(value: &SearchGetTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for SearchGetTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for SearchGetTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for SearchGetTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for SearchGetTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for SearchGetTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of indices; use `_all` or empty string to perform
 /// the operation on all indices.
@@ -26078,77 +20236,13 @@ impl<'de> serde::Deserialize<'de> for SearchGetWithIndexScroll {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct SearchGetWithIndexTimeout(String);
-impl std::ops::Deref for SearchGetWithIndexTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<SearchGetWithIndexTimeout> for String {
-  fn from(value: SearchGetWithIndexTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&SearchGetWithIndexTimeout> for SearchGetWithIndexTimeout {
-  fn from(value: &SearchGetWithIndexTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for SearchGetWithIndexTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for SearchGetWithIndexTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for SearchGetWithIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for SearchGetWithIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for SearchGetWithIndexTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -26255,77 +20349,13 @@ impl<'de> serde::Deserialize<'de> for SearchPostScroll {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct SearchPostTimeout(String);
-impl std::ops::Deref for SearchPostTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<SearchPostTimeout> for String {
-  fn from(value: SearchPostTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&SearchPostTimeout> for SearchPostTimeout {
-  fn from(value: &SearchPostTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for SearchPostTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for SearchPostTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for SearchPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for SearchPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for SearchPostTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of indices; use `_all` or empty string to perform
 /// the operation on all indices.
@@ -26501,77 +20531,13 @@ impl<'de> serde::Deserialize<'de> for SearchPostWithIndexScroll {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct SearchPostWithIndexTimeout(String);
-impl std::ops::Deref for SearchPostWithIndexTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<SearchPostWithIndexTimeout> for String {
-  fn from(value: SearchPostWithIndexTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&SearchPostWithIndexTimeout> for SearchPostWithIndexTimeout {
-  fn from(value: &SearchPostWithIndexTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for SearchPostWithIndexTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for SearchPostWithIndexTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for SearchPostWithIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for SearchPostWithIndexTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for SearchPostWithIndexTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of indices; use `_all` or empty string to perform
 /// the operation on all indices.
@@ -27368,14 +21334,6 @@ impl ShardStatistics {
   }
 }
 
-
-
-
-
-
-
-
-
 ///Repository name.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct SnapshotCleanupRepositoryRepository(String);
@@ -27450,77 +21408,13 @@ impl<'de> serde::Deserialize<'de> for SnapshotCleanupRepositoryRepository {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct SnapshotCleanupRepositoryTimeout(String);
-impl std::ops::Deref for SnapshotCleanupRepositoryTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<SnapshotCleanupRepositoryTimeout> for String {
-  fn from(value: SnapshotCleanupRepositoryTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&SnapshotCleanupRepositoryTimeout> for SnapshotCleanupRepositoryTimeout {
-  fn from(value: &SnapshotCleanupRepositoryTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for SnapshotCleanupRepositoryTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for SnapshotCleanupRepositoryTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for SnapshotCleanupRepositoryTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for SnapshotCleanupRepositoryTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for SnapshotCleanupRepositoryTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The snapshot clone definition
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -27550,14 +21444,6 @@ impl From<serde_json::Map<String, serde_json::Value>> for SnapshotCloneBodyParam
     Self(value)
   }
 }
-
-
-
-
-
-
-
-
 
 ///Repository name.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -27810,14 +21696,6 @@ impl From<serde_json::Map<String, serde_json::Value>> for SnapshotCreateBodyPara
   }
 }
 
-
-
-
-
-
-
-
-
 ///Repository name.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct SnapshotCreatePostRepository(String);
@@ -27965,14 +21843,6 @@ impl<'de> serde::Deserialize<'de> for SnapshotCreatePostSnapshot {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
-
-
-
-
-
-
-
 
 ///Repository name.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -28151,14 +22021,6 @@ impl From<serde_json::Map<String, serde_json::Value>> for SnapshotCreateReposito
   }
 }
 
-
-
-
-
-
-
-
-
 ///Repository name.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct SnapshotCreateRepositoryPostRepository(String);
@@ -28224,78 +22086,6 @@ impl std::convert::TryFrom<String> for SnapshotCreateRepositoryPostRepository {
 }
 
 impl<'de> serde::Deserialize<'de> for SnapshotCreateRepositoryPostRepository {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct SnapshotCreateRepositoryPostTimeout(String);
-impl std::ops::Deref for SnapshotCreateRepositoryPostTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<SnapshotCreateRepositoryPostTimeout> for String {
-  fn from(value: SnapshotCreateRepositoryPostTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&SnapshotCreateRepositoryPostTimeout> for SnapshotCreateRepositoryPostTimeout {
-  fn from(value: &SnapshotCreateRepositoryPostTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for SnapshotCreateRepositoryPostTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for SnapshotCreateRepositoryPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for SnapshotCreateRepositoryPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for SnapshotCreateRepositoryPostTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for SnapshotCreateRepositoryPostTimeout {
   fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
   where
     D: serde::Deserializer<'de>, {
@@ -28387,78 +22177,6 @@ impl<'de> serde::Deserialize<'de> for SnapshotCreateRepositoryPutRepository {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct SnapshotCreateRepositoryPutTimeout(String);
-impl std::ops::Deref for SnapshotCreateRepositoryPutTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<SnapshotCreateRepositoryPutTimeout> for String {
-  fn from(value: SnapshotCreateRepositoryPutTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&SnapshotCreateRepositoryPutTimeout> for SnapshotCreateRepositoryPutTimeout {
-  fn from(value: &SnapshotCreateRepositoryPutTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for SnapshotCreateRepositoryPutTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for SnapshotCreateRepositoryPutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for SnapshotCreateRepositoryPutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for SnapshotCreateRepositoryPutTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for SnapshotCreateRepositoryPutTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
 
 
 
@@ -28541,14 +22259,6 @@ impl<'de> serde::Deserialize<'de> for SnapshotDeleteRepository {
   }
 }
 
-
-
-
-
-
-
-
-
 ///Name of the snapshot repository to unregister. Wildcard (`*`) patterns
 /// are supported.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -28624,77 +22334,13 @@ impl<'de> serde::Deserialize<'de> for SnapshotDeleteRepositoryRepository {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct SnapshotDeleteRepositoryTimeout(String);
-impl std::ops::Deref for SnapshotDeleteRepositoryTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<SnapshotDeleteRepositoryTimeout> for String {
-  fn from(value: SnapshotDeleteRepositoryTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&SnapshotDeleteRepositoryTimeout> for SnapshotDeleteRepositoryTimeout {
-  fn from(value: &SnapshotDeleteRepositoryTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for SnapshotDeleteRepositoryTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for SnapshotDeleteRepositoryTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for SnapshotDeleteRepositoryTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for SnapshotDeleteRepositoryTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for SnapshotDeleteRepositoryTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Snapshot name.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -28770,14 +22416,6 @@ impl<'de> serde::Deserialize<'de> for SnapshotDeleteSnapshot {
   }
 }
 
-
-
-
-
-
-
-
-
 ///Repository name.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct SnapshotGetRepository(String);
@@ -28851,22 +22489,6 @@ impl<'de> serde::Deserialize<'de> for SnapshotGetRepository {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ///Comma-separated list of repository names.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -29045,14 +22667,6 @@ impl From<serde_json::Map<String, serde_json::Value>> for SnapshotRestoreBodyPar
   }
 }
 
-
-
-
-
-
-
-
-
 ///Repository name.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct SnapshotRestoreRepository(String);
@@ -29201,22 +22815,6 @@ impl<'de> serde::Deserialize<'de> for SnapshotRestoreSnapshot {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ///Repository name.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct SnapshotStatusWithRepositoryRepository(String);
@@ -29290,14 +22888,6 @@ impl<'de> serde::Deserialize<'de> for SnapshotStatusWithRepositoryRepository {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
-
-
-
-
-
-
-
 
 ///Repository name.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -29447,14 +23037,6 @@ impl<'de> serde::Deserialize<'de> for SnapshotStatusWithRepositorySnapshotSnapsh
   }
 }
 
-
-
-
-
-
-
-
-
 ///Repository name.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct SnapshotVerifyRepositoryRepository(String);
@@ -29529,77 +23111,13 @@ impl<'de> serde::Deserialize<'de> for SnapshotVerifyRepositoryRepository {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct SnapshotVerifyRepositoryTimeout(String);
-impl std::ops::Deref for SnapshotVerifyRepositoryTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<SnapshotVerifyRepositoryTimeout> for String {
-  fn from(value: SnapshotVerifyRepositoryTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&SnapshotVerifyRepositoryTimeout> for SnapshotVerifyRepositoryTimeout {
-  fn from(value: &SnapshotVerifyRepositoryTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for SnapshotVerifyRepositoryTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for SnapshotVerifyRepositoryTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for SnapshotVerifyRepositoryTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for SnapshotVerifyRepositoryTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for SnapshotVerifyRepositoryTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum StatusMember {
@@ -29880,149 +23398,21 @@ impl<'de> serde::Deserialize<'de> for TasksGetTaskId {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct TasksGetTimeout(String);
-impl std::ops::Deref for TasksGetTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<TasksGetTimeout> for String {
-  fn from(value: TasksGetTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&TasksGetTimeout> for TasksGetTimeout {
-  fn from(value: &TasksGetTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for TasksGetTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for TasksGetTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<&String> for TasksGetTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<String> for TasksGetTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl<'de> serde::Deserialize<'de> for TasksGetTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct TasksListTimeout(String);
-impl std::ops::Deref for TasksListTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<TasksListTimeout> for String {
-  fn from(value: TasksListTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&TasksListTimeout> for TasksListTimeout {
-  fn from(value: &TasksListTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for TasksListTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for TasksListTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for TasksListTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for TasksListTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for TasksListTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Tenant {
@@ -30952,156 +24342,23 @@ impl<'de> serde::Deserialize<'de> for UpdateByQueryScroll {
   }
 }
 
-///Explicit timeout for each search request. Defaults to no timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct UpdateByQuerySearchTimeout(String);
-impl std::ops::Deref for UpdateByQuerySearchTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<UpdateByQuerySearchTimeout> for String {
-  fn from(value: UpdateByQuerySearchTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&UpdateByQuerySearchTimeout> for UpdateByQuerySearchTimeout {
-  fn from(value: &UpdateByQuerySearchTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for UpdateByQuerySearchTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for UpdateByQuerySearchTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for UpdateByQuerySearchTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for UpdateByQuerySearchTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for UpdateByQuerySearchTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Time each individual bulk request should wait for shards that are
-/// unavailable.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct UpdateByQueryTimeout(String);
-impl std::ops::Deref for UpdateByQueryTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<UpdateByQueryTimeout> for String {
-  fn from(value: UpdateByQueryTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&UpdateByQueryTimeout> for UpdateByQueryTimeout {
-  fn from(value: &UpdateByQueryTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl Default for UpdateByQueryTimeout {
-  fn default() -> Self {
-    UpdateByQueryTimeout("1m".to_string())
-  }
-}
 
-impl std::str::FromStr for UpdateByQueryTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for UpdateByQueryTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for UpdateByQueryTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for UpdateByQueryTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for UpdateByQueryTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct UpdateConfigurationResponseContent {
@@ -31295,77 +24552,13 @@ impl<'de> serde::Deserialize<'de> for UpdateIndex {
   }
 }
 
-///Operation timeout.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct UpdateTimeout(String);
-impl std::ops::Deref for UpdateTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<UpdateTimeout> for String {
-  fn from(value: UpdateTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&UpdateTimeout> for UpdateTimeout {
-  fn from(value: &UpdateTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for UpdateTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for UpdateTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for UpdateTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for UpdateTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for UpdateTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct User {

@@ -424,7 +424,7 @@ impl<'a> IndicesExistsAlias<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesUpdateAliases<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::IndicesUpdateAliasesClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IndicesUpdateAliasesMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesUpdateAliasesTimeout>, String>,
   body: Result<types::builder::IndicesUpdateAliasesBodyParams, String>,
@@ -443,10 +443,11 @@ impl<'a> IndicesUpdateAliases<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesUpdateAliasesClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesUpdateAliasesClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -1426,7 +1427,7 @@ impl<'a> CatAliasesWithName<'a> {
 pub struct CatAllocation<'a> {
   client: &'a super::OsClient,
   bytes: Result<Option<types::Bytes>, String>,
-  cluster_manager_timeout: Result<Option<types::CatAllocationClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -1464,11 +1465,11 @@ impl<'a> CatAllocation<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatAllocationClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatAllocationClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -1616,7 +1617,7 @@ pub struct CatAllocationWithNodeId<'a> {
   client: &'a super::OsClient,
   node_id: Result<types::CatAllocationWithNodeIdNodeId, String>,
   bytes: Result<Option<types::Bytes>, String>,
-  cluster_manager_timeout: Result<Option<types::CatAllocationWithNodeIdClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -1664,10 +1665,11 @@ impl<'a> CatAllocationWithNodeId<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatAllocationWithNodeIdClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `CatAllocationWithNodeIdClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -1819,7 +1821,7 @@ impl<'a> CatAllocationWithNodeId<'a> {
 #[derive(Debug, Clone)]
 pub struct CatClusterManager<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::CatClusterManagerClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -1846,10 +1848,11 @@ impl<'a> CatClusterManager<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatClusterManagerClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `CatClusterManagerClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -2715,7 +2718,7 @@ impl<'a> CatHealth<'a> {
 pub struct CatIndices<'a> {
   client: &'a super::OsClient,
   bytes: Result<Option<types::Bytes>, String>,
-  cluster_manager_timeout: Result<Option<types::CatIndicesClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -2763,11 +2766,11 @@ impl<'a> CatIndices<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatIndicesClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatIndicesClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -2990,7 +2993,7 @@ pub struct CatIndicesWithIndex<'a> {
   client: &'a super::OsClient,
   index: Result<types::CatIndicesWithIndexIndex, String>,
   bytes: Result<Option<types::Bytes>, String>,
-  cluster_manager_timeout: Result<Option<types::CatIndicesWithIndexClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -3048,10 +3051,11 @@ impl<'a> CatIndicesWithIndex<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatIndicesWithIndexClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `CatIndicesWithIndexClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -3274,7 +3278,7 @@ impl<'a> CatIndicesWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct CatMaster<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::CatMasterClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -3301,11 +3305,11 @@ impl<'a> CatMaster<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatMasterClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatMasterClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -3446,7 +3450,7 @@ impl<'a> CatMaster<'a> {
 #[derive(Debug, Clone)]
 pub struct CatNodeattrs<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::CatNodeattrsClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -3473,11 +3477,11 @@ impl<'a> CatNodeattrs<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatNodeattrsClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatNodeattrsClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -3619,7 +3623,7 @@ impl<'a> CatNodeattrs<'a> {
 pub struct CatNodes<'a> {
   client: &'a super::OsClient,
   bytes: Result<Option<types::Bytes>, String>,
-  cluster_manager_timeout: Result<Option<types::CatNodesClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   full_id: Result<Option<bool>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -3661,11 +3665,11 @@ impl<'a> CatNodes<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatNodesClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatNodesClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -3841,7 +3845,7 @@ impl<'a> CatNodes<'a> {
 #[derive(Debug, Clone)]
 pub struct CatPendingTasks<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::CatPendingTasksClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -3870,10 +3874,11 @@ impl<'a> CatPendingTasks<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatPendingTasksClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `CatPendingTasksClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -4130,7 +4135,7 @@ impl<'a> CatAllPitSegments<'a> {
 #[derive(Debug, Clone)]
 pub struct CatPlugins<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::CatPluginsClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -4157,11 +4162,11 @@ impl<'a> CatPlugins<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatPluginsClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatPluginsClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -4723,7 +4728,7 @@ impl<'a> CatRecoveryWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct CatRepositories<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::CatRepositoriesClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -4750,10 +4755,11 @@ impl<'a> CatRepositories<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatRepositoriesClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `CatRepositoriesClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -5385,7 +5391,7 @@ impl<'a> CatSegmentReplicationWithIndex<'a> {
 pub struct CatSegments<'a> {
   client: &'a super::OsClient,
   bytes: Result<Option<types::Bytes>, String>,
-  cluster_manager_timeout: Result<Option<types::CatSegmentsClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -5421,11 +5427,11 @@ impl<'a> CatSegments<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatSegmentsClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatSegmentsClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -5558,7 +5564,7 @@ pub struct CatSegmentsWithIndex<'a> {
   client: &'a super::OsClient,
   index: Result<types::CatSegmentsWithIndexIndex, String>,
   bytes: Result<Option<types::Bytes>, String>,
-  cluster_manager_timeout: Result<Option<types::CatSegmentsWithIndexClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -5604,10 +5610,11 @@ impl<'a> CatSegmentsWithIndex<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatSegmentsWithIndexClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `CatSegmentsWithIndexClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -5742,7 +5749,7 @@ impl<'a> CatSegmentsWithIndex<'a> {
 pub struct CatShards<'a> {
   client: &'a super::OsClient,
   bytes: Result<Option<types::Bytes>, String>,
-  cluster_manager_timeout: Result<Option<types::CatShardsClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -5782,11 +5789,11 @@ impl<'a> CatShards<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatShardsClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatShardsClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -5949,7 +5956,7 @@ pub struct CatShardsWithIndex<'a> {
   client: &'a super::OsClient,
   index: Result<types::CatShardsWithIndexIndex, String>,
   bytes: Result<Option<types::Bytes>, String>,
-  cluster_manager_timeout: Result<Option<types::CatShardsWithIndexClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -5999,10 +6006,11 @@ impl<'a> CatShardsWithIndex<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatShardsWithIndexClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `CatShardsWithIndexClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -6165,7 +6173,7 @@ impl<'a> CatShardsWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct CatSnapshots<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::CatSnapshotsClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -6194,11 +6202,11 @@ impl<'a> CatSnapshots<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatSnapshotsClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatSnapshotsClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -6355,7 +6363,7 @@ impl<'a> CatSnapshots<'a> {
 pub struct CatSnapshotsWithRepository<'a> {
   client: &'a super::OsClient,
   repository: Result<types::CatSnapshotsWithRepositoryRepository, String>,
-  cluster_manager_timeout: Result<Option<types::CatSnapshotsWithRepositoryClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -6394,10 +6402,11 @@ impl<'a> CatSnapshotsWithRepository<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatSnapshotsWithRepositoryClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `CatSnapshotsWithRepositoryClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -6765,7 +6774,7 @@ impl<'a> CatTasks<'a> {
 #[derive(Debug, Clone)]
 pub struct CatTemplates<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::CatTemplatesClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -6792,11 +6801,11 @@ impl<'a> CatTemplates<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatTemplatesClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatTemplatesClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -6938,7 +6947,7 @@ impl<'a> CatTemplates<'a> {
 pub struct CatTemplatesWithName<'a> {
   client: &'a super::OsClient,
   name: Result<types::CatTemplatesWithNameName, String>,
-  cluster_manager_timeout: Result<Option<types::CatTemplatesWithNameClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -6975,10 +6984,11 @@ impl<'a> CatTemplatesWithName<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatTemplatesWithNameClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `CatTemplatesWithNameClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -7121,7 +7131,7 @@ impl<'a> CatTemplatesWithName<'a> {
 #[derive(Debug, Clone)]
 pub struct CatThreadPool<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::CatThreadPoolClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -7150,11 +7160,11 @@ impl<'a> CatThreadPool<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatThreadPoolClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `CatThreadPoolClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -7311,7 +7321,7 @@ impl<'a> CatThreadPool<'a> {
 pub struct CatThreadPoolWithThreadPoolPatterns<'a> {
   client: &'a super::OsClient,
   thread_pool_patterns: Result<types::CatThreadPoolWithThreadPoolPatternsThreadPoolPatterns, String>,
-  cluster_manager_timeout: Result<Option<types::CatThreadPoolWithThreadPoolPatternsClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -7351,11 +7361,11 @@ impl<'a> CatThreadPoolWithThreadPoolPatterns<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatThreadPoolWithThreadPoolPatternsClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `CatThreadPoolWithThreadPoolPatternsClusterManagerTimeout` for cluster_manager_timeout failed"
-        .to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -7826,7 +7836,7 @@ impl<'a> ClusterPutDecommissionAwareness<'a> {
 pub struct ClusterHealth<'a> {
   client: &'a super::OsClient,
   awareness_attribute: Result<Option<String>, String>,
-  cluster_manager_timeout: Result<Option<types::ClusterHealthClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   ensure_node_commissioned: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   level: Result<Option<types::ClusterHealthLevel>, String>,
@@ -7874,11 +7884,11 @@ impl<'a> ClusterHealth<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterHealthClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `ClusterHealthClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -8101,7 +8111,7 @@ pub struct ClusterHealthWithIndex<'a> {
   client: &'a super::OsClient,
   index: Result<types::ClusterHealthWithIndexIndex, String>,
   awareness_attribute: Result<Option<String>, String>,
-  cluster_manager_timeout: Result<Option<types::ClusterHealthWithIndexClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   ensure_node_commissioned: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   level: Result<Option<types::ClusterHealthLevel>, String>,
@@ -8159,10 +8169,11 @@ impl<'a> ClusterHealthWithIndex<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterHealthWithIndexClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `ClusterHealthWithIndexClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -8971,7 +8982,7 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecatedCluster<'a> {
 #[derive(Debug, Clone)]
 pub struct ClusterPendingTasks<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::ClusterPendingTasksClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::ClusterPendingTasksMasterTimeout>, String>,
 }
@@ -8988,10 +8999,11 @@ impl<'a> ClusterPendingTasks<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterPendingTasksClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `ClusterPendingTasksClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -9057,7 +9069,7 @@ impl<'a> ClusterPendingTasks<'a> {
 #[derive(Debug, Clone)]
 pub struct ClusterReroute<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::ClusterRerouteClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   dry_run: Result<Option<bool>, String>,
   explain: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::ClusterRerouteMasterTimeout>, String>,
@@ -9084,10 +9096,11 @@ impl<'a> ClusterReroute<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterRerouteClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `ClusterRerouteClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -9355,7 +9368,7 @@ impl<'a> ClusterPutWeightedRouting<'a> {
 #[derive(Debug, Clone)]
 pub struct ClusterGetSettings<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::ClusterGetSettingsClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   include_defaults: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::ClusterGetSettingsMasterTimeout>, String>,
@@ -9376,10 +9389,11 @@ impl<'a> ClusterGetSettings<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterGetSettingsClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `ClusterGetSettingsClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -9483,7 +9497,7 @@ impl<'a> ClusterGetSettings<'a> {
 #[derive(Debug, Clone)]
 pub struct ClusterPutSettings<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::ClusterPutSettingsClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::ClusterPutSettingsMasterTimeout>, String>,
   timeout: Result<Option<types::ClusterPutSettingsTimeout>, String>,
@@ -9504,10 +9518,11 @@ impl<'a> ClusterPutSettings<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterPutSettingsClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `ClusterPutSettingsClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -9620,7 +9635,7 @@ impl<'a> ClusterPutSettings<'a> {
 pub struct ClusterState<'a> {
   client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::ClusterStateClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   flat_settings: Result<Option<bool>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -9658,11 +9673,11 @@ impl<'a> ClusterState<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterStateClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `ClusterStateClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -9810,7 +9825,7 @@ pub struct ClusterStateWithMetric<'a> {
   client: &'a super::OsClient,
   metric: Result<types::ClusterStateWithMetricMetric, String>,
   allow_no_indices: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::ClusterStateWithMetricClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   flat_settings: Result<Option<bool>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -9858,10 +9873,11 @@ impl<'a> ClusterStateWithMetric<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterStateWithMetricClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `ClusterStateWithMetricClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -10012,7 +10028,7 @@ pub struct ClusterStateWithIndexMetric<'a> {
   metric: Result<types::ClusterStateWithIndexMetricMetric, String>,
   index: Result<types::ClusterStateWithIndexMetricIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::ClusterStateWithIndexMetricClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   flat_settings: Result<Option<bool>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -10070,10 +10086,11 @@ impl<'a> ClusterStateWithIndexMetric<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterStateWithIndexMetricClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `ClusterStateWithIndexMetricClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -10525,7 +10542,7 @@ impl<'a> ClusterDeleteVotingConfigExclusions<'a> {
 #[derive(Debug, Clone)]
 pub struct ClusterGetComponentTemplate<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::ClusterGetComponentTemplateClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::ClusterGetComponentTemplateMasterTimeout>, String>,
 }
@@ -10542,10 +10559,11 @@ impl<'a> ClusterGetComponentTemplate<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterGetComponentTemplateClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `ClusterGetComponentTemplateClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -10612,7 +10630,7 @@ impl<'a> ClusterGetComponentTemplate<'a> {
 pub struct ClusterGetComponentTemplateWithName<'a> {
   client: &'a super::OsClient,
   name: Result<types::ClusterGetComponentTemplateWithNameName, String>,
-  cluster_manager_timeout: Result<Option<types::ClusterGetComponentTemplateWithNameClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::ClusterGetComponentTemplateWithNameMasterTimeout>, String>,
 }
@@ -10639,11 +10657,11 @@ impl<'a> ClusterGetComponentTemplateWithName<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterGetComponentTemplateWithNameClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `ClusterGetComponentTemplateWithNameClusterManagerTimeout` for cluster_manager_timeout failed"
-        .to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -10715,7 +10733,7 @@ impl<'a> ClusterGetComponentTemplateWithName<'a> {
 pub struct ClusterPutComponentTemplatePut<'a> {
   client: &'a super::OsClient,
   name: Result<types::ClusterPutComponentTemplatePutName, String>,
-  cluster_manager_timeout: Result<Option<types::ClusterPutComponentTemplatePutClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::ClusterPutComponentTemplatePutMasterTimeout>, String>,
   timeout: Result<Option<types::ClusterPutComponentTemplatePutTimeout>, String>,
@@ -10746,11 +10764,11 @@ impl<'a> ClusterPutComponentTemplatePut<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterPutComponentTemplatePutClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `ClusterPutComponentTemplatePutClusterManagerTimeout` for cluster_manager_timeout failed"
-        .to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -10849,7 +10867,7 @@ impl<'a> ClusterPutComponentTemplatePut<'a> {
 pub struct ClusterPutComponentTemplatePost<'a> {
   client: &'a super::OsClient,
   name: Result<types::ClusterPutComponentTemplatePostName, String>,
-  cluster_manager_timeout: Result<Option<types::ClusterPutComponentTemplatePostClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::ClusterPutComponentTemplatePostMasterTimeout>, String>,
   timeout: Result<Option<types::ClusterPutComponentTemplatePostTimeout>, String>,
@@ -10880,11 +10898,11 @@ impl<'a> ClusterPutComponentTemplatePost<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterPutComponentTemplatePostClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `ClusterPutComponentTemplatePostClusterManagerTimeout` for cluster_manager_timeout failed"
-        .to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -10982,7 +11000,7 @@ impl<'a> ClusterPutComponentTemplatePost<'a> {
 pub struct ClusterDeleteComponentTemplate<'a> {
   client: &'a super::OsClient,
   name: Result<types::ClusterDeleteComponentTemplateName, String>,
-  cluster_manager_timeout: Result<Option<types::ClusterDeleteComponentTemplateClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::ClusterDeleteComponentTemplateMasterTimeout>, String>,
   timeout: Result<Option<types::ClusterDeleteComponentTemplateTimeout>, String>,
 }
@@ -11009,11 +11027,11 @@ impl<'a> ClusterDeleteComponentTemplate<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterDeleteComponentTemplateClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `ClusterDeleteComponentTemplateClusterManagerTimeout` for cluster_manager_timeout failed"
-        .to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -11766,7 +11784,7 @@ pub struct DanglingIndicesImportDanglingIndex<'a> {
   client: &'a super::OsClient,
   index_uuid: Result<types::DanglingIndicesImportDanglingIndexIndexUuid, String>,
   accept_data_loss: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::DanglingIndicesImportDanglingIndexClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::DanglingIndicesImportDanglingIndexMasterTimeout>, String>,
   timeout: Result<Option<types::DanglingIndicesImportDanglingIndexTimeout>, String>,
 }
@@ -11804,11 +11822,11 @@ impl<'a> DanglingIndicesImportDanglingIndex<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DanglingIndicesImportDanglingIndexClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `DanglingIndicesImportDanglingIndexClusterManagerTimeout` for cluster_manager_timeout failed"
-        .to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -11882,7 +11900,7 @@ pub struct DanglingIndicesDeleteDanglingIndex<'a> {
   client: &'a super::OsClient,
   index_uuid: Result<types::DanglingIndicesDeleteDanglingIndexIndexUuid, String>,
   accept_data_loss: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::DanglingIndicesDeleteDanglingIndexClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::DanglingIndicesDeleteDanglingIndexMasterTimeout>, String>,
   timeout: Result<Option<types::DanglingIndicesDeleteDanglingIndexTimeout>, String>,
 }
@@ -11920,11 +11938,11 @@ impl<'a> DanglingIndicesDeleteDanglingIndex<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DanglingIndicesDeleteDanglingIndexClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `DanglingIndicesDeleteDanglingIndexClusterManagerTimeout` for cluster_manager_timeout failed"
-        .to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -12985,7 +13003,7 @@ impl<'a> IndicesForcemerge<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGetIndexTemplate<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::IndicesGetIndexTemplateClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesGetIndexTemplateMasterTimeout>, String>,
@@ -13004,10 +13022,11 @@ impl<'a> IndicesGetIndexTemplate<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetIndexTemplateClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesGetIndexTemplateClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -13089,7 +13108,7 @@ impl<'a> IndicesGetIndexTemplate<'a> {
 pub struct IndicesSimulateTemplate<'a> {
   client: &'a super::OsClient,
   cause: Result<Option<String>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesSimulateTemplateClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesSimulateTemplateMasterTimeout>, String>,
   body: Result<types::IndicesSimulateTemplateBodyParams, String>,
@@ -13119,10 +13138,11 @@ impl<'a> IndicesSimulateTemplate<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesSimulateTemplateClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesSimulateTemplateClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -13206,7 +13226,7 @@ pub struct IndicesSimulateTemplateWithName<'a> {
   client: &'a super::OsClient,
   name: Result<types::IndicesSimulateTemplateWithNameName, String>,
   cause: Result<Option<String>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesSimulateTemplateWithNameClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesSimulateTemplateWithNameMasterTimeout>, String>,
   body: Result<types::IndicesSimulateTemplateBodyParams, String>,
@@ -13246,11 +13266,11 @@ impl<'a> IndicesSimulateTemplateWithName<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesSimulateTemplateWithNameClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesSimulateTemplateWithNameClusterManagerTimeout` for cluster_manager_timeout failed"
-        .to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -13339,7 +13359,7 @@ pub struct IndicesSimulateIndexTemplate<'a> {
   client: &'a super::OsClient,
   name: Result<types::IndicesSimulateIndexTemplateName, String>,
   cause: Result<Option<String>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesSimulateIndexTemplateClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesSimulateIndexTemplateMasterTimeout>, String>,
   body: Result<types::IndicesSimulateIndexTemplateBodyParams, String>,
@@ -13379,10 +13399,11 @@ impl<'a> IndicesSimulateIndexTemplate<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesSimulateIndexTemplateClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesSimulateIndexTemplateClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -13471,7 +13492,7 @@ impl<'a> IndicesSimulateIndexTemplate<'a> {
 pub struct IndicesGetIndexTemplateWithName<'a> {
   client: &'a super::OsClient,
   name: Result<types::IndicesGetIndexTemplateWithNameName, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesGetIndexTemplateWithNameClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesGetIndexTemplateWithNameMasterTimeout>, String>,
@@ -13500,11 +13521,11 @@ impl<'a> IndicesGetIndexTemplateWithName<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetIndexTemplateWithNameClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesGetIndexTemplateWithNameClusterManagerTimeout` for cluster_manager_timeout failed"
-        .to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -13588,7 +13609,7 @@ pub struct IndicesPutIndexTemplatePut<'a> {
   client: &'a super::OsClient,
   name: Result<types::IndicesPutIndexTemplatePutName, String>,
   cause: Result<Option<String>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesPutIndexTemplatePutClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesPutIndexTemplatePutMasterTimeout>, String>,
   body: Result<types::IndicesPutIndexTemplateBodyParams, String>,
@@ -13628,10 +13649,11 @@ impl<'a> IndicesPutIndexTemplatePut<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutIndexTemplatePutClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesPutIndexTemplatePutClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -13717,7 +13739,7 @@ pub struct IndicesPutIndexTemplatePost<'a> {
   client: &'a super::OsClient,
   name: Result<types::IndicesPutIndexTemplatePostName, String>,
   cause: Result<Option<String>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesPutIndexTemplatePostClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesPutIndexTemplatePostMasterTimeout>, String>,
   body: Result<types::IndicesPutIndexTemplateBodyParams, String>,
@@ -13757,10 +13779,11 @@ impl<'a> IndicesPutIndexTemplatePost<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutIndexTemplatePostClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesPutIndexTemplatePostClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -13845,7 +13868,7 @@ impl<'a> IndicesPutIndexTemplatePost<'a> {
 pub struct IndicesDeleteIndexTemplate<'a> {
   client: &'a super::OsClient,
   name: Result<types::IndicesDeleteIndexTemplateName, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesDeleteIndexTemplateClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IndicesDeleteIndexTemplateMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesDeleteIndexTemplateTimeout>, String>,
 }
@@ -13872,10 +13895,11 @@ impl<'a> IndicesDeleteIndexTemplate<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesDeleteIndexTemplateClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesDeleteIndexTemplateClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -14044,7 +14068,7 @@ impl<'a> IndicesExistsIndexTemplate<'a> {
 pub struct IndicesGetMapping<'a> {
   client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesGetMappingClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
@@ -14076,10 +14100,11 @@ impl<'a> IndicesGetMapping<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetMappingClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesGetMappingClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -21568,7 +21593,7 @@ impl<'a> ClusterRemoteInfo<'a> {
 #[derive(Debug, Clone)]
 pub struct RemoteStoreRestore<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::RemoteStoreRestoreClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   wait_for_completion: Result<Option<bool>, String>,
   body: Result<types::builder::RemoteStoreRestoreBodyParams, String>,
 }
@@ -21585,10 +21610,11 @@ impl<'a> RemoteStoreRestore<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::RemoteStoreRestoreClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `RemoteStoreRestoreClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -22053,7 +22079,7 @@ impl<'a> ScriptsPainlessExecutePost<'a> {
 pub struct GetScript<'a> {
   client: &'a super::OsClient,
   id: Result<types::GetScriptId, String>,
-  cluster_manager_timeout: Result<Option<types::GetScriptClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::GetScriptMasterTimeout>, String>,
 }
 
@@ -22078,11 +22104,11 @@ impl<'a> GetScript<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::GetScriptClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `GetScriptClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -22136,7 +22162,7 @@ impl<'a> GetScript<'a> {
 pub struct PutScriptPut<'a> {
   client: &'a super::OsClient,
   id: Result<types::PutScriptPutId, String>,
-  cluster_manager_timeout: Result<Option<types::PutScriptPutClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::PutScriptPutMasterTimeout>, String>,
   timeout: Result<Option<types::PutScriptPutTimeout>, String>,
   body: Result<types::PutScriptBodyParams, String>,
@@ -22165,11 +22191,11 @@ impl<'a> PutScriptPut<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::PutScriptPutClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `PutScriptPutClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -22249,7 +22275,7 @@ impl<'a> PutScriptPut<'a> {
 pub struct PutScriptPost<'a> {
   client: &'a super::OsClient,
   id: Result<types::PutScriptPostId, String>,
-  cluster_manager_timeout: Result<Option<types::PutScriptPostClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::PutScriptPostMasterTimeout>, String>,
   timeout: Result<Option<types::PutScriptPostTimeout>, String>,
   body: Result<types::PutScriptBodyParams, String>,
@@ -22278,11 +22304,11 @@ impl<'a> PutScriptPost<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::PutScriptPostClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `PutScriptPostClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -22362,7 +22388,7 @@ impl<'a> PutScriptPost<'a> {
 pub struct DeleteScript<'a> {
   client: &'a super::OsClient,
   id: Result<types::DeleteScriptId, String>,
-  cluster_manager_timeout: Result<Option<types::DeleteScriptClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::DeleteScriptMasterTimeout>, String>,
   timeout: Result<Option<types::DeleteScriptTimeout>, String>,
 }
@@ -22389,11 +22415,11 @@ impl<'a> DeleteScript<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DeleteScriptClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `DeleteScriptClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -22463,7 +22489,7 @@ pub struct PutScriptPutWithContext<'a> {
   client: &'a super::OsClient,
   id: Result<types::PutScriptPutWithContextId, String>,
   context: Result<types::PutScriptPutWithContextContext, String>,
-  cluster_manager_timeout: Result<Option<types::PutScriptPutWithContextClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::PutScriptPutWithContextMasterTimeout>, String>,
   timeout: Result<Option<types::PutScriptPutWithContextTimeout>, String>,
   body: Result<types::PutScriptBodyParams, String>,
@@ -22502,10 +22528,11 @@ impl<'a> PutScriptPutWithContext<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::PutScriptPutWithContextClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `PutScriptPutWithContextClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -22593,7 +22620,7 @@ pub struct PutScriptPostWithContext<'a> {
   client: &'a super::OsClient,
   id: Result<types::PutScriptPostWithContextId, String>,
   context: Result<types::PutScriptPostWithContextContext, String>,
-  cluster_manager_timeout: Result<Option<types::PutScriptPostWithContextClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::PutScriptPostWithContextMasterTimeout>, String>,
   timeout: Result<Option<types::PutScriptPostWithContextTimeout>, String>,
   body: Result<types::PutScriptBodyParams, String>,
@@ -22632,10 +22659,11 @@ impl<'a> PutScriptPostWithContext<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::PutScriptPostWithContextClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `PutScriptPostWithContextClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -25045,7 +25073,7 @@ impl<'a> IndicesSegments<'a> {
 pub struct IndicesGetSettings<'a> {
   client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesGetSettingsClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   flat_settings: Result<Option<bool>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -25081,10 +25109,11 @@ impl<'a> IndicesGetSettings<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetSettingsClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesGetSettingsClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -25216,7 +25245,7 @@ impl<'a> IndicesGetSettings<'a> {
 pub struct IndicesPutSettings<'a> {
   client: &'a super::OsClient,
   allow_no_indices: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesPutSettingsClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   flat_settings: Result<Option<bool>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -25254,10 +25283,11 @@ impl<'a> IndicesPutSettings<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutSettingsClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesPutSettingsClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -25401,7 +25431,7 @@ pub struct IndicesGetSettingsWithName<'a> {
   client: &'a super::OsClient,
   name: Result<types::IndicesGetSettingsWithNameName, String>,
   allow_no_indices: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesGetSettingsWithNameClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   flat_settings: Result<Option<bool>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -25447,10 +25477,11 @@ impl<'a> IndicesGetSettingsWithName<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetSettingsWithNameClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesGetSettingsWithNameClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -25687,7 +25718,7 @@ impl<'a> IndicesShardStores<'a> {
 #[derive(Debug, Clone)]
 pub struct SnapshotGetRepository<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::SnapshotGetRepositoryClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::SnapshotGetRepositoryMasterTimeout>, String>,
 }
@@ -25704,10 +25735,11 @@ impl<'a> SnapshotGetRepository<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotGetRepositoryClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `SnapshotGetRepositoryClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -25773,7 +25805,7 @@ impl<'a> SnapshotGetRepository<'a> {
 #[derive(Debug, Clone)]
 pub struct SnapshotStatus<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::SnapshotStatusClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::SnapshotStatusMasterTimeout>, String>,
 }
@@ -25790,10 +25822,11 @@ impl<'a> SnapshotStatus<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotStatusClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `SnapshotStatusClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -25860,7 +25893,7 @@ impl<'a> SnapshotStatus<'a> {
 pub struct SnapshotGetRepositoryWithRepository<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotGetRepositoryWithRepositoryRepository, String>,
-  cluster_manager_timeout: Result<Option<types::SnapshotGetRepositoryWithRepositoryClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::SnapshotGetRepositoryWithRepositoryMasterTimeout>, String>,
 }
@@ -25887,11 +25920,11 @@ impl<'a> SnapshotGetRepositoryWithRepository<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotGetRepositoryWithRepositoryClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `SnapshotGetRepositoryWithRepositoryClusterManagerTimeout` for cluster_manager_timeout failed"
-        .to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -25959,7 +25992,7 @@ impl<'a> SnapshotGetRepositoryWithRepository<'a> {
 pub struct SnapshotCreateRepositoryPut<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotCreateRepositoryPutRepository, String>,
-  cluster_manager_timeout: Result<Option<types::SnapshotCreateRepositoryPutClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::SnapshotCreateRepositoryPutMasterTimeout>, String>,
   timeout: Result<Option<types::SnapshotCreateRepositoryPutTimeout>, String>,
   verify: Result<Option<bool>, String>,
@@ -25990,10 +26023,11 @@ impl<'a> SnapshotCreateRepositoryPut<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCreateRepositoryPutClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `SnapshotCreateRepositoryPutClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -26088,7 +26122,7 @@ impl<'a> SnapshotCreateRepositoryPut<'a> {
 pub struct SnapshotCreateRepositoryPost<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotCreateRepositoryPostRepository, String>,
-  cluster_manager_timeout: Result<Option<types::SnapshotCreateRepositoryPostClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::SnapshotCreateRepositoryPostMasterTimeout>, String>,
   timeout: Result<Option<types::SnapshotCreateRepositoryPostTimeout>, String>,
   verify: Result<Option<bool>, String>,
@@ -26119,10 +26153,11 @@ impl<'a> SnapshotCreateRepositoryPost<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCreateRepositoryPostClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `SnapshotCreateRepositoryPostClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -26217,7 +26252,7 @@ impl<'a> SnapshotCreateRepositoryPost<'a> {
 pub struct SnapshotDeleteRepository<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotDeleteRepositoryRepository, String>,
-  cluster_manager_timeout: Result<Option<types::SnapshotDeleteRepositoryClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::SnapshotDeleteRepositoryMasterTimeout>, String>,
   timeout: Result<Option<types::SnapshotDeleteRepositoryTimeout>, String>,
 }
@@ -26244,10 +26279,11 @@ impl<'a> SnapshotDeleteRepository<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotDeleteRepositoryClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `SnapshotDeleteRepositoryClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -26316,7 +26352,7 @@ impl<'a> SnapshotDeleteRepository<'a> {
 pub struct SnapshotCleanupRepository<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotCleanupRepositoryRepository, String>,
-  cluster_manager_timeout: Result<Option<types::SnapshotCleanupRepositoryClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::SnapshotCleanupRepositoryMasterTimeout>, String>,
   timeout: Result<Option<types::SnapshotCleanupRepositoryTimeout>, String>,
 }
@@ -26343,10 +26379,11 @@ impl<'a> SnapshotCleanupRepository<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCleanupRepositoryClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `SnapshotCleanupRepositoryClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -26419,7 +26456,7 @@ impl<'a> SnapshotCleanupRepository<'a> {
 pub struct SnapshotStatusWithRepository<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotStatusWithRepositoryRepository, String>,
-  cluster_manager_timeout: Result<Option<types::SnapshotStatusWithRepositoryClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::SnapshotStatusWithRepositoryMasterTimeout>, String>,
 }
@@ -26446,10 +26483,11 @@ impl<'a> SnapshotStatusWithRepository<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotStatusWithRepositoryClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `SnapshotStatusWithRepositoryClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -26522,7 +26560,7 @@ impl<'a> SnapshotStatusWithRepository<'a> {
 pub struct SnapshotVerifyRepository<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotVerifyRepositoryRepository, String>,
-  cluster_manager_timeout: Result<Option<types::SnapshotVerifyRepositoryClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::SnapshotVerifyRepositoryMasterTimeout>, String>,
   timeout: Result<Option<types::SnapshotVerifyRepositoryTimeout>, String>,
 }
@@ -26549,10 +26587,11 @@ impl<'a> SnapshotVerifyRepository<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotVerifyRepositoryClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `SnapshotVerifyRepositoryClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -26626,7 +26665,7 @@ pub struct SnapshotGet<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotGetRepository, String>,
   snapshot: Result<types::SnapshotGetSnapshot, String>,
-  cluster_manager_timeout: Result<Option<types::SnapshotGetClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::SnapshotGetMasterTimeout>, String>,
   verbose: Result<Option<bool>, String>,
@@ -26665,11 +26704,11 @@ impl<'a> SnapshotGet<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotGetClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `SnapshotGetClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -26761,7 +26800,7 @@ pub struct SnapshotCreatePut<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotCreatePutRepository, String>,
   snapshot: Result<types::SnapshotCreatePutSnapshot, String>,
-  cluster_manager_timeout: Result<Option<types::SnapshotCreatePutClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::SnapshotCreatePutMasterTimeout>, String>,
   wait_for_completion: Result<Option<bool>, String>,
   body: Result<types::SnapshotCreateBodyParams, String>,
@@ -26800,10 +26839,11 @@ impl<'a> SnapshotCreatePut<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCreatePutClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `SnapshotCreatePutClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -26891,7 +26931,7 @@ pub struct SnapshotCreatePost<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotCreatePostRepository, String>,
   snapshot: Result<types::SnapshotCreatePostSnapshot, String>,
-  cluster_manager_timeout: Result<Option<types::SnapshotCreatePostClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::SnapshotCreatePostMasterTimeout>, String>,
   wait_for_completion: Result<Option<bool>, String>,
   body: Result<types::SnapshotCreateBodyParams, String>,
@@ -26930,10 +26970,11 @@ impl<'a> SnapshotCreatePost<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCreatePostClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `SnapshotCreatePostClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -27021,7 +27062,7 @@ pub struct SnapshotDelete<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotDeleteRepository, String>,
   snapshot: Result<types::SnapshotDeleteSnapshot, String>,
-  cluster_manager_timeout: Result<Option<types::SnapshotDeleteClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::SnapshotDeleteMasterTimeout>, String>,
 }
 
@@ -27056,10 +27097,11 @@ impl<'a> SnapshotDelete<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotDeleteClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `SnapshotDeleteClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -27122,7 +27164,7 @@ pub struct SnapshotClone<'a> {
   repository: Result<types::SnapshotCloneRepository, String>,
   snapshot: Result<types::SnapshotCloneSnapshot, String>,
   target_snapshot: Result<types::SnapshotCloneTargetSnapshot, String>,
-  cluster_manager_timeout: Result<Option<types::SnapshotCloneClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::SnapshotCloneMasterTimeout>, String>,
   body: Result<types::SnapshotCloneBodyParams, String>,
 }
@@ -27169,11 +27211,11 @@ impl<'a> SnapshotClone<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCloneClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `SnapshotCloneClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -27250,7 +27292,7 @@ pub struct SnapshotRestore<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotRestoreRepository, String>,
   snapshot: Result<types::SnapshotRestoreSnapshot, String>,
-  cluster_manager_timeout: Result<Option<types::SnapshotRestoreClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::SnapshotRestoreMasterTimeout>, String>,
   wait_for_completion: Result<Option<bool>, String>,
   body: Result<types::SnapshotRestoreBodyParams, String>,
@@ -27289,10 +27331,11 @@ impl<'a> SnapshotRestore<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotRestoreClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `SnapshotRestoreClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -27381,7 +27424,7 @@ pub struct SnapshotStatusWithRepositorySnapshot<'a> {
   client: &'a super::OsClient,
   repository: Result<types::SnapshotStatusWithRepositorySnapshotRepository, String>,
   snapshot: Result<types::SnapshotStatusWithRepositorySnapshotSnapshot, String>,
-  cluster_manager_timeout: Result<Option<types::SnapshotStatusWithRepositorySnapshotClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::SnapshotStatusWithRepositorySnapshotMasterTimeout>, String>,
 }
@@ -27418,11 +27461,11 @@ impl<'a> SnapshotStatusWithRepositorySnapshot<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotStatusWithRepositorySnapshotClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `SnapshotStatusWithRepositorySnapshotClusterManagerTimeout` for cluster_manager_timeout failed"
-        .to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -28351,7 +28394,7 @@ impl<'a> TasksCancelWithTaskId<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGetTemplate<'a> {
   client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<types::IndicesGetTemplateClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesGetTemplateMasterTimeout>, String>,
@@ -28370,10 +28413,11 @@ impl<'a> IndicesGetTemplate<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetTemplateClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesGetTemplateClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -28455,7 +28499,7 @@ impl<'a> IndicesGetTemplate<'a> {
 pub struct IndicesGetTemplateWithName<'a> {
   client: &'a super::OsClient,
   name: Result<types::IndicesGetTemplateWithNameName, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesGetTemplateWithNameClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesGetTemplateWithNameMasterTimeout>, String>,
@@ -28484,10 +28528,11 @@ impl<'a> IndicesGetTemplateWithName<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetTemplateWithNameClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesGetTemplateWithNameClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -28571,7 +28616,7 @@ impl<'a> IndicesGetTemplateWithName<'a> {
 pub struct IndicesPutTemplatePut<'a> {
   client: &'a super::OsClient,
   name: Result<types::IndicesPutTemplatePutName, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesPutTemplatePutClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesPutTemplatePutMasterTimeout>, String>,
   order: Result<Option<i32>, String>,
@@ -28602,10 +28647,11 @@ impl<'a> IndicesPutTemplatePut<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutTemplatePutClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesPutTemplatePutClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -28700,7 +28746,7 @@ impl<'a> IndicesPutTemplatePut<'a> {
 pub struct IndicesPutTemplatePost<'a> {
   client: &'a super::OsClient,
   name: Result<types::IndicesPutTemplatePostName, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesPutTemplatePostClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   create: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesPutTemplatePostMasterTimeout>, String>,
   order: Result<Option<i32>, String>,
@@ -28731,10 +28777,11 @@ impl<'a> IndicesPutTemplatePost<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutTemplatePostClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesPutTemplatePostClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -28829,7 +28876,7 @@ impl<'a> IndicesPutTemplatePost<'a> {
 pub struct IndicesDeleteTemplate<'a> {
   client: &'a super::OsClient,
   name: Result<types::IndicesDeleteTemplateName, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesDeleteTemplateClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IndicesDeleteTemplateMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesDeleteTemplateTimeout>, String>,
 }
@@ -28856,10 +28903,11 @@ impl<'a> IndicesDeleteTemplate<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesDeleteTemplateClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesDeleteTemplateClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -29796,7 +29844,7 @@ impl<'a> IndicesValidateQueryPost<'a> {
 pub struct IndicesRollover<'a> {
   client: &'a super::OsClient,
   alias: Result<types::IndicesRolloverAlias, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesRolloverClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   dry_run: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesRolloverMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesRolloverTimeout>, String>,
@@ -29829,10 +29877,11 @@ impl<'a> IndicesRollover<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesRolloverClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesRolloverClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -29943,7 +29992,7 @@ pub struct IndicesRolloverWithNewIndex<'a> {
   client: &'a super::OsClient,
   alias: Result<types::IndicesRolloverWithNewIndexAlias, String>,
   new_index: Result<types::IndicesRolloverWithNewIndexNewIndex, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesRolloverWithNewIndexClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   dry_run: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesRolloverWithNewIndexMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesRolloverWithNewIndexTimeout>, String>,
@@ -29986,10 +30035,11 @@ impl<'a> IndicesRolloverWithNewIndex<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesRolloverWithNewIndexClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesRolloverWithNewIndexClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -30107,7 +30157,7 @@ pub struct IndicesGet<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesGetIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesGetClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   flat_settings: Result<Option<bool>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -30153,11 +30203,11 @@ impl<'a> IndicesGet<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesGetClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -30291,7 +30341,7 @@ impl<'a> IndicesGet<'a> {
 pub struct IndicesCreate<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesCreateIndex, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesCreateClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IndicesCreateMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesCreateTimeout>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
@@ -30322,11 +30372,11 @@ impl<'a> IndicesCreate<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesCreateClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesCreateClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -30986,7 +31036,7 @@ pub struct IndicesPutAliasPut<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesPutAliasPutIndex, String>,
   name: Result<types::IndicesPutAliasPutName, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesPutAliasPutClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IndicesPutAliasPutMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesPutAliasPutTimeout>, String>,
   body: Result<types::IndicesPutAliasBodyParams, String>,
@@ -31025,10 +31075,11 @@ impl<'a> IndicesPutAliasPut<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutAliasPutClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesPutAliasPutClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -31116,7 +31167,7 @@ pub struct IndicesPutAliasPost<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesPutAliasPostIndex, String>,
   name: Result<types::IndicesPutAliasPostName, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesPutAliasPostClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IndicesPutAliasPostMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesPutAliasPostTimeout>, String>,
   body: Result<types::IndicesPutAliasBodyParams, String>,
@@ -31155,10 +31206,11 @@ impl<'a> IndicesPutAliasPost<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutAliasPostClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesPutAliasPostClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -31246,7 +31298,7 @@ pub struct IndicesDeleteAlias<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesDeleteAliasIndex, String>,
   name: Result<types::IndicesDeleteAliasName, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesDeleteAliasClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IndicesDeleteAliasMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesDeleteAliasTimeout>, String>,
 }
@@ -31283,10 +31335,11 @@ impl<'a> IndicesDeleteAlias<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesDeleteAliasClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesDeleteAliasClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -31498,7 +31551,7 @@ pub struct IndicesPutAliasPutPlural<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesPutAliasPutPluralIndex, String>,
   name: Result<types::IndicesPutAliasPutPluralName, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesPutAliasPutPluralClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IndicesPutAliasPutPluralMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesPutAliasPutPluralTimeout>, String>,
   body: Result<types::IndicesPutAliasBodyParams, String>,
@@ -31537,10 +31590,11 @@ impl<'a> IndicesPutAliasPutPlural<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutAliasPutPluralClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesPutAliasPutPluralClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -31628,7 +31682,7 @@ pub struct IndicesPutAliasPostPlural<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesPutAliasPostPluralIndex, String>,
   name: Result<types::IndicesPutAliasPostPluralName, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesPutAliasPostPluralClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IndicesPutAliasPostPluralMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesPutAliasPostPluralTimeout>, String>,
   body: Result<types::IndicesPutAliasBodyParams, String>,
@@ -31667,10 +31721,11 @@ impl<'a> IndicesPutAliasPostPlural<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutAliasPostPluralClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesPutAliasPostPluralClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -31758,7 +31813,7 @@ pub struct IndicesDeleteAliasPlural<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesDeleteAliasPluralIndex, String>,
   name: Result<types::IndicesDeleteAliasPluralName, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesDeleteAliasPluralClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IndicesDeleteAliasPluralMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesDeleteAliasPluralTimeout>, String>,
 }
@@ -31795,10 +31850,11 @@ impl<'a> IndicesDeleteAliasPlural<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesDeleteAliasPluralClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesDeleteAliasPluralClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -31992,7 +32048,7 @@ pub struct IndicesAddBlock<'a> {
   index: Result<types::IndicesAddBlockIndex, String>,
   block: Result<types::IndicesAddBlockBlock, String>,
   allow_no_indices: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesAddBlockClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesAddBlockMasterTimeout>, String>,
@@ -32044,10 +32100,11 @@ impl<'a> IndicesAddBlock<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesAddBlockClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesAddBlockClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -32339,7 +32396,7 @@ pub struct IndicesClonePut<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesClonePutIndex, String>,
   target: Result<types::IndicesClonePutTarget, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesClonePutClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IndicesClonePutMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesClonePutTimeout>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
@@ -32380,10 +32437,11 @@ impl<'a> IndicesClonePut<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesClonePutClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesClonePutClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -32486,7 +32544,7 @@ pub struct IndicesClonePost<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesClonePostIndex, String>,
   target: Result<types::IndicesClonePostTarget, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesClonePostClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   master_timeout: Result<Option<types::IndicesClonePostMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesClonePostTimeout>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
@@ -32527,10 +32585,11 @@ impl<'a> IndicesClonePost<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesClonePostClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesClonePostClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -32633,7 +32692,7 @@ pub struct IndicesClose<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesCloseIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesCloseClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesCloseMasterTimeout>, String>,
@@ -32677,11 +32736,11 @@ impl<'a> IndicesClose<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesCloseClusterManagerTimeout>, {
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
     self.cluster_manager_timeout = value
       .try_into()
       .map(Some)
-      .map_err(|_| "conversion to `IndicesCloseClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -36893,7 +36952,7 @@ pub struct IndicesGetMappingWithIndex<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesGetMappingWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesGetMappingWithIndexClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
@@ -36935,10 +36994,11 @@ impl<'a> IndicesGetMappingWithIndex<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetMappingWithIndexClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesGetMappingWithIndexClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -37043,7 +37103,7 @@ pub struct IndicesPutMappingPut<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesPutMappingPutIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesPutMappingPutClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesPutMappingPutMasterTimeout>, String>,
@@ -37089,10 +37149,11 @@ impl<'a> IndicesPutMappingPut<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutMappingPutClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesPutMappingPutClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -37232,7 +37293,7 @@ pub struct IndicesPutMappingPost<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesPutMappingPostIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesPutMappingPostClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesPutMappingPostMasterTimeout>, String>,
@@ -37278,10 +37339,11 @@ impl<'a> IndicesPutMappingPost<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutMappingPostClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesPutMappingPostClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -41718,7 +41780,7 @@ pub struct IndicesGetSettingsWithIndex<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesGetSettingsWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesGetSettingsWithIndexClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   flat_settings: Result<Option<bool>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -41764,10 +41826,11 @@ impl<'a> IndicesGetSettingsWithIndex<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetSettingsWithIndexClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesGetSettingsWithIndexClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -41902,7 +41965,7 @@ pub struct IndicesPutSettingsWithIndex<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesPutSettingsWithIndexIndex, String>,
   allow_no_indices: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesPutSettingsWithIndexClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   flat_settings: Result<Option<bool>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -41950,10 +42013,11 @@ impl<'a> IndicesPutSettingsWithIndex<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutSettingsWithIndexClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesPutSettingsWithIndexClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -42100,7 +42164,7 @@ pub struct IndicesGetSettingsWithIndexName<'a> {
   index: Result<types::IndicesGetSettingsWithIndexNameIndex, String>,
   name: Result<types::IndicesGetSettingsWithIndexNameName, String>,
   allow_no_indices: Result<Option<bool>, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesGetSettingsWithIndexNameClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   flat_settings: Result<Option<bool>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -42156,11 +42220,11 @@ impl<'a> IndicesGetSettingsWithIndexName<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetSettingsWithIndexNameClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesGetSettingsWithIndexNameClusterManagerTimeout` for cluster_manager_timeout failed"
-        .to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -42418,7 +42482,7 @@ pub struct IndicesShrinkPut<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesShrinkPutIndex, String>,
   target: Result<types::IndicesShrinkPutTarget, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesShrinkPutClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   copy_settings: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesShrinkPutMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesShrinkPutTimeout>, String>,
@@ -42461,10 +42525,11 @@ impl<'a> IndicesShrinkPut<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesShrinkPutClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesShrinkPutClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -42582,7 +42647,7 @@ pub struct IndicesShrinkPost<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesShrinkPostIndex, String>,
   target: Result<types::IndicesShrinkPostTarget, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesShrinkPostClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   copy_settings: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesShrinkPostMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesShrinkPostTimeout>, String>,
@@ -42625,10 +42690,11 @@ impl<'a> IndicesShrinkPost<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesShrinkPostClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesShrinkPostClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -43186,7 +43252,7 @@ pub struct IndicesSplitPut<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesSplitPutIndex, String>,
   target: Result<types::IndicesSplitPutTarget, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesSplitPutClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   copy_settings: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesSplitPutMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesSplitPutTimeout>, String>,
@@ -43229,10 +43295,11 @@ impl<'a> IndicesSplitPut<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesSplitPutClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesSplitPutClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 
@@ -43350,7 +43417,7 @@ pub struct IndicesSplitPost<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndicesSplitPostIndex, String>,
   target: Result<types::IndicesSplitPostTarget, String>,
-  cluster_manager_timeout: Result<Option<types::IndicesSplitPostClusterManagerTimeout>, String>,
+  cluster_manager_timeout: Result<Option<types::ClusterManagerTimeout>, String>,
   copy_settings: Result<Option<bool>, String>,
   master_timeout: Result<Option<types::IndicesSplitPostMasterTimeout>, String>,
   timeout: Result<Option<types::IndicesSplitPostTimeout>, String>,
@@ -43393,10 +43460,11 @@ impl<'a> IndicesSplitPost<'a> {
 
   pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesSplitPostClusterManagerTimeout>, {
-    self.cluster_manager_timeout = value.try_into().map(Some).map_err(|_| {
-      "conversion to `IndicesSplitPostClusterManagerTimeout` for cluster_manager_timeout failed".to_string()
-    });
+    V: std::convert::TryInto<types::ClusterManagerTimeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `ClusterManagerTimeout` for cluster_manager_timeout failed".to_string());
     self
   }
 

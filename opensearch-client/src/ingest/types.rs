@@ -3,77 +3,13 @@ use std::convert::TryFrom;
 
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
-///Operation timeout for connection to cluster-manager node.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IngestDeletePipelineClusterManagerTimeout(String);
-impl std::ops::Deref for IngestDeletePipelineClusterManagerTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IngestDeletePipelineClusterManagerTimeout> for String {
-  fn from(value: IngestDeletePipelineClusterManagerTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IngestDeletePipelineClusterManagerTimeout> for IngestDeletePipelineClusterManagerTimeout {
-  fn from(value: &IngestDeletePipelineClusterManagerTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IngestDeletePipelineClusterManagerTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IngestDeletePipelineClusterManagerTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IngestDeletePipelineClusterManagerTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IngestDeletePipelineClusterManagerTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IngestDeletePipelineClusterManagerTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Pipeline ID.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -293,77 +229,13 @@ impl<'de> serde::Deserialize<'de> for IngestDeletePipelineTimeout {
   }
 }
 
-///Operation timeout for connection to cluster-manager node.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IngestGetPipelineClusterManagerTimeout(String);
-impl std::ops::Deref for IngestGetPipelineClusterManagerTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IngestGetPipelineClusterManagerTimeout> for String {
-  fn from(value: IngestGetPipelineClusterManagerTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IngestGetPipelineClusterManagerTimeout> for IngestGetPipelineClusterManagerTimeout {
-  fn from(value: &IngestGetPipelineClusterManagerTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IngestGetPipelineClusterManagerTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IngestGetPipelineClusterManagerTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IngestGetPipelineClusterManagerTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IngestGetPipelineClusterManagerTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IngestGetPipelineClusterManagerTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Operation timeout for connection to master node.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -437,77 +309,13 @@ impl<'de> serde::Deserialize<'de> for IngestGetPipelineMasterTimeout {
   }
 }
 
-///Operation timeout for connection to cluster-manager node.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IngestGetPipelineWithIdClusterManagerTimeout(String);
-impl std::ops::Deref for IngestGetPipelineWithIdClusterManagerTimeout {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<IngestGetPipelineWithIdClusterManagerTimeout> for String {
-  fn from(value: IngestGetPipelineWithIdClusterManagerTimeout) -> Self {
-    value.0
-  }
-}
 
-impl From<&IngestGetPipelineWithIdClusterManagerTimeout> for IngestGetPipelineWithIdClusterManagerTimeout {
-  fn from(value: &IngestGetPipelineWithIdClusterManagerTimeout) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for IngestGetPipelineWithIdClusterManagerTimeout {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for IngestGetPipelineWithIdClusterManagerTimeout {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IngestGetPipelineWithIdClusterManagerTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IngestGetPipelineWithIdClusterManagerTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IngestGetPipelineWithIdClusterManagerTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Comma-separated list of pipeline ids. Wildcards supported.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -681,78 +489,6 @@ impl From<&IngestPutPipelineBodyParams> for IngestPutPipelineBodyParams {
 impl From<serde_json::Map<String, serde_json::Value>> for IngestPutPipelineBodyParams {
   fn from(value: serde_json::Map<String, serde_json::Value>) -> Self {
     Self(value)
-  }
-}
-
-///Operation timeout for connection to cluster-manager node.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct IngestPutPipelineClusterManagerTimeout(String);
-impl std::ops::Deref for IngestPutPipelineClusterManagerTimeout {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<IngestPutPipelineClusterManagerTimeout> for String {
-  fn from(value: IngestPutPipelineClusterManagerTimeout) -> Self {
-    value.0
-  }
-}
-
-impl From<&IngestPutPipelineClusterManagerTimeout> for IngestPutPipelineClusterManagerTimeout {
-  fn from(value: &IngestPutPipelineClusterManagerTimeout) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for IngestPutPipelineClusterManagerTimeout {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err("doesn't match pattern \"^([0-9]+)(?:d|h|m|s|ms|micros|nanos)$\"");
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for IngestPutPipelineClusterManagerTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for IngestPutPipelineClusterManagerTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for IngestPutPipelineClusterManagerTimeout {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for IngestPutPipelineClusterManagerTimeout {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
 

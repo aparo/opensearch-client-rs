@@ -2171,56 +2171,6 @@ impl OsClient {
   ///Returns information about why a specific matches (or doesn't match) a
   /// query.
   ///
-  ///Sends a `GET` request to `/{index}/_explain/{id}`
-  ///
-  ///Arguments:
-  /// - `index`: Index name.
-  /// - `id`: Document ID.
-  /// - `source`: True or false to return the _source field or not, or a list of
-  ///   fields to return.
-  /// - `source_excludes`: List of fields to exclude from the returned _source
-  ///   field.
-  /// - `source_includes`: List of fields to extract and return from the _source
-  ///   field.
-  /// - `analyze_wildcard`: Specify whether wildcards and prefix queries in the
-  ///   query string query should be analyzed.
-  /// - `analyzer`: The analyzer to use for the query string.
-  /// - `default_operator`: The default operator for query string query (AND or
-  ///   OR).
-  /// - `df`: The default field for query string query.
-  /// - `lenient`: Specify whether format-based query failures (such as
-  ///   providing text to a numeric field) should be ignored.
-  /// - `preference`: Specify the node or shard the operation should be
-  ///   performed on.
-  /// - `q`: Query in the Lucene query string syntax.
-  /// - `routing`: Routing value.
-  /// - `stored_fields`: Comma-separated list of stored fields to return.
-  ///```ignore
-  /// let response = client.explain_get()
-  ///    .index(index)
-  ///    .id(id)
-  ///    .source(source)
-  ///    .source_excludes(source_excludes)
-  ///    .source_includes(source_includes)
-  ///    .analyze_wildcard(analyze_wildcard)
-  ///    .analyzer(analyzer)
-  ///    .default_operator(default_operator)
-  ///    .df(df)
-  ///    .lenient(lenient)
-  ///    .preference(preference)
-  ///    .q(q)
-  ///    .routing(routing)
-  ///    .stored_fields(stored_fields)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn explain_get(&self) -> builder::ExplainGet {
-    builder::ExplainGet::new(self)
-  }
-
-  ///Returns information about why a specific matches (or doesn't match) a
-  /// query.
-  ///
   ///Sends a `POST` request to `/{index}/_explain/{id}`
   ///
   ///Arguments:
@@ -2247,7 +2197,7 @@ impl OsClient {
   /// - `stored_fields`: Comma-separated list of stored fields to return.
   /// - `body`
   ///```ignore
-  /// let response = client.explain_post()
+  /// let response = client.explain()
   ///    .index(index)
   ///    .id(id)
   ///    .source(source)
@@ -2266,7 +2216,7 @@ impl OsClient {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn explain_post(&self) -> builder::ExplainPost {
+  pub fn explain(&self) -> builder::ExplainPost {
     builder::ExplainPost::new(self)
   }
 
@@ -2398,7 +2348,7 @@ impl OsClient {
   /// - `stored_fields`: Comma-separated list of stored fields to return.
   /// - `body`
   ///```ignore
-  /// let response = client.mget_post_with_index()
+  /// let response = client.mget_with_index()
   ///    .index(index)
   ///    .source(source)
   ///    .source_excludes(source_excludes)
@@ -2412,51 +2362,8 @@ impl OsClient {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn mget_post_with_index(&self) -> builder::MgetPostWithIndex {
-    builder::MgetPostWithIndex::new(self)
-  }
-
-  ///Allows to execute several search operations in one request.
-  ///
-  ///Sends a `GET` request to `/{index}/_msearch`
-  ///
-  ///Arguments:
-  /// - `index`: Comma-separated list of indices to use as default.
-  /// - `ccs_minimize_roundtrips`: Indicates whether network round-trips should
-  ///   be minimized as part of cross-cluster search requests execution.
-  /// - `max_concurrent_searches`: Controls the maximum number of concurrent
-  ///   searches the multi search api will execute.
-  /// - `max_concurrent_shard_requests`: The number of concurrent shard requests
-  ///   each sub search executes concurrently per node. This value should be
-  ///   used to limit the impact of the search on the cluster in order to limit
-  ///   the number of concurrent shard requests.
-  /// - `pre_filter_shard_size`: Threshold that enforces a pre-filter round-trip
-  ///   to prefilter search shards based on query rewriting if the number of
-  ///   shards the search request expands to exceeds the threshold. This filter
-  ///   round-trip can limit the number of shards significantly if for instance
-  ///   a shard can not match any documents based on its rewrite method ie. if
-  ///   date filters are mandatory to match but the shard bounds and the query
-  ///   are disjoint.
-  /// - `rest_total_hits_as_int`: Indicates whether hits.total should be
-  ///   rendered as an integer or an object in the rest search response.
-  /// - `search_type`: Search operation type.
-  /// - `typed_keys`: Specify whether aggregation and suggester names should be
-  ///   prefixed by their respective types in the response.
-  ///```ignore
-  /// let response = client.msearch_get_with_index()
-  ///    .index(index)
-  ///    .ccs_minimize_roundtrips(ccs_minimize_roundtrips)
-  ///    .max_concurrent_searches(max_concurrent_searches)
-  ///    .max_concurrent_shard_requests(max_concurrent_shard_requests)
-  ///    .pre_filter_shard_size(pre_filter_shard_size)
-  ///    .rest_total_hits_as_int(rest_total_hits_as_int)
-  ///    .search_type(search_type)
-  ///    .typed_keys(typed_keys)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn msearch_get_with_index(&self) -> builder::MsearchGetWithIndex {
-    builder::MsearchGetWithIndex::new(self)
+  pub fn mget_with_index(&self) -> builder::MgetWithIndex {
+    builder::MgetWithIndex::new(self)
   }
 
   ///Allows to execute several search operations in one request.
@@ -2506,36 +2413,6 @@ impl OsClient {
 
   ///Allows to execute several search template operations in one request.
   ///
-  ///Sends a `GET` request to `/{index}/_msearch/template`
-  ///
-  ///Arguments:
-  /// - `index`: Comma-separated list of indices to use as default.
-  /// - `ccs_minimize_roundtrips`: Indicates whether network round-trips should
-  ///   be minimized as part of cross-cluster search requests execution.
-  /// - `max_concurrent_searches`: Controls the maximum number of concurrent
-  ///   searches the multi search api will execute.
-  /// - `rest_total_hits_as_int`: Indicates whether hits.total should be
-  ///   rendered as an integer or an object in the rest search response.
-  /// - `search_type`: Search operation type.
-  /// - `typed_keys`: Specify whether aggregation and suggester names should be
-  ///   prefixed by their respective types in the response.
-  ///```ignore
-  /// let response = client.msearch_template_get_with_index()
-  ///    .index(index)
-  ///    .ccs_minimize_roundtrips(ccs_minimize_roundtrips)
-  ///    .max_concurrent_searches(max_concurrent_searches)
-  ///    .rest_total_hits_as_int(rest_total_hits_as_int)
-  ///    .search_type(search_type)
-  ///    .typed_keys(typed_keys)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn msearch_template_get_with_index(&self) -> builder::MsearchTemplateGetWithIndex {
-    builder::MsearchTemplateGetWithIndex::new(self)
-  }
-
-  ///Allows to execute several search template operations in one request.
-  ///
   ///Sends a `POST` request to `/{index}/_msearch/template`
   ///
   ///Arguments:
@@ -2551,7 +2428,7 @@ impl OsClient {
   ///   prefixed by their respective types in the response.
   /// - `body`
   ///```ignore
-  /// let response = client.msearch_template_post_with_index()
+  /// let response = client.msearch_template_with_index()
   ///    .index(index)
   ///    .ccs_minimize_roundtrips(ccs_minimize_roundtrips)
   ///    .max_concurrent_searches(max_concurrent_searches)
@@ -2562,38 +2439,8 @@ impl OsClient {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn msearch_template_post_with_index(&self) -> builder::MsearchTemplatePostWithIndex {
+  pub fn msearch_template_with_index(&self) -> builder::MsearchTemplatePostWithIndex {
     builder::MsearchTemplatePostWithIndex::new(self)
-  }
-
-  ///Allows to evaluate the quality of ranked search results over a set of
-  /// typical search queries.
-  ///
-  ///Sends a `GET` request to `/{index}/_rank_eval`
-  ///
-  ///Arguments:
-  /// - `index`: Comma-separated list of indices; use `_all` or empty string to
-  ///   perform the operation on all indices.
-  /// - `allow_no_indices`: Whether to ignore if a wildcard indices expression
-  ///   resolves into no concrete indices. (This includes `_all` string or when
-  ///   no indices have been specified).
-  /// - `expand_wildcards`: Whether to expand wildcard expression to concrete
-  ///   indices that are open, closed or both.
-  /// - `ignore_unavailable`: Whether specified concrete indices should be
-  ///   ignored when unavailable (missing or closed).
-  /// - `search_type`: Search operation type.
-  ///```ignore
-  /// let response = client.rank_eval_get_with_index()
-  ///    .index(index)
-  ///    .allow_no_indices(allow_no_indices)
-  ///    .expand_wildcards(expand_wildcards)
-  ///    .ignore_unavailable(ignore_unavailable)
-  ///    .search_type(search_type)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn rank_eval_get_with_index(&self) -> builder::RankEvalGetWithIndex {
-    builder::RankEvalGetWithIndex::new(self)
   }
 
   ///Allows to evaluate the quality of ranked search results over a set of
@@ -2802,60 +2649,6 @@ impl OsClient {
 
   ///Allows to use the Mustache language to pre-render a search definition.
   ///
-  ///Sends a `GET` request to `/{index}/_search/template`
-  ///
-  ///Arguments:
-  /// - `index`: Comma-separated list of indices; use `_all` or empty string to
-  ///   perform the operation on all indices.
-  /// - `allow_no_indices`: Whether to ignore if a wildcard indices expression
-  ///   resolves into no concrete indices. (This includes `_all` string or when
-  ///   no indices have been specified).
-  /// - `ccs_minimize_roundtrips`: Indicates whether network round-trips should
-  ///   be minimized as part of cross-cluster search requests execution.
-  /// - `expand_wildcards`: Whether to expand wildcard expression to concrete
-  ///   indices that are open, closed or both.
-  /// - `explain`: Specify whether to return detailed information about score
-  ///   computation as part of a hit.
-  /// - `ignore_throttled`: Whether specified concrete, expanded or aliased
-  ///   indices should be ignored when throttled.
-  /// - `ignore_unavailable`: Whether specified concrete indices should be
-  ///   ignored when unavailable (missing or closed).
-  /// - `preference`: Specify the node or shard the operation should be
-  ///   performed on.
-  /// - `profile`: Specify whether to profile the query execution.
-  /// - `rest_total_hits_as_int`: Indicates whether hits.total should be
-  ///   rendered as an integer or an object in the rest search response.
-  /// - `routing`: Comma-separated list of specific routing values.
-  /// - `scroll`: Specify how long a consistent view of the index should be
-  ///   maintained for scrolled search.
-  /// - `search_type`: Search operation type.
-  /// - `typed_keys`: Specify whether aggregation and suggester names should be
-  ///   prefixed by their respective types in the response.
-  ///```ignore
-  /// let response = client.search_template_get_with_index()
-  ///    .index(index)
-  ///    .allow_no_indices(allow_no_indices)
-  ///    .ccs_minimize_roundtrips(ccs_minimize_roundtrips)
-  ///    .expand_wildcards(expand_wildcards)
-  ///    .explain(explain)
-  ///    .ignore_throttled(ignore_throttled)
-  ///    .ignore_unavailable(ignore_unavailable)
-  ///    .preference(preference)
-  ///    .profile(profile)
-  ///    .rest_total_hits_as_int(rest_total_hits_as_int)
-  ///    .routing(routing)
-  ///    .scroll(scroll)
-  ///    .search_type(search_type)
-  ///    .typed_keys(typed_keys)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn search_template_get_with_index(&self) -> builder::SearchTemplateGetWithIndex {
-    builder::SearchTemplateGetWithIndex::new(self)
-  }
-
-  ///Allows to use the Mustache language to pre-render a search definition.
-  ///
   ///Sends a `POST` request to `/{index}/_search/template`
   ///
   ///Arguments:
@@ -2887,7 +2680,7 @@ impl OsClient {
   ///   prefixed by their respective types in the response.
   /// - `body`
   ///```ignore
-  /// let response = client.search_template_post_with_index()
+  /// let response = client.search_template_with_index()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .ccs_minimize_roundtrips(ccs_minimize_roundtrips)
@@ -2906,7 +2699,7 @@ impl OsClient {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn search_template_post_with_index(&self) -> builder::SearchTemplatePostWithIndex {
+  pub fn search_template_with_index(&self) -> builder::SearchTemplatePostWithIndex {
     builder::SearchTemplatePostWithIndex::new(self)
   }
 

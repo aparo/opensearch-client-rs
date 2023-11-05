@@ -6064,7 +6064,7 @@ impl<'a> CreatePut<'a> {
 #[derive(Debug, Clone)]
 pub struct DeleteByQuery<'a> {
   client: &'a super::OsClient,
-  index: Result<types::DeleteByQueryIndex, String>,
+  index: Result<types::IndexNames, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -6145,10 +6145,10 @@ impl<'a> DeleteByQuery<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DeleteByQueryIndex>, {
+    V: std::convert::TryInto<types::IndexNames>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `DeleteByQueryIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexNames` for index failed".to_string());
     self
   }
 
@@ -7910,277 +7910,6 @@ impl<'a> Exists<'a> {
   }
 }
 
-///Builder for [`Client::explain_get`]
-///
-///[`Client::explain_get`]: super::OsClient::explain_get
-#[derive(Debug, Clone)]
-pub struct ExplainGet<'a> {
-  client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
-  id: Result<types::DocumentId, String>,
-  source: Result<Option<Vec<String>>, String>,
-  source_excludes: Result<Option<Vec<String>>, String>,
-  source_includes: Result<Option<Vec<String>>, String>,
-  analyze_wildcard: Result<Option<bool>, String>,
-  analyzer: Result<Option<String>, String>,
-  default_operator: Result<Option<types::DefaultOperator>, String>,
-  df: Result<Option<String>, String>,
-  lenient: Result<Option<bool>, String>,
-  preference: Result<Option<String>, String>,
-  q: Result<Option<String>, String>,
-  routing: Result<Option<String>, String>,
-  stored_fields: Result<Option<Vec<String>>, String>,
-}
-
-impl<'a> ExplainGet<'a> {
-  pub fn new(client: &'a super::OsClient) -> Self {
-    Self {
-      client,
-      index: Err("index was not initialized".to_string()),
-      id: Err("id was not initialized".to_string()),
-      source: Ok(None),
-      source_excludes: Ok(None),
-      source_includes: Ok(None),
-      analyze_wildcard: Ok(None),
-      analyzer: Ok(None),
-      default_operator: Ok(None),
-      df: Ok(None),
-      lenient: Ok(None),
-      preference: Ok(None),
-      q: Ok(None),
-      routing: Ok(None),
-      stored_fields: Ok(None),
-    }
-  }
-
-  pub fn index<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::IndexName>, {
-    self.index = value
-      .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
-    self
-  }
-
-  pub fn id<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::DocumentId>, {
-    self.id = value
-      .try_into()
-      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
-    self
-  }
-
-  pub fn source<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Vec<String>>, {
-    self.source = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Vec < String >` for source failed".to_string());
-    self
-  }
-
-  pub fn source_excludes<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Vec<String>>, {
-    self.source_excludes = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Vec < String >` for source_excludes failed".to_string());
-    self
-  }
-
-  pub fn source_includes<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Vec<String>>, {
-    self.source_includes = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Vec < String >` for source_includes failed".to_string());
-    self
-  }
-
-  pub fn analyze_wildcard<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.analyze_wildcard = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for analyze_wildcard failed".to_string());
-    self
-  }
-
-  pub fn analyzer<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.analyzer = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for analyzer failed".to_string());
-    self
-  }
-
-  pub fn default_operator<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::DefaultOperator>, {
-    self.default_operator = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `DefaultOperator` for default_operator failed".to_string());
-    self
-  }
-
-  pub fn df<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.df = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for df failed".to_string());
-    self
-  }
-
-  pub fn lenient<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.lenient = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for lenient failed".to_string());
-    self
-  }
-
-  pub fn preference<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.preference = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for preference failed".to_string());
-    self
-  }
-
-  pub fn q<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.q = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for q failed".to_string());
-    self
-  }
-
-  pub fn routing<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.routing = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for routing failed".to_string());
-    self
-  }
-
-  pub fn stored_fields<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Vec<String>>, {
-    self.stored_fields = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Vec < String >` for stored_fields failed".to_string());
-    self
-  }
-
-  ///Sends a `GET` request to `/{index}/_explain/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
-    let Self {
-      client,
-      index,
-      id,
-      source,
-      source_excludes,
-      source_includes,
-      analyze_wildcard,
-      analyzer,
-      default_operator,
-      df,
-      lenient,
-      preference,
-      q,
-      routing,
-      stored_fields,
-    } = self;
-    let index = index.map_err(Error::InvalidRequest)?;
-    let id = id.map_err(Error::InvalidRequest)?;
-    let source = source.map_err(Error::InvalidRequest)?;
-    let source_excludes = source_excludes.map_err(Error::InvalidRequest)?;
-    let source_includes = source_includes.map_err(Error::InvalidRequest)?;
-    let analyze_wildcard = analyze_wildcard.map_err(Error::InvalidRequest)?;
-    let analyzer = analyzer.map_err(Error::InvalidRequest)?;
-    let default_operator = default_operator.map_err(Error::InvalidRequest)?;
-    let df = df.map_err(Error::InvalidRequest)?;
-    let lenient = lenient.map_err(Error::InvalidRequest)?;
-    let preference = preference.map_err(Error::InvalidRequest)?;
-    let q = q.map_err(Error::InvalidRequest)?;
-    let routing = routing.map_err(Error::InvalidRequest)?;
-    let stored_fields = stored_fields.map_err(Error::InvalidRequest)?;
-    let url = format!(
-      "{}/{}/_explain/{}",
-      client.baseurl,
-      encode_path(&index.to_string()),
-      encode_path(&id.to_string()),
-    );
-    let mut query = Vec::with_capacity(12usize);
-    if let Some(v) = &source {
-      query.push(("_source", v.join(",")));
-    }
-    if let Some(v) = &source_excludes {
-      query.push(("_source_excludes", v.join(",")));
-    }
-    if let Some(v) = &source_includes {
-      query.push(("_source_includes", v.join(",")));
-    }
-    if let Some(v) = &analyze_wildcard {
-      query.push(("analyze_wildcard", v.to_string()));
-    }
-    if let Some(v) = &analyzer {
-      query.push(("analyzer", v.to_string()));
-    }
-    if let Some(v) = &default_operator {
-      query.push(("default_operator", v.to_string()));
-    }
-    if let Some(v) = &df {
-      query.push(("df", v.to_string()));
-    }
-    if let Some(v) = &lenient {
-      query.push(("lenient", v.to_string()));
-    }
-    if let Some(v) = &preference {
-      query.push(("preference", v.to_string()));
-    }
-    if let Some(v) = &q {
-      query.push(("q", v.to_string()));
-    }
-    if let Some(v) = &routing {
-      query.push(("routing", v.to_string()));
-    }
-    if let Some(v) = &stored_fields {
-      query.push(("stored_fields", v.join(",")));
-    }
-    let request = client.client.get(url).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => {
-        Err(Error::UnexpectedResponse(
-          ReqwestResponse::from_response(response).await,
-        ))
-      }
-    }
-  }
-}
-
 ///Builder for [`Client::explain_post`]
 ///
 ///[`Client::explain_post`]: super::OsClient::explain_post
@@ -8471,7 +8200,7 @@ impl<'a> ExplainPost<'a> {
 #[derive(Debug, Clone)]
 pub struct FieldCapsGetWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::FieldCapsGetWithIndexIndex, String>,
+  index: Result<types::IndexNames, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   fields: Result<Option<Vec<String>>, String>,
@@ -8494,10 +8223,10 @@ impl<'a> FieldCapsGetWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::FieldCapsGetWithIndexIndex>, {
+    V: std::convert::TryInto<types::IndexNames>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `FieldCapsGetWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexNames` for index failed".to_string());
     self
   }
 
@@ -8605,7 +8334,7 @@ impl<'a> FieldCapsGetWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct FieldCapsPostWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::FieldCapsPostWithIndexIndex, String>,
+  index: Result<types::IndexNames, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   fields: Result<Option<Vec<String>>, String>,
@@ -8630,10 +8359,10 @@ impl<'a> FieldCapsPostWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::FieldCapsPostWithIndexIndex>, {
+    V: std::convert::TryInto<types::IndexNames>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `FieldCapsPostWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexNames` for index failed".to_string());
     self
   }
 
@@ -8935,7 +8664,7 @@ impl<'a> MgetGetWithIndex<'a> {
 ///
 ///[`Client::mget_post_with_index`]: super::OsClient::mget_post_with_index
 #[derive(Debug, Clone)]
-pub struct MgetPostWithIndex<'a> {
+pub struct MgetWithIndex<'a> {
   client: &'a super::OsClient,
   index: Result<types::IndexName, String>,
   source: Result<Option<Vec<String>>, String>,
@@ -8949,7 +8678,7 @@ pub struct MgetPostWithIndex<'a> {
   body: Result<types::MgetBodyParams, String>,
 }
 
-impl<'a> MgetPostWithIndex<'a> {
+impl<'a> MgetWithIndex<'a> {
   pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
@@ -9116,174 +8845,6 @@ impl<'a> MgetPostWithIndex<'a> {
       query.push(("stored_fields", v.join(",")));
     }
     let request = client.client.post(url).json(&body).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => {
-        Err(Error::UnexpectedResponse(
-          ReqwestResponse::from_response(response).await,
-        ))
-      }
-    }
-  }
-}
-
-///Builder for [`Client::msearch_get_with_index`]
-///
-///[`Client::msearch_get_with_index`]: super::OsClient::msearch_get_with_index
-#[derive(Debug, Clone)]
-pub struct MsearchGetWithIndex<'a> {
-  client: &'a super::OsClient,
-  index: Result<types::MsearchGetWithIndexIndex, String>,
-  ccs_minimize_roundtrips: Result<Option<bool>, String>,
-  max_concurrent_searches: Result<Option<i32>, String>,
-  max_concurrent_shard_requests: Result<Option<i32>, String>,
-  pre_filter_shard_size: Result<Option<i32>, String>,
-  rest_total_hits_as_int: Result<Option<bool>, String>,
-  search_type: Result<Option<types::SearchTypeMulti>, String>,
-  typed_keys: Result<Option<bool>, String>,
-}
-
-impl<'a> MsearchGetWithIndex<'a> {
-  pub fn new(client: &'a super::OsClient) -> Self {
-    Self {
-      client,
-      index: Err("index was not initialized".to_string()),
-      ccs_minimize_roundtrips: Ok(None),
-      max_concurrent_searches: Ok(None),
-      max_concurrent_shard_requests: Ok(None),
-      pre_filter_shard_size: Ok(None),
-      rest_total_hits_as_int: Ok(None),
-      search_type: Ok(None),
-      typed_keys: Ok(None),
-    }
-  }
-
-  pub fn index<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::MsearchGetWithIndexIndex>, {
-    self.index = value
-      .try_into()
-      .map_err(|_| "conversion to `MsearchGetWithIndexIndex` for index failed".to_string());
-    self
-  }
-
-  pub fn ccs_minimize_roundtrips<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.ccs_minimize_roundtrips = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for ccs_minimize_roundtrips failed".to_string());
-    self
-  }
-
-  pub fn max_concurrent_searches<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<i32>, {
-    self.max_concurrent_searches = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `i32` for max_concurrent_searches failed".to_string());
-    self
-  }
-
-  pub fn max_concurrent_shard_requests<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<i32>, {
-    self.max_concurrent_shard_requests = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `i32` for max_concurrent_shard_requests failed".to_string());
-    self
-  }
-
-  pub fn pre_filter_shard_size<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<i32>, {
-    self.pre_filter_shard_size = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `i32` for pre_filter_shard_size failed".to_string());
-    self
-  }
-
-  pub fn rest_total_hits_as_int<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.rest_total_hits_as_int = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for rest_total_hits_as_int failed".to_string());
-    self
-  }
-
-  pub fn search_type<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::SearchTypeMulti>, {
-    self.search_type = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `SearchTypeMulti` for search_type failed".to_string());
-    self
-  }
-
-  pub fn typed_keys<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.typed_keys = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for typed_keys failed".to_string());
-    self
-  }
-
-  ///Sends a `GET` request to `/{index}/_msearch`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
-    let Self {
-      client,
-      index,
-      ccs_minimize_roundtrips,
-      max_concurrent_searches,
-      max_concurrent_shard_requests,
-      pre_filter_shard_size,
-      rest_total_hits_as_int,
-      search_type,
-      typed_keys,
-    } = self;
-    let index = index.map_err(Error::InvalidRequest)?;
-    let ccs_minimize_roundtrips = ccs_minimize_roundtrips.map_err(Error::InvalidRequest)?;
-    let max_concurrent_searches = max_concurrent_searches.map_err(Error::InvalidRequest)?;
-    let max_concurrent_shard_requests = max_concurrent_shard_requests.map_err(Error::InvalidRequest)?;
-    let pre_filter_shard_size = pre_filter_shard_size.map_err(Error::InvalidRequest)?;
-    let rest_total_hits_as_int = rest_total_hits_as_int.map_err(Error::InvalidRequest)?;
-    let search_type = search_type.map_err(Error::InvalidRequest)?;
-    let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_msearch", client.baseurl, encode_path(&index.to_string()),);
-    let mut query = Vec::with_capacity(7usize);
-    if let Some(v) = &ccs_minimize_roundtrips {
-      query.push(("ccs_minimize_roundtrips", v.to_string()));
-    }
-    if let Some(v) = &max_concurrent_searches {
-      query.push(("max_concurrent_searches", v.to_string()));
-    }
-    if let Some(v) = &max_concurrent_shard_requests {
-      query.push(("max_concurrent_shard_requests", v.to_string()));
-    }
-    if let Some(v) = &pre_filter_shard_size {
-      query.push(("pre_filter_shard_size", v.to_string()));
-    }
-    if let Some(v) = &rest_total_hits_as_int {
-      query.push(("rest_total_hits_as_int", v.to_string()));
-    }
-    if let Some(v) = &search_type {
-      query.push(("search_type", v.to_string()));
-    }
-    if let Some(v) = &typed_keys {
-      query.push(("typed_keys", v.to_string()));
-    }
-    let request = client.client.get(url).query(&query).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
@@ -9478,144 +9039,6 @@ impl<'a> MsearchPostWithIndex<'a> {
   }
 }
 
-///Builder for [`Client::msearch_template_get_with_index`]
-///
-///[`Client::msearch_template_get_with_index`]: super::OsClient::msearch_template_get_with_index
-#[derive(Debug, Clone)]
-pub struct MsearchTemplateGetWithIndex<'a> {
-  client: &'a super::OsClient,
-  index: Result<types::MsearchTemplateGetWithIndexIndex, String>,
-  ccs_minimize_roundtrips: Result<Option<bool>, String>,
-  max_concurrent_searches: Result<Option<i32>, String>,
-  rest_total_hits_as_int: Result<Option<bool>, String>,
-  search_type: Result<Option<types::SearchTypeMulti>, String>,
-  typed_keys: Result<Option<bool>, String>,
-}
-
-impl<'a> MsearchTemplateGetWithIndex<'a> {
-  pub fn new(client: &'a super::OsClient) -> Self {
-    Self {
-      client,
-      index: Err("index was not initialized".to_string()),
-      ccs_minimize_roundtrips: Ok(None),
-      max_concurrent_searches: Ok(None),
-      rest_total_hits_as_int: Ok(None),
-      search_type: Ok(None),
-      typed_keys: Ok(None),
-    }
-  }
-
-  pub fn index<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::MsearchTemplateGetWithIndexIndex>, {
-    self.index = value
-      .try_into()
-      .map_err(|_| "conversion to `MsearchTemplateGetWithIndexIndex` for index failed".to_string());
-    self
-  }
-
-  pub fn ccs_minimize_roundtrips<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.ccs_minimize_roundtrips = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for ccs_minimize_roundtrips failed".to_string());
-    self
-  }
-
-  pub fn max_concurrent_searches<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<i32>, {
-    self.max_concurrent_searches = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `i32` for max_concurrent_searches failed".to_string());
-    self
-  }
-
-  pub fn rest_total_hits_as_int<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.rest_total_hits_as_int = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for rest_total_hits_as_int failed".to_string());
-    self
-  }
-
-  pub fn search_type<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::SearchTypeMulti>, {
-    self.search_type = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `SearchTypeMulti` for search_type failed".to_string());
-    self
-  }
-
-  pub fn typed_keys<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.typed_keys = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for typed_keys failed".to_string());
-    self
-  }
-
-  ///Sends a `GET` request to `/{index}/_msearch/template`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
-    let Self {
-      client,
-      index,
-      ccs_minimize_roundtrips,
-      max_concurrent_searches,
-      rest_total_hits_as_int,
-      search_type,
-      typed_keys,
-    } = self;
-    let index = index.map_err(Error::InvalidRequest)?;
-    let ccs_minimize_roundtrips = ccs_minimize_roundtrips.map_err(Error::InvalidRequest)?;
-    let max_concurrent_searches = max_concurrent_searches.map_err(Error::InvalidRequest)?;
-    let rest_total_hits_as_int = rest_total_hits_as_int.map_err(Error::InvalidRequest)?;
-    let search_type = search_type.map_err(Error::InvalidRequest)?;
-    let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
-    let url = format!(
-      "{}/{}/_msearch/template",
-      client.baseurl,
-      encode_path(&index.to_string()),
-    );
-    let mut query = Vec::with_capacity(5usize);
-    if let Some(v) = &ccs_minimize_roundtrips {
-      query.push(("ccs_minimize_roundtrips", v.to_string()));
-    }
-    if let Some(v) = &max_concurrent_searches {
-      query.push(("max_concurrent_searches", v.to_string()));
-    }
-    if let Some(v) = &rest_total_hits_as_int {
-      query.push(("rest_total_hits_as_int", v.to_string()));
-    }
-    if let Some(v) = &search_type {
-      query.push(("search_type", v.to_string()));
-    }
-    if let Some(v) = &typed_keys {
-      query.push(("typed_keys", v.to_string()));
-    }
-    let request = client.client.get(url).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => {
-        Err(Error::UnexpectedResponse(
-          ReqwestResponse::from_response(response).await,
-        ))
-      }
-    }
-  }
-}
-
 ///Builder for [`Client::msearch_template_post_with_index`]
 ///
 ///[`Client::msearch_template_post_with_index`]: super::OsClient::msearch_template_post_with_index
@@ -9767,130 +9190,13 @@ impl<'a> MsearchTemplatePostWithIndex<'a> {
   }
 }
 
-///Builder for [`Client::rank_eval_get_with_index`]
-///
-///[`Client::rank_eval_get_with_index`]: super::OsClient::rank_eval_get_with_index
-#[derive(Debug, Clone)]
-pub struct RankEvalGetWithIndex<'a> {
-  client: &'a super::OsClient,
-  index: Result<types::RankEvalGetWithIndexIndex, String>,
-  allow_no_indices: Result<Option<bool>, String>,
-  expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
-  ignore_unavailable: Result<Option<bool>, String>,
-  search_type: Result<Option<types::SearchType>, String>,
-}
-
-impl<'a> RankEvalGetWithIndex<'a> {
-  pub fn new(client: &'a super::OsClient) -> Self {
-    Self {
-      client,
-      index: Err("index was not initialized".to_string()),
-      allow_no_indices: Ok(None),
-      expand_wildcards: Ok(None),
-      ignore_unavailable: Ok(None),
-      search_type: Ok(None),
-    }
-  }
-
-  pub fn index<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::RankEvalGetWithIndexIndex>, {
-    self.index = value
-      .try_into()
-      .map_err(|_| "conversion to `RankEvalGetWithIndexIndex` for index failed".to_string());
-    self
-  }
-
-  pub fn allow_no_indices<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.allow_no_indices = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for allow_no_indices failed".to_string());
-    self
-  }
-
-  pub fn expand_wildcards<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::ExpandWildcards>, {
-    self.expand_wildcards = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `ExpandWildcards` for expand_wildcards failed".to_string());
-    self
-  }
-
-  pub fn ignore_unavailable<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.ignore_unavailable = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for ignore_unavailable failed".to_string());
-    self
-  }
-
-  pub fn search_type<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::SearchType>, {
-    self.search_type = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `SearchType` for search_type failed".to_string());
-    self
-  }
-
-  ///Sends a `GET` request to `/{index}/_rank_eval`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
-    let Self {
-      client,
-      index,
-      allow_no_indices,
-      expand_wildcards,
-      ignore_unavailable,
-      search_type,
-    } = self;
-    let index = index.map_err(Error::InvalidRequest)?;
-    let allow_no_indices = allow_no_indices.map_err(Error::InvalidRequest)?;
-    let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
-    let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
-    let search_type = search_type.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_rank_eval", client.baseurl, encode_path(&index.to_string()),);
-    let mut query = Vec::with_capacity(4usize);
-    if let Some(v) = &allow_no_indices {
-      query.push(("allow_no_indices", v.to_string()));
-    }
-    if let Some(v) = &expand_wildcards {
-      query.push(("expand_wildcards", v.to_string()));
-    }
-    if let Some(v) = &ignore_unavailable {
-      query.push(("ignore_unavailable", v.to_string()));
-    }
-    if let Some(v) = &search_type {
-      query.push(("search_type", v.to_string()));
-    }
-    let request = client.client.get(url).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => {
-        Err(Error::UnexpectedResponse(
-          ReqwestResponse::from_response(response).await,
-        ))
-      }
-    }
-  }
-}
-
 ///Builder for [`Client::rank_eval_post_with_index`]
 ///
 ///[`Client::rank_eval_post_with_index`]: super::OsClient::rank_eval_post_with_index
 #[derive(Debug, Clone)]
 pub struct RankEvalPostWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::RankEvalPostWithIndexIndex, String>,
+  index: Result<types::IndexNames, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -9913,10 +9219,10 @@ impl<'a> RankEvalPostWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::RankEvalPostWithIndexIndex>, {
+    V: std::convert::TryInto<types::IndexNames>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `RankEvalPostWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexNames` for index failed".to_string());
     self
   }
 
@@ -10020,7 +9326,7 @@ impl<'a> RankEvalPostWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct SearchPostWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::SearchPostWithIndexIndex, String>,
+  index: Result<types::IndexNames, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -10119,10 +9425,10 @@ impl<'a> SearchPostWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SearchPostWithIndexIndex>, {
+    V: std::convert::TryInto<types::IndexNames>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `SearchPostWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexNames` for index failed".to_string());
     self
   }
 
@@ -10818,7 +10124,7 @@ impl<'a> SearchPostWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct CreatePit<'a> {
   client: &'a super::OsClient,
-  index: Result<types::CreatePitIndex, String>,
+  index: Result<types::IndexNames, String>,
   allow_partial_pit_creation: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   keep_alive: Result<Option<String>, String>,
@@ -10841,10 +10147,10 @@ impl<'a> CreatePit<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CreatePitIndex>, {
+    V: std::convert::TryInto<types::IndexNames>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `CreatePitIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexNames` for index failed".to_string());
     self
   }
 
@@ -10958,287 +10264,13 @@ impl<'a> CreatePit<'a> {
   }
 }
 
-///Builder for [`Client::search_template_get_with_index`]
-///
-///[`Client::search_template_get_with_index`]: super::OsClient::search_template_get_with_index
-#[derive(Debug, Clone)]
-pub struct SearchTemplateGetWithIndex<'a> {
-  client: &'a super::OsClient,
-  index: Result<types::SearchTemplateGetWithIndexIndex, String>,
-  allow_no_indices: Result<Option<bool>, String>,
-  ccs_minimize_roundtrips: Result<Option<bool>, String>,
-  expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
-  explain: Result<Option<bool>, String>,
-  ignore_throttled: Result<Option<bool>, String>,
-  ignore_unavailable: Result<Option<bool>, String>,
-  preference: Result<Option<String>, String>,
-  profile: Result<Option<bool>, String>,
-  rest_total_hits_as_int: Result<Option<bool>, String>,
-  routing: Result<Option<Vec<String>>, String>,
-  scroll: Result<Option<types::SearchTemplateGetWithIndexScroll>, String>,
-  search_type: Result<Option<types::SearchTypeMulti>, String>,
-  typed_keys: Result<Option<bool>, String>,
-}
-
-impl<'a> SearchTemplateGetWithIndex<'a> {
-  pub fn new(client: &'a super::OsClient) -> Self {
-    Self {
-      client,
-      index: Err("index was not initialized".to_string()),
-      allow_no_indices: Ok(None),
-      ccs_minimize_roundtrips: Ok(None),
-      expand_wildcards: Ok(None),
-      explain: Ok(None),
-      ignore_throttled: Ok(None),
-      ignore_unavailable: Ok(None),
-      preference: Ok(None),
-      profile: Ok(None),
-      rest_total_hits_as_int: Ok(None),
-      routing: Ok(None),
-      scroll: Ok(None),
-      search_type: Ok(None),
-      typed_keys: Ok(None),
-    }
-  }
-
-  pub fn index<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::SearchTemplateGetWithIndexIndex>, {
-    self.index = value
-      .try_into()
-      .map_err(|_| "conversion to `SearchTemplateGetWithIndexIndex` for index failed".to_string());
-    self
-  }
-
-  pub fn allow_no_indices<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.allow_no_indices = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for allow_no_indices failed".to_string());
-    self
-  }
-
-  pub fn ccs_minimize_roundtrips<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.ccs_minimize_roundtrips = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for ccs_minimize_roundtrips failed".to_string());
-    self
-  }
-
-  pub fn expand_wildcards<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::ExpandWildcards>, {
-    self.expand_wildcards = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `ExpandWildcards` for expand_wildcards failed".to_string());
-    self
-  }
-
-  pub fn explain<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.explain = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for explain failed".to_string());
-    self
-  }
-
-  pub fn ignore_throttled<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.ignore_throttled = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for ignore_throttled failed".to_string());
-    self
-  }
-
-  pub fn ignore_unavailable<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.ignore_unavailable = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for ignore_unavailable failed".to_string());
-    self
-  }
-
-  pub fn preference<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<String>, {
-    self.preference = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `String` for preference failed".to_string());
-    self
-  }
-
-  pub fn profile<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.profile = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for profile failed".to_string());
-    self
-  }
-
-  pub fn rest_total_hits_as_int<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.rest_total_hits_as_int = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for rest_total_hits_as_int failed".to_string());
-    self
-  }
-
-  pub fn routing<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Vec<String>>, {
-    self.routing = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Vec < String >` for routing failed".to_string());
-    self
-  }
-
-  pub fn scroll<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::SearchTemplateGetWithIndexScroll>, {
-    self.scroll = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `SearchTemplateGetWithIndexScroll` for scroll failed".to_string());
-    self
-  }
-
-  pub fn search_type<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::SearchTypeMulti>, {
-    self.search_type = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `SearchTypeMulti` for search_type failed".to_string());
-    self
-  }
-
-  pub fn typed_keys<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.typed_keys = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for typed_keys failed".to_string());
-    self
-  }
-
-  ///Sends a `GET` request to `/{index}/_search/template`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
-    let Self {
-      client,
-      index,
-      allow_no_indices,
-      ccs_minimize_roundtrips,
-      expand_wildcards,
-      explain,
-      ignore_throttled,
-      ignore_unavailable,
-      preference,
-      profile,
-      rest_total_hits_as_int,
-      routing,
-      scroll,
-      search_type,
-      typed_keys,
-    } = self;
-    let index = index.map_err(Error::InvalidRequest)?;
-    let allow_no_indices = allow_no_indices.map_err(Error::InvalidRequest)?;
-    let ccs_minimize_roundtrips = ccs_minimize_roundtrips.map_err(Error::InvalidRequest)?;
-    let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
-    let explain = explain.map_err(Error::InvalidRequest)?;
-    let ignore_throttled = ignore_throttled.map_err(Error::InvalidRequest)?;
-    let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
-    let preference = preference.map_err(Error::InvalidRequest)?;
-    let profile = profile.map_err(Error::InvalidRequest)?;
-    let rest_total_hits_as_int = rest_total_hits_as_int.map_err(Error::InvalidRequest)?;
-    let routing = routing.map_err(Error::InvalidRequest)?;
-    let scroll = scroll.map_err(Error::InvalidRequest)?;
-    let search_type = search_type.map_err(Error::InvalidRequest)?;
-    let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
-    let url = format!(
-      "{}/{}/_search/template",
-      client.baseurl,
-      encode_path(&index.to_string()),
-    );
-    let mut query = Vec::with_capacity(13usize);
-    if let Some(v) = &allow_no_indices {
-      query.push(("allow_no_indices", v.to_string()));
-    }
-    if let Some(v) = &ccs_minimize_roundtrips {
-      query.push(("ccs_minimize_roundtrips", v.to_string()));
-    }
-    if let Some(v) = &expand_wildcards {
-      query.push(("expand_wildcards", v.to_string()));
-    }
-    if let Some(v) = &explain {
-      query.push(("explain", v.to_string()));
-    }
-    if let Some(v) = &ignore_throttled {
-      query.push(("ignore_throttled", v.to_string()));
-    }
-    if let Some(v) = &ignore_unavailable {
-      query.push(("ignore_unavailable", v.to_string()));
-    }
-    if let Some(v) = &preference {
-      query.push(("preference", v.to_string()));
-    }
-    if let Some(v) = &profile {
-      query.push(("profile", v.to_string()));
-    }
-    if let Some(v) = &rest_total_hits_as_int {
-      query.push(("rest_total_hits_as_int", v.to_string()));
-    }
-    if let Some(v) = &routing {
-      query.push(("routing", v.join(",")));
-    }
-    if let Some(v) = &scroll {
-      query.push(("scroll", v.to_string()));
-    }
-    if let Some(v) = &search_type {
-      query.push(("search_type", v.to_string()));
-    }
-    if let Some(v) = &typed_keys {
-      query.push(("typed_keys", v.to_string()));
-    }
-    let request = client.client.get(url).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => {
-        Err(Error::UnexpectedResponse(
-          ReqwestResponse::from_response(response).await,
-        ))
-      }
-    }
-  }
-}
-
 ///Builder for [`Client::search_template_post_with_index`]
 ///
 ///[`Client::search_template_post_with_index`]: super::OsClient::search_template_post_with_index
 #[derive(Debug, Clone)]
 pub struct SearchTemplatePostWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::SearchTemplatePostWithIndexIndex, String>,
+  index: Result<types::IndexNames, String>,
   allow_no_indices: Result<Option<bool>, String>,
   ccs_minimize_roundtrips: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
@@ -11279,10 +10311,10 @@ impl<'a> SearchTemplatePostWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SearchTemplatePostWithIndexIndex>, {
+    V: std::convert::TryInto<types::IndexNames>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `SearchTemplatePostWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexNames` for index failed".to_string());
     self
   }
 
@@ -11525,7 +10557,7 @@ impl<'a> SearchTemplatePostWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct SearchShardsGetWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::SearchShardsGetWithIndexIndex, String>,
+  index: Result<types::IndexNames, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -11550,10 +10582,10 @@ impl<'a> SearchShardsGetWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SearchShardsGetWithIndexIndex>, {
+    V: std::convert::TryInto<types::IndexNames>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `SearchShardsGetWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexNames` for index failed".to_string());
     self
   }
 
@@ -11676,7 +10708,7 @@ impl<'a> SearchShardsGetWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct SearchShardsPostWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::SearchShardsPostWithIndexIndex, String>,
+  index: Result<types::IndexNames, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<types::ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -11701,10 +10733,10 @@ impl<'a> SearchShardsPostWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SearchShardsPostWithIndexIndex>, {
+    V: std::convert::TryInto<types::IndexNames>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `SearchShardsPostWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexNames` for index failed".to_string());
     self
   }
 
@@ -13557,7 +12589,7 @@ impl<'a> Update<'a> {
 #[derive(Debug, Clone)]
 pub struct UpdateByQuery<'a> {
   client: &'a super::OsClient,
-  index: Result<types::UpdateByQueryIndex, String>,
+  index: Result<types::IndexNames, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -13640,10 +12672,10 @@ impl<'a> UpdateByQuery<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::UpdateByQueryIndex>, {
+    V: std::convert::TryInto<types::IndexNames>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `UpdateByQueryIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexNames` for index failed".to_string());
     self
   }
 

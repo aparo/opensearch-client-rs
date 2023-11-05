@@ -1894,7 +1894,7 @@ impl<'a> ClusterStateWithMetric<'a> {
 pub struct ClusterStateWithIndexMetric<'a> {
   client: &'a super::OsClient,
   metric: Result<types::ClusterStateWithIndexMetricMetric, String>,
-  index: Result<types::ClusterStateWithIndexMetricIndex, String>,
+  index: Result<IndexNames, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
@@ -1934,7 +1934,7 @@ impl<'a> ClusterStateWithIndexMetric<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterStateWithIndexMetricIndex>, {
+    V: std::convert::TryInto<IndexNames>, {
     self.index = value
       .try_into()
       .map_err(|_| "conversion to `ClusterStateWithIndexMetricIndex` for index failed".to_string());

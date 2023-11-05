@@ -41,4 +41,8 @@ url = "2.4.1"
 miette = "5.10.0"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-http-cache-reqwest = "0.11.3"
+http-cache-reqwest = "0.12.0"
+
+[features]
+default = ["ingest"]
+ingest=[]

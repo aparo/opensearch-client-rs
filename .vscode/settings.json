@@ -1,19 +1,20 @@
 {
-    "cSpell.words": [
-        "actiongroups",
-        "fielddata",
-        "forcemerge",
-        "internalusers",
-        "msearch",
-        "mtermvectors",
-        "Nodeattrs",
-        "nodesdn",
-        "reindex",
-        "reqwest",
-        "Rethrottle",
-        "rolesmapping",
-        "securityconfig",
-        "termvectors",
-        "urlencode"
-    ]
+  "cSpell.words": [
+    "actiongroups",
+    "fielddata",
+    "forcemerge",
+    "internalusers",
+    "msearch",
+    "mtermvectors",
+    "Nodeattrs",
+    "nodesdn",
+    "reindex",
+    "reqwest",
+    "Rethrottle",
+    "rolesmapping",
+    "securityconfig",
+    "termvectors",
+    "urlencode"
+  ],
+  "rust-analyzer.cargo.features": ["ingest"]
 }

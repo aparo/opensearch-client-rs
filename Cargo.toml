@@ -2,6 +2,7 @@
 members = [
   "opensearch-dsl",
   "opensearch-client",
+  "opensearch-cli",
   "xtask",
   "examples/*",
 ]

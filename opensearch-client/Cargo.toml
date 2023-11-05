@@ -44,5 +44,12 @@ miette = "5.10.0"
 http-cache-reqwest = "0.12.0"
 
 [features]
-default = ["ingest"]
+default = ["cat", "cluster", "indices", "ingest", "nodes", "remote", "snapshot", "tasks"]
+cat=[]
+cluster=[]
+indices=[]
 ingest=[]
+nodes=[]
+remote=[]
+snapshot=[]
+tasks=[]

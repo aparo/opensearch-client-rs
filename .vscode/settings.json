@@ -16,5 +16,14 @@
     "termvectors",
     "urlencode"
   ],
-  "rust-analyzer.cargo.features": ["ingest"]
+  "rust-analyzer.cargo.features": [
+    "cat",
+    "cluster",
+    "indices",
+    "ingest",
+    "nodes",
+    "remote",
+    "snapshot",
+    "tasks"
+  ]
 }

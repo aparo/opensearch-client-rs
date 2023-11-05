@@ -3,14 +3,6 @@ use std::convert::TryFrom;
 
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
-
-
-
-
-
-
-
-
 ///Pipeline ID.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct IngestDeletePipelineId(String);
@@ -85,46 +77,6 @@ impl<'de> serde::Deserialize<'de> for IngestDeletePipelineId {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ///Comma-separated list of pipeline ids. Wildcards supported.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct IngestGetPipelineWithIdId(String);
@@ -198,14 +150,6 @@ impl<'de> serde::Deserialize<'de> for IngestGetPipelineWithIdId {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
-
-
-
-
-
-
-
 
 ///The ingest definition
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -309,22 +253,6 @@ impl<'de> serde::Deserialize<'de> for IngestPutPipelineId {
       .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ///The simulate definition
 #[derive(Clone, Debug, Deserialize, Serialize)]

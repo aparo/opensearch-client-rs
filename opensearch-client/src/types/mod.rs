@@ -362,79 +362,13 @@ impl From<serde_json::Map<String, serde_json::Value>> for CountBodyParams {
   }
 }
 
-///Comma-separated list of indices to restrict the results.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct CountIndex(String);
-impl std::ops::Deref for CountIndex {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<CountIndex> for String {
-  fn from(value: CountIndex) -> Self {
-    value.0
-  }
-}
 
-impl From<&CountIndex> for CountIndex {
-  fn from(value: &CountIndex) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for CountIndex {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for CountIndex {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for CountIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for CountIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for CountIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The document
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -1958,153 +1892,21 @@ impl From<serde_json::Map<String, serde_json::Value>> for MsearchBodyParams {
   }
 }
 
-///Comma-separated list of indices to use as default.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct MsearchGetWithIndexIndex(String);
-impl std::ops::Deref for MsearchGetWithIndexIndex {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<MsearchGetWithIndexIndex> for String {
-  fn from(value: MsearchGetWithIndexIndex) -> Self {
-    value.0
-  }
-}
 
-impl From<&MsearchGetWithIndexIndex> for MsearchGetWithIndexIndex {
-  fn from(value: &MsearchGetWithIndexIndex) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for MsearchGetWithIndexIndex {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for MsearchGetWithIndexIndex {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<&String> for MsearchGetWithIndexIndex {
-  type Error = &'static str;
 
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<String> for MsearchGetWithIndexIndex {
-  type Error = &'static str;
 
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl<'de> serde::Deserialize<'de> for MsearchGetWithIndexIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
-///Comma-separated list of indices to use as default.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct MsearchPostWithIndexIndex(String);
-impl std::ops::Deref for MsearchPostWithIndexIndex {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<MsearchPostWithIndexIndex> for String {
-  fn from(value: MsearchPostWithIndexIndex) -> Self {
-    value.0
-  }
-}
-
-impl From<&MsearchPostWithIndexIndex> for MsearchPostWithIndexIndex {
-  fn from(value: &MsearchPostWithIndexIndex) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for MsearchPostWithIndexIndex {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for MsearchPostWithIndexIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for MsearchPostWithIndexIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for MsearchPostWithIndexIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for MsearchPostWithIndexIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The request definitions (metadata-search request definition pairs),
 /// separated by newlines
@@ -2136,153 +1938,21 @@ impl From<serde_json::Map<String, serde_json::Value>> for MsearchTemplateBodyPar
   }
 }
 
-///Comma-separated list of indices to use as default.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct MsearchTemplateGetWithIndexIndex(String);
-impl std::ops::Deref for MsearchTemplateGetWithIndexIndex {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<MsearchTemplateGetWithIndexIndex> for String {
-  fn from(value: MsearchTemplateGetWithIndexIndex) -> Self {
-    value.0
-  }
-}
 
-impl From<&MsearchTemplateGetWithIndexIndex> for MsearchTemplateGetWithIndexIndex {
-  fn from(value: &MsearchTemplateGetWithIndexIndex) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for MsearchTemplateGetWithIndexIndex {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for MsearchTemplateGetWithIndexIndex {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<&String> for MsearchTemplateGetWithIndexIndex {
-  type Error = &'static str;
 
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<String> for MsearchTemplateGetWithIndexIndex {
-  type Error = &'static str;
 
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl<'de> serde::Deserialize<'de> for MsearchTemplateGetWithIndexIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
-///Comma-separated list of indices to use as default.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct MsearchTemplatePostWithIndexIndex(String);
-impl std::ops::Deref for MsearchTemplatePostWithIndexIndex {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<MsearchTemplatePostWithIndexIndex> for String {
-  fn from(value: MsearchTemplatePostWithIndexIndex) -> Self {
-    value.0
-  }
-}
-
-impl From<&MsearchTemplatePostWithIndexIndex> for MsearchTemplatePostWithIndexIndex {
-  fn from(value: &MsearchTemplatePostWithIndexIndex) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for MsearchTemplatePostWithIndexIndex {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for MsearchTemplatePostWithIndexIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for MsearchTemplatePostWithIndexIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for MsearchTemplatePostWithIndexIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for MsearchTemplatePostWithIndexIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///Operation timeout.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -4941,301 +4611,37 @@ impl From<serde_json::Map<String, serde_json::Value>> for TermvectorsBodyParams 
   }
 }
 
-///The index in which the document resides.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct TermvectorsGetIndex(String);
-impl std::ops::Deref for TermvectorsGetIndex {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<TermvectorsGetIndex> for String {
-  fn from(value: TermvectorsGetIndex) -> Self {
-    value.0
-  }
-}
 
-impl From<&TermvectorsGetIndex> for TermvectorsGetIndex {
-  fn from(value: &TermvectorsGetIndex) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for TermvectorsGetIndex {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for TermvectorsGetIndex {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<&String> for TermvectorsGetIndex {
-  type Error = &'static str;
 
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<String> for TermvectorsGetIndex {
-  type Error = &'static str;
 
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl<'de> serde::Deserialize<'de> for TermvectorsGetIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
-///The index in which the document resides.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct TermvectorsGetWithIdIndex(String);
-impl std::ops::Deref for TermvectorsGetWithIdIndex {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<TermvectorsGetWithIdIndex> for String {
-  fn from(value: TermvectorsGetWithIdIndex) -> Self {
-    value.0
-  }
-}
 
-impl From<&TermvectorsGetWithIdIndex> for TermvectorsGetWithIdIndex {
-  fn from(value: &TermvectorsGetWithIdIndex) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for TermvectorsGetWithIdIndex {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
 
-impl std::convert::TryFrom<&str> for TermvectorsGetWithIdIndex {
-  type Error = &'static str;
 
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<&String> for TermvectorsGetWithIdIndex {
-  type Error = &'static str;
 
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl std::convert::TryFrom<String> for TermvectorsGetWithIdIndex {
-  type Error = &'static str;
 
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
 
-impl<'de> serde::Deserialize<'de> for TermvectorsGetWithIdIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
-///The index in which the document resides.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct TermvectorsPostIndex(String);
-impl std::ops::Deref for TermvectorsPostIndex {
-  type Target = String;
 
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
 
-impl From<TermvectorsPostIndex> for String {
-  fn from(value: TermvectorsPostIndex) -> Self {
-    value.0
-  }
-}
 
-impl From<&TermvectorsPostIndex> for TermvectorsPostIndex {
-  fn from(value: &TermvectorsPostIndex) -> Self {
-    value.clone()
-  }
-}
 
-impl std::str::FromStr for TermvectorsPostIndex {
-  type Err = &'static str;
 
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for TermvectorsPostIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for TermvectorsPostIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for TermvectorsPostIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for TermvectorsPostIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
-
-///The index in which the document resides.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct TermvectorsPostWithIdIndex(String);
-impl std::ops::Deref for TermvectorsPostWithIdIndex {
-  type Target = String;
-
-  fn deref(&self) -> &String {
-    &self.0
-  }
-}
-
-impl From<TermvectorsPostWithIdIndex> for String {
-  fn from(value: TermvectorsPostWithIdIndex) -> Self {
-    value.0
-  }
-}
-
-impl From<&TermvectorsPostWithIdIndex> for TermvectorsPostWithIdIndex {
-  fn from(value: &TermvectorsPostWithIdIndex) -> Self {
-    value.clone()
-  }
-}
-
-impl std::str::FromStr for TermvectorsPostWithIdIndex {
-  type Err = &'static str;
-
-  fn from_str(value: &str) -> Result<Self, &'static str> {
-    if regress::Regex::new("^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$")
-      .unwrap()
-      .find(value)
-      .is_none()
-    {
-      return Err(
-        "doesn't match pattern \"^(?!_|template|query|field|point|clear|usage|stats|hot|reload|painless).+$\"",
-      );
-    }
-    Ok(Self(value.to_string()))
-  }
-}
-
-impl std::convert::TryFrom<&str> for TermvectorsPostWithIdIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &str) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<&String> for TermvectorsPostWithIdIndex {
-  type Error = &'static str;
-
-  fn try_from(value: &String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl std::convert::TryFrom<String> for TermvectorsPostWithIdIndex {
-  type Error = &'static str;
-
-  fn try_from(value: String) -> Result<Self, &'static str> {
-    value.parse()
-  }
-}
-
-impl<'de> serde::Deserialize<'de> for TermvectorsPostWithIdIndex {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-  where
-    D: serde::Deserializer<'de>, {
-    String::deserialize(deserializer)?
-      .parse()
-      .map_err(|e: &'static str| <D::Error as serde::de::Error>::custom(e.to_string()))
-  }
-}
 
 ///The unit in which to display time values.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]

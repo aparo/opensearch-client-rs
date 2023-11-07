@@ -2247,7 +2247,7 @@ impl<'a> IndicesPutIndexTemplatePost<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesDeleteIndexTemplate<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesDeleteIndexTemplateName, String>,
+  name: Result<IndexName, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -2265,10 +2265,10 @@ impl<'a> IndicesDeleteIndexTemplate<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesDeleteIndexTemplateName>, {
+    V: std::convert::TryInto<IndexName>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesDeleteIndexTemplateName` for name failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for name failed".to_string());
     self
   }
 
@@ -2949,7 +2949,7 @@ impl<'a> IndicesRefreshPost<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesResolveIndex<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesResolveIndexName, String>,
+  name: Result<IndexName, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
 }
 impl<'a> IndicesResolveIndex<'a> {
@@ -2963,10 +2963,10 @@ impl<'a> IndicesResolveIndex<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesResolveIndexName>, {
+    V: std::convert::TryInto<IndexName>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesResolveIndexName` for name failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for name failed".to_string());
     self
   }
 
@@ -5647,8 +5647,8 @@ impl<'a> IndicesRollover<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesRolloverWithNewIndex<'a> {
   client: &'a super::OsClient,
-  alias: Result<types::IndicesRolloverWithNewIndexAlias, String>,
-  new_index: Result<types::IndicesRolloverWithNewIndexNewIndex, String>,
+  alias: Result<IndexName, String>,
+  new_index: Result<IndexName, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   dry_run: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
@@ -5673,19 +5673,19 @@ impl<'a> IndicesRolloverWithNewIndex<'a> {
 
   pub fn alias<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesRolloverWithNewIndexAlias>, {
+    V: std::convert::TryInto<IndexName>, {
     self.alias = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesRolloverWithNewIndexAlias` for alias failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for alias failed".to_string());
     self
   }
 
   pub fn new_index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesRolloverWithNewIndexNewIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.new_index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesRolloverWithNewIndexNewIndex` for new_index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for new_index failed".to_string());
     self
   }
 
@@ -5810,7 +5810,7 @@ impl<'a> IndicesRolloverWithNewIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGet<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesGetIndex, String>,
+  index: Result<IndexName, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
@@ -5838,10 +5838,10 @@ impl<'a> IndicesGet<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesGetIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -6140,7 +6140,7 @@ impl<'a> IndicesCreate<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesDelete<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesDeleteIndex, String>,
+  index: Result<IndexName, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -6162,10 +6162,10 @@ impl<'a> IndicesDelete<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesDeleteIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesDeleteIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -6280,7 +6280,7 @@ impl<'a> IndicesDelete<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesExists<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesExistsIndex, String>,
+  index: Result<IndexName, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   flat_settings: Result<Option<bool>, String>,
@@ -6304,10 +6304,10 @@ impl<'a> IndicesExists<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesExistsIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesExistsIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -6429,7 +6429,7 @@ impl<'a> IndicesExists<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGetAliasWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesGetAliasWithIndexIndex, String>,
+  index: Result<IndexName, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -6449,10 +6449,10 @@ impl<'a> IndicesGetAliasWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetAliasWithIndexIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesGetAliasWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -6544,8 +6544,8 @@ impl<'a> IndicesGetAliasWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGetAliasWithIndexName<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesGetAliasWithIndexNameIndex, String>,
-  name: Result<types::IndicesGetAliasWithIndexNameName, String>,
+  index: Result<IndexName, String>,
+  name: Result<IndexName, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -6566,19 +6566,19 @@ impl<'a> IndicesGetAliasWithIndexName<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetAliasWithIndexNameIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesGetAliasWithIndexNameIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetAliasWithIndexNameName>, {
+    V: std::convert::TryInto<IndexName>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesGetAliasWithIndexNameName` for name failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for name failed".to_string());
     self
   }
 
@@ -7051,8 +7051,8 @@ impl<'a> IndicesDeleteAlias<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesExistsAliasWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesExistsAliasWithIndexIndex, String>,
-  name: Result<types::IndicesExistsAliasWithIndexName, String>,
+  index: Result<IndexName, String>,
+  name: Result<IndexName, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -7073,19 +7073,19 @@ impl<'a> IndicesExistsAliasWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesExistsAliasWithIndexIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesExistsAliasWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesExistsAliasWithIndexName>, {
+    V: std::convert::TryInto<IndexName>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesExistsAliasWithIndexName` for name failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for name failed".to_string());
     self
   }
 
@@ -7670,7 +7670,7 @@ impl<'a> IndicesAnalyzePostWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesAddBlock<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesAddBlockIndex, String>,
+  index: Result<IndexName, String>,
   block: Result<types::IndicesAddBlockBlock, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
@@ -7696,10 +7696,10 @@ impl<'a> IndicesAddBlock<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesAddBlockIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesAddBlockIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -8016,7 +8016,7 @@ impl<'a> IndicesClearCacheWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesClonePut<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesClonePutIndex, String>,
+  index: Result<IndexName, String>,
   target: Result<types::IndicesClonePutTarget, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
@@ -8040,10 +8040,10 @@ impl<'a> IndicesClonePut<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesClonePutIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesClonePutIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -8162,7 +8162,7 @@ impl<'a> IndicesClonePut<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesClonePost<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesClonePostIndex, String>,
+  index: Result<IndexName, String>,
   target: Result<types::IndicesClonePostTarget, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
@@ -8186,10 +8186,10 @@ impl<'a> IndicesClonePost<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesClonePostIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesClonePostIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -8308,7 +8308,7 @@ impl<'a> IndicesClonePost<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesClose<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesCloseIndex, String>,
+  index: Result<IndexName, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
@@ -8334,10 +8334,10 @@ impl<'a> IndicesClose<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesCloseIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesCloseIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -8887,7 +8887,7 @@ impl<'a> IndicesForcemergeWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGetMappingWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesGetMappingWithIndexIndex, String>,
+  index: Result<IndexName, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
@@ -8911,10 +8911,10 @@ impl<'a> IndicesGetMappingWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetMappingWithIndexIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesGetMappingWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -9412,7 +9412,7 @@ impl<'a> IndicesPutMappingPost<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGetFieldMappingWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesGetFieldMappingWithIndexIndex, String>,
+  index: Result<IndexName, String>,
   fields: Result<types::IndicesGetFieldMappingWithIndexFields, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
@@ -9436,10 +9436,10 @@ impl<'a> IndicesGetFieldMappingWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetFieldMappingWithIndexIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesGetFieldMappingWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -9562,7 +9562,7 @@ impl<'a> IndicesGetFieldMappingWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesOpen<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesOpenIndex, String>,
+  index: Result<IndexName, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -9586,10 +9586,10 @@ impl<'a> IndicesOpen<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesOpenIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesOpenIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -10798,7 +10798,7 @@ impl<'a> IndicesShardStoresWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesShrinkPut<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesShrinkPutIndex, String>,
+  index: Result<IndexName, String>,
   target: Result<types::IndicesShrinkPutTarget, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   copy_settings: Result<Option<bool>, String>,
@@ -10824,10 +10824,10 @@ impl<'a> IndicesShrinkPut<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesShrinkPutIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesShrinkPutIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -10961,7 +10961,7 @@ impl<'a> IndicesShrinkPut<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesShrinkPost<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesShrinkPostIndex, String>,
+  index: Result<IndexName, String>,
   target: Result<types::IndicesShrinkPostTarget, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   copy_settings: Result<Option<bool>, String>,
@@ -10987,10 +10987,10 @@ impl<'a> IndicesShrinkPost<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesShrinkPostIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesShrinkPostIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -11124,7 +11124,7 @@ impl<'a> IndicesShrinkPost<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesSplitPut<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesSplitPutIndex, String>,
+  index: Result<IndexName, String>,
   target: Result<types::IndicesSplitPutTarget, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   copy_settings: Result<Option<bool>, String>,
@@ -11150,10 +11150,10 @@ impl<'a> IndicesSplitPut<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesSplitPutIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesSplitPutIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -11287,7 +11287,7 @@ impl<'a> IndicesSplitPut<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesSplitPost<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndicesSplitPostIndex, String>,
+  index: Result<IndexName, String>,
   target: Result<types::IndicesSplitPostTarget, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   copy_settings: Result<Option<bool>, String>,
@@ -11313,10 +11313,10 @@ impl<'a> IndicesSplitPost<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesSplitPostIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesSplitPostIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 

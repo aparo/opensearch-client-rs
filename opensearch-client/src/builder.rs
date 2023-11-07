@@ -5560,7 +5560,7 @@ impl<'a> UpdateByQueryRethrottle<'a> {
 #[derive(Debug, Clone)]
 pub struct Count<'a> {
   client: &'a super::OsClient,
-  index: Result<Vec<types::CountIndex>, String>,
+  index: Result<Vec<types::IndexName>, String>,
   allow_no_indices: Result<Option<bool>, String>,
   analyze_wildcard: Result<Option<bool>, String>,
   analyzer: Result<Option<String>, String>,
@@ -5603,10 +5603,10 @@ impl<'a> Count<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<Vec<types::CountIndex>>, {
+    V: std::convert::TryInto<Vec<types::IndexName>>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `CountIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -8864,7 +8864,7 @@ impl<'a> MgetWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct MsearchPostWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::MsearchPostWithIndexIndex, String>,
+  index: Result<types::IndexName, String>,
   ccs_minimize_roundtrips: Result<Option<bool>, String>,
   max_concurrent_searches: Result<Option<i32>, String>,
   max_concurrent_shard_requests: Result<Option<i32>, String>,
@@ -8893,10 +8893,10 @@ impl<'a> MsearchPostWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::MsearchPostWithIndexIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `MsearchPostWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -9045,7 +9045,7 @@ impl<'a> MsearchPostWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct MsearchTemplatePostWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::MsearchTemplatePostWithIndexIndex, String>,
+  index: Result<types::IndexName, String>,
   ccs_minimize_roundtrips: Result<Option<bool>, String>,
   max_concurrent_searches: Result<Option<i32>, String>,
   rest_total_hits_as_int: Result<Option<bool>, String>,
@@ -9070,10 +9070,10 @@ impl<'a> MsearchTemplatePostWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::MsearchTemplatePostWithIndexIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `MsearchTemplatePostWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -11299,7 +11299,7 @@ impl<'a> ExistsSource<'a> {
 #[derive(Debug, Clone)]
 pub struct TermvectorsGet<'a> {
   client: &'a super::OsClient,
-  index: Result<types::TermvectorsGetIndex, String>,
+  index: Result<types::IndexName, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
   offsets: Result<Option<bool>, String>,
@@ -11334,10 +11334,10 @@ impl<'a> TermvectorsGet<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::TermvectorsGetIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `TermvectorsGetIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -11535,7 +11535,7 @@ impl<'a> TermvectorsGet<'a> {
 #[derive(Debug, Clone)]
 pub struct TermvectorsPost<'a> {
   client: &'a super::OsClient,
-  index: Result<types::TermvectorsPostIndex, String>,
+  index: Result<types::IndexName, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
   offsets: Result<Option<bool>, String>,
@@ -11572,10 +11572,10 @@ impl<'a> TermvectorsPost<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::TermvectorsPostIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `TermvectorsPostIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -11784,7 +11784,7 @@ impl<'a> TermvectorsPost<'a> {
 #[derive(Debug, Clone)]
 pub struct TermvectorsGetWithId<'a> {
   client: &'a super::OsClient,
-  index: Result<types::TermvectorsGetWithIdIndex, String>,
+  index: Result<types::IndexName, String>,
   id: Result<types::DocumentId, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
@@ -11821,10 +11821,10 @@ impl<'a> TermvectorsGetWithId<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::TermvectorsGetWithIdIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `TermvectorsGetWithIdIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -12038,7 +12038,7 @@ impl<'a> TermvectorsGetWithId<'a> {
 #[derive(Debug, Clone)]
 pub struct TermvectorsPostWithId<'a> {
   client: &'a super::OsClient,
-  index: Result<types::TermvectorsPostWithIdIndex, String>,
+  index: Result<types::IndexName, String>,
   id: Result<types::DocumentId, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
@@ -12077,10 +12077,10 @@ impl<'a> TermvectorsPostWithId<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::TermvectorsPostWithIdIndex>, {
+    V: std::convert::TryInto<types::IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `TermvectorsPostWithIdIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 

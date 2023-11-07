@@ -501,7 +501,7 @@ impl<'a> MtermvectorsPost<'a> {
 #[derive(Debug, Clone)]
 pub struct MtermvectorsGetWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::MtermvectorsGetWithIndexIndex, String>,
+  index: Result<IndexName, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
   ids: Result<Option<Vec<String>>, String>,
@@ -537,10 +537,10 @@ impl<'a> MtermvectorsGetWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::MtermvectorsGetWithIndexIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `MtermvectorsGetWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 
@@ -752,7 +752,7 @@ impl<'a> MtermvectorsGetWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct MtermvectorsPostWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::MtermvectorsPostWithIndexIndex, String>,
+  index: Result<IndexName, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
   ids: Result<Option<Vec<String>>, String>,
@@ -790,10 +790,10 @@ impl<'a> MtermvectorsPostWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::MtermvectorsPostWithIndexIndex>, {
+    V: std::convert::TryInto<IndexName>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `MtermvectorsPostWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
     self
   }
 

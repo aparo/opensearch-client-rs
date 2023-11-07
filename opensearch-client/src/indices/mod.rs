@@ -563,7 +563,7 @@ impl<'a> Indices<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `body`
   ///```ignore
-  /// let response = client.indices().put_index_template_put()
+  /// let response = client.indices().put_index_template()
   ///    .name(name)
   ///    .cause(cause)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
@@ -573,36 +573,8 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn put_index_template_put(&self) -> builder::IndicesPutIndexTemplatePut {
-    builder::IndicesPutIndexTemplatePut::new(self.os_client)
-  }
-
-  ///Creates or updates an index template.
-  ///
-  ///Sends a `POST` request to `/_index_template/{name}`
-  ///
-  ///Arguments:
-  /// - `name`: The name of the template.
-  /// - `cause`: User defined reason for creating/updating the index template.
-  /// - `cluster_manager_timeout`: Operation timeout for connection to
-  ///   cluster-manager node.
-  /// - `create`: Whether the index template should only be added if new or can
-  ///   also replace an existing one.
-  /// - `master_timeout`: Operation timeout for connection to master node.
-  /// - `body`
-  ///```ignore
-  /// let response = client.indices().put_index_template_post()
-  ///    .name(name)
-  ///    .cause(cause)
-  ///    .cluster_manager_timeout(cluster_manager_timeout)
-  ///    .create(create)
-  ///    .master_timeout(master_timeout)
-  ///    .body(body)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn put_index_template_post(&self) -> builder::IndicesPutIndexTemplatePost {
-    builder::IndicesPutIndexTemplatePost::new(self.os_client)
+  pub fn put_index_template(&self) -> builder::IndicesPutIndexTemplate {
+    builder::IndicesPutIndexTemplate::new(self.os_client)
   }
 
   ///Deletes an index template.
@@ -737,30 +709,6 @@ impl<'a> Indices<'a> {
 
   ///Performs the refresh operation in one or more indices.
   ///
-  ///Sends a `GET` request to `/_refresh`
-  ///
-  ///Arguments:
-  /// - `allow_no_indices`: Whether to ignore if a wildcard indices expression
-  ///   resolves into no concrete indices. (This includes `_all` string or when
-  ///   no indices have been specified).
-  /// - `expand_wildcards`: Whether to expand wildcard expression to concrete
-  ///   indices that are open, closed or both.
-  /// - `ignore_unavailable`: Whether specified concrete indices should be
-  ///   ignored when unavailable (missing or closed).
-  ///```ignore
-  /// let response = client.indices().refresh_get()
-  ///    .allow_no_indices(allow_no_indices)
-  ///    .expand_wildcards(expand_wildcards)
-  ///    .ignore_unavailable(ignore_unavailable)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn refresh_get(&self) -> builder::IndicesRefreshGet {
-    builder::IndicesRefreshGet::new(self.os_client)
-  }
-
-  ///Performs the refresh operation in one or more indices.
-  ///
   ///Sends a `POST` request to `/_refresh`
   ///
   ///Arguments:
@@ -779,8 +727,8 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn refresh_post(&self) -> builder::IndicesRefreshPost {
-    builder::IndicesRefreshPost::new(self.os_client)
+  pub fn refresh_post(&self) -> builder::IndicesRefresh {
+    builder::IndicesRefresh::new(self.os_client)
   }
 
   ///Returns information about any matching indices, aliases, and data
@@ -1108,35 +1056,6 @@ impl<'a> Indices<'a> {
 
   ///Creates or updates an index template.
   ///
-  ///Sends a `PUT` request to `/_template/{name}`
-  ///
-  ///Arguments:
-  /// - `name`: The name of the template.
-  /// - `cluster_manager_timeout`: Operation timeout for connection to
-  ///   cluster-manager node.
-  /// - `create`: Whether the index template should only be added if new or can
-  ///   also replace an existing one.
-  /// - `master_timeout`: Operation timeout for connection to master node.
-  /// - `order`: The order for this template when merging multiple matching ones
-  ///   (higher numbers are merged later, overriding the lower numbers).
-  /// - `body`
-  ///```ignore
-  /// let response = client.indices().put_template_put()
-  ///    .name(name)
-  ///    .cluster_manager_timeout(cluster_manager_timeout)
-  ///    .create(create)
-  ///    .master_timeout(master_timeout)
-  ///    .order(order)
-  ///    .body(body)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn put_template_put(&self) -> builder::IndicesPutTemplatePut {
-    builder::IndicesPutTemplatePut::new(self.os_client)
-  }
-
-  ///Creates or updates an index template.
-  ///
   ///Sends a `POST` request to `/_template/{name}`
   ///
   ///Arguments:
@@ -1150,7 +1069,7 @@ impl<'a> Indices<'a> {
   ///   (higher numbers are merged later, overriding the lower numbers).
   /// - `body`
   ///```ignore
-  /// let response = client.indices().put_template_post()
+  /// let response = client.indices().put_template()
   ///    .name(name)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .create(create)
@@ -1160,8 +1079,8 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn put_template_post(&self) -> builder::IndicesPutTemplatePost {
-    builder::IndicesPutTemplatePost::new(self.os_client)
+  pub fn put_template(&self) -> builder::IndicesPutTemplate {
+    builder::IndicesPutTemplate::new(self.os_client)
   }
 
   ///Deletes an index template.
@@ -1210,109 +1129,6 @@ impl<'a> Indices<'a> {
     builder::IndicesExistsTemplate::new(self.os_client)
   }
 
-  ///The _upgrade API is no longer useful and will be removed.
-  ///
-  ///Sends a `GET` request to `/_upgrade`
-  ///
-  ///Arguments:
-  /// - `allow_no_indices`: Whether to ignore if a wildcard indices expression
-  ///   resolves into no concrete indices. (This includes `_all` string or when
-  ///   no indices have been specified).
-  /// - `expand_wildcards`: Whether to expand wildcard expression to concrete
-  ///   indices that are open, closed or both.
-  /// - `ignore_unavailable`: Whether specified concrete indices should be
-  ///   ignored when unavailable (missing or closed).
-  ///```ignore
-  /// let response = client.indices().get_upgrade()
-  ///    .allow_no_indices(allow_no_indices)
-  ///    .expand_wildcards(expand_wildcards)
-  ///    .ignore_unavailable(ignore_unavailable)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn get_upgrade(&self) -> builder::IndicesGetUpgrade {
-    builder::IndicesGetUpgrade::new(self.os_client)
-  }
-
-  ///The _upgrade API is no longer useful and will be removed.
-  ///
-  ///Sends a `POST` request to `/_upgrade`
-  ///
-  ///Arguments:
-  /// - `allow_no_indices`: Whether to ignore if a wildcard indices expression
-  ///   resolves into no concrete indices. (This includes `_all` string or when
-  ///   no indices have been specified).
-  /// - `expand_wildcards`: Whether to expand wildcard expression to concrete
-  ///   indices that are open, closed or both.
-  /// - `ignore_unavailable`: Whether specified concrete indices should be
-  ///   ignored when unavailable (missing or closed).
-  /// - `only_ancient_segments`: If true, only ancient (an older Lucene major
-  ///   release) segments will be upgraded.
-  /// - `wait_for_completion`: Should this request wait until the operation has
-  ///   completed before returning.
-  ///```ignore
-  /// let response = client.indices().upgrade()
-  ///    .allow_no_indices(allow_no_indices)
-  ///    .expand_wildcards(expand_wildcards)
-  ///    .ignore_unavailable(ignore_unavailable)
-  ///    .only_ancient_segments(only_ancient_segments)
-  ///    .wait_for_completion(wait_for_completion)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn upgrade(&self) -> builder::IndicesUpgrade {
-    builder::IndicesUpgrade::new(self.os_client)
-  }
-
-  ///Allows a user to validate a potentially expensive query without
-  /// executing it.
-  ///
-  ///Sends a `GET` request to `/_validate/query`
-  ///
-  ///Arguments:
-  /// - `all_shards`: Execute validation on all shards instead of one random
-  ///   shard per index.
-  /// - `allow_no_indices`: Whether to ignore if a wildcard indices expression
-  ///   resolves into no concrete indices. (This includes `_all` string or when
-  ///   no indices have been specified).
-  /// - `analyze_wildcard`: Specify whether wildcard and prefix queries should
-  ///   be analyzed.
-  /// - `analyzer`: The analyzer to use for the query string.
-  /// - `default_operator`: The default operator for query string query (AND or
-  ///   OR).
-  /// - `df`: The field to use as default where no field prefix is given in the
-  ///   query string.
-  /// - `expand_wildcards`: Whether to expand wildcard expression to concrete
-  ///   indices that are open, closed or both.
-  /// - `explain`: Return detailed information about the error.
-  /// - `ignore_unavailable`: Whether specified concrete indices should be
-  ///   ignored when unavailable (missing or closed).
-  /// - `lenient`: Specify whether format-based query failures (such as
-  ///   providing text to a numeric field) should be ignored.
-  /// - `q`: Query in the Lucene query string syntax.
-  /// - `rewrite`: Provide a more detailed explanation showing the actual Lucene
-  ///   query that will be executed.
-  ///```ignore
-  /// let response = client.indices().validate_query_get()
-  ///    .all_shards(all_shards)
-  ///    .allow_no_indices(allow_no_indices)
-  ///    .analyze_wildcard(analyze_wildcard)
-  ///    .analyzer(analyzer)
-  ///    .default_operator(default_operator)
-  ///    .df(df)
-  ///    .expand_wildcards(expand_wildcards)
-  ///    .explain(explain)
-  ///    .ignore_unavailable(ignore_unavailable)
-  ///    .lenient(lenient)
-  ///    .q(q)
-  ///    .rewrite(rewrite)
-  ///    .send()
-  ///    .await;
-  /// ```
-  pub fn validate_query_get(&self) -> builder::IndicesValidateQueryGet {
-    builder::IndicesValidateQueryGet::new(self.os_client)
-  }
-
   ///Allows a user to validate a potentially expensive query without
   /// executing it.
   ///
@@ -1343,7 +1159,7 @@ impl<'a> Indices<'a> {
   ///   query that will be executed.
   /// - `body`
   ///```ignore
-  /// let response = client.indices().validate_query_post()
+  /// let response = client.indices().validate_query()
   ///    .all_shards(all_shards)
   ///    .allow_no_indices(allow_no_indices)
   ///    .analyze_wildcard(analyze_wildcard)
@@ -1360,8 +1176,8 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn validate_query_post(&self) -> builder::IndicesValidateQueryPost {
-    builder::IndicesValidateQueryPost::new(self.os_client)
+  pub fn validate_query(&self) -> builder::IndicesValidateQuery {
+    builder::IndicesValidateQuery::new(self.os_client)
   }
 
   ///Updates an alias to point to a new index when the existing index

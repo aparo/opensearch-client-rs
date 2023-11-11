@@ -43,9 +43,27 @@ pub enum Commands {
     #[clap(long, default_value = "true")]
     index_components: bool,
 
-    /// Sets a custom config file
+    /// Sets the output path
     #[clap(value_name = "FILE", default_value = "output")]
     output: PathBuf,
+  },
+  /// Restore Cluster metadata
+  RestoreMetadata {
+    /// Restore ingest pipelines
+    #[clap(long, default_value = "true")]
+    ingest_pipelines: bool,
+
+    /// Restore index templates
+    #[clap(long, default_value = "true")]
+    index_templates: bool,
+
+    /// Restore index components
+    #[clap(long, default_value = "true")]
+    index_components: bool,
+
+    /// Sets the input path
+    #[clap(value_name = "FILE", default_value = "output")]
+    input: PathBuf,
   },
 }
 
@@ -96,6 +114,27 @@ async fn main() -> anyhow::Result<()> {
       if *index_components {
         info!("Index Components: {}", index_components);
         client.tools().dump_index_components(output.clone()).await?;
+      }
+    }
+    Commands::RestoreMetadata {
+      ingest_pipelines,
+      index_templates,
+      index_components,
+      input,
+    } => {
+      info!("Restoring metadata");
+      info!("Input: {:?}", input);
+      if *ingest_pipelines {
+        info!("Ingest pipelines: {}", ingest_pipelines);
+        client.tools().restore_pipelines(input.clone()).await?;
+      }
+      if *index_templates {
+        info!("Index Templates: {}", index_templates);
+        client.tools().restore_index_templates(input.clone()).await?;
+      }
+      if *index_components {
+        info!("Index Components: {}", index_components);
+        client.tools().restore_index_components(input.clone()).await?;
       }
     }
   }

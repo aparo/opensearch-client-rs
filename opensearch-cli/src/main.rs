@@ -87,7 +87,10 @@ pub enum Commands {
   ///  ListIndices
   /// This command will list all the indices in the cluster
   ListIndices {
-    /// contains the pattern to filter the indices
+    /// Show hidden indices (usually that starts with a dot)
+    #[clap(long, default_value = "false")]
+    show_hidden: bool,
+    /// Use the contains the pattern to filter the indices
     #[clap(long)]
     contains: Option<String>,
   },
@@ -184,10 +187,13 @@ async fn main() -> anyhow::Result<()> {
         client.tools().fix_components(input.clone()).await?;
       }
     }
-    Commands::ListIndices { contains } => {
+    Commands::ListIndices { show_hidden, contains } => {
       info!("Listing indices");
       let indices = client.indices().list_indices().await?;
       for index in indices {
+        if show_hidden == &false && index.starts_with('.') {
+          continue;
+        }
         if let Some(contains) = contains {
           if index.contains(contains) {
             println!("{}", index);

@@ -1,10 +1,16 @@
+use std::collections::HashMap;
 #[allow(unused_imports)]
 use std::convert::TryFrom;
 
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 
 use crate::types::{DataStream, UserDefinedStructure, UserDefinedValueMap};
 
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct AliasDefinition {
+  #[serde(default)]
+  pub aliases: HashMap<String, serde_json::Value>,
+}
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ActionObjectStructure {
   #[serde(default, skip_serializing_if = "Option::is_none")]

@@ -27,16 +27,9 @@ impl<'a> Indices<'a> {
   pub async fn list_indices(&self) -> Result<Vec<String>, Error> {
     let response = self.get_alias().send().await?;
     let alias_result = response.into_inner();
-    // let values: Vec<String> = cat_result
-    //   .split('\n')
-    //   .filter(|x| !x.is_empty())
-    //   .map(|x| {
-    //     let mut iterator = x.split_ascii_whitespace();
-    //     iterator.nth(2).unwrap().to_owned()
-    //   })
-    //   .collect();
-    // Ok(values)
-    Ok(vec![])
+    let mut indices = alias_result.keys().cloned().collect::<Vec<String>>();
+    indices.sort();
+    Ok(indices)
   }
 
   ///Returns an alias.
@@ -91,8 +84,8 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn get_alias_with_name(&self) -> builder::IndicesGetAliasWithName {
-    builder::IndicesGetAliasWithName::new(self.os_client)
+  pub fn get_alias_with_name(&self) -> builder::IndicesGetAlias {
+    builder::IndicesGetAlias::new(self.os_client)
   }
 
   ///Returns information about whether a particular alias exists.

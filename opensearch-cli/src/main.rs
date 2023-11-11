@@ -84,6 +84,13 @@ pub enum Commands {
     #[clap(value_name = "FILE", default_value = "output")]
     input: PathBuf,
   },
+  ///  ListIndices
+  /// This command will list all the indices in the cluster
+  ListIndices {
+    /// contains the pattern to filter the indices
+    #[clap(long)]
+    contains: Option<String>,
+  },
 }
 
 #[tokio::main]
@@ -175,6 +182,19 @@ async fn main() -> anyhow::Result<()> {
       if *index_components {
         info!("Index Components: {}", index_components);
         client.tools().fix_components(input.clone()).await?;
+      }
+    }
+    Commands::ListIndices { contains } => {
+      info!("Listing indices");
+      let indices = client.indices().list_indices().await?;
+      for index in indices {
+        if let Some(contains) = contains {
+          if index.contains(contains) {
+            println!("{}", index);
+          }
+        } else {
+          println!("{}", index);
+        }
       }
     }
   }

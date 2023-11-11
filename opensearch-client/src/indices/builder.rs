@@ -10,13 +10,13 @@ use crate::{
   encode_path, encode_path_option_vec_string, ByteStream, Error, HeaderMap, HeaderValue, RequestBuilderExt,
   ReqwestResponse, ResponseValue,
 };
-
-///Builder for [`Client::Indices::get_alias`]
+///Builder for [`Client::Indices::get_alias_with_name`]
 ///
-///[`Client::Indices::get_alias`]: super::OsClient::Indices::get_alias
+///[`Client::Indices::get_alias_with_name`]: super::OsClient::Indices::get_alias_with_name
 #[derive(Debug, Clone)]
 pub struct IndicesGetAlias<'a> {
   client: &'a super::OsClient,
+  name: Result<Option<OpenSearchNameValue>, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -26,110 +26,7 @@ impl<'a> IndicesGetAlias<'a> {
   pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
-      allow_no_indices: Ok(None),
-      expand_wildcards: Ok(None),
-      ignore_unavailable: Ok(None),
-      local: Ok(None),
-    }
-  }
-
-  pub fn allow_no_indices<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.allow_no_indices = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for allow_no_indices failed".to_string());
-    self
-  }
-
-  pub fn expand_wildcards<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<ExpandWildcards>, {
-    self.expand_wildcards = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `ExpandWildcards` for expand_wildcards failed".to_string());
-    self
-  }
-
-  pub fn ignore_unavailable<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.ignore_unavailable = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for ignore_unavailable failed".to_string());
-    self
-  }
-
-  pub fn local<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.local = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for local failed".to_string());
-    self
-  }
-
-  ///Sends a `GET` request to `/_alias`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
-    let Self {
-      client,
-      allow_no_indices,
-      expand_wildcards,
-      ignore_unavailable,
-      local,
-    } = self;
-    let allow_no_indices = allow_no_indices.map_err(Error::InvalidRequest)?;
-    let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
-    let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
-    let local = local.map_err(Error::InvalidRequest)?;
-    let url = format!("{}_alias", client.baseurl,);
-    let mut query = Vec::with_capacity(4usize);
-    if let Some(v) = &allow_no_indices {
-      query.push(("allow_no_indices", v.to_string()));
-    }
-    if let Some(v) = &expand_wildcards {
-      query.push(("expand_wildcards", v.to_string()));
-    }
-    if let Some(v) = &ignore_unavailable {
-      query.push(("ignore_unavailable", v.to_string()));
-    }
-    if let Some(v) = &local {
-      query.push(("local", v.to_string()));
-    }
-    let request = client.client.get(url).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => {
-        Err(Error::UnexpectedResponse(
-          ReqwestResponse::from_response(response).await,
-        ))
-      }
-    }
-  }
-}
-///Builder for [`Client::Indices::get_alias_with_name`]
-///
-///[`Client::Indices::get_alias_with_name`]: super::OsClient::Indices::get_alias_with_name
-#[derive(Debug, Clone)]
-pub struct IndicesGetAliasWithName<'a> {
-  client: &'a super::OsClient,
-  name: Result<OpenSearchNameValue, String>,
-  allow_no_indices: Result<Option<bool>, String>,
-  expand_wildcards: Result<Option<ExpandWildcards>, String>,
-  ignore_unavailable: Result<Option<bool>, String>,
-  local: Result<Option<bool>, String>,
-}
-impl<'a> IndicesGetAliasWithName<'a> {
-  pub fn new(client: &'a super::OsClient) -> Self {
-    Self {
-      client,
-      name: Err("name was not initialized".to_string()),
+      name: Ok(None),
       allow_no_indices: Ok(None),
       expand_wildcards: Ok(None),
       ignore_unavailable: Ok(None),
@@ -139,7 +36,7 @@ impl<'a> IndicesGetAliasWithName<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<OpenSearchNameValue>, {
+    V: std::convert::TryInto<Option<OpenSearchNameValue>>, {
     self.name = value
       .try_into()
       .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
@@ -187,7 +84,7 @@ impl<'a> IndicesGetAliasWithName<'a> {
   }
 
   ///Sends a `GET` request to `/_alias/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
+  pub async fn send(self) -> Result<ResponseValue<HashMap<String, types::AliasDefinition>>, Error> {
     let Self {
       client,
       name,
@@ -201,7 +98,12 @@ impl<'a> IndicesGetAliasWithName<'a> {
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
-    let url = format!("{}_alias/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = match name {
+      Some(ref name) => {
+        format!("{}_alias/{}", client.baseurl, encode_path(&name.to_string()),)
+      }
+      None => format!("{}_alias", client.baseurl,),
+    };
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -219,7 +121,7 @@ impl<'a> IndicesGetAliasWithName<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::from_response(response).await,
       _ => {
         Err(Error::UnexpectedResponse(
           ReqwestResponse::from_response(response).await,

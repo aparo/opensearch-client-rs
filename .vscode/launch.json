@@ -48,6 +48,21 @@
       "args": ["-vv", "fix-metadata"],
       "cwd": "${workspaceFolder}",
       "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "List Indices",
+      "cargo": {
+        "args": ["build", "--bin=opensearch-cli", "--package=opensearch-cli"],
+        "filter": {
+          "name": "opensearch-cli",
+          "kind": "bin"
+        }
+      },
+      "args": ["-vv", "list-indices"],
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env"
     }
   ]
 }

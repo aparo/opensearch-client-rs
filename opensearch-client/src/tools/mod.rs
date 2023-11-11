@@ -298,6 +298,9 @@ pub async fn save_named_map(path: &PathBuf, data: HashMap<String, Value>) -> any
 }
 
 fn get_json_file_recursive(path: &PathBuf) -> anyhow::Result<Vec<PathBuf>> {
+  if !path.exists() {
+    return Ok(Vec::new());
+  }
   let mut files = Vec::new();
   for entry in WalkDir::new(path) {
     let entry = entry?;

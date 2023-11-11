@@ -265,6 +265,9 @@ pub enum Error {
   /// The request did not conform to API requirements.
   #[error("Invalid request: {0}")]
   InvalidRequest(String),
+  /// The response  did not conform to API requirements.
+  #[error("Invalid response: {0}")]
+  InvalidResponse(String),
   /// An invalid URL was provided.
   #[error(transparent)]
   // #[diagnostic(code(oro_client::url_parse_error), url(docsrs))]

@@ -481,8 +481,8 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn get_component_templates(&self) -> builder::ClusterGetComponentTemplate {
-    builder::ClusterGetComponentTemplate::new(self.os_client)
+  pub fn get_component_templates(&self) -> builder::IndicesGetComponentTemplate {
+    builder::IndicesGetComponentTemplate::new(self.os_client)
   }
 
   ///Returns one or more component templates.
@@ -504,8 +504,8 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn get_component_template(&self, name: &str) -> builder::ClusterGetComponentTemplate {
-    builder::ClusterGetComponentTemplate::new(self.os_client).name(Some(name.to_owned()))
+  pub fn get_component_template(&self, name: &str) -> builder::IndicesGetComponentTemplate {
+    builder::IndicesGetComponentTemplate::new(self.os_client).name(Some(name.to_owned()))
   }
 
   ///Creates or updates a component template.

@@ -32,15 +32,15 @@ pub enum Commands {
   /// Dump Cluster metadata
   DumpMetadata {
     /// Dump ingest pipelines
-    #[clap(short, long, default_value = "true")]
+    #[clap(long, default_value = "true")]
     ingest_pipelines: bool,
 
     /// Dump index templates
-    #[clap(short, long, default_value = "true")]
+    #[clap(long, default_value = "true")]
     index_templates: bool,
 
     /// Dump index components
-    #[clap(short, long, default_value = "true")]
+    #[clap(long, default_value = "true")]
     index_components: bool,
 
     /// Sets a custom config file

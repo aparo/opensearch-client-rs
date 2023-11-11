@@ -1879,7 +1879,10 @@ impl<'a> IndicesGetIndexTemplate<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => ResponseValue::from_response(response).await,
+      200u16 => {
+        let json: ResponseValue<HashMap<String, Value>> = ResponseValue::from_response(response).await?;
+        decode_index_templates(json)
+      }
       _ => {
         Err(Error::UnexpectedResponse(
           ReqwestResponse::from_response(response).await,
@@ -1887,6 +1890,21 @@ impl<'a> IndicesGetIndexTemplate<'a> {
       }
     }
   }
+}
+
+fn decode_index_templates(
+  data: ResponseValue<HashMap<String, Value>>,
+) -> Result<ResponseValue<HashMap<String, serde_json::Value>>, Error> {
+  if !data.contains_key("index_templates") {
+    return Err(Error::InvalidResponse("Missing value: index_templates".to_string()));
+  }
+  let mut result: HashMap<String, Value> = HashMap::new();
+  for value in data["index_templates"].as_array().unwrap().iter() {
+    let k = value["name"].as_str().unwrap().to_string();
+    let v = value["index_template"].clone();
+    result.insert(k.clone(), v.clone());
+  }
+  Ok(ResponseValue::new(result, data.status(), data.headers().clone()))
 }
 ///Builder for [`Client::Indices::put_index_template`]
 ///
@@ -2217,14 +2235,14 @@ impl<'a> IndicesExistsIndexTemplate<'a> {
 ///
 ///[`Client::Indices::get_component_template`]: super::OsClient::Indices::get_component_template
 #[derive(Debug, Clone)]
-pub struct ClusterGetComponentTemplate<'a> {
+pub struct IndicesGetComponentTemplate<'a> {
   client: &'a super::OsClient,
   name: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
 }
-impl<'a> ClusterGetComponentTemplate<'a> {
+impl<'a> IndicesGetComponentTemplate<'a> {
   pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
@@ -2311,7 +2329,10 @@ impl<'a> ClusterGetComponentTemplate<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => ResponseValue::from_response(response).await,
+      200u16 => {
+        let json: ResponseValue<HashMap<String, Value>> = ResponseValue::from_response(response).await?;
+        decode_index_components(json)
+      }
       _ => {
         Err(Error::UnexpectedResponse(
           ReqwestResponse::from_response(response).await,
@@ -2320,6 +2341,22 @@ impl<'a> ClusterGetComponentTemplate<'a> {
     }
   }
 }
+
+fn decode_index_components(
+  data: ResponseValue<HashMap<String, Value>>,
+) -> Result<ResponseValue<HashMap<String, serde_json::Value>>, Error> {
+  if !data.contains_key("component_templates") {
+    return Err(Error::InvalidResponse("Missing value: component_templates".to_string()));
+  }
+  let mut result: HashMap<String, Value> = HashMap::new();
+  for value in data["component_templates"].as_array().unwrap().iter() {
+    let k = value["name"].as_str().unwrap().to_string();
+    let v = value["component_template"].clone();
+    result.insert(k.clone(), v.clone());
+  }
+  Ok(ResponseValue::new(result, data.status(), data.headers().clone()))
+}
+
 ///Builder for [`Client::Indices::put_component_template`]
 ///
 ///[`Client::Indices::put_component_template`]: super::OsClient::Indices::put_component_template

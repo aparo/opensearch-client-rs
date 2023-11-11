@@ -2320,20 +2320,20 @@ impl<'a> ClusterGetComponentTemplate<'a> {
     }
   }
 }
-///Builder for [`Client::Indices::put_component_template_post`]
+///Builder for [`Client::Indices::put_component_template`]
 ///
-///[`Client::Indices::put_component_template_post`]: super::OsClient::Indices::put_component_template_post
+///[`Client::Indices::put_component_template`]: super::OsClient::Indices::put_component_template
 #[derive(Debug, Clone)]
-pub struct IndicesPutComponentTemplate<'a> {
+pub struct IndicesPutComponentTemplate<'a, T: Serialize> {
   client: &'a super::OsClient,
   name: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   create: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
-  body: Result<types::IndicesPutComponentTemplateBodyParams, String>,
+  body: Result<T, String>,
 }
-impl<'a> IndicesPutComponentTemplate<'a> {
+impl<'a, T: Serialize> IndicesPutComponentTemplate<'a, T> {
   pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
@@ -2397,10 +2397,10 @@ impl<'a> IndicesPutComponentTemplate<'a> {
 
   pub fn body<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutComponentTemplateBodyParams>, {
+    V: std::convert::TryInto<T>, {
     self.body = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesPutComponentTemplateBodyParams` for body failed".to_string());
+      .map_err(|_| "conversion to `Json` for body failed".to_string());
     self
   }
 

@@ -162,7 +162,7 @@ impl<'a> Tools<'a> {
     Ok(())
   }
 
-  /// Asynchronously restores the index templates from the specified path.
+  /// Asynchronously restores the index components from the specified path.
   ///
   /// # Arguments
   /// * `input_path` - The path to be used as source for the files.
@@ -176,7 +176,13 @@ impl<'a> Tools<'a> {
       .filter_map(|e| e.ok())
       .filter(|e| e.path().is_file())
       .filter(|e| e.path().extension().unwrap_or_default() == "json");
-    let current_components = self.client.ingest().get_pipelines().send().await?.into_inner();
+    let current_components = self
+      .client
+      .indices()
+      .get_component_templates()
+      .send()
+      .await?
+      .into_inner();
     for entry in files {
       let name = entry.file_name().to_str().unwrap().replace(".json", "");
       let body = fs::read_to_string(entry.path())?;
@@ -203,7 +209,7 @@ impl<'a> Tools<'a> {
         return Ok(());
       }
     }
-    self.client.indices().put_template(name, body).send().await?;
+    self.client.indices().put_component_template(name, body).send().await?;
     info!("Index Component {} updated", name);
     Ok(())
   }

@@ -373,32 +373,6 @@ impl From<serde_json::Map<String, serde_json::Value>> for IndicesPutAliasBodyPar
 
 ///The template definition
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct IndicesPutComponentTemplateBodyParams(pub serde_json::Map<String, serde_json::Value>);
-impl std::ops::Deref for IndicesPutComponentTemplateBodyParams {
-  type Target = serde_json::Map<String, serde_json::Value>;
-
-  fn deref(&self) -> &serde_json::Map<String, serde_json::Value> {
-    &self.0
-  }
-}
-impl From<IndicesPutComponentTemplateBodyParams> for serde_json::Map<String, serde_json::Value> {
-  fn from(value: IndicesPutComponentTemplateBodyParams) -> Self {
-    value.0
-  }
-}
-impl From<&IndicesPutComponentTemplateBodyParams> for IndicesPutComponentTemplateBodyParams {
-  fn from(value: &IndicesPutComponentTemplateBodyParams) -> Self {
-    value.clone()
-  }
-}
-impl From<serde_json::Map<String, serde_json::Value>> for IndicesPutComponentTemplateBodyParams {
-  fn from(value: serde_json::Map<String, serde_json::Value>) -> Self {
-    Self(value)
-  }
-}
-
-///The template definition
-#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct IndicesPutIndexTemplateBodyParams(pub serde_json::Map<String, serde_json::Value>);
 impl std::ops::Deref for IndicesPutIndexTemplateBodyParams {
   type Target = serde_json::Map<String, serde_json::Value>;

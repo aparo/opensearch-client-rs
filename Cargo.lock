@@ -1221,6 +1221,7 @@ dependencies = [
  "thiserror",
  "tracing",
  "url",
+ "walkdir",
 ]
 
 [[package]]

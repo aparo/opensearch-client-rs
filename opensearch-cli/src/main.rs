@@ -35,6 +35,14 @@ pub enum Commands {
     #[clap(short, long, default_value = "true")]
     ingest_pipelines: bool,
 
+    /// Dump index templates
+    #[clap(short, long, default_value = "true")]
+    index_templates: bool,
+
+    /// Dump index components
+    #[clap(short, long, default_value = "true")]
+    index_components: bool,
+
     /// Sets a custom config file
     #[clap(value_name = "FILE", default_value = "output")]
     output: PathBuf,
@@ -71,13 +79,23 @@ async fn main() -> anyhow::Result<()> {
   match &cli.command {
     Commands::DumpMetadata {
       ingest_pipelines,
+      index_templates,
+      index_components,
       output,
     } => {
       info!("Dumping metadata");
-      info!("Ingest pipelines: {}", ingest_pipelines);
       info!("Output: {:?}", output);
       if *ingest_pipelines {
+        info!("Ingest pipelines: {}", ingest_pipelines);
         client.tools().dump_pipelines(output.clone()).await?;
+      }
+      if *index_templates {
+        info!("Index Templates: {}", index_templates);
+        client.tools().dump_index_templates(output.clone()).await?;
+      }
+      if *index_components {
+        info!("Index Components: {}", index_components);
+        client.tools().dump_index_components(output.clone()).await?;
       }
     }
   }

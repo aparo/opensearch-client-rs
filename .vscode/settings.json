@@ -25,6 +25,8 @@
     "remote",
     "snapshot",
     "tasks",
-    "security"
+    "security",
+    "mtermvectors",
+    "tools"
   ]
 }

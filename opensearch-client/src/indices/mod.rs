@@ -522,18 +522,18 @@ impl<'a> Indices<'a> {
   /// - `timeout`: Operation timeout.
   /// - `body`
   ///```ignore
-  /// let response = client.indices().put_component_template_post()
-  ///    .name(name)
+  /// let response = client.indices().put_component_template()
   ///    .manager_timeout(manager_timeout)
   ///    .create(create)
   ///    .master_timeout(master_timeout)
   ///    .timeout(timeout)
-  ///    .body(body)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn put_component_template_post(&self) -> builder::IndicesPutComponentTemplate {
+  pub fn put_component_template<T: Serialize>(&self, name: &str, body: T) -> builder::IndicesPutComponentTemplate<T> {
     builder::IndicesPutComponentTemplate::new(self.os_client)
+      .name(name)
+      .body(body)
   }
 
   ///Deletes a component template.

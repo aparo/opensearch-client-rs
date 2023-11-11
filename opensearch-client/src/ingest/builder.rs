@@ -72,9 +72,9 @@ impl<'a> Simulate<'a> {
   }
 }
 
-///Builder for [`Client::get_pipeline`]
+///Builder for [`Client::get_pipelines`]
 ///
-///[`Client::get_pipeline`]: super::OsClient::get_pipeline
+///[`Client::get_pipelines`]: super::OsClient::get_pipelines
 #[derive(Debug, Clone)]
 pub struct IngestGetPipeline<'a> {
   client: &'a super::OsClient,
@@ -163,16 +163,16 @@ impl<'a> IngestGetPipeline<'a> {
 ///
 ///[`Client::put_pipeline`]: super::OsClient::put_pipeline
 #[derive(Debug, Clone)]
-pub struct IngestPutPipeline<'a> {
+pub struct IngestPutPipeline<'a, T: Serialize> {
   client: &'a super::OsClient,
   id: Result<OpenSearchId, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
-  body: Result<types::IngestPutPipelineBodyParams, String>,
+  body: Result<T, String>,
 }
 
-impl<'a> IngestPutPipeline<'a> {
+impl<'a, T: Serialize> IngestPutPipeline<'a, T> {
   pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
@@ -225,10 +225,10 @@ impl<'a> IngestPutPipeline<'a> {
 
   pub fn body<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IngestPutPipelineBodyParams>, {
+    V: std::convert::TryInto<T>, {
     self.body = value
       .try_into()
-      .map_err(|_| "conversion to `IngestPutPipelineBodyParams` for body failed".to_string());
+      .map_err(|_| "conversion to `JSON` for body failed".to_string());
     self
   }
 

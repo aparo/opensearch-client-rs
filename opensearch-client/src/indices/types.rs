@@ -502,31 +502,6 @@ impl From<serde_json::Map<String, serde_json::Value>> for IndicesPutSettingsBody
     Self(value)
   }
 }
-///The template definition
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct IndicesPutTemplateBodyParams(pub serde_json::Map<String, serde_json::Value>);
-impl std::ops::Deref for IndicesPutTemplateBodyParams {
-  type Target = serde_json::Map<String, serde_json::Value>;
-
-  fn deref(&self) -> &serde_json::Map<String, serde_json::Value> {
-    &self.0
-  }
-}
-impl From<IndicesPutTemplateBodyParams> for serde_json::Map<String, serde_json::Value> {
-  fn from(value: IndicesPutTemplateBodyParams) -> Self {
-    value.0
-  }
-}
-impl From<&IndicesPutTemplateBodyParams> for IndicesPutTemplateBodyParams {
-  fn from(value: &IndicesPutTemplateBodyParams) -> Self {
-    value.clone()
-  }
-}
-impl From<serde_json::Map<String, serde_json::Value>> for IndicesPutTemplateBodyParams {
-  fn from(value: serde_json::Map<String, serde_json::Value>) -> Self {
-    Self(value)
-  }
-}
 
 ///The conditions that needs to be met for executing rollover
 #[derive(Clone, Debug, Deserialize, Serialize)]

@@ -1,3 +1,5 @@
+use serde::Serialize;
+
 use crate::OsClient;
 mod builder;
 mod types;
@@ -33,6 +35,25 @@ impl<'a> Ingest<'a> {
 
   ///Returns a pipeline.
   ///
+  ///Sends a `GET` request to `/_ingest/pipeline`
+  ///
+  ///Arguments:
+  /// - `cluster_manager_timeout`: Operation timeout for connection to
+  ///   cluster-manager node.
+  /// - `master_timeout`: Operation timeout for connection to master node.
+  ///```ignore
+  /// let response = client.ingest().get_pipelines()
+  ///    .cluster_manager_timeout(cluster_manager_timeout)
+  ///    .master_timeout(master_timeout)
+  ///    .send()
+  ///    .await;
+  /// ```
+  pub fn get_pipelines(&self) -> builder::IngestGetPipeline {
+    builder::IngestGetPipeline::new(self.os_client)
+  }
+
+  ///Returns a pipeline.
+  ///
   ///Sends a `GET` request to `/_ingest/pipeline/{id}`
   ///
   ///Arguments:
@@ -41,15 +62,15 @@ impl<'a> Ingest<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.ingest().get_pipeline()
+  /// let response = client.ingest().get_pipelines()
   ///    .id(id)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn get_pipeline(&self) -> builder::IngestGetPipeline {
-    builder::IngestGetPipeline::new(self.os_client)
+  pub fn get_pipeline(&self, id: &str) -> builder::IngestGetPipeline {
+    builder::IngestGetPipeline::new(self.os_client).id(Some(id.to_owned()))
   }
 
   ///Creates or updates a pipeline.
@@ -64,17 +85,15 @@ impl<'a> Ingest<'a> {
   /// - `timeout`: Operation timeout.
   /// - `body`
   ///```ignore
-  /// let response = client.ingest().put_pipeline()
-  ///    .id(id)
+  /// let response = client.ingest().put_pipeline(id, body)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
   ///    .timeout(timeout)
-  ///    .body(body)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn put_pipeline(&self) -> builder::IngestPutPipeline {
-    builder::IngestPutPipeline::new(self.os_client)
+  pub fn put_pipeline<T: Serialize>(&self, id: &str, body: T) -> builder::IngestPutPipeline<T> {
+    builder::IngestPutPipeline::new(self.os_client).id(id).body(body)
   }
 
   ///Deletes a pipeline.
@@ -88,16 +107,15 @@ impl<'a> Ingest<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.ingest().delete_pipeline()
-  ///    .id(id)
+  /// let response = client.ingest(id).delete_pipeline()
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
   ///    .timeout(timeout)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn delete_pipeline(&self) -> builder::IngestDeletePipeline {
-    builder::IngestDeletePipeline::new(self.os_client)
+  pub fn delete_pipeline(&self, id: &str) -> builder::IngestDeletePipeline {
+    builder::IngestDeletePipeline::new(self.os_client).id(id)
   }
 
   ///Allows to simulate a pipeline with example documents.
@@ -117,8 +135,8 @@ impl<'a> Ingest<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn simulate_with_id(&self) -> builder::IngestSimulateWithId {
-    builder::IngestSimulateWithId::new(self.os_client)
+  pub fn simulate_with_id(&self, id: &str) -> builder::IngestSimulateWithId {
+    builder::IngestSimulateWithId::new(self.os_client).id(id)
   }
 
   ///Returns a list of the built-in patterns.

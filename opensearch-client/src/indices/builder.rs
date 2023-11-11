@@ -1774,7 +1774,7 @@ impl<'a> IndicesSimulateIndexTemplate<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGetIndexTemplate<'a> {
   client: &'a super::OsClient,
-  name: Result<Option<OpenSearchNameValue>, String>,
+  name: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
@@ -1794,10 +1794,10 @@ impl<'a> IndicesGetIndexTemplate<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<Option<OpenSearchNameValue>>, {
+    V: std::convert::TryInto<Option<String>>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
+      .map_err(|_| "conversion to `String` for name failed".to_string());
     self
   }
 
@@ -2213,13 +2213,13 @@ impl<'a> IndicesExistsIndexTemplate<'a> {
   }
 }
 
-///Builder for [`Client::Indices::get_component_template_with_name`]
+///Builder for [`Client::Indices::get_component_template`]
 ///
-///[`Client::Indices::get_component_template_with_name`]: super::OsClient::Indices::get_component_template_with_name
+///[`Client::Indices::get_component_template`]: super::OsClient::Indices::get_component_template
 #[derive(Debug, Clone)]
 pub struct ClusterGetComponentTemplate<'a> {
   client: &'a super::OsClient,
-  name: Result<Option<OpenSearchNameValue>, String>,
+  name: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
@@ -2237,10 +2237,10 @@ impl<'a> ClusterGetComponentTemplate<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<Option<OpenSearchNameValue>>, {
+    V: std::convert::TryInto<Option<String>>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
+      .map_err(|_| "conversion to `String` for name failed".to_string());
     self
   }
 
@@ -4252,9 +4252,9 @@ impl<'a> IndicesStatsWithMetric<'a> {
     }
   }
 }
-///Builder for [`Client::Indices::get_template`]
+///Builder for [`Client::Indices::get_templates`]
 ///
-///[`Client::Indices::get_template`]: super::OsClient::Indices::get_template
+///[`Client::Indices::get_templates`]: super::OsClient::Indices::get_templates
 #[derive(Debug, Clone)]
 pub struct IndicesGetTemplate<'a> {
   client: &'a super::OsClient,
@@ -4354,9 +4354,9 @@ impl<'a> IndicesGetTemplate<'a> {
     }
   }
 }
-///Builder for [`Client::Indices::get_template_with_name`]
+///Builder for [`Client::Indices::get_template`]
 ///
-///[`Client::Indices::get_template_with_name`]: super::OsClient::Indices::get_template_with_name
+///[`Client::Indices::get_template`]: super::OsClient::Indices::get_template
 #[derive(Debug, Clone)]
 pub struct IndicesGetTemplateWithName<'a> {
   client: &'a super::OsClient,
@@ -4473,16 +4473,16 @@ impl<'a> IndicesGetTemplateWithName<'a> {
 ///
 ///[`Client::Indices::put_template`]: super::OsClient::Indices::put_template
 #[derive(Debug, Clone)]
-pub struct IndicesPutTemplate<'a> {
+pub struct IndicesPutTemplate<'a, T: Serialize> {
   client: &'a super::OsClient,
   name: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   create: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   order: Result<Option<i32>, String>,
-  body: Result<types::IndicesPutTemplateBodyParams, String>,
+  body: Result<T, String>,
 }
-impl<'a> IndicesPutTemplate<'a> {
+impl<'a, T: Serialize> IndicesPutTemplate<'a, T> {
   pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
@@ -4546,10 +4546,10 @@ impl<'a> IndicesPutTemplate<'a> {
 
   pub fn body<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutTemplateBodyParams>, {
+    V: std::convert::TryInto<T>, {
     self.body = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesPutTemplateBodyParams` for body failed".to_string());
+      .map_err(|_| "conversion to `Json` for body failed".to_string());
     self
   }
 

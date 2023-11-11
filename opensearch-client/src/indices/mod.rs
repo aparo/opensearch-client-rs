@@ -1,4 +1,6 @@
-use crate::{Error, OsClient};
+use serde::Serialize;
+
+use crate::{types::OpenSearchNameValue, Error, OsClient};
 mod builder;
 mod types;
 pub struct Indices<'a> {
@@ -413,6 +415,30 @@ impl<'a> Indices<'a> {
     builder::IndicesForcemerge::new(self.os_client)
   }
 
+  ///Returns all index templates.
+  ///
+  ///Sends a `GET` request to `/_index_template`
+  ///
+  ///Arguments:
+  /// - `cluster_manager_timeout`: Operation timeout for connection to
+  ///   cluster-manager node.
+  /// - `flat_settings`: Return settings in flat format.
+  /// - `local`: Return local information, do not retrieve the state from
+  ///   cluster-manager node.
+  /// - `master_timeout`: Operation timeout for connection to master node.
+  ///```ignore
+  /// let response = client.indices().get_index_templates()
+  ///    .cluster_manager_timeout(cluster_manager_timeout)
+  ///    .flat_settings(flat_settings)
+  ///    .local(local)
+  ///    .master_timeout(master_timeout)
+  ///    .send()
+  ///    .await;
+  /// ```
+  pub fn get_index_templates(&self) -> builder::IndicesGetIndexTemplate {
+    builder::IndicesGetIndexTemplate::new(self.os_client)
+  }
+
   ///Returns an index template.
   ///
   ///Sends a `GET` request to `/_index_template`
@@ -433,8 +459,8 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn get_index_template(&self) -> builder::IndicesGetIndexTemplate {
-    builder::IndicesGetIndexTemplate::new(self.os_client)
+  pub fn get_index_template(&self, name: &str) -> builder::IndicesGetIndexTemplate {
+    builder::IndicesGetIndexTemplate::new(self.os_client).name(Some(name.to_string().into()))
   }
 
   ///Returns one or more component templates.
@@ -448,14 +474,14 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices().get_component_template()
+  /// let response = client.indices().get_component_templates()
   ///    .manager_timeout(manager_timeout)
   ///    .local(local)
   ///    .master_timeout(master_timeout)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn get_component_template(&self) -> builder::ClusterGetComponentTemplate {
+  pub fn get_component_templates(&self) -> builder::ClusterGetComponentTemplate {
     builder::ClusterGetComponentTemplate::new(self.os_client)
   }
 
@@ -471,16 +497,15 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices().get_component_template_with_name()
-  ///    .name(name)
+  /// let response = client.indices().get_component_template(name)
   ///    .manager_timeout(manager_timeout)
   ///    .local(local)
   ///    .master_timeout(master_timeout)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn get_component_template_with_name(&self) -> builder::ClusterGetComponentTemplate {
-    builder::ClusterGetComponentTemplate::new(self.os_client)
+  pub fn get_component_template(&self, name: &str) -> builder::ClusterGetComponentTemplate {
+    builder::ClusterGetComponentTemplate::new(self.os_client).name(Some(name.to_owned()))
   }
 
   ///Creates or updates a component template.
@@ -1134,7 +1159,7 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices().get_template()
+  /// let response = client.indices().get_templates()
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .flat_settings(flat_settings)
   ///    .local(local)
@@ -1142,7 +1167,7 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn get_template(&self) -> builder::IndicesGetTemplate {
+  pub fn get_templates(&self) -> builder::IndicesGetTemplate {
     builder::IndicesGetTemplate::new(self.os_client)
   }
 
@@ -1159,8 +1184,7 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices().get_template_with_name()
-  ///    .name(name)
+  /// let response = client.indices().get_template(name)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .flat_settings(flat_settings)
   ///    .local(local)
@@ -1168,8 +1192,8 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn get_template_with_name(&self) -> builder::IndicesGetTemplateWithName {
-    builder::IndicesGetTemplateWithName::new(self.os_client)
+  pub fn get_template(&self, name: &str) -> builder::IndicesGetTemplateWithName {
+    builder::IndicesGetTemplateWithName::new(self.os_client).name(name)
   }
 
   ///Creates or updates an index template.
@@ -1197,8 +1221,8 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn put_template(&self) -> builder::IndicesPutTemplate {
-    builder::IndicesPutTemplate::new(self.os_client)
+  pub fn put_template<T: Serialize>(&self, name: &str, body: T) -> builder::IndicesPutTemplate<T> {
+    builder::IndicesPutTemplate::new(self.os_client).name(name).body(body)
   }
 
   ///Deletes an index template.
@@ -1212,16 +1236,15 @@ impl<'a> Indices<'a> {
   /// - `master_timeout`: Operation timeout for connection to master node.
   /// - `timeout`: Operation timeout.
   ///```ignore
-  /// let response = client.indices().delete_template()
-  ///    .name(name)
+  /// let response = client.indices().delete_template(name)
   ///    .cluster_manager_timeout(cluster_manager_timeout)
   ///    .master_timeout(master_timeout)
   ///    .timeout(timeout)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn delete_template(&self) -> builder::IndicesDeleteTemplate {
-    builder::IndicesDeleteTemplate::new(self.os_client)
+  pub fn delete_template(&self, name: &str) -> builder::IndicesDeleteTemplate {
+    builder::IndicesDeleteTemplate::new(self.os_client).name(name)
   }
 
   ///Returns information about whether a particular index template exists.
@@ -1235,16 +1258,15 @@ impl<'a> Indices<'a> {
   ///   cluster-manager node.
   /// - `master_timeout`: Operation timeout for connection to master node.
   ///```ignore
-  /// let response = client.indices().exists_template()
-  ///    .name(name)
+  /// let response = client.indices().exists_template(name)
   ///    .flat_settings(flat_settings)
   ///    .local(local)
   ///    .master_timeout(master_timeout)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn exists_template(&self) -> builder::IndicesExistsTemplate {
-    builder::IndicesExistsTemplate::new(self.os_client)
+  pub fn exists_template(&self, name: &str) -> builder::IndicesExistsTemplate {
+    builder::IndicesExistsTemplate::new(self.os_client).name(name)
   }
 
   ///Allows a user to validate a potentially expensive query without

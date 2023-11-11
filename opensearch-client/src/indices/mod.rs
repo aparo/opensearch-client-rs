@@ -434,7 +434,7 @@ impl<'a> Indices<'a> {
   ///    .await;
   /// ```
   pub fn get_index_template(&self) -> builder::IndicesGetIndexTemplate {
-    builder::IndicesGetIndexTemplate::new(self.os_client)
+    builder::IndicesGetIndexTemplateWithName::new(self.os_client)
   }
 
   ///Simulate resolving the given template name or body.

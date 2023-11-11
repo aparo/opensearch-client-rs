@@ -35,7 +35,7 @@ pub enum Commands {
   /// Dump Cluster metadata
   DumpMetadata {
     /// Dump ingest pipelines
-    #[clap(short, long)]
+    #[clap(short, long, default_value = "true")]
     ingest_pipelines: bool,
 
     /// Sets a custom config file
@@ -79,6 +79,9 @@ async fn main() -> anyhow::Result<()> {
       info!("Dumping metadata");
       info!("Ingest pipelines: {}", ingest_pipelines);
       info!("Output: {:?}", output);
+      if *ingest_pipelines {
+        actions::dump_pipelines::dump_pipelines(&client, output.clone()).await?;
+      }
     }
   }
 

@@ -1,6 +1,8 @@
 use crate::OsClient;
 mod builder;
 mod types;
+pub mod pipeline;
+
 pub struct Ingest<'a> {
   os_client: &'a OsClient,
 }

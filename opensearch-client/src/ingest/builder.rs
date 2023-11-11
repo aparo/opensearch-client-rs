@@ -134,9 +134,9 @@ impl<'a> IngestGetPipeline<'a> {
     let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let url = if let Some(id) = id {
-      format!("{}/_ingest/pipeline/{}", client.baseurl, encode_path(&id.to_string()),)
+      format!("{}_ingest/pipeline/{}", client.baseurl, encode_path(&id.to_string()),)
     } else {
-      format!("{}/_ingest/pipeline", client.baseurl,)
+      format!("{}_ingest/pipeline", client.baseurl,)
     };
     let mut query = Vec::with_capacity(2usize);
     if let Some(v) = &cluster_manager_timeout {

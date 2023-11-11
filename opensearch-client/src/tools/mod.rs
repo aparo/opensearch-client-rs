@@ -10,6 +10,12 @@ use walkdir::WalkDir;
 
 use crate::OsClient;
 
+const PIPELINE_DIRECTORY: &str = "pipelines";
+const TEMPLATE_DIRECTORY: &str = "templates";
+const COMPONENT_DIRECTORY: &str = "components";
+
+/// Tools is a struct that contains all the methods to dump and restore cluster
+/// data
 pub struct Tools<'a> {
   client: &'a OsClient,
 }
@@ -29,7 +35,7 @@ impl<'a> Tools<'a> {
   /// `anyhow::Error`.
   pub async fn dump_pipelines(&self, output: PathBuf) -> anyhow::Result<()> {
     let pipelines = self.client.ingest().get_pipelines().send().await?.into_inner();
-    let pipeline_path = output.join("pipelines");
+    let pipeline_path = output.join(PIPELINE_DIRECTORY);
     save_named_map(&pipeline_path, pipelines).await?;
     Ok(())
   }
@@ -44,7 +50,7 @@ impl<'a> Tools<'a> {
   /// `anyhow::Error`.
   pub async fn dump_index_templates(&self, output: PathBuf) -> anyhow::Result<()> {
     let data = self.client.indices().get_index_templates().send().await?.into_inner();
-    let data_path = output.join("templates");
+    let data_path = output.join(TEMPLATE_DIRECTORY);
     save_named_map(&data_path, data).await?;
     Ok(())
   }
@@ -65,7 +71,7 @@ impl<'a> Tools<'a> {
       .send()
       .await?
       .into_inner();
-    let data_path = output.join("component_templates");
+    let data_path = output.join(COMPONENT_DIRECTORY);
     save_named_map(&data_path, data).await?;
     Ok(())
   }
@@ -79,15 +85,16 @@ impl<'a> Tools<'a> {
   /// Returns `Ok(())` if the operation was successful, otherwise returns an
   /// `anyhow::Error`.
   pub async fn restore_pipelines(&self, input: PathBuf) -> anyhow::Result<()> {
-    let files = WalkDir::new(input)
-      .into_iter()
-      .filter_map(|e| e.ok())
-      .filter(|e| e.path().is_file())
-      .filter(|e| e.path().extension().unwrap_or_default() == "json");
+    let files = get_json_file_recursive(&input.join(PIPELINE_DIRECTORY))?;
     let current_pipelines = self.client.ingest().get_pipelines().send().await?.into_inner();
     for entry in files {
-      let name = entry.file_name().to_str().unwrap().replace(".json", "");
-      let pipeline = fs::read_to_string(entry.path())?;
+      let name = entry
+        .file_name()
+        .unwrap_or_default()
+        .to_str()
+        .unwrap()
+        .replace(".json", "");
+      let pipeline = fs::read_to_string(entry)?;
       let pipeline: serde_json::Value = serde_json::from_str(&pipeline)?;
       self
         .update_pipeline_if_required(&name, pipeline, current_pipelines.clone())
@@ -125,15 +132,16 @@ impl<'a> Tools<'a> {
   /// Returns `Ok(())` if the operation was successful, otherwise returns an
   /// `anyhow::Error`.
   pub async fn restore_index_templates(&self, input: PathBuf) -> anyhow::Result<()> {
-    let files = WalkDir::new(input)
-      .into_iter()
-      .filter_map(|e| e.ok())
-      .filter(|e| e.path().is_file())
-      .filter(|e| e.path().extension().unwrap_or_default() == "json");
+    let files = get_json_file_recursive(&input.join(TEMPLATE_DIRECTORY))?;
     let current_templates = self.client.indices().get_index_templates().send().await?.into_inner();
     for entry in files {
-      let name = entry.file_name().to_str().unwrap().replace(".json", "");
-      let body = fs::read_to_string(entry.path())?;
+      let name = entry
+        .file_name()
+        .unwrap_or_default()
+        .to_str()
+        .unwrap()
+        .replace(".json", "");
+      let body = fs::read_to_string(entry)?;
       let body: serde_json::Value = serde_json::from_str(&body)?;
       self
         .update_template_if_required(&name, body, current_templates.clone())
@@ -171,11 +179,7 @@ impl<'a> Tools<'a> {
   /// Returns `Ok(())` if the operation was successful, otherwise returns an
   /// `anyhow::Error`.
   pub async fn restore_index_components(&self, input: PathBuf) -> anyhow::Result<()> {
-    let files = WalkDir::new(input)
-      .into_iter()
-      .filter_map(|e| e.ok())
-      .filter(|e| e.path().is_file())
-      .filter(|e| e.path().extension().unwrap_or_default() == "json");
+    let files = get_json_file_recursive(&input.join(COMPONENT_DIRECTORY))?;
     let current_components = self
       .client
       .indices()
@@ -184,8 +188,13 @@ impl<'a> Tools<'a> {
       .await?
       .into_inner();
     for entry in files {
-      let name = entry.file_name().to_str().unwrap().replace(".json", "");
-      let body = fs::read_to_string(entry.path())?;
+      let name = entry
+        .file_name()
+        .unwrap_or_default()
+        .to_str()
+        .unwrap()
+        .replace(".json", "");
+      let body = fs::read_to_string(entry)?;
       let body: serde_json::Value = serde_json::from_str(&body)?;
       self
         .update_component_if_required(&name, body, current_components.clone())
@@ -211,6 +220,51 @@ impl<'a> Tools<'a> {
     }
     self.client.indices().put_component_template(name, body).send().await?;
     info!("Index Component {} updated", name);
+    Ok(())
+  }
+
+  /// Asynchronously fixes the pipelines from the specified path adding version
+  /// if missing.
+  pub async fn fix_pipelines(&self, input: PathBuf) -> anyhow::Result<()> {
+    let files = get_json_file_recursive(&input.join(PIPELINE_DIRECTORY))?;
+    for file in files {
+      let body = fs::read_to_string(&file)?;
+      let mut body: serde_json::Map<String, Value> = serde_json::from_str(&body)?;
+      if !body.contains_key("version") {
+        body.insert("version".to_string(), serde_json::Value::from(1));
+        write_json_to_file(&file, &serde_json::Value::from(body)).await?;
+      }
+    }
+    Ok(())
+  }
+
+  /// Asynchronously fixes the index templates from the specified path adding
+  /// version if missing.
+  pub async fn fix_index_templates(&self, input: PathBuf) -> anyhow::Result<()> {
+    let files = get_json_file_recursive(&input.join(TEMPLATE_DIRECTORY))?;
+    for file in files {
+      let body = fs::read_to_string(&file)?;
+      let mut body: serde_json::Map<String, Value> = serde_json::from_str(&body)?;
+      if !body.contains_key("version") {
+        body.insert("version".to_string(), serde_json::Value::from(1));
+        write_json_to_file(&file, &serde_json::Value::from(body)).await?;
+      }
+    }
+    Ok(())
+  }
+
+  /// Asynchronously fixes the index components from the specified path adding
+  /// version if missing.
+  pub async fn fix_components(&self, input: PathBuf) -> anyhow::Result<()> {
+    let files = get_json_file_recursive(&input.join(COMPONENT_DIRECTORY))?;
+    for file in files {
+      let body = fs::read_to_string(&file)?;
+      let mut body: serde_json::Map<String, Value> = serde_json::from_str(&body)?;
+      if !body.contains_key("version") {
+        body.insert("version".to_string(), serde_json::Value::from(1));
+        write_json_to_file(&file, &serde_json::Value::from(body)).await?;
+      }
+    }
     Ok(())
   }
 }
@@ -241,4 +295,17 @@ pub async fn save_named_map(path: &PathBuf, data: HashMap<String, Value>) -> any
     write_json_to_file(&value_file, value).await?;
   }
   Ok(())
+}
+
+fn get_json_file_recursive(path: &PathBuf) -> anyhow::Result<Vec<PathBuf>> {
+  let mut files = Vec::new();
+  for entry in WalkDir::new(path) {
+    let entry = entry?;
+    if entry.path().is_file() {
+      if entry.path().extension().unwrap_or_default() == "json" {
+        files.push(entry.path().to_path_buf());
+      }
+    }
+  }
+  Ok(files)
 }

@@ -65,6 +65,25 @@ pub enum Commands {
     #[clap(value_name = "FILE", default_value = "output")]
     input: PathBuf,
   },
+  /// Fix Metadata
+  /// This command will fix the metadata of the cluster
+  FixMetadata {
+    /// Fix ingest pipelines
+    #[clap(long, default_value = "true")]
+    ingest_pipelines: bool,
+
+    /// Fix index templates
+    #[clap(long, default_value = "true")]
+    index_templates: bool,
+
+    /// Fix index components
+    #[clap(long, default_value = "true")]
+    index_components: bool,
+
+    /// Sets the input path
+    #[clap(value_name = "FILE", default_value = "output")]
+    input: PathBuf,
+  },
 }
 
 #[tokio::main]
@@ -135,6 +154,27 @@ async fn main() -> anyhow::Result<()> {
       if *index_components {
         info!("Index Components: {}", index_components);
         client.tools().restore_index_components(input.clone()).await?;
+      }
+    }
+    Commands::FixMetadata {
+      ingest_pipelines,
+      index_templates,
+      index_components,
+      input,
+    } => {
+      info!("Fixing metadata");
+      info!("Input: {:?}", input);
+      if *ingest_pipelines {
+        info!("Ingest pipelines: {}", ingest_pipelines);
+        client.tools().fix_pipelines(input.clone()).await?;
+      }
+      if *index_templates {
+        info!("Index Templates: {}", index_templates);
+        client.tools().fix_index_templates(input.clone()).await?;
+      }
+      if *index_components {
+        info!("Index Components: {}", index_components);
+        client.tools().fix_components(input.clone()).await?;
       }
     }
   }

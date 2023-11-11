@@ -7,7 +7,7 @@
     {
       "type": "lldb",
       "request": "launch",
-      "name": "DUmp Metadata",
+      "name": "Dump Metadata",
       "cargo": {
         "args": ["build", "--bin=opensearch-cli", "--package=opensearch-cli"],
         "filter": {
@@ -16,6 +16,36 @@
         }
       },
       "args": ["-vv", "dump-metadata"],
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Restore Metadata",
+      "cargo": {
+        "args": ["build", "--bin=opensearch-cli", "--package=opensearch-cli"],
+        "filter": {
+          "name": "opensearch-cli",
+          "kind": "bin"
+        }
+      },
+      "args": ["-vv", "restore-metadata"],
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Fix Metadata",
+      "cargo": {
+        "args": ["build", "--bin=opensearch-cli", "--package=opensearch-cli"],
+        "filter": {
+          "name": "opensearch-cli",
+          "kind": "bin"
+        }
+      },
+      "args": ["-vv", "fix-metadata"],
       "cwd": "${workspaceFolder}",
       "envFile": "${workspaceFolder}/.env"
     }

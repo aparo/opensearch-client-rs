@@ -21,6 +21,8 @@ mod security;
 mod snapshot;
 #[cfg(feature = "tasks")]
 mod tasks;
+#[cfg(feature = "tools")]
+mod tools;
 
 use std::sync::{Arc, Mutex};
 
@@ -376,6 +378,11 @@ impl OsClient {
   #[cfg(feature = "tasks")]
   pub fn tasks(&self) -> tasks::Tasks {
     tasks::Tasks::new(&self)
+  }
+
+  #[cfg(feature = "tools")]
+  pub fn tools(&self) -> tools::Tools {
+    tools::Tools::new(&self)
   }
 
   /// Get the base URL to which requests are made.

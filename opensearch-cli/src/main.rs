@@ -1,11 +1,8 @@
 use std::path::PathBuf;
 
-use tracing::{info, Level};
-use tracing_subscriber::FmtSubscriber;
+use tracing::info;
 use clap::{Parser, Subcommand};
 use url::Url;
-
-mod actions;
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -80,7 +77,7 @@ async fn main() -> anyhow::Result<()> {
       info!("Ingest pipelines: {}", ingest_pipelines);
       info!("Output: {:?}", output);
       if *ingest_pipelines {
-        actions::dump_pipelines(&client, output.clone()).await?;
+        client.tools().dump_pipelines(output.clone()).await?;
       }
     }
   }

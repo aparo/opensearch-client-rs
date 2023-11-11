@@ -3,22 +3,6 @@ use std::convert::TryFrom;
 
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ///The ingest definition
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct IngestPutPipelineBodyParams(pub serde_json::Map<String, serde_json::Value>);
@@ -48,14 +32,6 @@ impl From<serde_json::Map<String, serde_json::Value>> for IngestPutPipelineBodyP
   }
 }
 
-
-
-
-
-
-
-
-
 ///The simulate definition
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct IngestSimulateBodyParams(pub serde_json::Map<String, serde_json::Value>);
@@ -84,19 +60,3 @@ impl From<serde_json::Map<String, serde_json::Value>> for IngestSimulateBodyPara
     Self(value)
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

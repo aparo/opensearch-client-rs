@@ -44,7 +44,7 @@ miette = "5.10.0"
 http-cache-reqwest = "0.12.0"
 
 [features]
-default = ["cat", "cluster", "indices", "ingest", "nodes", "mtermvectors", "remote", "security", "snapshot", "tasks"]
+default = ["cat", "cluster", "indices", "ingest", "nodes", "mtermvectors", "remote", "security", "snapshot", "tasks", "tools"]
 cat=[]
 cluster=[]
 indices=[]
@@ -55,3 +55,5 @@ remote=[]
 security=[]
 snapshot=[]
 tasks=[]
+# custom features
+tools=["indices", "ingest"]

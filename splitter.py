@@ -20,7 +20,7 @@ def snake_case(s):
     sub('([A-Z][a-z]+)', r' \1',
     sub('([A-Z]+)', r' \1',
     s.replace('-', ' '))).split()).lower()
-  
+
 def extract_category(name:str) -> str:
     for cat in CATEGORIES:
         if name.startswith(cat):
@@ -52,7 +52,7 @@ def split_types() -> None:
         sections[extract_category(name)].extend(block)
         block=[]
         name=""
-            
+
     mod=["pub mod "+snake_case(name.lower())+";" for name in sections.keys()] + \
     ["pub use "+snake_case(name.lower())+"::*;" for name in sections.keys()]+ \
         ["pub mod builder;"]

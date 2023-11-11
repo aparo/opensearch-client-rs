@@ -86,7 +86,7 @@ impl<'a> IndicesGetAlias<'a> {
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_alias", client.baseurl,);
+    let url = format!("{}_alias", client.baseurl,);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -119,7 +119,7 @@ impl<'a> IndicesGetAlias<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGetAliasWithName<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesGetAliasWithNameName, String>,
+  name: Result<OpenSearchNameValue, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -139,10 +139,10 @@ impl<'a> IndicesGetAliasWithName<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetAliasWithNameName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesGetAliasWithNameName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -201,7 +201,7 @@ impl<'a> IndicesGetAliasWithName<'a> {
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_alias/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = format!("{}_alias/{}", client.baseurl, encode_path(&name.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -234,7 +234,7 @@ impl<'a> IndicesGetAliasWithName<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesExistsAlias<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesExistsAliasName, String>,
+  name: Result<OpenSearchNameValue, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -254,10 +254,10 @@ impl<'a> IndicesExistsAlias<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesExistsAliasName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesExistsAliasName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -316,7 +316,7 @@ impl<'a> IndicesExistsAlias<'a> {
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_alias/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = format!("{}_alias/{}", client.baseurl, encode_path(&name.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -429,7 +429,7 @@ impl<'a> IndicesUpdateAliases<'a> {
     let body = body
       .and_then(std::convert::TryInto::<types::IndicesUpdateAliasesBodyParams>::try_into)
       .map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_aliases", client.baseurl,);
+    let url = format!("{}_aliases", client.baseurl,);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -492,7 +492,7 @@ impl<'a> IndicesAnalyzeGet<'a> {
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, index } = self;
     let index = index.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_analyze", client.baseurl,);
+    let url = format!("{}_analyze", client.baseurl,);
     let mut query = Vec::with_capacity(1usize);
     if let Some(v) = &index {
       query.push(("index", v.to_string()));
@@ -552,7 +552,7 @@ impl<'a> IndicesAnalyzePost<'a> {
     let Self { client, index, body } = self;
     let index = index.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_analyze", client.baseurl,);
+    let url = format!("{}_analyze", client.baseurl,);
     let mut query = Vec::with_capacity(1usize);
     if let Some(v) = &index {
       query.push(("index", v.to_string()));
@@ -701,7 +701,7 @@ impl<'a> IndicesClearCache<'a> {
     let index = index.map_err(Error::InvalidRequest)?;
     let query_opt = query.map_err(Error::InvalidRequest)?;
     let request = request.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cache/clear", client.baseurl,);
+    let url = format!("{}_cache/clear", client.baseurl,);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -755,7 +755,7 @@ impl<'a> IndicesGetDataStream<'a> {
   ///Sends a `GET` request to `/_data_stream`
   pub async fn send(self) -> Result<ResponseValue<types::IndicesGetDataStreamResponseContent>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_data_stream", client.baseurl,);
+    let url = format!("{}_data_stream", client.baseurl,);
     let request = client
       .client
       .get(url)
@@ -791,7 +791,7 @@ impl<'a> IndicesDataStreamsStats<'a> {
   ///Sends a `GET` request to `/_data_stream/_stats`
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_data_stream/_stats", client.baseurl,);
+    let url = format!("{}_data_stream/_stats", client.baseurl,);
     let request = client.client.get(url).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
@@ -811,7 +811,7 @@ impl<'a> IndicesDataStreamsStats<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGetDataStreamWithName<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesGetDataStreamWithNameName, String>,
+  name: Result<OpenSearchNameValue, String>,
 }
 impl<'a> IndicesGetDataStreamWithName<'a> {
   pub fn new(client: &'a super::OsClient) -> Self {
@@ -823,10 +823,10 @@ impl<'a> IndicesGetDataStreamWithName<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetDataStreamWithNameName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesGetDataStreamWithNameName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -834,7 +834,7 @@ impl<'a> IndicesGetDataStreamWithName<'a> {
   pub async fn send(self) -> Result<ResponseValue<types::IndicesGetDataStreamWithNameResponseContent>, Error> {
     let Self { client, name } = self;
     let name = name.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_data_stream/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = format!("{}_data_stream/{}", client.baseurl, encode_path(&name.to_string()),);
     let request = client
       .client
       .get(url)
@@ -861,7 +861,7 @@ impl<'a> IndicesGetDataStreamWithName<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesCreateDataStream<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesCreateDataStreamName, String>,
+  name: Result<OpenSearchNameValue, String>,
   body: Result<types::IndicesCreateDataStreamBodyParams, String>,
 }
 impl<'a> IndicesCreateDataStream<'a> {
@@ -875,10 +875,10 @@ impl<'a> IndicesCreateDataStream<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesCreateDataStreamName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesCreateDataStreamName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -896,7 +896,7 @@ impl<'a> IndicesCreateDataStream<'a> {
     let Self { client, name, body } = self;
     let name = name.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_data_stream/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = format!("{}_data_stream/{}", client.baseurl, encode_path(&name.to_string()),);
     let request = client
       .client
       .put(url)
@@ -924,7 +924,7 @@ impl<'a> IndicesCreateDataStream<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesDeleteDataStream<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesDeleteDataStreamName, String>,
+  name: Result<OpenSearchNameValue, String>,
 }
 impl<'a> IndicesDeleteDataStream<'a> {
   pub fn new(client: &'a super::OsClient) -> Self {
@@ -936,10 +936,10 @@ impl<'a> IndicesDeleteDataStream<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesDeleteDataStreamName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesDeleteDataStreamName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -947,7 +947,7 @@ impl<'a> IndicesDeleteDataStream<'a> {
   pub async fn send(self) -> Result<ResponseValue<types::IndicesDeleteDataStreamResponseContent>, Error> {
     let Self { client, name } = self;
     let name = name.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_data_stream/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = format!("{}_data_stream/{}", client.baseurl, encode_path(&name.to_string()),);
     let request = client
       .client
       .delete(url)
@@ -974,7 +974,7 @@ impl<'a> IndicesDeleteDataStream<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesDataStreamsStatsWithName<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesDataStreamsStatsWithNameName, String>,
+  name: Result<OpenSearchNameValue, String>,
 }
 impl<'a> IndicesDataStreamsStatsWithName<'a> {
   pub fn new(client: &'a super::OsClient) -> Self {
@@ -986,10 +986,10 @@ impl<'a> IndicesDataStreamsStatsWithName<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesDataStreamsStatsWithNameName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesDataStreamsStatsWithNameName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -998,7 +998,7 @@ impl<'a> IndicesDataStreamsStatsWithName<'a> {
     let Self { client, name } = self;
     let name = name.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_data_stream/{}/_stats",
+      "{}_data_stream/{}/_stats",
       client.baseurl,
       encode_path(&name.to_string()),
     );
@@ -1104,7 +1104,7 @@ impl<'a> IndicesFlushGet<'a> {
     let force = force.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let wait_if_ongoing = wait_if_ongoing.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_flush", client.baseurl,);
+    let url = format!("{}_flush", client.baseurl,);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -1223,7 +1223,7 @@ impl<'a> IndicesFlushPost<'a> {
     let force = force.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let wait_if_ongoing = wait_if_ongoing.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_flush", client.baseurl,);
+    let url = format!("{}_flush", client.baseurl,);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -1356,7 +1356,7 @@ impl<'a> IndicesForcemerge<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let max_num_segments = max_num_segments.map_err(Error::InvalidRequest)?;
     let only_expunge_deletes = only_expunge_deletes.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_forcemerge", client.baseurl,);
+    let url = format!("{}_forcemerge", client.baseurl,);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -1477,7 +1477,7 @@ impl<'a> IndicesSimulateTemplate<'a> {
     let create = create.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_index_template/_simulate", client.baseurl,);
+    let url = format!("{}_index_template/_simulate", client.baseurl,);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &cause {
       query.push(("cause", v.to_string()));
@@ -1510,7 +1510,7 @@ impl<'a> IndicesSimulateTemplate<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesSimulateTemplateWithName<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesSimulateTemplateWithNameName, String>,
+  name: Result<OpenSearchNameValue, String>,
   cause: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   create: Result<Option<bool>, String>,
@@ -1532,10 +1532,10 @@ impl<'a> IndicesSimulateTemplateWithName<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesSimulateTemplateWithNameName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesSimulateTemplateWithNameName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -1606,7 +1606,7 @@ impl<'a> IndicesSimulateTemplateWithName<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_index_template/_simulate/{}",
+      "{}_index_template/_simulate/{}",
       client.baseurl,
       encode_path(&name.to_string()),
     );
@@ -1642,7 +1642,7 @@ impl<'a> IndicesSimulateTemplateWithName<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesSimulateIndexTemplate<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesSimulateIndexTemplateName, String>,
+  name: Result<OpenSearchNameValue, String>,
   cause: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   create: Result<Option<bool>, String>,
@@ -1664,10 +1664,10 @@ impl<'a> IndicesSimulateIndexTemplate<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesSimulateIndexTemplateName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesSimulateIndexTemplateName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -1738,7 +1738,7 @@ impl<'a> IndicesSimulateIndexTemplate<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_index_template/_simulate_index/{}",
+      "{}_index_template/_simulate_index/{}",
       client.baseurl,
       encode_path(&name.to_string()),
     );
@@ -1772,19 +1772,19 @@ impl<'a> IndicesSimulateIndexTemplate<'a> {
 ///
 ///[`Client::Indices::get_index_template_with_name`]: super::OsClient::Indices::get_index_template_with_name
 #[derive(Debug, Clone)]
-pub struct IndicesGetIndexTemplateWithName<'a> {
+pub struct IndicesGetIndexTemplate<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesGetIndexTemplateWithNameName, String>,
+  name: Result<Option<OpenSearchNameValue>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
 }
-impl<'a> IndicesGetIndexTemplateWithName<'a> {
+impl<'a> IndicesGetIndexTemplate<'a> {
   pub fn new(client: &'a super::OsClient) -> Self {
     Self {
       client,
-      name: Err("name was not initialized".to_string()),
+      name: Ok(None),
       cluster_manager_timeout: Ok(None),
       flat_settings: Ok(None),
       local: Ok(None),
@@ -1794,10 +1794,10 @@ impl<'a> IndicesGetIndexTemplateWithName<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetIndexTemplateWithNameName>, {
+    V: std::convert::TryInto<Option<OpenSearchNameValue>>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesGetIndexTemplateWithNameName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -1842,7 +1842,7 @@ impl<'a> IndicesGetIndexTemplateWithName<'a> {
   }
 
   ///Sends a `GET` request to `/_index_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
+  pub async fn send(self) -> Result<ResponseValue<HashMap<String, serde_json::Value>>, Error> {
     let Self {
       client,
       name,
@@ -1856,7 +1856,12 @@ impl<'a> IndicesGetIndexTemplateWithName<'a> {
     let flat_settings = flat_settings.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_index_template/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = match name {
+      Some(ref name) => {
+        format!("{}_index_template/{}", client.baseurl, encode_path(&name.to_string()),)
+      }
+      None => format!("{}_index_template", client.baseurl,),
+    };
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -1874,7 +1879,7 @@ impl<'a> IndicesGetIndexTemplateWithName<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::from_response(response).await,
       _ => {
         Err(Error::UnexpectedResponse(
           ReqwestResponse::from_response(response).await,
@@ -1889,7 +1894,7 @@ impl<'a> IndicesGetIndexTemplateWithName<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesPutIndexTemplate<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesPutIndexTemplatePutName, String>,
+  name: Result<OpenSearchNameValue, String>,
   cause: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   create: Result<Option<bool>, String>,
@@ -1911,10 +1916,10 @@ impl<'a> IndicesPutIndexTemplate<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutIndexTemplatePutName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesPutIndexTemplatePutName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -1984,7 +1989,7 @@ impl<'a> IndicesPutIndexTemplate<'a> {
     let create = create.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_index_template/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = format!("{}_index_template/{}", client.baseurl, encode_path(&name.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &cause {
       query.push(("cause", v.to_string()));
@@ -2017,7 +2022,7 @@ impl<'a> IndicesPutIndexTemplate<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesDeleteIndexTemplate<'a> {
   client: &'a super::OsClient,
-  name: Result<IndexName, String>,
+  name: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -2035,10 +2040,10 @@ impl<'a> IndicesDeleteIndexTemplate<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -2085,7 +2090,7 @@ impl<'a> IndicesDeleteIndexTemplate<'a> {
     let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_index_template/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = format!("{}_index_template/{}", client.baseurl, encode_path(&name.to_string()),);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -2115,7 +2120,7 @@ impl<'a> IndicesDeleteIndexTemplate<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesExistsIndexTemplate<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesExistsIndexTemplateName, String>,
+  name: Result<OpenSearchNameValue, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
@@ -2133,10 +2138,10 @@ impl<'a> IndicesExistsIndexTemplate<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesExistsIndexTemplateName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesExistsIndexTemplateName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -2183,7 +2188,7 @@ impl<'a> IndicesExistsIndexTemplate<'a> {
     let flat_settings = flat_settings.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_index_template/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = format!("{}_index_template/{}", client.baseurl, encode_path(&name.to_string()),);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &flat_settings {
       query.push(("flat_settings", v.to_string()));
@@ -2207,6 +2212,434 @@ impl<'a> IndicesExistsIndexTemplate<'a> {
     }
   }
 }
+
+///Builder for [`Client::Indices::get_component_template_with_name`]
+///
+///[`Client::Indices::get_component_template_with_name`]: super::OsClient::Indices::get_component_template_with_name
+#[derive(Debug, Clone)]
+pub struct ClusterGetComponentTemplate<'a> {
+  client: &'a super::OsClient,
+  name: Result<Option<OpenSearchNameValue>, String>,
+  cluster_manager_timeout: Result<Option<Timeout>, String>,
+  local: Result<Option<bool>, String>,
+  master_timeout: Result<Option<Timeout>, String>,
+}
+impl<'a> ClusterGetComponentTemplate<'a> {
+  pub fn new(client: &'a super::OsClient) -> Self {
+    Self {
+      client,
+      name: Ok(None),
+      cluster_manager_timeout: Ok(None),
+      local: Ok(None),
+      master_timeout: Ok(None),
+    }
+  }
+
+  pub fn name<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<Option<OpenSearchNameValue>>, {
+    self.name = value
+      .try_into()
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
+    self
+  }
+
+  pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<Timeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `Timeout` for cluster_manager_timeout failed".to_string());
+    self
+  }
+
+  pub fn local<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<bool>, {
+    self.local = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `bool` for local failed".to_string());
+    self
+  }
+
+  pub fn master_timeout<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<Timeout>, {
+    self.master_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `Timeout` for master_timeout failed".to_string());
+    self
+  }
+
+  ///Sends a `GET` request to `/_component_template/{name}`
+  pub async fn send(self) -> Result<ResponseValue<HashMap<String, serde_json::Value>>, Error> {
+    let Self {
+      client,
+      name,
+      cluster_manager_timeout,
+      local,
+      master_timeout,
+    } = self;
+    let name = name.map_err(Error::InvalidRequest)?;
+    let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
+    let local = local.map_err(Error::InvalidRequest)?;
+    let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
+    let url = match name {
+      Some(ref name) => {
+        format!(
+          "{}_component_template/{}",
+          client.baseurl,
+          encode_path(&name.to_string()),
+        )
+      }
+      None => format!("{}_component_template", client.baseurl,),
+    };
+    let mut query = Vec::with_capacity(3usize);
+    if let Some(v) = &cluster_manager_timeout {
+      query.push(("cluster_manager_timeout", v.to_string()));
+    }
+    if let Some(v) = &local {
+      query.push(("local", v.to_string()));
+    }
+    if let Some(v) = &master_timeout {
+      query.push(("master_timeout", v.to_string()));
+    }
+    let request = client.client.get(url).query(&query).build()?;
+    let result = client.client.execute(request).await;
+    let response = result?;
+    match response.status().as_u16() {
+      200u16 => ResponseValue::from_response(response).await,
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
+    }
+  }
+}
+///Builder for [`Client::Indices::put_component_template_post`]
+///
+///[`Client::Indices::put_component_template_post`]: super::OsClient::Indices::put_component_template_post
+#[derive(Debug, Clone)]
+pub struct IndicesPutComponentTemplate<'a> {
+  client: &'a super::OsClient,
+  name: Result<OpenSearchNameValue, String>,
+  cluster_manager_timeout: Result<Option<Timeout>, String>,
+  create: Result<Option<bool>, String>,
+  master_timeout: Result<Option<Timeout>, String>,
+  timeout: Result<Option<Timeout>, String>,
+  body: Result<types::IndicesPutComponentTemplateBodyParams, String>,
+}
+impl<'a> IndicesPutComponentTemplate<'a> {
+  pub fn new(client: &'a super::OsClient) -> Self {
+    Self {
+      client,
+      name: Err("name was not initialized".to_string()),
+      cluster_manager_timeout: Ok(None),
+      create: Ok(None),
+      master_timeout: Ok(None),
+      timeout: Ok(None),
+      body: Err("body was not initialized".to_string()),
+    }
+  }
+
+  pub fn name<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<OpenSearchNameValue>, {
+    self.name = value
+      .try_into()
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
+    self
+  }
+
+  pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<Timeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `Timeout` for cluster_manager_timeout failed".to_string());
+    self
+  }
+
+  pub fn create<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<bool>, {
+    self.create = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `bool` for create failed".to_string());
+    self
+  }
+
+  pub fn master_timeout<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<Timeout>, {
+    self.master_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `Timeout` for master_timeout failed".to_string());
+    self
+  }
+
+  pub fn timeout<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<Timeout>, {
+    self.timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `Timeout` for timeout failed".to_string());
+    self
+  }
+
+  pub fn body<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<types::IndicesPutComponentTemplateBodyParams>, {
+    self.body = value
+      .try_into()
+      .map_err(|_| "conversion to `IndicesPutComponentTemplateBodyParams` for body failed".to_string());
+    self
+  }
+
+  ///Sends a `POST` request to `/_component_template/{name}`
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
+    let Self {
+      client,
+      name,
+      cluster_manager_timeout,
+      create,
+      master_timeout,
+      timeout,
+      body,
+    } = self;
+    let name = name.map_err(Error::InvalidRequest)?;
+    let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
+    let create = create.map_err(Error::InvalidRequest)?;
+    let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
+    let timeout = timeout.map_err(Error::InvalidRequest)?;
+    let body = body.map_err(Error::InvalidRequest)?;
+    let url = format!(
+      "{}_component_template/{}",
+      client.baseurl,
+      encode_path(&name.to_string()),
+    );
+    let mut query = Vec::with_capacity(4usize);
+    if let Some(v) = &cluster_manager_timeout {
+      query.push(("cluster_manager_timeout", v.to_string()));
+    }
+    if let Some(v) = &create {
+      query.push(("create", v.to_string()));
+    }
+    if let Some(v) = &master_timeout {
+      query.push(("master_timeout", v.to_string()));
+    }
+    if let Some(v) = &timeout {
+      query.push(("timeout", v.to_string()));
+    }
+    let request = client.client.post(url).json(&body).query(&query).build()?;
+    let result = client.client.execute(request).await;
+    let response = result?;
+    match response.status().as_u16() {
+      200u16 => Ok(ResponseValue::empty(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
+    }
+  }
+}
+///Builder for [`Client::Indices::delete_component_template`]
+///
+///[`Client::Indices::delete_component_template`]: super::OsClient::Indices::delete_component_template
+#[derive(Debug, Clone)]
+pub struct IndicesDeleteComponentTemplate<'a> {
+  client: &'a super::OsClient,
+  name: Result<OpenSearchNameValue, String>,
+  cluster_manager_timeout: Result<Option<Timeout>, String>,
+  master_timeout: Result<Option<Timeout>, String>,
+  timeout: Result<Option<Timeout>, String>,
+}
+impl<'a> IndicesDeleteComponentTemplate<'a> {
+  pub fn new(client: &'a super::OsClient) -> Self {
+    Self {
+      client,
+      name: Err("name was not initialized".to_string()),
+      cluster_manager_timeout: Ok(None),
+      master_timeout: Ok(None),
+      timeout: Ok(None),
+    }
+  }
+
+  pub fn name<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<OpenSearchNameValue>, {
+    self.name = value
+      .try_into()
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
+    self
+  }
+
+  pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<Timeout>, {
+    self.cluster_manager_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `Timeout` for cluster_manager_timeout failed".to_string());
+    self
+  }
+
+  pub fn master_timeout<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<Timeout>, {
+    self.master_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `Timeout` for master_timeout failed".to_string());
+    self
+  }
+
+  pub fn timeout<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<Timeout>, {
+    self.timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `Timeout` for timeout failed".to_string());
+    self
+  }
+
+  ///Sends a `DELETE` request to `/_component_template/{name}`
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
+    let Self {
+      client,
+      name,
+      cluster_manager_timeout,
+      master_timeout,
+      timeout,
+    } = self;
+    let name = name.map_err(Error::InvalidRequest)?;
+    let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
+    let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
+    let timeout = timeout.map_err(Error::InvalidRequest)?;
+    let url = format!(
+      "{}_component_template/{}",
+      client.baseurl,
+      encode_path(&name.to_string()),
+    );
+    let mut query = Vec::with_capacity(3usize);
+    if let Some(v) = &cluster_manager_timeout {
+      query.push(("cluster_manager_timeout", v.to_string()));
+    }
+    if let Some(v) = &master_timeout {
+      query.push(("master_timeout", v.to_string()));
+    }
+    if let Some(v) = &timeout {
+      query.push(("timeout", v.to_string()));
+    }
+    let request = client.client.delete(url).query(&query).build()?;
+    let result = client.client.execute(request).await;
+    let response = result?;
+    match response.status().as_u16() {
+      200u16 => Ok(ResponseValue::empty(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
+    }
+  }
+}
+///Builder for [`Client::Indices::exists_component_template`]
+///
+///[`Client::Indices::exists_component_template`]: super::OsClient::Indices::exists_component_template
+#[derive(Debug, Clone)]
+pub struct IndicesExistsComponentTemplate<'a> {
+  client: &'a super::OsClient,
+  name: Result<OpenSearchNameValue, String>,
+  local: Result<Option<bool>, String>,
+  master_timeout: Result<Option<Timeout>, String>,
+}
+impl<'a> IndicesExistsComponentTemplate<'a> {
+  pub fn new(client: &'a super::OsClient) -> Self {
+    Self {
+      client,
+      name: Err("name was not initialized".to_string()),
+      local: Ok(None),
+      master_timeout: Ok(None),
+    }
+  }
+
+  pub fn name<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<OpenSearchNameValue>, {
+    self.name = value
+      .try_into()
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
+    self
+  }
+
+  pub fn local<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<bool>, {
+    self.local = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `bool` for local failed".to_string());
+    self
+  }
+
+  pub fn master_timeout<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<Timeout>, {
+    self.master_timeout = value
+      .try_into()
+      .map(Some)
+      .map_err(|_| "conversion to `Timeout` for master_timeout failed".to_string());
+    self
+  }
+
+  ///Sends a `HEAD` request to `/_component_template/{name}`
+  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
+    let Self {
+      client,
+      name,
+      local,
+      master_timeout,
+    } = self;
+    let name = name.map_err(Error::InvalidRequest)?;
+    let local = local.map_err(Error::InvalidRequest)?;
+    let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
+    let url = format!(
+      "{}_component_template/{}",
+      client.baseurl,
+      encode_path(&name.to_string()),
+    );
+    let mut query = Vec::with_capacity(2usize);
+    if let Some(v) = &local {
+      query.push(("local", v.to_string()));
+    }
+    if let Some(v) = &master_timeout {
+      query.push(("master_timeout", v.to_string()));
+    }
+    let request = client.client.head(url).query(&query).build()?;
+    let result = client.client.execute(request).await;
+    let response = result?;
+    match response.status().as_u16() {
+      200u16 => Ok(ResponseValue::empty(response)),
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
+    }
+  }
+}
+
 ///Builder for [`Client::Indices::get_mapping`]
 ///
 ///[`Client::Indices::get_mapping`]: super::OsClient::Indices::get_mapping
@@ -2310,7 +2743,7 @@ impl<'a> IndicesGetMapping<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_mapping", client.baseurl,);
+    let url = format!("{}_mapping", client.baseurl,);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -2349,7 +2782,7 @@ impl<'a> IndicesGetMapping<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGetFieldMapping<'a> {
   client: &'a super::OsClient,
-  fields: Result<types::IndicesGetFieldMappingFields, String>,
+  fields: Result<OpenSearchNameValue, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -2371,10 +2804,10 @@ impl<'a> IndicesGetFieldMapping<'a> {
 
   pub fn fields<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetFieldMappingFields>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.fields = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesGetFieldMappingFields` for fields failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for fields failed".to_string());
     self
   }
 
@@ -2445,7 +2878,7 @@ impl<'a> IndicesGetFieldMapping<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let include_defaults = include_defaults.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_mapping/field/{}", client.baseurl, encode_path(&fields.to_string()),);
+    let url = format!("{}_mapping/field/{}", client.baseurl, encode_path(&fields.to_string()),);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -2522,7 +2955,7 @@ impl<'a> IndicesRecovery<'a> {
     } = self;
     let active_only = active_only.map_err(Error::InvalidRequest)?;
     let detailed = detailed.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_recovery", client.baseurl,);
+    let url = format!("{}_recovery", client.baseurl,);
     let mut query = Vec::with_capacity(2usize);
     if let Some(v) = &active_only {
       query.push(("active_only", v.to_string()));
@@ -2604,7 +3037,7 @@ impl<'a> IndicesRefresh<'a> {
     let allow_no_indices = allow_no_indices.map_err(Error::InvalidRequest)?;
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_refresh", client.baseurl,);
+    let url = format!("{}_refresh", client.baseurl,);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -2634,7 +3067,7 @@ impl<'a> IndicesRefresh<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesResolveIndex<'a> {
   client: &'a super::OsClient,
-  name: Result<IndexName, String>,
+  name: Result<OpenSearchNameValue, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
 }
 impl<'a> IndicesResolveIndex<'a> {
@@ -2648,10 +3081,10 @@ impl<'a> IndicesResolveIndex<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -2674,7 +3107,7 @@ impl<'a> IndicesResolveIndex<'a> {
     } = self;
     let name = name.map_err(Error::InvalidRequest)?;
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_resolve/index/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = format!("{}_resolve/index/{}", client.baseurl, encode_path(&name.to_string()),);
     let mut query = Vec::with_capacity(1usize);
     if let Some(v) = &expand_wildcards {
       query.push(("expand_wildcards", v.to_string()));
@@ -2767,7 +3200,7 @@ impl<'a> IndicesSegments<'a> {
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let verbose = verbose.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_segments", client.baseurl,);
+    let url = format!("{}_segments", client.baseurl,);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -2925,7 +3358,7 @@ impl<'a> IndicesGetSettings<'a> {
     let include_defaults = include_defaults.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_settings", client.baseurl,);
+    let url = format!("{}_settings", client.baseurl,);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -3108,7 +3541,7 @@ impl<'a> IndicesPutSettings<'a> {
     let preserve_existing = preserve_existing.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_settings", client.baseurl,);
+    let url = format!("{}_settings", client.baseurl,);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -3153,7 +3586,7 @@ impl<'a> IndicesPutSettings<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGetSettingsWithName<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesGetSettingsWithNameName, String>,
+  name: Result<OpenSearchNameValue, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
@@ -3181,10 +3614,10 @@ impl<'a> IndicesGetSettingsWithName<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetSettingsWithNameName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesGetSettingsWithNameName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -3291,7 +3724,7 @@ impl<'a> IndicesGetSettingsWithName<'a> {
     let include_defaults = include_defaults.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_settings/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = format!("{}_settings/{}", client.baseurl, encode_path(&name.to_string()),);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -3405,7 +3838,7 @@ impl<'a> IndicesShardStores<'a> {
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let status = status.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_shard_stores", client.baseurl,);
+    let url = format!("{}_shard_stores", client.baseurl,);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -3577,7 +4010,7 @@ impl<'a> IndicesStats<'a> {
     let include_segment_file_sizes = include_segment_file_sizes.map_err(Error::InvalidRequest)?;
     let include_unloaded_segments = include_unloaded_segments.map_err(Error::InvalidRequest)?;
     let level = level.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_stats", client.baseurl,);
+    let url = format!("{}_stats", client.baseurl,);
     let mut query = Vec::with_capacity(9usize);
     if let Some(v) = &completion_fields {
       query.push(("completion_fields", v.join(",")));
@@ -3625,7 +4058,7 @@ impl<'a> IndicesStats<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesStatsWithMetric<'a> {
   client: &'a super::OsClient,
-  metric: Result<types::IndicesStatsWithMetricMetric, String>,
+  metric: Result<OpenSearchNameValue, String>,
   completion_fields: Result<Option<Vec<String>>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   fielddata_fields: Result<Option<Vec<String>>, String>,
@@ -3655,10 +4088,10 @@ impl<'a> IndicesStatsWithMetric<'a> {
 
   pub fn metric<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesStatsWithMetricMetric>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.metric = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesStatsWithMetricMetric` for metric failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for metric failed".to_string());
     self
   }
 
@@ -3777,7 +4210,7 @@ impl<'a> IndicesStatsWithMetric<'a> {
     let include_segment_file_sizes = include_segment_file_sizes.map_err(Error::InvalidRequest)?;
     let include_unloaded_segments = include_unloaded_segments.map_err(Error::InvalidRequest)?;
     let level = level.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_stats/{}", client.baseurl, encode_path(&metric.to_string()),);
+    let url = format!("{}_stats/{}", client.baseurl, encode_path(&metric.to_string()),);
     let mut query = Vec::with_capacity(9usize);
     if let Some(v) = &completion_fields {
       query.push(("completion_fields", v.join(",")));
@@ -3894,7 +4327,7 @@ impl<'a> IndicesGetTemplate<'a> {
     let flat_settings = flat_settings.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_template", client.baseurl,);
+    let url = format!("{}_template", client.baseurl,);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -3927,7 +4360,7 @@ impl<'a> IndicesGetTemplate<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGetTemplateWithName<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesGetTemplateWithNameName, String>,
+  name: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
@@ -3947,10 +4380,10 @@ impl<'a> IndicesGetTemplateWithName<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetTemplateWithNameName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesGetTemplateWithNameName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -4009,7 +4442,7 @@ impl<'a> IndicesGetTemplateWithName<'a> {
     let flat_settings = flat_settings.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_template/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = format!("{}_template/{}", client.baseurl, encode_path(&name.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -4042,7 +4475,7 @@ impl<'a> IndicesGetTemplateWithName<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesPutTemplate<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesPutTemplatePostName, String>,
+  name: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   create: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
@@ -4064,10 +4497,10 @@ impl<'a> IndicesPutTemplate<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutTemplatePostName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesPutTemplatePostName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -4137,7 +4570,7 @@ impl<'a> IndicesPutTemplate<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let order = order.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_template/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = format!("{}_template/{}", client.baseurl, encode_path(&name.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -4170,7 +4603,7 @@ impl<'a> IndicesPutTemplate<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesDeleteTemplate<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesDeleteTemplateName, String>,
+  name: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -4188,10 +4621,10 @@ impl<'a> IndicesDeleteTemplate<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesDeleteTemplateName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesDeleteTemplateName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -4238,7 +4671,7 @@ impl<'a> IndicesDeleteTemplate<'a> {
     let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_template/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = format!("{}_template/{}", client.baseurl, encode_path(&name.to_string()),);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -4268,7 +4701,7 @@ impl<'a> IndicesDeleteTemplate<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesExistsTemplate<'a> {
   client: &'a super::OsClient,
-  name: Result<types::IndicesExistsTemplateName, String>,
+  name: Result<OpenSearchNameValue, String>,
   flat_settings: Result<Option<bool>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
@@ -4286,10 +4719,10 @@ impl<'a> IndicesExistsTemplate<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesExistsTemplateName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesExistsTemplateName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -4336,7 +4769,7 @@ impl<'a> IndicesExistsTemplate<'a> {
     let flat_settings = flat_settings.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_template/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = format!("{}_template/{}", client.baseurl, encode_path(&name.to_string()),);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &flat_settings {
       query.push(("flat_settings", v.to_string()));
@@ -4560,7 +4993,7 @@ impl<'a> IndicesValidateQuery<'a> {
     let q = q.map_err(Error::InvalidRequest)?;
     let rewrite = rewrite.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_validate/query", client.baseurl,);
+    let url = format!("{}_validate/query", client.baseurl,);
     let mut query = Vec::with_capacity(12usize);
     if let Some(v) = &all_shards {
       query.push(("all_shards", v.to_string()));
@@ -4617,7 +5050,7 @@ impl<'a> IndicesValidateQuery<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesRollover<'a> {
   client: &'a super::OsClient,
-  alias: Result<types::IndicesRolloverAlias, String>,
+  alias: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   dry_run: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
@@ -4641,10 +5074,10 @@ impl<'a> IndicesRollover<'a> {
 
   pub fn alias<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesRolloverAlias>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.alias = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesRolloverAlias` for alias failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for alias failed".to_string());
     self
   }
 
@@ -4726,7 +5159,7 @@ impl<'a> IndicesRollover<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_rollover", client.baseurl, encode_path(&alias.to_string()),);
+    let url = format!("{}{}/_rollover", client.baseurl, encode_path(&alias.to_string()),);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -4762,8 +5195,8 @@ impl<'a> IndicesRollover<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesRolloverWithNewIndex<'a> {
   client: &'a super::OsClient,
-  alias: Result<IndexName, String>,
-  new_index: Result<IndexName, String>,
+  alias: Result<OpenSearchNameValue, String>,
+  new_index: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   dry_run: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
@@ -4788,19 +5221,19 @@ impl<'a> IndicesRolloverWithNewIndex<'a> {
 
   pub fn alias<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.alias = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for alias failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for alias failed".to_string());
     self
   }
 
   pub fn new_index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.new_index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for new_index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for new_index failed".to_string());
     self
   }
 
@@ -4885,7 +5318,7 @@ impl<'a> IndicesRolloverWithNewIndex<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_rollover/{}",
+      "{}{}/_rollover/{}",
       client.baseurl,
       encode_path(&alias.to_string()),
       encode_path(&new_index.to_string()),
@@ -4925,7 +5358,7 @@ impl<'a> IndicesRolloverWithNewIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGet<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
+  index: Result<OpenSearchNameValue, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
@@ -4953,10 +5386,10 @@ impl<'a> IndicesGet<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -5063,7 +5496,7 @@ impl<'a> IndicesGet<'a> {
     let include_defaults = include_defaults.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -5108,7 +5541,7 @@ impl<'a> IndicesGet<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesCreate<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
+  index: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -5130,7 +5563,7 @@ impl<'a> IndicesCreate<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
       .map_err(|_| "conversion to `IndicesCreateIndex` for index failed".to_string());
@@ -5213,7 +5646,7 @@ impl<'a> IndicesCreate<'a> {
     let body = body
       .and_then(std::convert::TryInto::<types::IndicesCreateBodyParams>::try_into)
       .map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -5255,7 +5688,7 @@ impl<'a> IndicesCreate<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesDelete<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
+  index: Result<OpenSearchNameValue, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -5277,10 +5710,10 @@ impl<'a> IndicesDelete<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -5351,7 +5784,7 @@ impl<'a> IndicesDelete<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -5395,7 +5828,7 @@ impl<'a> IndicesDelete<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesExists<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
+  index: Result<OpenSearchNameValue, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   flat_settings: Result<Option<bool>, String>,
@@ -5419,10 +5852,10 @@ impl<'a> IndicesExists<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -5505,7 +5938,7 @@ impl<'a> IndicesExists<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let include_defaults = include_defaults.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -5544,7 +5977,7 @@ impl<'a> IndicesExists<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGetAliasWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
+  index: Result<OpenSearchNameValue, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -5564,10 +5997,10 @@ impl<'a> IndicesGetAliasWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -5626,7 +6059,7 @@ impl<'a> IndicesGetAliasWithIndex<'a> {
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_alias", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_alias", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -5659,8 +6092,8 @@ impl<'a> IndicesGetAliasWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGetAliasWithIndexName<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
-  name: Result<IndexName, String>,
+  index: Result<OpenSearchNameValue, String>,
+  name: Result<OpenSearchNameValue, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -5681,19 +6114,19 @@ impl<'a> IndicesGetAliasWithIndexName<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -5755,7 +6188,7 @@ impl<'a> IndicesGetAliasWithIndexName<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_alias/{}",
+      "{}{}/_alias/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&name.to_string()),
@@ -5793,7 +6226,7 @@ impl<'a> IndicesGetAliasWithIndexName<'a> {
 pub struct IndicesPutAliasPut<'a> {
   client: &'a super::OsClient,
   index: Result<IndexNames, String>,
-  name: Result<types::IndicesPutAliasPutName, String>,
+  name: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -5823,10 +6256,10 @@ impl<'a> IndicesPutAliasPut<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutAliasPutName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesPutAliasPutName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -5887,7 +6320,7 @@ impl<'a> IndicesPutAliasPut<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_alias/{}",
+      "{}{}/_alias/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&name.to_string()),
@@ -5922,7 +6355,7 @@ impl<'a> IndicesPutAliasPut<'a> {
 pub struct IndicesPutAliasPost<'a> {
   client: &'a super::OsClient,
   index: Result<IndexNames, String>,
-  name: Result<types::IndicesPutAliasPostName, String>,
+  name: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -5952,10 +6385,10 @@ impl<'a> IndicesPutAliasPost<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutAliasPostName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesPutAliasPostName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -6016,7 +6449,7 @@ impl<'a> IndicesPutAliasPost<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_alias/{}",
+      "{}{}/_alias/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&name.to_string()),
@@ -6051,7 +6484,7 @@ impl<'a> IndicesPutAliasPost<'a> {
 pub struct IndicesDeleteAlias<'a> {
   client: &'a super::OsClient,
   index: Result<IndexNames, String>,
-  name: Result<types::IndicesDeleteAliasName, String>,
+  name: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -6079,10 +6512,10 @@ impl<'a> IndicesDeleteAlias<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesDeleteAliasName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesDeleteAliasName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -6132,7 +6565,7 @@ impl<'a> IndicesDeleteAlias<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_alias/{}",
+      "{}{}/_alias/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&name.to_string()),
@@ -6166,8 +6599,8 @@ impl<'a> IndicesDeleteAlias<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesExistsAliasWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
-  name: Result<IndexName, String>,
+  index: Result<OpenSearchNameValue, String>,
+  name: Result<OpenSearchNameValue, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -6188,19 +6621,19 @@ impl<'a> IndicesExistsAliasWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -6262,7 +6695,7 @@ impl<'a> IndicesExistsAliasWithIndex<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_alias/{}",
+      "{}{}/_alias/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&name.to_string()),
@@ -6300,7 +6733,7 @@ impl<'a> IndicesExistsAliasWithIndex<'a> {
 pub struct IndicesPutAliasPutPlural<'a> {
   client: &'a super::OsClient,
   index: Result<IndexNames, String>,
-  name: Result<types::IndicesPutAliasPutPluralName, String>,
+  name: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -6330,10 +6763,10 @@ impl<'a> IndicesPutAliasPutPlural<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutAliasPutPluralName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesPutAliasPutPluralName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -6394,7 +6827,7 @@ impl<'a> IndicesPutAliasPutPlural<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_aliases/{}",
+      "{}{}/_aliases/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&name.to_string()),
@@ -6429,7 +6862,7 @@ impl<'a> IndicesPutAliasPutPlural<'a> {
 pub struct IndicesPutAliasPostPlural<'a> {
   client: &'a super::OsClient,
   index: Result<IndexNames, String>,
-  name: Result<types::IndicesPutAliasPostPluralName, String>,
+  name: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -6459,10 +6892,10 @@ impl<'a> IndicesPutAliasPostPlural<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesPutAliasPostPluralName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesPutAliasPostPluralName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -6523,7 +6956,7 @@ impl<'a> IndicesPutAliasPostPlural<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_aliases/{}",
+      "{}{}/_aliases/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&name.to_string()),
@@ -6558,7 +6991,7 @@ impl<'a> IndicesPutAliasPostPlural<'a> {
 pub struct IndicesDeleteAliasPlural<'a> {
   client: &'a super::OsClient,
   index: Result<IndexNames, String>,
-  name: Result<types::IndicesDeleteAliasPluralName, String>,
+  name: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -6586,10 +7019,10 @@ impl<'a> IndicesDeleteAliasPlural<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesDeleteAliasPluralName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesDeleteAliasPluralName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -6639,7 +7072,7 @@ impl<'a> IndicesDeleteAliasPlural<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_aliases/{}",
+      "{}{}/_aliases/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&name.to_string()),
@@ -6698,7 +7131,7 @@ impl<'a> IndicesAnalyzeGetWithIndex<'a> {
     let Self { client, index } = self;
     let index = index.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_analyze",
+      "{}{}/_analyze",
       client.baseurl,
       encode_path(&index.clone().unwrap_or(String::from("_all"))),
     );
@@ -6761,7 +7194,7 @@ impl<'a> IndicesAnalyzePostWithIndex<'a> {
     let Self { client, index, body } = self;
     let index = index.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_analyze", client.baseurl);
+    let url = format!("{}_analyze", client.baseurl);
     let mut query = Vec::with_capacity(1usize);
     if let Some(v) = &index {
       query.push(("index", v.to_string()));
@@ -6785,8 +7218,8 @@ impl<'a> IndicesAnalyzePostWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesAddBlock<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
-  block: Result<types::IndicesAddBlockBlock, String>,
+  index: Result<OpenSearchNameValue, String>,
+  block: Result<OpenSearchNameValue, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
@@ -6811,19 +7244,19 @@ impl<'a> IndicesAddBlock<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn block<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesAddBlockBlock>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.block = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesAddBlockBlock` for block failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for block failed".to_string());
     self
   }
 
@@ -6909,7 +7342,7 @@ impl<'a> IndicesAddBlock<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_block/{}",
+      "{}{}/_block/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&block.to_string()),
@@ -7080,12 +7513,12 @@ impl<'a> IndicesClearCacheWithIndex<'a> {
     let url = match &index {
       Some(idx) => {
         format!(
-          "{}/{}/_cache/clear",
+          "{}{}/_cache/clear",
           client.baseurl,
           encode_path(&index.clone().unwrap().join(",")),
         )
       }
-      None => format!("{}/_cache/clear", client.baseurl),
+      None => format!("{}_cache/clear", client.baseurl),
     };
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &allow_no_indices {
@@ -7131,8 +7564,8 @@ impl<'a> IndicesClearCacheWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesClonePut<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
-  target: Result<types::IndicesClonePutTarget, String>,
+  index: Result<OpenSearchNameValue, String>,
+  target: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -7155,19 +7588,19 @@ impl<'a> IndicesClonePut<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn target<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesClonePutTarget>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.target = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesClonePutTarget` for target failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for target failed".to_string());
     self
   }
 
@@ -7240,7 +7673,7 @@ impl<'a> IndicesClonePut<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_clone/{}",
+      "{}{}/_clone/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&target.to_string()),
@@ -7277,8 +7710,8 @@ impl<'a> IndicesClonePut<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesClonePost<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
-  target: Result<types::IndicesClonePostTarget, String>,
+  index: Result<OpenSearchNameValue, String>,
+  target: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -7301,19 +7734,19 @@ impl<'a> IndicesClonePost<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn target<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesClonePostTarget>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.target = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesClonePostTarget` for target failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for target failed".to_string());
     self
   }
 
@@ -7386,7 +7819,7 @@ impl<'a> IndicesClonePost<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_clone/{}",
+      "{}{}/_clone/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&target.to_string()),
@@ -7423,7 +7856,7 @@ impl<'a> IndicesClonePost<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesClose<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
+  index: Result<OpenSearchNameValue, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
@@ -7449,10 +7882,10 @@ impl<'a> IndicesClose<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -7547,7 +7980,7 @@ impl<'a> IndicesClose<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_close", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_close", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -7685,7 +8118,7 @@ impl<'a> IndicesFlushGetWithIndex<'a> {
     let force = force.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let wait_if_ongoing = wait_if_ongoing.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_flush", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_flush", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -7817,7 +8250,7 @@ impl<'a> IndicesFlushPostWithIndex<'a> {
     let force = force.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let wait_if_ongoing = wait_if_ongoing.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_flush", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_flush", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -7963,7 +8396,7 @@ impl<'a> IndicesForcemergeWithIndex<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let max_num_segments = max_num_segments.map_err(Error::InvalidRequest)?;
     let only_expunge_deletes = only_expunge_deletes.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_forcemerge", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_forcemerge", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -8002,7 +8435,7 @@ impl<'a> IndicesForcemergeWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGetMappingWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
+  index: Result<OpenSearchNameValue, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
@@ -8026,10 +8459,10 @@ impl<'a> IndicesGetMappingWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -8112,7 +8545,7 @@ impl<'a> IndicesGetMappingWithIndex<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_mapping", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_mapping", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -8288,7 +8721,7 @@ impl<'a> IndicesPutMappingPut<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let write_index_only = write_index_only.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_mapping", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_mapping", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -8476,7 +8909,7 @@ impl<'a> IndicesPutMappingPost<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let write_index_only = write_index_only.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_mapping", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_mapping", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -8527,8 +8960,8 @@ impl<'a> IndicesPutMappingPost<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesGetFieldMappingWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
-  fields: Result<types::IndicesGetFieldMappingWithIndexFields, String>,
+  index: Result<OpenSearchNameValue, String>,
+  fields: Result<OpenSearchNameValue, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -8551,19 +8984,19 @@ impl<'a> IndicesGetFieldMappingWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn fields<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetFieldMappingWithIndexFields>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.fields = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesGetFieldMappingWithIndexFields` for fields failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for fields failed".to_string());
     self
   }
 
@@ -8637,7 +9070,7 @@ impl<'a> IndicesGetFieldMappingWithIndex<'a> {
     let include_defaults = include_defaults.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_mapping/field/{}",
+      "{}{}/_mapping/field/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&fields.to_string()),
@@ -8677,7 +9110,7 @@ impl<'a> IndicesGetFieldMappingWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesOpen<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
+  index: Result<OpenSearchNameValue, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -8701,10 +9134,10 @@ impl<'a> IndicesOpen<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -8787,7 +9220,7 @@ impl<'a> IndicesOpen<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_open", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_open", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -8880,7 +9313,7 @@ impl<'a> IndicesRecoveryWithIndex<'a> {
     let index = index.map_err(Error::InvalidRequest)?;
     let active_only = active_only.map_err(Error::InvalidRequest)?;
     let detailed = detailed.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_recovery", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_recovery", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(2usize);
     if let Some(v) = &active_only {
       query.push(("active_only", v.to_string()));
@@ -8975,7 +9408,7 @@ impl<'a> IndicesRefreshGetWithIndex<'a> {
     let allow_no_indices = allow_no_indices.map_err(Error::InvalidRequest)?;
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_refresh", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_refresh", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -9073,7 +9506,7 @@ impl<'a> IndicesRefreshPostWithIndex<'a> {
     let allow_no_indices = allow_no_indices.map_err(Error::InvalidRequest)?;
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_refresh", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_refresh", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -9185,7 +9618,7 @@ impl<'a> IndicesSegmentsWithIndex<'a> {
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let verbose = verbose.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_segments", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_segments", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -9356,7 +9789,7 @@ impl<'a> IndicesGetSettingsWithIndex<'a> {
     let include_defaults = include_defaults.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_settings", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_settings", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -9552,7 +9985,7 @@ impl<'a> IndicesPutSettingsWithIndex<'a> {
     let preserve_existing = preserve_existing.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_settings", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_settings", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -9598,7 +10031,7 @@ impl<'a> IndicesPutSettingsWithIndex<'a> {
 pub struct IndicesGetSettingsWithIndexName<'a> {
   client: &'a super::OsClient,
   index: Result<IndexNames, String>,
-  name: Result<types::IndicesGetSettingsWithIndexNameName, String>,
+  name: Result<OpenSearchNameValue, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
@@ -9636,10 +10069,10 @@ impl<'a> IndicesGetSettingsWithIndexName<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesGetSettingsWithIndexNameName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesGetSettingsWithIndexNameName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -9749,7 +10182,7 @@ impl<'a> IndicesGetSettingsWithIndexName<'a> {
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_settings/{}",
+      "{}{}/_settings/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&name.to_string()),
@@ -9880,7 +10313,7 @@ impl<'a> IndicesShardStoresWithIndex<'a> {
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let status = status.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_shard_stores", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_shard_stores", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -9913,8 +10346,8 @@ impl<'a> IndicesShardStoresWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesShrinkPut<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
-  target: Result<types::IndicesShrinkPutTarget, String>,
+  index: Result<OpenSearchNameValue, String>,
+  target: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   copy_settings: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
@@ -9939,19 +10372,19 @@ impl<'a> IndicesShrinkPut<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn target<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesShrinkPutTarget>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.target = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesShrinkPutTarget` for target failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for target failed".to_string());
     self
   }
 
@@ -10036,7 +10469,7 @@ impl<'a> IndicesShrinkPut<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_shrink/{}",
+      "{}{}/_shrink/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&target.to_string()),
@@ -10076,8 +10509,8 @@ impl<'a> IndicesShrinkPut<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesShrinkPost<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
-  target: Result<types::IndicesShrinkPostTarget, String>,
+  index: Result<OpenSearchNameValue, String>,
+  target: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   copy_settings: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
@@ -10102,19 +10535,19 @@ impl<'a> IndicesShrinkPost<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn target<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesShrinkPostTarget>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.target = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesShrinkPostTarget` for target failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for target failed".to_string());
     self
   }
 
@@ -10199,7 +10632,7 @@ impl<'a> IndicesShrinkPost<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_shrink/{}",
+      "{}{}/_shrink/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&target.to_string()),
@@ -10239,8 +10672,8 @@ impl<'a> IndicesShrinkPost<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesSplitPut<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
-  target: Result<types::IndicesSplitPutTarget, String>,
+  index: Result<OpenSearchNameValue, String>,
+  target: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   copy_settings: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
@@ -10265,19 +10698,19 @@ impl<'a> IndicesSplitPut<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn target<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesSplitPutTarget>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.target = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesSplitPutTarget` for target failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for target failed".to_string());
     self
   }
 
@@ -10362,7 +10795,7 @@ impl<'a> IndicesSplitPut<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_split/{}",
+      "{}{}/_split/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&target.to_string()),
@@ -10402,8 +10835,8 @@ impl<'a> IndicesSplitPut<'a> {
 #[derive(Debug, Clone)]
 pub struct IndicesSplitPost<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
-  target: Result<types::IndicesSplitPostTarget, String>,
+  index: Result<OpenSearchNameValue, String>,
+  target: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   copy_settings: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
@@ -10428,19 +10861,19 @@ impl<'a> IndicesSplitPost<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn target<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesSplitPostTarget>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.target = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesSplitPostTarget` for target failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for target failed".to_string());
     self
   }
 
@@ -10525,7 +10958,7 @@ impl<'a> IndicesSplitPost<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_split/{}",
+      "{}{}/_split/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&target.to_string()),
@@ -10717,7 +11150,7 @@ impl<'a> IndicesStatsWithIndex<'a> {
     let include_segment_file_sizes = include_segment_file_sizes.map_err(Error::InvalidRequest)?;
     let include_unloaded_segments = include_unloaded_segments.map_err(Error::InvalidRequest)?;
     let level = level.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_stats", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_stats", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(9usize);
     if let Some(v) = &completion_fields {
       query.push(("completion_fields", v.join(",")));
@@ -10766,7 +11199,7 @@ impl<'a> IndicesStatsWithIndex<'a> {
 pub struct IndicesStatsWithIndexMetric<'a> {
   client: &'a super::OsClient,
   index: Result<IndexNames, String>,
-  metric: Result<types::IndicesStatsWithIndexMetricMetric, String>,
+  metric: Result<OpenSearchNameValue, String>,
   completion_fields: Result<Option<Vec<String>>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   fielddata_fields: Result<Option<Vec<String>>, String>,
@@ -10806,10 +11239,10 @@ impl<'a> IndicesStatsWithIndexMetric<'a> {
 
   pub fn metric<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesStatsWithIndexMetricMetric>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.metric = value
       .try_into()
-      .map_err(|_| "conversion to `IndicesStatsWithIndexMetricMetric` for metric failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for metric failed".to_string());
     self
   }
 
@@ -10931,7 +11364,7 @@ impl<'a> IndicesStatsWithIndexMetric<'a> {
     let include_unloaded_segments = include_unloaded_segments.map_err(Error::InvalidRequest)?;
     let level = level.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_stats/{}",
+      "{}{}/_stats/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&metric.to_string()),
@@ -11051,7 +11484,7 @@ impl<'a> IndicesGetUpgradeWithIndex<'a> {
     let allow_no_indices = allow_no_indices.map_err(Error::InvalidRequest)?;
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_upgrade", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_upgrade", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -11177,7 +11610,7 @@ impl<'a> IndicesUpgradeWithIndex<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let only_ancient_segments = only_ancient_segments.map_err(Error::InvalidRequest)?;
     let wait_for_completion = wait_for_completion.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_upgrade", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_upgrade", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -11407,7 +11840,7 @@ impl<'a> IndicesValidateQueryGetWithIndex<'a> {
     let lenient = lenient.map_err(Error::InvalidRequest)?;
     let q = q.map_err(Error::InvalidRequest)?;
     let rewrite = rewrite.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_validate/query", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_validate/query", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(12usize);
     if let Some(v) = &all_shards {
       query.push(("all_shards", v.to_string()));
@@ -11671,7 +12104,7 @@ impl<'a> IndicesValidateQueryPostWithIndex<'a> {
     let q = q.map_err(Error::InvalidRequest)?;
     let rewrite = rewrite.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_validate/query", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_validate/query", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(12usize);
     if let Some(v) = &all_shards {
       query.push(("all_shards", v.to_string()));

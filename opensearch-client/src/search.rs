@@ -132,7 +132,6 @@ use serde_json::{json, Value};
 //   pub max_bulk_size: u32,
 // }
 
-
 struct SearchAfterState {
   os: OpenSearch,
   index: String,
@@ -181,7 +180,6 @@ impl OpenSearch {
     })
   }
 
-
   // async fn execute_call(&self, response:&Response) -> Result<Vec<String>,
   // OpenSearchError> {     match response.status() {
   //         reqwest::StatusCode::OK => {
@@ -200,17 +198,12 @@ impl OpenSearch {
   //     };
   // }
 
-
-
-
-
-
   pub async fn search<T: DeserializeOwned>(
     &self,
     index: &String,
     body: &serde_json::Value,
   ) -> Result<SearchResult<T>, OpenSearchError> {
-    let request_url = format!("{}/{}/_search", self.server, index);
+    let request_url = format!("{}{}/_search", self.server, index);
 
     tracing::info!("search {index} {body}");
 
@@ -249,6 +242,4 @@ impl OpenSearch {
 
     // Ok(result)
   }
-
-
 }

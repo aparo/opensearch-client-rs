@@ -53,7 +53,7 @@ impl<'a> ClusterAllocationExplainGet<'a> {
     } = self;
     let include_disk_info = include_disk_info.map_err(Error::InvalidRequest)?;
     let include_yes_decisions = include_yes_decisions.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cluster/allocation/explain", client.baseurl,);
+    let url = format!("{}_cluster/allocation/explain", client.baseurl,);
     let mut query = Vec::with_capacity(2usize);
     if let Some(v) = &include_disk_info {
       query.push(("include_disk_info", v.to_string()));
@@ -134,7 +134,7 @@ impl<'a> ClusterAllocationExplainPost<'a> {
     let include_disk_info = include_disk_info.map_err(Error::InvalidRequest)?;
     let include_yes_decisions = include_yes_decisions.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cluster/allocation/explain", client.baseurl,);
+    let url = format!("{}_cluster/allocation/explain", client.baseurl,);
     let mut query = Vec::with_capacity(2usize);
     if let Some(v) = &include_disk_info {
       query.push(("include_disk_info", v.to_string()));
@@ -170,7 +170,7 @@ impl<'a> ClusterDeleteDecommissionAwareness<'a> {
   ///Sends a `DELETE` request to `/_cluster/decommission/awareness/`
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_cluster/decommission/awareness/", client.baseurl,);
+    let url = format!("{}_cluster/decommission/awareness/", client.baseurl,);
     let request = client.client.delete(url).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
@@ -190,7 +190,7 @@ impl<'a> ClusterDeleteDecommissionAwareness<'a> {
 #[derive(Debug, Clone)]
 pub struct ClusterGetDecommissionAwareness<'a> {
   client: &'a super::OsClient,
-  awareness_attribute_name: Result<types::ClusterGetDecommissionAwarenessAwarenessAttributeName, String>,
+  awareness_attribute_name: Result<OpenSearchNameValue, String>,
 }
 impl<'a> ClusterGetDecommissionAwareness<'a> {
   pub fn new(client: &'a super::OsClient) -> Self {
@@ -202,11 +202,10 @@ impl<'a> ClusterGetDecommissionAwareness<'a> {
 
   pub fn awareness_attribute_name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterGetDecommissionAwarenessAwarenessAttributeName>, {
-    self.awareness_attribute_name = value.try_into().map_err(|_| {
-      "conversion to `ClusterGetDecommissionAwarenessAwarenessAttributeName` for awareness_attribute_name failed"
-        .to_string()
-    });
+    V: std::convert::TryInto<OpenSearchNameValue>, {
+    self.awareness_attribute_name = value
+      .try_into()
+      .map_err(|_| "conversion to `OpenSearchNameValue` for awareness_attribute_name failed".to_string());
     self
   }
 
@@ -220,7 +219,7 @@ impl<'a> ClusterGetDecommissionAwareness<'a> {
     } = self;
     let awareness_attribute_name = awareness_attribute_name.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_cluster/decommission/awareness/{}/_status",
+      "{}_cluster/decommission/awareness/{}/_status",
       client.baseurl,
       encode_path(&awareness_attribute_name.to_string()),
     );
@@ -243,8 +242,8 @@ impl<'a> ClusterGetDecommissionAwareness<'a> {
 #[derive(Debug, Clone)]
 pub struct ClusterPutDecommissionAwareness<'a> {
   client: &'a super::OsClient,
-  awareness_attribute_name: Result<types::ClusterPutDecommissionAwarenessAwarenessAttributeName, String>,
-  awareness_attribute_value: Result<types::ClusterPutDecommissionAwarenessAwarenessAttributeValue, String>,
+  awareness_attribute_name: Result<OpenSearchNameValue, String>,
+  awareness_attribute_value: Result<OpenSearchNameValue, String>,
 }
 impl<'a> ClusterPutDecommissionAwareness<'a> {
   pub fn new(client: &'a super::OsClient) -> Self {
@@ -257,21 +256,19 @@ impl<'a> ClusterPutDecommissionAwareness<'a> {
 
   pub fn awareness_attribute_name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterPutDecommissionAwarenessAwarenessAttributeName>, {
-    self.awareness_attribute_name = value.try_into().map_err(|_| {
-      "conversion to `ClusterPutDecommissionAwarenessAwarenessAttributeName` for awareness_attribute_name failed"
-        .to_string()
-    });
+    V: std::convert::TryInto<OpenSearchNameValue>, {
+    self.awareness_attribute_name = value
+      .try_into()
+      .map_err(|_| "conversion to `OpenSearchNameValue` for awareness_attribute_name failed".to_string());
     self
   }
 
   pub fn awareness_attribute_value<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterPutDecommissionAwarenessAwarenessAttributeValue>, {
-    self.awareness_attribute_value = value.try_into().map_err(|_| {
-      "conversion to `ClusterPutDecommissionAwarenessAwarenessAttributeValue` for awareness_attribute_value failed"
-        .to_string()
-    });
+    V: std::convert::TryInto<OpenSearchNameValue>, {
+    self.awareness_attribute_value = value
+      .try_into()
+      .map_err(|_| "conversion to `OpenSearchNameValue` for awareness_attribute_value failed".to_string());
     self
   }
 
@@ -287,7 +284,7 @@ impl<'a> ClusterPutDecommissionAwareness<'a> {
     let awareness_attribute_name = awareness_attribute_name.map_err(Error::InvalidRequest)?;
     let awareness_attribute_value = awareness_attribute_value.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_cluster/decommission/awareness/{}/{}",
+      "{}_cluster/decommission/awareness/{}/{}",
       client.baseurl,
       encode_path(&awareness_attribute_name.to_string()),
       encode_path(&awareness_attribute_value.to_string()),
@@ -520,7 +517,7 @@ impl<'a> ClusterHealth<'a> {
     let wait_for_no_relocating_shards = wait_for_no_relocating_shards.map_err(Error::InvalidRequest)?;
     let wait_for_nodes = wait_for_nodes.map_err(Error::InvalidRequest)?;
     let wait_for_status = wait_for_status.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cluster/health", client.baseurl,);
+    let url = format!("{}_cluster/health", client.baseurl,);
     let mut query = Vec::with_capacity(14usize);
     if let Some(v) = &awareness_attribute {
       query.push(("awareness_attribute", v.to_string()));
@@ -583,7 +580,7 @@ impl<'a> ClusterHealth<'a> {
 #[derive(Debug, Clone)]
 pub struct ClusterHealthWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::ClusterHealthWithIndexIndex, String>,
+  index: Result<OpenSearchNameValue, String>,
   awareness_attribute: Result<Option<String>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   ensure_node_commissioned: Result<Option<bool>, String>,
@@ -623,10 +620,10 @@ impl<'a> ClusterHealthWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterHealthWithIndexIndex>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `ClusterHealthWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -805,7 +802,7 @@ impl<'a> ClusterHealthWithIndex<'a> {
     let wait_for_no_relocating_shards = wait_for_no_relocating_shards.map_err(Error::InvalidRequest)?;
     let wait_for_nodes = wait_for_nodes.map_err(Error::InvalidRequest)?;
     let wait_for_status = wait_for_status.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cluster/health/{}", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}_cluster/health/{}", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(14usize);
     if let Some(v) = &awareness_attribute {
       query.push(("awareness_attribute", v.to_string()));
@@ -923,7 +920,7 @@ impl<'a> ClusterPendingTasks<'a> {
     let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cluster/pending_tasks", client.baseurl,);
+    let url = format!("{}_cluster/pending_tasks", client.baseurl,);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -1077,7 +1074,7 @@ impl<'a> ClusterReroute<'a> {
     let retry_failed = retry_failed.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cluster/reroute", client.baseurl,);
+    let url = format!("{}_cluster/reroute", client.baseurl,);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -1128,7 +1125,7 @@ impl<'a> ClusterDeleteWeightedRouting<'a> {
   ///Sends a `DELETE` request to `/_cluster/routing/awareness/weights`
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_cluster/routing/awareness/weights", client.baseurl,);
+    let url = format!("{}_cluster/routing/awareness/weights", client.baseurl,);
     let request = client.client.delete(url).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
@@ -1148,7 +1145,7 @@ impl<'a> ClusterDeleteWeightedRouting<'a> {
 #[derive(Debug, Clone)]
 pub struct ClusterGetWeightedRouting<'a> {
   client: &'a super::OsClient,
-  attribute: Result<types::ClusterGetWeightedRoutingAttribute, String>,
+  attribute: Result<OpenSearchNameValue, String>,
 }
 impl<'a> ClusterGetWeightedRouting<'a> {
   pub fn new(client: &'a super::OsClient) -> Self {
@@ -1160,10 +1157,10 @@ impl<'a> ClusterGetWeightedRouting<'a> {
 
   pub fn attribute<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterGetWeightedRoutingAttribute>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.attribute = value
       .try_into()
-      .map_err(|_| "conversion to `ClusterGetWeightedRoutingAttribute` for attribute failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for attribute failed".to_string());
     self
   }
 
@@ -1173,7 +1170,7 @@ impl<'a> ClusterGetWeightedRouting<'a> {
     let Self { client, attribute } = self;
     let attribute = attribute.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_cluster/routing/awareness/{}/weights",
+      "{}_cluster/routing/awareness/{}/weights",
       client.baseurl,
       encode_path(&attribute.to_string()),
     );
@@ -1196,7 +1193,7 @@ impl<'a> ClusterGetWeightedRouting<'a> {
 #[derive(Debug, Clone)]
 pub struct ClusterPutWeightedRouting<'a> {
   client: &'a super::OsClient,
-  attribute: Result<types::ClusterPutWeightedRoutingAttribute, String>,
+  attribute: Result<OpenSearchNameValue, String>,
 }
 impl<'a> ClusterPutWeightedRouting<'a> {
   pub fn new(client: &'a super::OsClient) -> Self {
@@ -1208,10 +1205,10 @@ impl<'a> ClusterPutWeightedRouting<'a> {
 
   pub fn attribute<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterPutWeightedRoutingAttribute>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.attribute = value
       .try_into()
-      .map_err(|_| "conversion to `ClusterPutWeightedRoutingAttribute` for attribute failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for attribute failed".to_string());
     self
   }
 
@@ -1221,7 +1218,7 @@ impl<'a> ClusterPutWeightedRouting<'a> {
     let Self { client, attribute } = self;
     let attribute = attribute.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_cluster/routing/awareness/{}/weights",
+      "{}_cluster/routing/awareness/{}/weights",
       client.baseurl,
       encode_path(&attribute.to_string()),
     );
@@ -1327,7 +1324,7 @@ impl<'a> ClusterGetSettings<'a> {
     let include_defaults = include_defaults.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cluster/settings", client.baseurl,);
+    let url = format!("{}_cluster/settings", client.baseurl,);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -1464,7 +1461,7 @@ impl<'a> ClusterPutSettings<'a> {
     let body = body
       .and_then(std::convert::TryInto::<types::ClusterPutSettingsBodyParams>::try_into)
       .map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cluster/settings", client.baseurl,);
+    let url = format!("{}_cluster/settings", client.baseurl,);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -1645,7 +1642,7 @@ impl<'a> ClusterState<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let wait_for_metadata_version = wait_for_metadata_version.map_err(Error::InvalidRequest)?;
     let wait_for_timeout = wait_for_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cluster/state", client.baseurl,);
+    let url = format!("{}_cluster/state", client.baseurl,);
     let mut query = Vec::with_capacity(9usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -1693,7 +1690,7 @@ impl<'a> ClusterState<'a> {
 #[derive(Debug, Clone)]
 pub struct ClusterStateWithMetric<'a> {
   client: &'a super::OsClient,
-  metric: Result<types::ClusterStateWithMetricMetric, String>,
+  metric: Result<OpenSearchNameValue, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
@@ -1723,10 +1720,10 @@ impl<'a> ClusterStateWithMetric<'a> {
 
   pub fn metric<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterStateWithMetricMetric>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.metric = value
       .try_into()
-      .map_err(|_| "conversion to `ClusterStateWithMetricMetric` for metric failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for metric failed".to_string());
     self
   }
 
@@ -1845,7 +1842,7 @@ impl<'a> ClusterStateWithMetric<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let wait_for_metadata_version = wait_for_metadata_version.map_err(Error::InvalidRequest)?;
     let wait_for_timeout = wait_for_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cluster/state/{}", client.baseurl, encode_path(&metric.to_string()),);
+    let url = format!("{}_cluster/state/{}", client.baseurl, encode_path(&metric.to_string()),);
     let mut query = Vec::with_capacity(9usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -1893,7 +1890,7 @@ impl<'a> ClusterStateWithMetric<'a> {
 #[derive(Debug, Clone)]
 pub struct ClusterStateWithIndexMetric<'a> {
   client: &'a super::OsClient,
-  metric: Result<types::ClusterStateWithIndexMetricMetric, String>,
+  metric: Result<OpenSearchNameValue, String>,
   index: Result<IndexNames, String>,
   allow_no_indices: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
@@ -1925,10 +1922,10 @@ impl<'a> ClusterStateWithIndexMetric<'a> {
 
   pub fn metric<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterStateWithIndexMetricMetric>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.metric = value
       .try_into()
-      .map_err(|_| "conversion to `ClusterStateWithIndexMetricMetric` for metric failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for metric failed".to_string());
     self
   }
 
@@ -2059,7 +2056,7 @@ impl<'a> ClusterStateWithIndexMetric<'a> {
     let wait_for_metadata_version = wait_for_metadata_version.map_err(Error::InvalidRequest)?;
     let wait_for_timeout = wait_for_timeout.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_cluster/state/{}/{}",
+      "{}_cluster/state/{}/{}",
       client.baseurl,
       encode_path(&metric.to_string()),
       encode_path(&index.to_string()),
@@ -2152,7 +2149,7 @@ impl<'a> ClusterStats<'a> {
     } = self;
     let flat_settings = flat_settings.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cluster/stats", client.baseurl,);
+    let url = format!("{}_cluster/stats", client.baseurl,);
     let mut query = Vec::with_capacity(2usize);
     if let Some(v) = &flat_settings {
       query.push(("flat_settings", v.to_string()));
@@ -2179,7 +2176,7 @@ impl<'a> ClusterStats<'a> {
 #[derive(Debug, Clone)]
 pub struct ClusterStatsWithNodeId<'a> {
   client: &'a super::OsClient,
-  node_id: Result<types::ClusterStatsWithNodeIdNodeId, String>,
+  node_id: Result<OpenSearchId, String>,
   flat_settings: Result<Option<bool>, String>,
   timeout: Result<Option<Timeout>, String>,
 }
@@ -2195,10 +2192,10 @@ impl<'a> ClusterStatsWithNodeId<'a> {
 
   pub fn node_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClusterStatsWithNodeIdNodeId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.node_id = value
       .try_into()
-      .map_err(|_| "conversion to `ClusterStatsWithNodeIdNodeId` for node_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for node_id failed".to_string());
     self
   }
 
@@ -2234,7 +2231,7 @@ impl<'a> ClusterStatsWithNodeId<'a> {
     let flat_settings = flat_settings.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_cluster/stats/nodes/{}",
+      "{}_cluster/stats/nodes/{}",
       client.baseurl,
       encode_path(&node_id.to_string()),
     );
@@ -2319,7 +2316,7 @@ impl<'a> ClusterPostVotingConfigExclusions<'a> {
     let node_ids = node_ids.map_err(Error::InvalidRequest)?;
     let node_names = node_names.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cluster/voting_config_exclusions", client.baseurl,);
+    let url = format!("{}_cluster/voting_config_exclusions", client.baseurl,);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &node_ids {
       query.push(("node_ids", v.to_string()));
@@ -2376,650 +2373,12 @@ impl<'a> ClusterDeleteVotingConfigExclusions<'a> {
       wait_for_removal,
     } = self;
     let wait_for_removal = wait_for_removal.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cluster/voting_config_exclusions", client.baseurl,);
+    let url = format!("{}_cluster/voting_config_exclusions", client.baseurl,);
     let mut query = Vec::with_capacity(1usize);
     if let Some(v) = &wait_for_removal {
       query.push(("wait_for_removal", v.to_string()));
     }
     let request = client.client.delete(url).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => {
-        Err(Error::UnexpectedResponse(
-          ReqwestResponse::from_response(response).await,
-        ))
-      }
-    }
-  }
-}
-///Builder for [`Client::Cluster::get_component_template`]
-///
-///[`Client::Cluster::get_component_template`]: super::OsClient::Cluster::get_component_template
-#[derive(Debug, Clone)]
-pub struct ClusterGetComponentTemplate<'a> {
-  client: &'a super::OsClient,
-  cluster_manager_timeout: Result<Option<Timeout>, String>,
-  local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<Timeout>, String>,
-}
-impl<'a> ClusterGetComponentTemplate<'a> {
-  pub fn new(client: &'a super::OsClient) -> Self {
-    Self {
-      client,
-      cluster_manager_timeout: Ok(None),
-      local: Ok(None),
-      master_timeout: Ok(None),
-    }
-  }
-
-  pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Timeout>, {
-    self.cluster_manager_timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Timeout` for cluster_manager_timeout failed".to_string());
-    self
-  }
-
-  pub fn local<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.local = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for local failed".to_string());
-    self
-  }
-
-  pub fn master_timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Timeout>, {
-    self.master_timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Timeout` for master_timeout failed".to_string());
-    self
-  }
-
-  ///Sends a `GET` request to `/_component_template`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
-    let Self {
-      client,
-      cluster_manager_timeout,
-      local,
-      master_timeout,
-    } = self;
-    let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
-    let local = local.map_err(Error::InvalidRequest)?;
-    let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_component_template", client.baseurl,);
-    let mut query = Vec::with_capacity(3usize);
-    if let Some(v) = &cluster_manager_timeout {
-      query.push(("cluster_manager_timeout", v.to_string()));
-    }
-    if let Some(v) = &local {
-      query.push(("local", v.to_string()));
-    }
-    if let Some(v) = &master_timeout {
-      query.push(("master_timeout", v.to_string()));
-    }
-    let request = client.client.get(url).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => {
-        Err(Error::UnexpectedResponse(
-          ReqwestResponse::from_response(response).await,
-        ))
-      }
-    }
-  }
-}
-///Builder for [`Client::Cluster::get_component_template_with_name`]
-///
-///[`Client::Cluster::get_component_template_with_name`]: super::OsClient::Cluster::get_component_template_with_name
-#[derive(Debug, Clone)]
-pub struct ClusterGetComponentTemplateWithName<'a> {
-  client: &'a super::OsClient,
-  name: Result<types::ClusterGetComponentTemplateWithNameName, String>,
-  cluster_manager_timeout: Result<Option<Timeout>, String>,
-  local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<Timeout>, String>,
-}
-impl<'a> ClusterGetComponentTemplateWithName<'a> {
-  pub fn new(client: &'a super::OsClient) -> Self {
-    Self {
-      client,
-      name: Err("name was not initialized".to_string()),
-      cluster_manager_timeout: Ok(None),
-      local: Ok(None),
-      master_timeout: Ok(None),
-    }
-  }
-
-  pub fn name<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::ClusterGetComponentTemplateWithNameName>, {
-    self.name = value
-      .try_into()
-      .map_err(|_| "conversion to `ClusterGetComponentTemplateWithNameName` for name failed".to_string());
-    self
-  }
-
-  pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Timeout>, {
-    self.cluster_manager_timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Timeout` for cluster_manager_timeout failed".to_string());
-    self
-  }
-
-  pub fn local<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.local = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for local failed".to_string());
-    self
-  }
-
-  pub fn master_timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Timeout>, {
-    self.master_timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Timeout` for master_timeout failed".to_string());
-    self
-  }
-
-  ///Sends a `GET` request to `/_component_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
-    let Self {
-      client,
-      name,
-      cluster_manager_timeout,
-      local,
-      master_timeout,
-    } = self;
-    let name = name.map_err(Error::InvalidRequest)?;
-    let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
-    let local = local.map_err(Error::InvalidRequest)?;
-    let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!(
-      "{}/_component_template/{}",
-      client.baseurl,
-      encode_path(&name.to_string()),
-    );
-    let mut query = Vec::with_capacity(3usize);
-    if let Some(v) = &cluster_manager_timeout {
-      query.push(("cluster_manager_timeout", v.to_string()));
-    }
-    if let Some(v) = &local {
-      query.push(("local", v.to_string()));
-    }
-    if let Some(v) = &master_timeout {
-      query.push(("master_timeout", v.to_string()));
-    }
-    let request = client.client.get(url).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => {
-        Err(Error::UnexpectedResponse(
-          ReqwestResponse::from_response(response).await,
-        ))
-      }
-    }
-  }
-}
-///Builder for [`Client::Cluster::put_component_template_put`]
-///
-///[`Client::Cluster::put_component_template_put`]: super::OsClient::Cluster::put_component_template_put
-#[derive(Debug, Clone)]
-pub struct ClusterPutComponentTemplatePut<'a> {
-  client: &'a super::OsClient,
-  name: Result<types::ClusterPutComponentTemplatePutName, String>,
-  cluster_manager_timeout: Result<Option<Timeout>, String>,
-  create: Result<Option<bool>, String>,
-  master_timeout: Result<Option<Timeout>, String>,
-  timeout: Result<Option<Timeout>, String>,
-  body: Result<types::ClusterPutComponentTemplateBodyParams, String>,
-}
-impl<'a> ClusterPutComponentTemplatePut<'a> {
-  pub fn new(client: &'a super::OsClient) -> Self {
-    Self {
-      client,
-      name: Err("name was not initialized".to_string()),
-      cluster_manager_timeout: Ok(None),
-      create: Ok(None),
-      master_timeout: Ok(None),
-      timeout: Ok(None),
-      body: Err("body was not initialized".to_string()),
-    }
-  }
-
-  pub fn name<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::ClusterPutComponentTemplatePutName>, {
-    self.name = value
-      .try_into()
-      .map_err(|_| "conversion to `ClusterPutComponentTemplatePutName` for name failed".to_string());
-    self
-  }
-
-  pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Timeout>, {
-    self.cluster_manager_timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Timeout` for cluster_manager_timeout failed".to_string());
-    self
-  }
-
-  pub fn create<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.create = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for create failed".to_string());
-    self
-  }
-
-  pub fn master_timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Timeout>, {
-    self.master_timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Timeout` for master_timeout failed".to_string());
-    self
-  }
-
-  pub fn timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Timeout>, {
-    self.timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Timeout` for timeout failed".to_string());
-    self
-  }
-
-  pub fn body<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::ClusterPutComponentTemplateBodyParams>, {
-    self.body = value
-      .try_into()
-      .map_err(|_| "conversion to `ClusterPutComponentTemplateBodyParams` for body failed".to_string());
-    self
-  }
-
-  ///Sends a `PUT` request to `/_component_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
-    let Self {
-      client,
-      name,
-      cluster_manager_timeout,
-      create,
-      master_timeout,
-      timeout,
-      body,
-    } = self;
-    let name = name.map_err(Error::InvalidRequest)?;
-    let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
-    let create = create.map_err(Error::InvalidRequest)?;
-    let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!(
-      "{}/_component_template/{}",
-      client.baseurl,
-      encode_path(&name.to_string()),
-    );
-    let mut query = Vec::with_capacity(4usize);
-    if let Some(v) = &cluster_manager_timeout {
-      query.push(("cluster_manager_timeout", v.to_string()));
-    }
-    if let Some(v) = &create {
-      query.push(("create", v.to_string()));
-    }
-    if let Some(v) = &master_timeout {
-      query.push(("master_timeout", v.to_string()));
-    }
-    if let Some(v) = &timeout {
-      query.push(("timeout", v.to_string()));
-    }
-    let request = client.client.put(url).json(&body).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => {
-        Err(Error::UnexpectedResponse(
-          ReqwestResponse::from_response(response).await,
-        ))
-      }
-    }
-  }
-}
-///Builder for [`Client::Cluster::put_component_template_post`]
-///
-///[`Client::Cluster::put_component_template_post`]: super::OsClient::Cluster::put_component_template_post
-#[derive(Debug, Clone)]
-pub struct ClusterPutComponentTemplatePost<'a> {
-  client: &'a super::OsClient,
-  name: Result<types::ClusterPutComponentTemplatePostName, String>,
-  cluster_manager_timeout: Result<Option<Timeout>, String>,
-  create: Result<Option<bool>, String>,
-  master_timeout: Result<Option<Timeout>, String>,
-  timeout: Result<Option<Timeout>, String>,
-  body: Result<types::ClusterPutComponentTemplateBodyParams, String>,
-}
-impl<'a> ClusterPutComponentTemplatePost<'a> {
-  pub fn new(client: &'a super::OsClient) -> Self {
-    Self {
-      client,
-      name: Err("name was not initialized".to_string()),
-      cluster_manager_timeout: Ok(None),
-      create: Ok(None),
-      master_timeout: Ok(None),
-      timeout: Ok(None),
-      body: Err("body was not initialized".to_string()),
-    }
-  }
-
-  pub fn name<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::ClusterPutComponentTemplatePostName>, {
-    self.name = value
-      .try_into()
-      .map_err(|_| "conversion to `ClusterPutComponentTemplatePostName` for name failed".to_string());
-    self
-  }
-
-  pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Timeout>, {
-    self.cluster_manager_timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Timeout` for cluster_manager_timeout failed".to_string());
-    self
-  }
-
-  pub fn create<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.create = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for create failed".to_string());
-    self
-  }
-
-  pub fn master_timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Timeout>, {
-    self.master_timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Timeout` for master_timeout failed".to_string());
-    self
-  }
-
-  pub fn timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Timeout>, {
-    self.timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Timeout` for timeout failed".to_string());
-    self
-  }
-
-  pub fn body<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::ClusterPutComponentTemplateBodyParams>, {
-    self.body = value
-      .try_into()
-      .map_err(|_| "conversion to `ClusterPutComponentTemplateBodyParams` for body failed".to_string());
-    self
-  }
-
-  ///Sends a `POST` request to `/_component_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
-    let Self {
-      client,
-      name,
-      cluster_manager_timeout,
-      create,
-      master_timeout,
-      timeout,
-      body,
-    } = self;
-    let name = name.map_err(Error::InvalidRequest)?;
-    let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
-    let create = create.map_err(Error::InvalidRequest)?;
-    let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!(
-      "{}/_component_template/{}",
-      client.baseurl,
-      encode_path(&name.to_string()),
-    );
-    let mut query = Vec::with_capacity(4usize);
-    if let Some(v) = &cluster_manager_timeout {
-      query.push(("cluster_manager_timeout", v.to_string()));
-    }
-    if let Some(v) = &create {
-      query.push(("create", v.to_string()));
-    }
-    if let Some(v) = &master_timeout {
-      query.push(("master_timeout", v.to_string()));
-    }
-    if let Some(v) = &timeout {
-      query.push(("timeout", v.to_string()));
-    }
-    let request = client.client.post(url).json(&body).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => {
-        Err(Error::UnexpectedResponse(
-          ReqwestResponse::from_response(response).await,
-        ))
-      }
-    }
-  }
-}
-///Builder for [`Client::Cluster::delete_component_template`]
-///
-///[`Client::Cluster::delete_component_template`]: super::OsClient::Cluster::delete_component_template
-#[derive(Debug, Clone)]
-pub struct ClusterDeleteComponentTemplate<'a> {
-  client: &'a super::OsClient,
-  name: Result<types::ClusterDeleteComponentTemplateName, String>,
-  cluster_manager_timeout: Result<Option<Timeout>, String>,
-  master_timeout: Result<Option<Timeout>, String>,
-  timeout: Result<Option<Timeout>, String>,
-}
-impl<'a> ClusterDeleteComponentTemplate<'a> {
-  pub fn new(client: &'a super::OsClient) -> Self {
-    Self {
-      client,
-      name: Err("name was not initialized".to_string()),
-      cluster_manager_timeout: Ok(None),
-      master_timeout: Ok(None),
-      timeout: Ok(None),
-    }
-  }
-
-  pub fn name<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::ClusterDeleteComponentTemplateName>, {
-    self.name = value
-      .try_into()
-      .map_err(|_| "conversion to `ClusterDeleteComponentTemplateName` for name failed".to_string());
-    self
-  }
-
-  pub fn cluster_manager_timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Timeout>, {
-    self.cluster_manager_timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Timeout` for cluster_manager_timeout failed".to_string());
-    self
-  }
-
-  pub fn master_timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Timeout>, {
-    self.master_timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Timeout` for master_timeout failed".to_string());
-    self
-  }
-
-  pub fn timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Timeout>, {
-    self.timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Timeout` for timeout failed".to_string());
-    self
-  }
-
-  ///Sends a `DELETE` request to `/_component_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
-    let Self {
-      client,
-      name,
-      cluster_manager_timeout,
-      master_timeout,
-      timeout,
-    } = self;
-    let name = name.map_err(Error::InvalidRequest)?;
-    let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
-    let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!(
-      "{}/_component_template/{}",
-      client.baseurl,
-      encode_path(&name.to_string()),
-    );
-    let mut query = Vec::with_capacity(3usize);
-    if let Some(v) = &cluster_manager_timeout {
-      query.push(("cluster_manager_timeout", v.to_string()));
-    }
-    if let Some(v) = &master_timeout {
-      query.push(("master_timeout", v.to_string()));
-    }
-    if let Some(v) = &timeout {
-      query.push(("timeout", v.to_string()));
-    }
-    let request = client.client.delete(url).query(&query).build()?;
-    let result = client.client.execute(request).await;
-    let response = result?;
-    match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => {
-        Err(Error::UnexpectedResponse(
-          ReqwestResponse::from_response(response).await,
-        ))
-      }
-    }
-  }
-}
-///Builder for [`Client::Cluster::exists_component_template`]
-///
-///[`Client::Cluster::exists_component_template`]: super::OsClient::Cluster::exists_component_template
-#[derive(Debug, Clone)]
-pub struct ClusterExistsComponentTemplate<'a> {
-  client: &'a super::OsClient,
-  name: Result<types::ClusterExistsComponentTemplateName, String>,
-  local: Result<Option<bool>, String>,
-  master_timeout: Result<Option<Timeout>, String>,
-}
-impl<'a> ClusterExistsComponentTemplate<'a> {
-  pub fn new(client: &'a super::OsClient) -> Self {
-    Self {
-      client,
-      name: Err("name was not initialized".to_string()),
-      local: Ok(None),
-      master_timeout: Ok(None),
-    }
-  }
-
-  pub fn name<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<types::ClusterExistsComponentTemplateName>, {
-    self.name = value
-      .try_into()
-      .map_err(|_| "conversion to `ClusterExistsComponentTemplateName` for name failed".to_string());
-    self
-  }
-
-  pub fn local<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<bool>, {
-    self.local = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `bool` for local failed".to_string());
-    self
-  }
-
-  pub fn master_timeout<V>(mut self, value: V) -> Self
-  where
-    V: std::convert::TryInto<Timeout>, {
-    self.master_timeout = value
-      .try_into()
-      .map(Some)
-      .map_err(|_| "conversion to `Timeout` for master_timeout failed".to_string());
-    self
-  }
-
-  ///Sends a `HEAD` request to `/_component_template/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
-    let Self {
-      client,
-      name,
-      local,
-      master_timeout,
-    } = self;
-    let name = name.map_err(Error::InvalidRequest)?;
-    let local = local.map_err(Error::InvalidRequest)?;
-    let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!(
-      "{}/_component_template/{}",
-      client.baseurl,
-      encode_path(&name.to_string()),
-    );
-    let mut query = Vec::with_capacity(2usize);
-    if let Some(v) = &local {
-      query.push(("local", v.to_string()));
-    }
-    if let Some(v) = &master_timeout {
-      query.push(("master_timeout", v.to_string()));
-    }
-    let request = client.client.head(url).query(&query).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
@@ -3047,7 +2406,7 @@ impl<'a> ClusterRemoteInfo<'a> {
   ///Sends a `GET` request to `/_remote/info`
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_remote/info", client.baseurl,);
+    let url = format!("{}_remote/info", client.baseurl,);
     let request = client.client.get(url).build()?;
     let result = client.client.execute(request).await;
     let response = result?;

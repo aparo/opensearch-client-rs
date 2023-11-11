@@ -3411,7 +3411,7 @@ impl OsClient {
       let bulker_arc = Arc::clone(&self.bulker);
       let mut bulker = bulker_arc.lock().unwrap();
 
-      // let request_url = format!("{}/_bulk", self.server);
+      // let request_url = format!("{}_bulk", self.server);
 
       match self.bulk().body(bulker.to_owned()).send().await
         // .client

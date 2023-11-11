@@ -193,7 +193,7 @@ impl<'a> MtermvectorsGet<'a> {
     let term_statistics = term_statistics.map_err(Error::InvalidRequest)?;
     let version = version.map_err(Error::InvalidRequest)?;
     let version_type = version_type.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_mtermvectors", client.baseurl,);
+    let url = format!("{}_mtermvectors", client.baseurl,);
     let mut query = Vec::with_capacity(12usize);
     if let Some(v) = &field_statistics {
       query.push(("field_statistics", v.to_string()));
@@ -444,7 +444,7 @@ impl<'a> MtermvectorsPost<'a> {
     let version = version.map_err(Error::InvalidRequest)?;
     let version_type = version_type.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_mtermvectors", client.baseurl,);
+    let url = format!("{}_mtermvectors", client.baseurl,);
     let mut query = Vec::with_capacity(12usize);
     if let Some(v) = &field_statistics {
       query.push(("field_statistics", v.to_string()));
@@ -501,7 +501,7 @@ impl<'a> MtermvectorsPost<'a> {
 #[derive(Debug, Clone)]
 pub struct MtermvectorsGetWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
+  index: Result<OpenSearchNameValue, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
   ids: Result<Option<Vec<String>>, String>,
@@ -537,10 +537,10 @@ impl<'a> MtermvectorsGetWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -695,7 +695,7 @@ impl<'a> MtermvectorsGetWithIndex<'a> {
     let term_statistics = term_statistics.map_err(Error::InvalidRequest)?;
     let version = version.map_err(Error::InvalidRequest)?;
     let version_type = version_type.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_mtermvectors", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_mtermvectors", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(12usize);
     if let Some(v) = &field_statistics {
       query.push(("field_statistics", v.to_string()));
@@ -752,7 +752,7 @@ impl<'a> MtermvectorsGetWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct MtermvectorsPostWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<IndexName, String>,
+  index: Result<OpenSearchNameValue, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
   ids: Result<Option<Vec<String>>, String>,
@@ -790,10 +790,10 @@ impl<'a> MtermvectorsPostWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<IndexName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -959,7 +959,7 @@ impl<'a> MtermvectorsPostWithIndex<'a> {
     let version = version.map_err(Error::InvalidRequest)?;
     let version_type = version_type.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_mtermvectors", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_mtermvectors", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(12usize);
     if let Some(v) = &field_statistics {
       query.push(("field_statistics", v.to_string()));

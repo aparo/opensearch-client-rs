@@ -114,7 +114,7 @@ impl<'a> NodesHotThreadsDeprecatedDash<'a> {
     let threads = threads.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let type_ = type_.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cluster/nodes/hot_threads", client.baseurl,);
+    let url = format!("{}_cluster/nodes/hot_threads", client.baseurl,);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &ignore_idle_threads {
       query.push(("ignore_idle_threads", v.to_string()));
@@ -250,7 +250,7 @@ impl<'a> NodesHotThreadsDeprecatedCluster<'a> {
     let threads = threads.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let type_ = type_.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cluster/nodes/hotthreads", client.baseurl,);
+    let url = format!("{}_cluster/nodes/hotthreads", client.baseurl,);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &ignore_idle_threads {
       query.push(("ignore_idle_threads", v.to_string()));
@@ -289,7 +289,7 @@ impl<'a> NodesHotThreadsDeprecatedCluster<'a> {
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsWithNodeIdDeprecatedDash<'a> {
   client: &'a super::OsClient,
-  node_id: Result<types::NodesHotThreadsWithNodeIdDeprecatedDashNodeId, String>,
+  node_id: Result<OpenSearchId, String>,
   ignore_idle_threads: Result<Option<bool>, String>,
   interval: Result<Option<types::NodesHotThreadsWithNodeIdDeprecatedDashInterval>, String>,
   snapshots: Result<Option<i32>, String>,
@@ -313,10 +313,10 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecatedDash<'a> {
 
   pub fn node_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesHotThreadsWithNodeIdDeprecatedDashNodeId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.node_id = value
       .try_into()
-      .map_err(|_| "conversion to `NodesHotThreadsWithNodeIdDeprecatedDashNodeId` for node_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for node_id failed".to_string());
     self
   }
 
@@ -400,7 +400,7 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecatedDash<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let type_ = type_.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_cluster/nodes/{}/hot_threads",
+      "{}_cluster/nodes/{}/hot_threads",
       client.baseurl,
       encode_path(&node_id.to_string()),
     );
@@ -443,7 +443,7 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecatedDash<'a> {
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsWithNodeIdDeprecatedCluster<'a> {
   client: &'a super::OsClient,
-  node_id: Result<types::NodesHotThreadsWithNodeIdDeprecatedClusterNodeId, String>,
+  node_id: Result<OpenSearchId, String>,
   ignore_idle_threads: Result<Option<bool>, String>,
   interval: Result<Option<types::NodesHotThreadsWithNodeIdDeprecatedClusterInterval>, String>,
   snapshots: Result<Option<i32>, String>,
@@ -467,10 +467,10 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecatedCluster<'a> {
 
   pub fn node_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesHotThreadsWithNodeIdDeprecatedClusterNodeId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.node_id = value
       .try_into()
-      .map_err(|_| "conversion to `NodesHotThreadsWithNodeIdDeprecatedClusterNodeId` for node_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for node_id failed".to_string());
     self
   }
 
@@ -553,7 +553,7 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecatedCluster<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let type_ = type_.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_cluster/nodes/{}/hotthreads",
+      "{}_cluster/nodes/{}/hotthreads",
       client.baseurl,
       encode_path(&node_id.to_string()),
     );
@@ -636,7 +636,7 @@ impl<'a> NodesInfo<'a> {
     } = self;
     let flat_settings = flat_settings.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_nodes", client.baseurl,);
+    let url = format!("{}_nodes", client.baseurl,);
     let mut query = Vec::with_capacity(2usize);
     if let Some(v) = &flat_settings {
       query.push(("flat_settings", v.to_string()));
@@ -760,7 +760,7 @@ impl<'a> NodesHotThreads<'a> {
     let threads = threads.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let type_ = type_.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_nodes/hot_threads", client.baseurl,);
+    let url = format!("{}_nodes/hot_threads", client.baseurl,);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &ignore_idle_threads {
       query.push(("ignore_idle_threads", v.to_string()));
@@ -896,7 +896,7 @@ impl<'a> NodesHotThreadsDeprecated<'a> {
     let threads = threads.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let type_ = type_.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_nodes/hotthreads", client.baseurl,);
+    let url = format!("{}_nodes/hotthreads", client.baseurl,);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &ignore_idle_threads {
       query.push(("ignore_idle_threads", v.to_string()));
@@ -971,7 +971,7 @@ impl<'a> NodesReloadSecureSettings<'a> {
     let Self { client, timeout, body } = self;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_nodes/reload_secure_settings", client.baseurl,);
+    let url = format!("{}_nodes/reload_secure_settings", client.baseurl,);
     let mut query = Vec::with_capacity(1usize);
     if let Some(v) = &timeout {
       query.push(("timeout", v.to_string()));
@@ -1120,7 +1120,7 @@ impl<'a> NodesStats<'a> {
     let level = level.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let types = types.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_nodes/stats", client.baseurl,);
+    let url = format!("{}_nodes/stats", client.baseurl,);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &completion_fields {
       query.push(("completion_fields", v.join(",")));
@@ -1165,7 +1165,7 @@ impl<'a> NodesStats<'a> {
 #[derive(Debug, Clone)]
 pub struct NodesStatsWithMetric<'a> {
   client: &'a super::OsClient,
-  metric: Result<types::NodesStatsWithMetricMetric, String>,
+  metric: Result<OpenSearchNameValue, String>,
   completion_fields: Result<Option<Vec<String>>, String>,
   fielddata_fields: Result<Option<Vec<String>>, String>,
   fields: Result<Option<Vec<String>>, String>,
@@ -1193,10 +1193,10 @@ impl<'a> NodesStatsWithMetric<'a> {
 
   pub fn metric<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesStatsWithMetricMetric>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.metric = value
       .try_into()
-      .map_err(|_| "conversion to `NodesStatsWithMetricMetric` for metric failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for metric failed".to_string());
     self
   }
 
@@ -1303,7 +1303,7 @@ impl<'a> NodesStatsWithMetric<'a> {
     let level = level.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let types = types.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_nodes/stats/{}", client.baseurl, encode_path(&metric.to_string()),);
+    let url = format!("{}_nodes/stats/{}", client.baseurl, encode_path(&metric.to_string()),);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &completion_fields {
       query.push(("completion_fields", v.join(",")));
@@ -1348,8 +1348,8 @@ impl<'a> NodesStatsWithMetric<'a> {
 #[derive(Debug, Clone)]
 pub struct NodesStatsWithIndexMetricMetric<'a> {
   client: &'a super::OsClient,
-  metric: Result<types::NodesStatsWithIndexMetricMetricMetric, String>,
-  index_metric: Result<types::NodesStatsWithIndexMetricMetricIndexMetric, String>,
+  metric: Result<OpenSearchNameValue, String>,
+  index_metric: Result<OpenSearchNameValue, String>,
   completion_fields: Result<Option<Vec<String>>, String>,
   fielddata_fields: Result<Option<Vec<String>>, String>,
   fields: Result<Option<Vec<String>>, String>,
@@ -1378,19 +1378,19 @@ impl<'a> NodesStatsWithIndexMetricMetric<'a> {
 
   pub fn metric<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesStatsWithIndexMetricMetricMetric>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.metric = value
       .try_into()
-      .map_err(|_| "conversion to `NodesStatsWithIndexMetricMetricMetric` for metric failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for metric failed".to_string());
     self
   }
 
   pub fn index_metric<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesStatsWithIndexMetricMetricIndexMetric>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index_metric = value
       .try_into()
-      .map_err(|_| "conversion to `NodesStatsWithIndexMetricMetricIndexMetric` for index_metric failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index_metric failed".to_string());
     self
   }
 
@@ -1500,7 +1500,7 @@ impl<'a> NodesStatsWithIndexMetricMetric<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let types = types.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_nodes/stats/{}/{}",
+      "{}_nodes/stats/{}/{}",
       client.baseurl,
       encode_path(&metric.to_string()),
       encode_path(&index_metric.to_string()),
@@ -1573,7 +1573,7 @@ impl<'a> NodesUsage<'a> {
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, timeout } = self;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_nodes/usage", client.baseurl,);
+    let url = format!("{}_nodes/usage", client.baseurl,);
     let mut query = Vec::with_capacity(1usize);
     if let Some(v) = &timeout {
       query.push(("timeout", v.to_string()));
@@ -1597,7 +1597,7 @@ impl<'a> NodesUsage<'a> {
 #[derive(Debug, Clone)]
 pub struct NodesUsageWithMetric<'a> {
   client: &'a super::OsClient,
-  metric: Result<types::NodesUsageWithMetricMetric, String>,
+  metric: Result<OpenSearchNameValue, String>,
   timeout: Result<Option<Timeout>, String>,
 }
 impl<'a> NodesUsageWithMetric<'a> {
@@ -1611,10 +1611,10 @@ impl<'a> NodesUsageWithMetric<'a> {
 
   pub fn metric<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesUsageWithMetricMetric>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.metric = value
       .try_into()
-      .map_err(|_| "conversion to `NodesUsageWithMetricMetric` for metric failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for metric failed".to_string());
     self
   }
 
@@ -1637,7 +1637,7 @@ impl<'a> NodesUsageWithMetric<'a> {
     } = self;
     let metric = metric.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_nodes/usage/{}", client.baseurl, encode_path(&metric.to_string()),);
+    let url = format!("{}_nodes/usage/{}", client.baseurl, encode_path(&metric.to_string()),);
     let mut query = Vec::with_capacity(1usize);
     if let Some(v) = &timeout {
       query.push(("timeout", v.to_string()));
@@ -1661,7 +1661,7 @@ impl<'a> NodesUsageWithMetric<'a> {
 #[derive(Debug, Clone)]
 pub struct NodesInfoWithNodeId<'a> {
   client: &'a super::OsClient,
-  node_id: Result<types::NodesInfoWithNodeIdNodeId, String>,
+  node_id: Result<OpenSearchId, String>,
   flat_settings: Result<Option<bool>, String>,
   timeout: Result<Option<Timeout>, String>,
 }
@@ -1677,10 +1677,10 @@ impl<'a> NodesInfoWithNodeId<'a> {
 
   pub fn node_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesInfoWithNodeIdNodeId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.node_id = value
       .try_into()
-      .map_err(|_| "conversion to `NodesInfoWithNodeIdNodeId` for node_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for node_id failed".to_string());
     self
   }
 
@@ -1715,7 +1715,7 @@ impl<'a> NodesInfoWithNodeId<'a> {
     let node_id = node_id.map_err(Error::InvalidRequest)?;
     let flat_settings = flat_settings.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_nodes/{}", client.baseurl, encode_path(&node_id.to_string()),);
+    let url = format!("{}_nodes/{}", client.baseurl, encode_path(&node_id.to_string()),);
     let mut query = Vec::with_capacity(2usize);
     if let Some(v) = &flat_settings {
       query.push(("flat_settings", v.to_string()));
@@ -1742,7 +1742,7 @@ impl<'a> NodesInfoWithNodeId<'a> {
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsWithNodeId<'a> {
   client: &'a super::OsClient,
-  node_id: Result<types::NodesHotThreadsWithNodeIdNodeId, String>,
+  node_id: Result<OpenSearchId, String>,
   ignore_idle_threads: Result<Option<bool>, String>,
   interval: Result<Option<types::NodesHotThreadsWithNodeIdInterval>, String>,
   snapshots: Result<Option<i32>, String>,
@@ -1766,10 +1766,10 @@ impl<'a> NodesHotThreadsWithNodeId<'a> {
 
   pub fn node_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesHotThreadsWithNodeIdNodeId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.node_id = value
       .try_into()
-      .map_err(|_| "conversion to `NodesHotThreadsWithNodeIdNodeId` for node_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for node_id failed".to_string());
     self
   }
 
@@ -1853,7 +1853,7 @@ impl<'a> NodesHotThreadsWithNodeId<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let type_ = type_.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_nodes/{}/hot_threads",
+      "{}_nodes/{}/hot_threads",
       client.baseurl,
       encode_path(&node_id.to_string()),
     );
@@ -1895,7 +1895,7 @@ impl<'a> NodesHotThreadsWithNodeId<'a> {
 #[derive(Debug, Clone)]
 pub struct NodesHotThreadsWithNodeIdDeprecated<'a> {
   client: &'a super::OsClient,
-  node_id: Result<types::NodesHotThreadsWithNodeIdDeprecatedNodeId, String>,
+  node_id: Result<OpenSearchId, String>,
   ignore_idle_threads: Result<Option<bool>, String>,
   interval: Result<Option<types::NodesHotThreadsWithNodeIdDeprecatedInterval>, String>,
   snapshots: Result<Option<i32>, String>,
@@ -1919,10 +1919,10 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecated<'a> {
 
   pub fn node_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesHotThreadsWithNodeIdDeprecatedNodeId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.node_id = value
       .try_into()
-      .map_err(|_| "conversion to `NodesHotThreadsWithNodeIdDeprecatedNodeId` for node_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for node_id failed".to_string());
     self
   }
 
@@ -2006,7 +2006,7 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecated<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let type_ = type_.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_nodes/{}/hotthreads",
+      "{}_nodes/{}/hotthreads",
       client.baseurl,
       encode_path(&node_id.to_string()),
     );
@@ -2048,7 +2048,7 @@ impl<'a> NodesHotThreadsWithNodeIdDeprecated<'a> {
 #[derive(Debug, Clone)]
 pub struct NodesReloadSecureSettingsWithNodeId<'a> {
   client: &'a super::OsClient,
-  node_id: Result<types::NodesReloadSecureSettingsWithNodeIdNodeId, String>,
+  node_id: Result<OpenSearchId, String>,
   timeout: Result<Option<Timeout>, String>,
   body: Result<types::NodesReloadSecureSettingsBodyParams, String>,
 }
@@ -2064,10 +2064,10 @@ impl<'a> NodesReloadSecureSettingsWithNodeId<'a> {
 
   pub fn node_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesReloadSecureSettingsWithNodeIdNodeId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.node_id = value
       .try_into()
-      .map_err(|_| "conversion to `NodesReloadSecureSettingsWithNodeIdNodeId` for node_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for node_id failed".to_string());
     self
   }
 
@@ -2102,7 +2102,7 @@ impl<'a> NodesReloadSecureSettingsWithNodeId<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_nodes/{}/reload_secure_settings",
+      "{}_nodes/{}/reload_secure_settings",
       client.baseurl,
       encode_path(&node_id.to_string()),
     );
@@ -2129,7 +2129,7 @@ impl<'a> NodesReloadSecureSettingsWithNodeId<'a> {
 #[derive(Debug, Clone)]
 pub struct NodesStatsWithNodeId<'a> {
   client: &'a super::OsClient,
-  node_id: Result<types::NodesStatsWithNodeIdNodeId, String>,
+  node_id: Result<OpenSearchId, String>,
   completion_fields: Result<Option<Vec<String>>, String>,
   fielddata_fields: Result<Option<Vec<String>>, String>,
   fields: Result<Option<Vec<String>>, String>,
@@ -2157,10 +2157,10 @@ impl<'a> NodesStatsWithNodeId<'a> {
 
   pub fn node_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesStatsWithNodeIdNodeId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.node_id = value
       .try_into()
-      .map_err(|_| "conversion to `NodesStatsWithNodeIdNodeId` for node_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for node_id failed".to_string());
     self
   }
 
@@ -2267,7 +2267,7 @@ impl<'a> NodesStatsWithNodeId<'a> {
     let level = level.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let types = types.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_nodes/{}/stats", client.baseurl, encode_path(&node_id.to_string()),);
+    let url = format!("{}_nodes/{}/stats", client.baseurl, encode_path(&node_id.to_string()),);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &completion_fields {
       query.push(("completion_fields", v.join(",")));
@@ -2312,8 +2312,8 @@ impl<'a> NodesStatsWithNodeId<'a> {
 #[derive(Debug, Clone)]
 pub struct NodesStatsWithMetricNodeId<'a> {
   client: &'a super::OsClient,
-  node_id: Result<types::NodesStatsWithMetricNodeIdNodeId, String>,
-  metric: Result<types::NodesStatsWithMetricNodeIdMetric, String>,
+  node_id: Result<OpenSearchId, String>,
+  metric: Result<OpenSearchNameValue, String>,
   completion_fields: Result<Option<Vec<String>>, String>,
   fielddata_fields: Result<Option<Vec<String>>, String>,
   fields: Result<Option<Vec<String>>, String>,
@@ -2342,19 +2342,19 @@ impl<'a> NodesStatsWithMetricNodeId<'a> {
 
   pub fn node_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesStatsWithMetricNodeIdNodeId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.node_id = value
       .try_into()
-      .map_err(|_| "conversion to `NodesStatsWithMetricNodeIdNodeId` for node_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for node_id failed".to_string());
     self
   }
 
   pub fn metric<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesStatsWithMetricNodeIdMetric>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.metric = value
       .try_into()
-      .map_err(|_| "conversion to `NodesStatsWithMetricNodeIdMetric` for metric failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for metric failed".to_string());
     self
   }
 
@@ -2464,7 +2464,7 @@ impl<'a> NodesStatsWithMetricNodeId<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let types = types.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_nodes/{}/stats/{}",
+      "{}_nodes/{}/stats/{}",
       client.baseurl,
       encode_path(&node_id.to_string()),
       encode_path(&metric.to_string()),
@@ -2513,9 +2513,9 @@ impl<'a> NodesStatsWithMetricNodeId<'a> {
 #[derive(Debug, Clone)]
 pub struct NodesStatsWithIndexMetricMetricNodeId<'a> {
   client: &'a super::OsClient,
-  node_id: Result<types::NodesStatsWithIndexMetricMetricNodeIdNodeId, String>,
-  metric: Result<types::NodesStatsWithIndexMetricMetricNodeIdMetric, String>,
-  index_metric: Result<types::NodesStatsWithIndexMetricMetricNodeIdIndexMetric, String>,
+  node_id: Result<OpenSearchId, String>,
+  metric: Result<OpenSearchNameValue, String>,
+  index_metric: Result<OpenSearchNameValue, String>,
   completion_fields: Result<Option<Vec<String>>, String>,
   fielddata_fields: Result<Option<Vec<String>>, String>,
   fields: Result<Option<Vec<String>>, String>,
@@ -2545,28 +2545,28 @@ impl<'a> NodesStatsWithIndexMetricMetricNodeId<'a> {
 
   pub fn node_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesStatsWithIndexMetricMetricNodeIdNodeId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.node_id = value
       .try_into()
-      .map_err(|_| "conversion to `NodesStatsWithIndexMetricMetricNodeIdNodeId` for node_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for node_id failed".to_string());
     self
   }
 
   pub fn metric<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesStatsWithIndexMetricMetricNodeIdMetric>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.metric = value
       .try_into()
-      .map_err(|_| "conversion to `NodesStatsWithIndexMetricMetricNodeIdMetric` for metric failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for metric failed".to_string());
     self
   }
 
   pub fn index_metric<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesStatsWithIndexMetricMetricNodeIdIndexMetric>, {
-    self.index_metric = value.try_into().map_err(|_| {
-      "conversion to `NodesStatsWithIndexMetricMetricNodeIdIndexMetric` for index_metric failed".to_string()
-    });
+    V: std::convert::TryInto<OpenSearchNameValue>, {
+    self.index_metric = value
+      .try_into()
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index_metric failed".to_string());
     self
   }
 
@@ -2679,7 +2679,7 @@ impl<'a> NodesStatsWithIndexMetricMetricNodeId<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let types = types.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_nodes/{}/stats/{}/{}",
+      "{}_nodes/{}/stats/{}/{}",
       client.baseurl,
       encode_path(&node_id.to_string()),
       encode_path(&metric.to_string()),
@@ -2729,7 +2729,7 @@ impl<'a> NodesStatsWithIndexMetricMetricNodeId<'a> {
 #[derive(Debug, Clone)]
 pub struct NodesUsageWithNodeId<'a> {
   client: &'a super::OsClient,
-  node_id: Result<types::NodesUsageWithNodeIdNodeId, String>,
+  node_id: Result<OpenSearchId, String>,
   timeout: Result<Option<Timeout>, String>,
 }
 impl<'a> NodesUsageWithNodeId<'a> {
@@ -2743,10 +2743,10 @@ impl<'a> NodesUsageWithNodeId<'a> {
 
   pub fn node_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesUsageWithNodeIdNodeId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.node_id = value
       .try_into()
-      .map_err(|_| "conversion to `NodesUsageWithNodeIdNodeId` for node_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for node_id failed".to_string());
     self
   }
 
@@ -2769,7 +2769,7 @@ impl<'a> NodesUsageWithNodeId<'a> {
     } = self;
     let node_id = node_id.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_nodes/{}/usage", client.baseurl, encode_path(&node_id.to_string()),);
+    let url = format!("{}_nodes/{}/usage", client.baseurl, encode_path(&node_id.to_string()),);
     let mut query = Vec::with_capacity(1usize);
     if let Some(v) = &timeout {
       query.push(("timeout", v.to_string()));
@@ -2793,8 +2793,8 @@ impl<'a> NodesUsageWithNodeId<'a> {
 #[derive(Debug, Clone)]
 pub struct NodesUsageWithMetricNodeId<'a> {
   client: &'a super::OsClient,
-  node_id: Result<types::NodesUsageWithMetricNodeIdNodeId, String>,
-  metric: Result<types::NodesUsageWithMetricNodeIdMetric, String>,
+  node_id: Result<OpenSearchId, String>,
+  metric: Result<OpenSearchNameValue, String>,
   timeout: Result<Option<Timeout>, String>,
 }
 impl<'a> NodesUsageWithMetricNodeId<'a> {
@@ -2809,19 +2809,19 @@ impl<'a> NodesUsageWithMetricNodeId<'a> {
 
   pub fn node_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesUsageWithMetricNodeIdNodeId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.node_id = value
       .try_into()
-      .map_err(|_| "conversion to `NodesUsageWithMetricNodeIdNodeId` for node_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for node_id failed".to_string());
     self
   }
 
   pub fn metric<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesUsageWithMetricNodeIdMetric>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.metric = value
       .try_into()
-      .map_err(|_| "conversion to `NodesUsageWithMetricNodeIdMetric` for metric failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for metric failed".to_string());
     self
   }
 
@@ -2847,7 +2847,7 @@ impl<'a> NodesUsageWithMetricNodeId<'a> {
     let metric = metric.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_nodes/{}/usage/{}",
+      "{}_nodes/{}/usage/{}",
       client.baseurl,
       encode_path(&node_id.to_string()),
       encode_path(&metric.to_string()),
@@ -2875,8 +2875,8 @@ impl<'a> NodesUsageWithMetricNodeId<'a> {
 #[derive(Debug, Clone)]
 pub struct NodesInfoWithMetricNodeId<'a> {
   client: &'a super::OsClient,
-  node_id: Result<types::NodesInfoWithMetricNodeIdNodeId, String>,
-  metric: Result<types::NodesInfoWithMetricNodeIdMetric, String>,
+  node_id: Result<OpenSearchId, String>,
+  metric: Result<OpenSearchNameValue, String>,
   flat_settings: Result<Option<bool>, String>,
   timeout: Result<Option<Timeout>, String>,
 }
@@ -2893,19 +2893,19 @@ impl<'a> NodesInfoWithMetricNodeId<'a> {
 
   pub fn node_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesInfoWithMetricNodeIdNodeId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.node_id = value
       .try_into()
-      .map_err(|_| "conversion to `NodesInfoWithMetricNodeIdNodeId` for node_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for node_id failed".to_string());
     self
   }
 
   pub fn metric<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::NodesInfoWithMetricNodeIdMetric>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.metric = value
       .try_into()
-      .map_err(|_| "conversion to `NodesInfoWithMetricNodeIdMetric` for metric failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for metric failed".to_string());
     self
   }
 
@@ -2943,7 +2943,7 @@ impl<'a> NodesInfoWithMetricNodeId<'a> {
     let flat_settings = flat_settings.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_nodes/{}/{}",
+      "{}_nodes/{}/{}",
       client.baseurl,
       encode_path(&node_id.to_string()),
       encode_path(&metric.to_string()),

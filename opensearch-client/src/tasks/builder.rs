@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::Value;
 
-use crate::types::{GroupBy, Timeout};
+use crate::types::{GroupBy, OpenSearchId, Timeout};
 use super::types;
 #[allow(unused_imports)]
 use crate::{
@@ -128,7 +128,7 @@ impl<'a> TasksList<'a> {
     let parent_task_id = parent_task_id.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let wait_for_completion = wait_for_completion.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_tasks", client.baseurl,);
+    let url = format!("{}_tasks", client.baseurl,);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &actions {
       query.push(("actions", v.join(",")));
@@ -239,7 +239,7 @@ impl<'a> TasksCancel<'a> {
     let nodes = nodes.map_err(Error::InvalidRequest)?;
     let parent_task_id = parent_task_id.map_err(Error::InvalidRequest)?;
     let wait_for_completion = wait_for_completion.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_tasks/_cancel", client.baseurl,);
+    let url = format!("{}_tasks/_cancel", client.baseurl,);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &actions {
       query.push(("actions", v.join(",")));
@@ -272,7 +272,7 @@ impl<'a> TasksCancel<'a> {
 #[derive(Debug, Clone)]
 pub struct TasksGet<'a> {
   client: &'a super::OsClient,
-  task_id: Result<types::TasksGetTaskId, String>,
+  task_id: Result<OpenSearchId, String>,
   timeout: Result<Option<Timeout>, String>,
   wait_for_completion: Result<Option<bool>, String>,
 }
@@ -288,10 +288,10 @@ impl<'a> TasksGet<'a> {
 
   pub fn task_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::TasksGetTaskId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.task_id = value
       .try_into()
-      .map_err(|_| "conversion to `TasksGetTaskId` for task_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for task_id failed".to_string());
     self
   }
 
@@ -326,7 +326,7 @@ impl<'a> TasksGet<'a> {
     let task_id = task_id.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let wait_for_completion = wait_for_completion.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_tasks/{}", client.baseurl, encode_path(&task_id.to_string()),);
+    let url = format!("{}_tasks/{}", client.baseurl, encode_path(&task_id.to_string()),);
     let mut query = Vec::with_capacity(2usize);
     if let Some(v) = &timeout {
       query.push(("timeout", v.to_string()));
@@ -353,7 +353,7 @@ impl<'a> TasksGet<'a> {
 #[derive(Debug, Clone)]
 pub struct TasksCancelWithTaskId<'a> {
   client: &'a super::OsClient,
-  task_id: Result<types::TasksCancelWithTaskIdTaskId, String>,
+  task_id: Result<OpenSearchId, String>,
   actions: Result<Option<Vec<String>>, String>,
   nodes: Result<Option<Vec<String>>, String>,
   parent_task_id: Result<Option<String>, String>,
@@ -373,10 +373,10 @@ impl<'a> TasksCancelWithTaskId<'a> {
 
   pub fn task_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::TasksCancelWithTaskIdTaskId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.task_id = value
       .try_into()
-      .map_err(|_| "conversion to `TasksCancelWithTaskIdTaskId` for task_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for task_id failed".to_string());
     self
   }
 
@@ -435,11 +435,7 @@ impl<'a> TasksCancelWithTaskId<'a> {
     let nodes = nodes.map_err(Error::InvalidRequest)?;
     let parent_task_id = parent_task_id.map_err(Error::InvalidRequest)?;
     let wait_for_completion = wait_for_completion.map_err(Error::InvalidRequest)?;
-    let url = format!(
-      "{}/_tasks/{}/_cancel",
-      client.baseurl,
-      encode_path(&task_id.to_string()),
-    );
+    let url = format!("{}_tasks/{}/_cancel", client.baseurl, encode_path(&task_id.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &actions {
       query.push(("actions", v.join(",")));

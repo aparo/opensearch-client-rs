@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::Value;
 
-use crate::types::Timeout;
+use crate::types::{OpenSearchId, OpenSearchNameValue, Timeout};
 use super::types;
 #[allow(unused_imports)]
 use crate::{
@@ -72,7 +72,7 @@ impl<'a> SnapshotGetRepository<'a> {
     let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_snapshot", client.baseurl,);
+    let url = format!("{}_snapshot", client.baseurl,);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -157,7 +157,7 @@ impl<'a> SnapshotStatus<'a> {
     let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_snapshot/_status", client.baseurl,);
+    let url = format!("{}_snapshot/_status", client.baseurl,);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -187,7 +187,7 @@ impl<'a> SnapshotStatus<'a> {
 #[derive(Debug, Clone)]
 pub struct SnapshotGetRepositoryWithRepository<'a> {
   client: &'a super::OsClient,
-  repository: Result<types::SnapshotGetRepositoryWithRepositoryRepository, String>,
+  repository: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   local: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
@@ -205,10 +205,10 @@ impl<'a> SnapshotGetRepositoryWithRepository<'a> {
 
   pub fn repository<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotGetRepositoryWithRepositoryRepository>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.repository = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotGetRepositoryWithRepositoryRepository` for repository failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for repository failed".to_string());
     self
   }
 
@@ -255,7 +255,7 @@ impl<'a> SnapshotGetRepositoryWithRepository<'a> {
     let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
     let local = local.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_snapshot/{}", client.baseurl, encode_path(&repository.to_string()),);
+    let url = format!("{}_snapshot/{}", client.baseurl, encode_path(&repository.to_string()),);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -285,7 +285,7 @@ impl<'a> SnapshotGetRepositoryWithRepository<'a> {
 #[derive(Debug, Clone)]
 pub struct SnapshotCreateRepositoryPut<'a> {
   client: &'a super::OsClient,
-  repository: Result<types::SnapshotCreateRepositoryPutRepository, String>,
+  repository: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -307,10 +307,10 @@ impl<'a> SnapshotCreateRepositoryPut<'a> {
 
   pub fn repository<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCreateRepositoryPutRepository>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.repository = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotCreateRepositoryPutRepository` for repository failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for repository failed".to_string());
     self
   }
 
@@ -380,7 +380,7 @@ impl<'a> SnapshotCreateRepositoryPut<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let verify = verify.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_snapshot/{}", client.baseurl, encode_path(&repository.to_string()),);
+    let url = format!("{}_snapshot/{}", client.baseurl, encode_path(&repository.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -413,7 +413,7 @@ impl<'a> SnapshotCreateRepositoryPut<'a> {
 #[derive(Debug, Clone)]
 pub struct SnapshotCreateRepositoryPost<'a> {
   client: &'a super::OsClient,
-  repository: Result<types::SnapshotCreateRepositoryPostRepository, String>,
+  repository: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -435,10 +435,10 @@ impl<'a> SnapshotCreateRepositoryPost<'a> {
 
   pub fn repository<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCreateRepositoryPostRepository>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.repository = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotCreateRepositoryPostRepository` for repository failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for repository failed".to_string());
     self
   }
 
@@ -508,7 +508,7 @@ impl<'a> SnapshotCreateRepositoryPost<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let verify = verify.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_snapshot/{}", client.baseurl, encode_path(&repository.to_string()),);
+    let url = format!("{}_snapshot/{}", client.baseurl, encode_path(&repository.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -541,7 +541,7 @@ impl<'a> SnapshotCreateRepositoryPost<'a> {
 #[derive(Debug, Clone)]
 pub struct SnapshotDeleteRepository<'a> {
   client: &'a super::OsClient,
-  repository: Result<types::SnapshotDeleteRepositoryRepository, String>,
+  repository: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -559,10 +559,10 @@ impl<'a> SnapshotDeleteRepository<'a> {
 
   pub fn repository<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotDeleteRepositoryRepository>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.repository = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotDeleteRepositoryRepository` for repository failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for repository failed".to_string());
     self
   }
 
@@ -609,7 +609,7 @@ impl<'a> SnapshotDeleteRepository<'a> {
     let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_snapshot/{}", client.baseurl, encode_path(&repository.to_string()),);
+    let url = format!("{}_snapshot/{}", client.baseurl, encode_path(&repository.to_string()),);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -639,7 +639,7 @@ impl<'a> SnapshotDeleteRepository<'a> {
 #[derive(Debug, Clone)]
 pub struct SnapshotCleanupRepository<'a> {
   client: &'a super::OsClient,
-  repository: Result<types::SnapshotCleanupRepositoryRepository, String>,
+  repository: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -657,10 +657,10 @@ impl<'a> SnapshotCleanupRepository<'a> {
 
   pub fn repository<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCleanupRepositoryRepository>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.repository = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotCleanupRepositoryRepository` for repository failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for repository failed".to_string());
     self
   }
 
@@ -708,7 +708,7 @@ impl<'a> SnapshotCleanupRepository<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_snapshot/{}/_cleanup",
+      "{}_snapshot/{}/_cleanup",
       client.baseurl,
       encode_path(&repository.to_string()),
     );
@@ -741,7 +741,7 @@ impl<'a> SnapshotCleanupRepository<'a> {
 #[derive(Debug, Clone)]
 pub struct SnapshotStatusWithRepository<'a> {
   client: &'a super::OsClient,
-  repository: Result<types::SnapshotStatusWithRepositoryRepository, String>,
+  repository: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
@@ -759,10 +759,10 @@ impl<'a> SnapshotStatusWithRepository<'a> {
 
   pub fn repository<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotStatusWithRepositoryRepository>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.repository = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotStatusWithRepositoryRepository` for repository failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for repository failed".to_string());
     self
   }
 
@@ -810,7 +810,7 @@ impl<'a> SnapshotStatusWithRepository<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_snapshot/{}/_status",
+      "{}_snapshot/{}/_status",
       client.baseurl,
       encode_path(&repository.to_string()),
     );
@@ -843,7 +843,7 @@ impl<'a> SnapshotStatusWithRepository<'a> {
 #[derive(Debug, Clone)]
 pub struct SnapshotVerifyRepository<'a> {
   client: &'a super::OsClient,
-  repository: Result<types::SnapshotVerifyRepositoryRepository, String>,
+  repository: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -861,10 +861,10 @@ impl<'a> SnapshotVerifyRepository<'a> {
 
   pub fn repository<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotVerifyRepositoryRepository>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.repository = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotVerifyRepositoryRepository` for repository failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for repository failed".to_string());
     self
   }
 
@@ -912,7 +912,7 @@ impl<'a> SnapshotVerifyRepository<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_snapshot/{}/_verify",
+      "{}_snapshot/{}/_verify",
       client.baseurl,
       encode_path(&repository.to_string()),
     );
@@ -945,8 +945,8 @@ impl<'a> SnapshotVerifyRepository<'a> {
 #[derive(Debug, Clone)]
 pub struct SnapshotGet<'a> {
   client: &'a super::OsClient,
-  repository: Result<types::SnapshotGetRepository, String>,
-  snapshot: Result<types::SnapshotGetSnapshot, String>,
+  repository: Result<OpenSearchNameValue, String>,
+  snapshot: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
@@ -967,19 +967,19 @@ impl<'a> SnapshotGet<'a> {
 
   pub fn repository<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotGetRepository>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.repository = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotGetRepository` for repository failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for repository failed".to_string());
     self
   }
 
   pub fn snapshot<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotGetSnapshot>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.snapshot = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotGetSnapshot` for snapshot failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for snapshot failed".to_string());
     self
   }
 
@@ -1041,7 +1041,7 @@ impl<'a> SnapshotGet<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let verbose = verbose.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_snapshot/{}/{}",
+      "{}_snapshot/{}/{}",
       client.baseurl,
       encode_path(&repository.to_string()),
       encode_path(&snapshot.to_string()),
@@ -1078,8 +1078,8 @@ impl<'a> SnapshotGet<'a> {
 #[derive(Debug, Clone)]
 pub struct SnapshotCreatePut<'a> {
   client: &'a super::OsClient,
-  repository: Result<types::SnapshotCreatePutRepository, String>,
-  snapshot: Result<types::SnapshotCreatePutSnapshot, String>,
+  repository: Result<OpenSearchNameValue, String>,
+  snapshot: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   wait_for_completion: Result<Option<bool>, String>,
@@ -1100,19 +1100,19 @@ impl<'a> SnapshotCreatePut<'a> {
 
   pub fn repository<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCreatePutRepository>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.repository = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotCreatePutRepository` for repository failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for repository failed".to_string());
     self
   }
 
   pub fn snapshot<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCreatePutSnapshot>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.snapshot = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotCreatePutSnapshot` for snapshot failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for snapshot failed".to_string());
     self
   }
 
@@ -1173,7 +1173,7 @@ impl<'a> SnapshotCreatePut<'a> {
     let wait_for_completion = wait_for_completion.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_snapshot/{}/{}",
+      "{}_snapshot/{}/{}",
       client.baseurl,
       encode_path(&repository.to_string()),
       encode_path(&snapshot.to_string()),
@@ -1207,8 +1207,8 @@ impl<'a> SnapshotCreatePut<'a> {
 #[derive(Debug, Clone)]
 pub struct SnapshotCreatePost<'a> {
   client: &'a super::OsClient,
-  repository: Result<types::SnapshotCreatePostRepository, String>,
-  snapshot: Result<types::SnapshotCreatePostSnapshot, String>,
+  repository: Result<OpenSearchNameValue, String>,
+  snapshot: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   wait_for_completion: Result<Option<bool>, String>,
@@ -1229,19 +1229,19 @@ impl<'a> SnapshotCreatePost<'a> {
 
   pub fn repository<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCreatePostRepository>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.repository = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotCreatePostRepository` for repository failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for repository failed".to_string());
     self
   }
 
   pub fn snapshot<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCreatePostSnapshot>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.snapshot = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotCreatePostSnapshot` for snapshot failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for snapshot failed".to_string());
     self
   }
 
@@ -1302,7 +1302,7 @@ impl<'a> SnapshotCreatePost<'a> {
     let wait_for_completion = wait_for_completion.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_snapshot/{}/{}",
+      "{}_snapshot/{}/{}",
       client.baseurl,
       encode_path(&repository.to_string()),
       encode_path(&snapshot.to_string()),
@@ -1336,8 +1336,8 @@ impl<'a> SnapshotCreatePost<'a> {
 #[derive(Debug, Clone)]
 pub struct SnapshotDelete<'a> {
   client: &'a super::OsClient,
-  repository: Result<types::SnapshotDeleteRepository, String>,
-  snapshot: Result<types::SnapshotDeleteSnapshot, String>,
+  repository: Result<OpenSearchNameValue, String>,
+  snapshot: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
 }
@@ -1354,19 +1354,19 @@ impl<'a> SnapshotDelete<'a> {
 
   pub fn repository<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotDeleteRepository>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.repository = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotDeleteRepository` for repository failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for repository failed".to_string());
     self
   }
 
   pub fn snapshot<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotDeleteSnapshot>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.snapshot = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotDeleteSnapshot` for snapshot failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for snapshot failed".to_string());
     self
   }
 
@@ -1404,7 +1404,7 @@ impl<'a> SnapshotDelete<'a> {
     let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_snapshot/{}/{}",
+      "{}_snapshot/{}/{}",
       client.baseurl,
       encode_path(&repository.to_string()),
       encode_path(&snapshot.to_string()),
@@ -1435,9 +1435,9 @@ impl<'a> SnapshotDelete<'a> {
 #[derive(Debug, Clone)]
 pub struct SnapshotClone<'a> {
   client: &'a super::OsClient,
-  repository: Result<types::SnapshotCloneRepository, String>,
-  snapshot: Result<types::SnapshotCloneSnapshot, String>,
-  target_snapshot: Result<types::SnapshotCloneTargetSnapshot, String>,
+  repository: Result<OpenSearchNameValue, String>,
+  snapshot: Result<OpenSearchNameValue, String>,
+  target_snapshot: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   body: Result<types::SnapshotCloneBodyParams, String>,
@@ -1457,28 +1457,28 @@ impl<'a> SnapshotClone<'a> {
 
   pub fn repository<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCloneRepository>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.repository = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotCloneRepository` for repository failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for repository failed".to_string());
     self
   }
 
   pub fn snapshot<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCloneSnapshot>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.snapshot = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotCloneSnapshot` for snapshot failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for snapshot failed".to_string());
     self
   }
 
   pub fn target_snapshot<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotCloneTargetSnapshot>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.target_snapshot = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotCloneTargetSnapshot` for target_snapshot failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for target_snapshot failed".to_string());
     self
   }
 
@@ -1530,7 +1530,7 @@ impl<'a> SnapshotClone<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_snapshot/{}/{}/_clone/{}",
+      "{}_snapshot/{}/{}/_clone/{}",
       client.baseurl,
       encode_path(&repository.to_string()),
       encode_path(&snapshot.to_string()),
@@ -1562,8 +1562,8 @@ impl<'a> SnapshotClone<'a> {
 #[derive(Debug, Clone)]
 pub struct SnapshotRestore<'a> {
   client: &'a super::OsClient,
-  repository: Result<types::SnapshotRestoreRepository, String>,
-  snapshot: Result<types::SnapshotRestoreSnapshot, String>,
+  repository: Result<OpenSearchNameValue, String>,
+  snapshot: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   wait_for_completion: Result<Option<bool>, String>,
@@ -1584,19 +1584,19 @@ impl<'a> SnapshotRestore<'a> {
 
   pub fn repository<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotRestoreRepository>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.repository = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotRestoreRepository` for repository failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for repository failed".to_string());
     self
   }
 
   pub fn snapshot<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotRestoreSnapshot>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.snapshot = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotRestoreSnapshot` for snapshot failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for snapshot failed".to_string());
     self
   }
 
@@ -1658,7 +1658,7 @@ impl<'a> SnapshotRestore<'a> {
     let wait_for_completion = wait_for_completion.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_snapshot/{}/{}/_restore",
+      "{}_snapshot/{}/{}/_restore",
       client.baseurl,
       encode_path(&repository.to_string()),
       encode_path(&snapshot.to_string()),
@@ -1692,8 +1692,8 @@ impl<'a> SnapshotRestore<'a> {
 #[derive(Debug, Clone)]
 pub struct SnapshotStatusWithRepositorySnapshot<'a> {
   client: &'a super::OsClient,
-  repository: Result<types::SnapshotStatusWithRepositorySnapshotRepository, String>,
-  snapshot: Result<types::SnapshotStatusWithRepositorySnapshotSnapshot, String>,
+  repository: Result<OpenSearchNameValue, String>,
+  snapshot: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
   master_timeout: Result<Option<Timeout>, String>,
@@ -1712,19 +1712,19 @@ impl<'a> SnapshotStatusWithRepositorySnapshot<'a> {
 
   pub fn repository<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotStatusWithRepositorySnapshotRepository>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.repository = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotStatusWithRepositorySnapshotRepository` for repository failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for repository failed".to_string());
     self
   }
 
   pub fn snapshot<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::SnapshotStatusWithRepositorySnapshotSnapshot>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.snapshot = value
       .try_into()
-      .map_err(|_| "conversion to `SnapshotStatusWithRepositorySnapshotSnapshot` for snapshot failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for snapshot failed".to_string());
     self
   }
 
@@ -1775,7 +1775,7 @@ impl<'a> SnapshotStatusWithRepositorySnapshot<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_snapshot/{}/{}/_status",
+      "{}_snapshot/{}/{}/_status",
       client.baseurl,
       encode_path(&repository.to_string()),
       encode_path(&snapshot.to_string()),

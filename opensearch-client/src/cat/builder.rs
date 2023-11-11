@@ -54,7 +54,7 @@ impl<'a> CatHelp<'a> {
     let Self { client, help, s } = self;
     let help = help.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat", client.baseurl,);
+    let url = format!("{}_cat", client.baseurl,);
     let mut query = Vec::with_capacity(2usize);
     if let Some(v) = &help {
       query.push(("help", v.to_string()));
@@ -192,7 +192,7 @@ impl<'a> CatAliases<'a> {
     let local = local.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/aliases", client.baseurl,);
+    let url = format!("{}_cat/aliases", client.baseurl,);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &expand_wildcards {
       query.push(("expand_wildcards", v.to_string()));
@@ -234,7 +234,7 @@ impl<'a> CatAliases<'a> {
 #[derive(Debug, Clone)]
 pub struct CatAliasesWithName<'a> {
   client: &'a super::OsClient,
-  name: Result<types::CatAliasesWithNameName, String>,
+  name: Result<OpenSearchNameValue, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -260,10 +260,10 @@ impl<'a> CatAliasesWithName<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatAliasesWithNameName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `CatAliasesWithNameName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -358,7 +358,7 @@ impl<'a> CatAliasesWithName<'a> {
     let local = local.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/aliases/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = format!("{}_cat/aliases/{}", client.baseurl, encode_path(&name.to_string()),);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &expand_wildcards {
       query.push(("expand_wildcards", v.to_string()));
@@ -539,7 +539,7 @@ impl<'a> CatAllocation<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/allocation", client.baseurl,);
+    let url = format!("{}_cat/allocation", client.baseurl,);
     let mut query = Vec::with_capacity(9usize);
     if let Some(v) = &bytes {
       query.push(("bytes", v.to_string()));
@@ -587,7 +587,7 @@ impl<'a> CatAllocation<'a> {
 #[derive(Debug, Clone)]
 pub struct CatAllocationWithNodeId<'a> {
   client: &'a super::OsClient,
-  node_id: Result<types::CatAllocationWithNodeIdNodeId, String>,
+  node_id: Result<OpenSearchId, String>,
   bytes: Result<Option<Bytes>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   format: Result<Option<String>, String>,
@@ -617,10 +617,10 @@ impl<'a> CatAllocationWithNodeId<'a> {
 
   pub fn node_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatAllocationWithNodeIdNodeId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.node_id = value
       .try_into()
-      .map_err(|_| "conversion to `CatAllocationWithNodeIdNodeId` for node_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for node_id failed".to_string());
     self
   }
 
@@ -740,7 +740,7 @@ impl<'a> CatAllocationWithNodeId<'a> {
     let s = s.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_cat/allocation/{}",
+      "{}_cat/allocation/{}",
       client.baseurl,
       encode_path(&node_id.to_string()),
     );
@@ -916,7 +916,7 @@ impl<'a> CatClusterManager<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/cluster_manager", client.baseurl,);
+    let url = format!("{}_cat/cluster_manager", client.baseurl,);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -1044,7 +1044,7 @@ impl<'a> CatCount<'a> {
     let help = help.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/count", client.baseurl,);
+    let url = format!("{}_cat/count", client.baseurl,);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &format {
       query.push(("format", v.to_string()));
@@ -1080,7 +1080,7 @@ impl<'a> CatCount<'a> {
 #[derive(Debug, Clone)]
 pub struct CatCountWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::CatCountWithIndexIndex, String>,
+  index: Result<OpenSearchNameValue, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
   help: Result<Option<bool>, String>,
@@ -1102,10 +1102,10 @@ impl<'a> CatCountWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatCountWithIndexIndex>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `CatCountWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -1176,7 +1176,7 @@ impl<'a> CatCountWithIndex<'a> {
     let help = help.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/count/{}", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}_cat/count/{}", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &format {
       query.push(("format", v.to_string()));
@@ -1323,7 +1323,7 @@ impl<'a> CatFielddata<'a> {
     let help = help.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/fielddata", client.baseurl,);
+    let url = format!("{}_cat/fielddata", client.baseurl,);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &bytes {
       query.push(("bytes", v.to_string()));
@@ -1477,7 +1477,7 @@ impl<'a> CatFielddataWithFields<'a> {
     let s = s.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_cat/fielddata/{}",
+      "{}_cat/fielddata/{}",
       client.baseurl,
       encode_path_option_vec_string(&fields),
     );
@@ -1633,7 +1633,7 @@ impl<'a> CatHealth<'a> {
     let time = time.map_err(Error::InvalidRequest)?;
     let ts = ts.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/health", client.baseurl,);
+    let url = format!("{}_cat/health", client.baseurl,);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &format {
       query.push(("format", v.to_string()));
@@ -1947,7 +1947,7 @@ impl<'a> CatIndices<'a> {
 #[derive(Debug, Clone)]
 pub struct CatIndicesWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::CatIndicesWithIndexIndex, String>,
+  index: Result<OpenSearchNameValue, String>,
   bytes: Result<Option<Bytes>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
@@ -1987,10 +1987,10 @@ impl<'a> CatIndicesWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatIndicesWithIndexIndex>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `CatIndicesWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -2169,7 +2169,7 @@ impl<'a> CatIndicesWithIndex<'a> {
     let s = s.map_err(Error::InvalidRequest)?;
     let time = time.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/indices/{}", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}_cat/indices/{}", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(14usize);
     if let Some(v) = &bytes {
       query.push(("bytes", v.to_string()));
@@ -2357,7 +2357,7 @@ impl<'a> CatMaster<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/master", client.baseurl,);
+    let url = format!("{}_cat/master", client.baseurl,);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -2527,7 +2527,7 @@ impl<'a> CatNodeattrs<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/nodeattrs", client.baseurl,);
+    let url = format!("{}_cat/nodeattrs", client.baseurl,);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -2739,7 +2739,7 @@ impl<'a> CatNodes<'a> {
     let s = s.map_err(Error::InvalidRequest)?;
     let time = time.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/nodes", client.baseurl,);
+    let url = format!("{}_cat/nodes", client.baseurl,);
     let mut query = Vec::with_capacity(11usize);
     if let Some(v) = &bytes {
       query.push(("bytes", v.to_string()));
@@ -2932,7 +2932,7 @@ impl<'a> CatPendingTasks<'a> {
     let s = s.map_err(Error::InvalidRequest)?;
     let time = time.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/pending_tasks", client.baseurl,);
+    let url = format!("{}_cat/pending_tasks", client.baseurl,);
     let mut query = Vec::with_capacity(9usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -3013,7 +3013,7 @@ impl<'a> CatPitSegments<'a> {
     let body = body
       .and_then(std::convert::TryInto::<types::CatPitSegmentsBodyParams>::try_into)
       .map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/pit_segments", client.baseurl,);
+    let url = format!("{}_cat/pit_segments", client.baseurl,);
     let request = client
       .client
       .get(url)
@@ -3050,7 +3050,7 @@ impl<'a> CatAllPitSegments<'a> {
   ///Sends a `GET` request to `/_cat/pit_segments/_all`
   pub async fn send(self) -> Result<ResponseValue<types::CatAllPitSegmentsResponseContent>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_cat/pit_segments/_all", client.baseurl,);
+    let url = format!("{}_cat/pit_segments/_all", client.baseurl,);
     let request = client
       .client
       .get(url)
@@ -3202,7 +3202,7 @@ impl<'a> CatPlugins<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/plugins", client.baseurl,);
+    let url = format!("{}_cat/plugins", client.baseurl,);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -3400,7 +3400,7 @@ impl<'a> CatRecovery<'a> {
     let s = s.map_err(Error::InvalidRequest)?;
     let time = time.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/recovery", client.baseurl,);
+    let url = format!("{}_cat/recovery", client.baseurl,);
     let mut query = Vec::with_capacity(10usize);
     if let Some(v) = &active_only {
       query.push(("active_only", v.to_string()));
@@ -3607,12 +3607,12 @@ impl<'a> CatRecoveryWithIndex<'a> {
     let url = match index {
       Some(_) => {
         format!(
-          "{}/_cat/recovery/{}",
+          "{}_cat/recovery/{}",
           client.baseurl,
           encode_path(&index.clone().unwrap().join(",")),
         )
       }
-      None => format!("{}/_cat/recovery", client.baseurl),
+      None => format!("{}_cat/recovery", client.baseurl),
     };
     let mut query = Vec::with_capacity(10usize);
     if let Some(v) = &active_only {
@@ -3789,7 +3789,7 @@ impl<'a> CatRepositories<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/repositories", client.baseurl,);
+    let url = format!("{}_cat/repositories", client.baseurl,);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -4015,7 +4015,7 @@ impl<'a> CatSegmentReplication<'a> {
     let shards = shards.map_err(Error::InvalidRequest)?;
     let time = time.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/segment_replication", client.baseurl,);
+    let url = format!("{}_cat/segment_replication", client.baseurl,);
     let mut query = Vec::with_capacity(12usize);
     if let Some(v) = &active_only {
       query.push(("active_only", v.to_string()));
@@ -4256,12 +4256,12 @@ impl<'a> CatSegmentReplicationWithIndex<'a> {
     let url = match index {
       Some(_) => {
         format!(
-          "{}/_cat/segment_replication/{}",
+          "{}_cat/segment_replication/{}",
           client.baseurl,
           encode_path(&index.clone().unwrap().join(",")),
         )
       }
-      None => format!("{}/_cat/segment_replication", client.baseurl),
+      None => format!("{}_cat/segment_replication", client.baseurl),
     };
 
     let mut query = Vec::with_capacity(12usize);
@@ -4445,7 +4445,7 @@ impl<'a> CatSegments<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/segments", client.baseurl,);
+    let url = format!("{}_cat/segments", client.baseurl,);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &bytes {
       query.push(("bytes", v.to_string()));
@@ -4490,7 +4490,7 @@ impl<'a> CatSegments<'a> {
 #[derive(Debug, Clone)]
 pub struct CatSegmentsWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::CatSegmentsWithIndexIndex, String>,
+  index: Result<OpenSearchNameValue, String>,
   bytes: Result<Option<Bytes>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   format: Result<Option<String>, String>,
@@ -4518,10 +4518,10 @@ impl<'a> CatSegmentsWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatSegmentsWithIndexIndex>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `CatSegmentsWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -4628,7 +4628,7 @@ impl<'a> CatSegmentsWithIndex<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/segments/{}", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}_cat/segments/{}", client.baseurl, encode_path(&index.to_string()),);
 
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &bytes {
@@ -4827,7 +4827,7 @@ impl<'a> CatShards<'a> {
     let s = s.map_err(Error::InvalidRequest)?;
     let time = time.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/shards", client.baseurl,);
+    let url = format!("{}_cat/shards", client.baseurl,);
     let mut query = Vec::with_capacity(10usize);
     if let Some(v) = &bytes {
       query.push(("bytes", v.to_string()));
@@ -4878,7 +4878,7 @@ impl<'a> CatShards<'a> {
 #[derive(Debug, Clone)]
 pub struct CatShardsWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::CatShardsWithIndexIndex, String>,
+  index: Result<OpenSearchNameValue, String>,
   bytes: Result<Option<Bytes>, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   format: Result<Option<String>, String>,
@@ -4910,10 +4910,10 @@ impl<'a> CatShardsWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatShardsWithIndexIndex>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `CatShardsWithIndexIndex` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -5044,7 +5044,7 @@ impl<'a> CatShardsWithIndex<'a> {
     let s = s.map_err(Error::InvalidRequest)?;
     let time = time.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/shards/{}", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}_cat/shards/{}", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(10usize);
     if let Some(v) = &bytes {
       query.push(("bytes", v.to_string()));
@@ -5234,7 +5234,7 @@ impl<'a> CatSnapshots<'a> {
     let s = s.map_err(Error::InvalidRequest)?;
     let time = time.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/snapshots", client.baseurl,);
+    let url = format!("{}_cat/snapshots", client.baseurl,);
     let mut query = Vec::with_capacity(9usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -5282,7 +5282,7 @@ impl<'a> CatSnapshots<'a> {
 #[derive(Debug, Clone)]
 pub struct CatSnapshotsWithRepository<'a> {
   client: &'a super::OsClient,
-  repository: Result<types::CatSnapshotsWithRepositoryRepository, String>,
+  repository: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -5312,10 +5312,10 @@ impl<'a> CatSnapshotsWithRepository<'a> {
 
   pub fn repository<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatSnapshotsWithRepositoryRepository>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.repository = value
       .try_into()
-      .map_err(|_| "conversion to `CatSnapshotsWithRepositoryRepository` for repository failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for repository failed".to_string());
     self
   }
 
@@ -5435,7 +5435,7 @@ impl<'a> CatSnapshotsWithRepository<'a> {
     let time = time.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_cat/snapshots/{}",
+      "{}_cat/snapshots/{}",
       client.baseurl,
       encode_path(&repository.to_string()),
     );
@@ -5639,7 +5639,7 @@ impl<'a> CatTasks<'a> {
     let s = s.map_err(Error::InvalidRequest)?;
     let time = time.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/tasks", client.baseurl,);
+    let url = format!("{}_cat/tasks", client.baseurl,);
     let mut query = Vec::with_capacity(10usize);
     if let Some(v) = &actions {
       query.push(("actions", v.join(",")));
@@ -5815,7 +5815,7 @@ impl<'a> CatTemplates<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/templates", client.baseurl,);
+    let url = format!("{}_cat/templates", client.baseurl,);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -5860,7 +5860,7 @@ impl<'a> CatTemplates<'a> {
 #[derive(Debug, Clone)]
 pub struct CatTemplatesWithName<'a> {
   client: &'a super::OsClient,
-  name: Result<types::CatTemplatesWithNameName, String>,
+  name: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -5888,10 +5888,10 @@ impl<'a> CatTemplatesWithName<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatTemplatesWithNameName>, {
+    V: std::convert::TryInto<OpenSearchNameValue>, {
     self.name = value
       .try_into()
-      .map_err(|_| "conversion to `CatTemplatesWithNameName` for name failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
     self
   }
 
@@ -5998,7 +5998,7 @@ impl<'a> CatTemplatesWithName<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let s = s.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/templates/{}", client.baseurl, encode_path(&name.to_string()),);
+    let url = format!("{}_cat/templates/{}", client.baseurl, encode_path(&name.to_string()),);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -6182,7 +6182,7 @@ impl<'a> CatThreadPool<'a> {
     let s = s.map_err(Error::InvalidRequest)?;
     let size = size.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_cat/thread_pool", client.baseurl,);
+    let url = format!("{}_cat/thread_pool", client.baseurl,);
     let mut query = Vec::with_capacity(9usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -6230,7 +6230,7 @@ impl<'a> CatThreadPool<'a> {
 #[derive(Debug, Clone)]
 pub struct CatThreadPoolWithThreadPoolPatterns<'a> {
   client: &'a super::OsClient,
-  thread_pool_patterns: Result<types::CatThreadPoolWithThreadPoolPatternsThreadPoolPatterns, String>,
+  thread_pool_patterns: Result<OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   format: Result<Option<String>, String>,
   h: Result<Option<Vec<String>>, String>,
@@ -6260,11 +6260,10 @@ impl<'a> CatThreadPoolWithThreadPoolPatterns<'a> {
 
   pub fn thread_pool_patterns<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CatThreadPoolWithThreadPoolPatternsThreadPoolPatterns>, {
-    self.thread_pool_patterns = value.try_into().map_err(|_| {
-      "conversion to `CatThreadPoolWithThreadPoolPatternsThreadPoolPatterns` for thread_pool_patterns failed"
-        .to_string()
-    });
+    V: std::convert::TryInto<OpenSearchNameValue>, {
+    self.thread_pool_patterns = value
+      .try_into()
+      .map_err(|_| "conversion to `OpenSearchNameValue` for thread_pool_patterns failed".to_string());
     self
   }
 
@@ -6384,7 +6383,7 @@ impl<'a> CatThreadPoolWithThreadPoolPatterns<'a> {
     let size = size.map_err(Error::InvalidRequest)?;
     let v = v.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_cat/thread_pool/{}",
+      "{}_cat/thread_pool/{}",
       client.baseurl,
       encode_path(&thread_pool_patterns.to_string()),
     );

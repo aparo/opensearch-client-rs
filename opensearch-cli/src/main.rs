@@ -80,7 +80,7 @@ async fn main() -> anyhow::Result<()> {
       info!("Ingest pipelines: {}", ingest_pipelines);
       info!("Output: {:?}", output);
       if *ingest_pipelines {
-        actions::dump_pipelines::dump_pipelines(&client, output.clone()).await?;
+        actions::dump_pipelines(&client, output.clone()).await?;
       }
     }
   }

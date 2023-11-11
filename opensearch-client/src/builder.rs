@@ -25,7 +25,7 @@ impl<'a> Info<'a> {
   ///Sends a `GET` request to `/`
   pub async fn send(self) -> Result<ResponseValue<types::InfoResponseContent>, Error> {
     let Self { client } = self;
-    let url = format!("{}/", client.baseurl,);
+    let url = format!("{}", client.baseurl,);
     let request = client
       .client
       .get(url)
@@ -63,7 +63,7 @@ impl<'a> Ping<'a> {
   ///Sends a `HEAD` request to `/`
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
-    let url = format!("{}/", client.baseurl,);
+    let url = format!("{}", client.baseurl,);
     let request = client.client.head(url).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
@@ -237,7 +237,7 @@ impl<'a> BulkPost<'a> {
     let type_ = type_.map_err(Error::InvalidRequest)?;
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_bulk", client.baseurl,);
+    let url = format!("{}_bulk", client.baseurl,);
     let mut query = Vec::with_capacity(10usize);
     if let Some(v) = &source_excludes {
       query.push(("_source_excludes", v.join(",")));
@@ -302,7 +302,7 @@ impl<'a> DanglingIndicesListDanglingIndices<'a> {
   ///Sends a `GET` request to `/_dangling`
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_dangling", client.baseurl,);
+    let url = format!("{}_dangling", client.baseurl,);
     let request = client.client.get(url).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
@@ -323,7 +323,7 @@ impl<'a> DanglingIndicesListDanglingIndices<'a> {
 #[derive(Debug, Clone)]
 pub struct DanglingIndicesImportDanglingIndex<'a> {
   client: &'a super::OsClient,
-  index_uuid: Result<types::DanglingIndicesImportDanglingIndexIndexUuid, String>,
+  index_uuid: Result<types::OpenSearchNameValue, String>,
   accept_data_loss: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::Timeout>, String>,
   master_timeout: Result<Option<types::Timeout>, String>,
@@ -344,10 +344,10 @@ impl<'a> DanglingIndicesImportDanglingIndex<'a> {
 
   pub fn index_uuid<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DanglingIndicesImportDanglingIndexIndexUuid>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index_uuid = value
       .try_into()
-      .map_err(|_| "conversion to `DanglingIndicesImportDanglingIndexIndexUuid` for index_uuid failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index_uuid failed".to_string());
     self
   }
 
@@ -406,7 +406,7 @@ impl<'a> DanglingIndicesImportDanglingIndex<'a> {
     let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_dangling/{}", client.baseurl, encode_path(&index_uuid.to_string()),);
+    let url = format!("{}_dangling/{}", client.baseurl, encode_path(&index_uuid.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &accept_data_loss {
       query.push(("accept_data_loss", v.to_string()));
@@ -440,7 +440,7 @@ impl<'a> DanglingIndicesImportDanglingIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct DanglingIndicesDeleteDanglingIndex<'a> {
   client: &'a super::OsClient,
-  index_uuid: Result<types::DanglingIndicesDeleteDanglingIndexIndexUuid, String>,
+  index_uuid: Result<types::OpenSearchNameValue, String>,
   accept_data_loss: Result<Option<bool>, String>,
   cluster_manager_timeout: Result<Option<types::Timeout>, String>,
   master_timeout: Result<Option<types::Timeout>, String>,
@@ -461,10 +461,10 @@ impl<'a> DanglingIndicesDeleteDanglingIndex<'a> {
 
   pub fn index_uuid<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DanglingIndicesDeleteDanglingIndexIndexUuid>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index_uuid = value
       .try_into()
-      .map_err(|_| "conversion to `DanglingIndicesDeleteDanglingIndexIndexUuid` for index_uuid failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index_uuid failed".to_string());
     self
   }
 
@@ -523,7 +523,7 @@ impl<'a> DanglingIndicesDeleteDanglingIndex<'a> {
     let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_dangling/{}", client.baseurl, encode_path(&index_uuid.to_string()),);
+    let url = format!("{}_dangling/{}", client.baseurl, encode_path(&index_uuid.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &accept_data_loss {
       query.push(("accept_data_loss", v.to_string()));
@@ -557,7 +557,7 @@ impl<'a> DanglingIndicesDeleteDanglingIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct DeleteByQueryRethrottle<'a> {
   client: &'a super::OsClient,
-  task_id: Result<types::DeleteByQueryRethrottleTaskId, String>,
+  task_id: Result<types::OpenSearchId, String>,
   requests_per_second: Result<i32, String>,
 }
 
@@ -572,10 +572,10 @@ impl<'a> DeleteByQueryRethrottle<'a> {
 
   pub fn task_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DeleteByQueryRethrottleTaskId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.task_id = value
       .try_into()
-      .map_err(|_| "conversion to `DeleteByQueryRethrottleTaskId` for task_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for task_id failed".to_string());
     self
   }
 
@@ -598,7 +598,7 @@ impl<'a> DeleteByQueryRethrottle<'a> {
     let task_id = task_id.map_err(Error::InvalidRequest)?;
     let requests_per_second = requests_per_second.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_delete_by_query/{}/_rethrottle",
+      "{}_delete_by_query/{}/_rethrottle",
       client.baseurl,
       encode_path(&task_id.to_string()),
     );
@@ -708,7 +708,7 @@ impl<'a> FieldCapsGet<'a> {
     let fields = fields.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let include_unmapped = include_unmapped.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_field_caps", client.baseurl,);
+    let url = format!("{}_field_caps", client.baseurl,);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -842,7 +842,7 @@ impl<'a> FieldCapsPost<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let include_unmapped = include_unmapped.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_field_caps", client.baseurl,);
+    let url = format!("{}_field_caps", client.baseurl,);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -1005,7 +1005,7 @@ impl<'a> MgetGet<'a> {
     let refresh = refresh.map_err(Error::InvalidRequest)?;
     let routing = routing.map_err(Error::InvalidRequest)?;
     let stored_fields = stored_fields.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_mget", client.baseurl,);
+    let url = format!("{}_mget", client.baseurl,);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &source {
       query.push(("_source", v.join(",")));
@@ -1190,7 +1190,7 @@ impl<'a> MgetPost<'a> {
     let routing = routing.map_err(Error::InvalidRequest)?;
     let stored_fields = stored_fields.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_mget", client.baseurl,);
+    let url = format!("{}_mget", client.baseurl,);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &source {
       query.push(("_source", v.join(",")));
@@ -1348,7 +1348,7 @@ impl<'a> MsearchGet<'a> {
     let rest_total_hits_as_int = rest_total_hits_as_int.map_err(Error::InvalidRequest)?;
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_msearch", client.baseurl,);
+    let url = format!("{}_msearch", client.baseurl,);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &ccs_minimize_roundtrips {
       query.push(("ccs_minimize_roundtrips", v.to_string()));
@@ -1516,7 +1516,7 @@ impl<'a> MsearchPost<'a> {
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_msearch", client.baseurl,);
+    let url = format!("{}_msearch", client.baseurl,);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &ccs_minimize_roundtrips {
       query.push(("ccs_minimize_roundtrips", v.to_string()));
@@ -1643,7 +1643,7 @@ impl<'a> MsearchTemplateGet<'a> {
     let rest_total_hits_as_int = rest_total_hits_as_int.map_err(Error::InvalidRequest)?;
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_msearch/template", client.baseurl,);
+    let url = format!("{}_msearch/template", client.baseurl,);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &ccs_minimize_roundtrips {
       query.push(("ccs_minimize_roundtrips", v.to_string()));
@@ -1777,7 +1777,7 @@ impl<'a> MsearchTemplatePost<'a> {
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_msearch/template", client.baseurl,);
+    let url = format!("{}_msearch/template", client.baseurl,);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &ccs_minimize_roundtrips {
       query.push(("ccs_minimize_roundtrips", v.to_string()));
@@ -1884,7 +1884,7 @@ impl<'a> RankEvalGet<'a> {
     let expand_wildcards = expand_wildcards.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let search_type = search_type.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_rank_eval", client.baseurl,);
+    let url = format!("{}_rank_eval", client.baseurl,);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -2001,7 +2001,7 @@ impl<'a> RankEvalPost<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_rank_eval", client.baseurl,);
+    let url = format!("{}_rank_eval", client.baseurl,);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -2174,7 +2174,7 @@ impl<'a> Reindex<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let wait_for_completion = wait_for_completion.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_reindex", client.baseurl,);
+    let url = format!("{}_reindex", client.baseurl,);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &max_docs {
       query.push(("max_docs", v.to_string()));
@@ -2220,7 +2220,7 @@ impl<'a> Reindex<'a> {
 #[derive(Debug, Clone)]
 pub struct ReindexRethrottle<'a> {
   client: &'a super::OsClient,
-  task_id: Result<types::ReindexRethrottleTaskId, String>,
+  task_id: Result<types::OpenSearchId, String>,
   requests_per_second: Result<i32, String>,
 }
 
@@ -2235,10 +2235,10 @@ impl<'a> ReindexRethrottle<'a> {
 
   pub fn task_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ReindexRethrottleTaskId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.task_id = value
       .try_into()
-      .map_err(|_| "conversion to `ReindexRethrottleTaskId` for task_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for task_id failed".to_string());
     self
   }
 
@@ -2261,7 +2261,7 @@ impl<'a> ReindexRethrottle<'a> {
     let task_id = task_id.map_err(Error::InvalidRequest)?;
     let requests_per_second = requests_per_second.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_reindex/{}/_rethrottle",
+      "{}_reindex/{}/_rethrottle",
       client.baseurl,
       encode_path(&task_id.to_string()),
     );
@@ -2297,7 +2297,7 @@ impl<'a> RenderSearchTemplateGet<'a> {
   ///Sends a `GET` request to `/_render/template`
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_render/template", client.baseurl,);
+    let url = format!("{}_render/template", client.baseurl,);
     let request = client.client.get(url).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
@@ -2342,7 +2342,7 @@ impl<'a> RenderSearchTemplatePost<'a> {
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_render/template", client.baseurl,);
+    let url = format!("{}_render/template", client.baseurl,);
     let request = client.client.post(url).json(&body).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
@@ -2363,7 +2363,7 @@ impl<'a> RenderSearchTemplatePost<'a> {
 #[derive(Debug, Clone)]
 pub struct RenderSearchTemplateGetWithId<'a> {
   client: &'a super::OsClient,
-  id: Result<types::RenderSearchTemplateGetWithIdId, String>,
+  id: Result<types::OpenSearchId, String>,
 }
 
 impl<'a> RenderSearchTemplateGetWithId<'a> {
@@ -2376,10 +2376,10 @@ impl<'a> RenderSearchTemplateGetWithId<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::RenderSearchTemplateGetWithIdId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `RenderSearchTemplateGetWithIdId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -2387,7 +2387,7 @@ impl<'a> RenderSearchTemplateGetWithId<'a> {
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, id } = self;
     let id = id.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_render/template/{}", client.baseurl, encode_path(&id.to_string()),);
+    let url = format!("{}_render/template/{}", client.baseurl, encode_path(&id.to_string()),);
     let request = client.client.get(url).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
@@ -2408,7 +2408,7 @@ impl<'a> RenderSearchTemplateGetWithId<'a> {
 #[derive(Debug, Clone)]
 pub struct RenderSearchTemplatePostWithId<'a> {
   client: &'a super::OsClient,
-  id: Result<types::RenderSearchTemplatePostWithIdId, String>,
+  id: Result<types::OpenSearchId, String>,
   body: Result<types::RenderSearchTemplateBodyParams, String>,
 }
 
@@ -2423,10 +2423,10 @@ impl<'a> RenderSearchTemplatePostWithId<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::RenderSearchTemplatePostWithIdId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `RenderSearchTemplatePostWithIdId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -2444,7 +2444,7 @@ impl<'a> RenderSearchTemplatePostWithId<'a> {
     let Self { client, id, body } = self;
     let id = id.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_render/template/{}", client.baseurl, encode_path(&id.to_string()),);
+    let url = format!("{}_render/template/{}", client.baseurl, encode_path(&id.to_string()),);
     let request = client.client.post(url).json(&body).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
@@ -2475,7 +2475,7 @@ impl<'a> GetScriptContext<'a> {
   ///Sends a `GET` request to `/_script_context`
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_script_context", client.baseurl,);
+    let url = format!("{}_script_context", client.baseurl,);
     let request = client.client.get(url).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
@@ -2506,7 +2506,7 @@ impl<'a> GetScriptLanguages<'a> {
   ///Sends a `GET` request to `/_script_language`
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_script_language", client.baseurl,);
+    let url = format!("{}_script_language", client.baseurl,);
     let request = client.client.get(url).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
@@ -2537,7 +2537,7 @@ impl<'a> ScriptsPainlessExecuteGet<'a> {
   ///Sends a `GET` request to `/_scripts/painless/_execute`
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_scripts/painless/_execute", client.baseurl,);
+    let url = format!("{}_scripts/painless/_execute", client.baseurl,);
     let request = client.client.get(url).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
@@ -2582,7 +2582,7 @@ impl<'a> ScriptsPainlessExecutePost<'a> {
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_scripts/painless/_execute", client.baseurl,);
+    let url = format!("{}_scripts/painless/_execute", client.baseurl,);
     let request = client.client.post(url).json(&body).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
@@ -2603,7 +2603,7 @@ impl<'a> ScriptsPainlessExecutePost<'a> {
 #[derive(Debug, Clone)]
 pub struct GetScript<'a> {
   client: &'a super::OsClient,
-  id: Result<types::GetScriptId, String>,
+  id: Result<types::OpenSearchId, String>,
   cluster_manager_timeout: Result<Option<types::Timeout>, String>,
   master_timeout: Result<Option<types::Timeout>, String>,
 }
@@ -2620,10 +2620,10 @@ impl<'a> GetScript<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::GetScriptId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `GetScriptId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -2658,7 +2658,7 @@ impl<'a> GetScript<'a> {
     let id = id.map_err(Error::InvalidRequest)?;
     let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_scripts/{}", client.baseurl, encode_path(&id.to_string()),);
+    let url = format!("{}_scripts/{}", client.baseurl, encode_path(&id.to_string()),);
     let mut query = Vec::with_capacity(2usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -2686,7 +2686,7 @@ impl<'a> GetScript<'a> {
 #[derive(Debug, Clone)]
 pub struct PutScriptPut<'a> {
   client: &'a super::OsClient,
-  id: Result<types::PutScriptPutId, String>,
+  id: Result<types::OpenSearchId, String>,
   cluster_manager_timeout: Result<Option<types::Timeout>, String>,
   master_timeout: Result<Option<types::Timeout>, String>,
   timeout: Result<Option<types::Timeout>, String>,
@@ -2707,10 +2707,10 @@ impl<'a> PutScriptPut<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::PutScriptPutId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `PutScriptPutId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -2768,7 +2768,7 @@ impl<'a> PutScriptPut<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_scripts/{}", client.baseurl, encode_path(&id.to_string()),);
+    let url = format!("{}_scripts/{}", client.baseurl, encode_path(&id.to_string()),);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -2799,7 +2799,7 @@ impl<'a> PutScriptPut<'a> {
 #[derive(Debug, Clone)]
 pub struct PutScriptPost<'a> {
   client: &'a super::OsClient,
-  id: Result<types::PutScriptPostId, String>,
+  id: Result<types::OpenSearchId, String>,
   cluster_manager_timeout: Result<Option<types::Timeout>, String>,
   master_timeout: Result<Option<types::Timeout>, String>,
   timeout: Result<Option<types::Timeout>, String>,
@@ -2820,10 +2820,10 @@ impl<'a> PutScriptPost<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::PutScriptPostId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `PutScriptPostId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -2881,7 +2881,7 @@ impl<'a> PutScriptPost<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_scripts/{}", client.baseurl, encode_path(&id.to_string()),);
+    let url = format!("{}_scripts/{}", client.baseurl, encode_path(&id.to_string()),);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -2912,7 +2912,7 @@ impl<'a> PutScriptPost<'a> {
 #[derive(Debug, Clone)]
 pub struct DeleteScript<'a> {
   client: &'a super::OsClient,
-  id: Result<types::DeleteScriptId, String>,
+  id: Result<types::OpenSearchId, String>,
   cluster_manager_timeout: Result<Option<types::Timeout>, String>,
   master_timeout: Result<Option<types::Timeout>, String>,
   timeout: Result<Option<types::Timeout>, String>,
@@ -2931,10 +2931,10 @@ impl<'a> DeleteScript<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DeleteScriptId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `DeleteScriptId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -2981,7 +2981,7 @@ impl<'a> DeleteScript<'a> {
     let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_scripts/{}", client.baseurl, encode_path(&id.to_string()),);
+    let url = format!("{}_scripts/{}", client.baseurl, encode_path(&id.to_string()),);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -3012,8 +3012,8 @@ impl<'a> DeleteScript<'a> {
 #[derive(Debug, Clone)]
 pub struct PutScriptPutWithContext<'a> {
   client: &'a super::OsClient,
-  id: Result<types::PutScriptPutWithContextId, String>,
-  context: Result<types::PutScriptPutWithContextContext, String>,
+  id: Result<types::OpenSearchId, String>,
+  context: Result<types::OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<types::Timeout>, String>,
   master_timeout: Result<Option<types::Timeout>, String>,
   timeout: Result<Option<types::Timeout>, String>,
@@ -3035,19 +3035,19 @@ impl<'a> PutScriptPutWithContext<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::PutScriptPutWithContextId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `PutScriptPutWithContextId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
   pub fn context<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::PutScriptPutWithContextContext>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.context = value
       .try_into()
-      .map_err(|_| "conversion to `PutScriptPutWithContextContext` for context failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for context failed".to_string());
     self
   }
 
@@ -3108,7 +3108,7 @@ impl<'a> PutScriptPutWithContext<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_scripts/{}/{}",
+      "{}_scripts/{}/{}",
       client.baseurl,
       encode_path(&id.to_string()),
       encode_path(&context.to_string()),
@@ -3143,8 +3143,8 @@ impl<'a> PutScriptPutWithContext<'a> {
 #[derive(Debug, Clone)]
 pub struct PutScriptPostWithContext<'a> {
   client: &'a super::OsClient,
-  id: Result<types::PutScriptPostWithContextId, String>,
-  context: Result<types::PutScriptPostWithContextContext, String>,
+  id: Result<types::OpenSearchId, String>,
+  context: Result<types::OpenSearchNameValue, String>,
   cluster_manager_timeout: Result<Option<types::Timeout>, String>,
   master_timeout: Result<Option<types::Timeout>, String>,
   timeout: Result<Option<types::Timeout>, String>,
@@ -3166,19 +3166,19 @@ impl<'a> PutScriptPostWithContext<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::PutScriptPostWithContextId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `PutScriptPostWithContextId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
   pub fn context<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::PutScriptPostWithContextContext>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.context = value
       .try_into()
-      .map_err(|_| "conversion to `PutScriptPostWithContextContext` for context failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for context failed".to_string());
     self
   }
 
@@ -3239,7 +3239,7 @@ impl<'a> PutScriptPostWithContext<'a> {
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_scripts/{}/{}",
+      "{}_scripts/{}/{}",
       client.baseurl,
       encode_path(&id.to_string()),
       encode_path(&context.to_string()),
@@ -3902,7 +3902,7 @@ impl<'a> SearchPost<'a> {
       Some(_) => todo!(),
       None => todo!(),
     };
-    let url = format!("{}/_search", client.baseurl,);
+    let url = format!("{}_search", client.baseurl,);
     let mut query = Vec::with_capacity(42usize);
     if let Some(v) = &source {
       query.push(("_source", v.join(",")));
@@ -4093,7 +4093,7 @@ impl<'a> DeletePit<'a> {
     let body = body
       .and_then(std::convert::TryInto::<types::DeletePitBodyParams>::try_into)
       .map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_search/point_in_time", client.baseurl,);
+    let url = format!("{}_search/point_in_time", client.baseurl,);
     let request = client
       .client
       .delete(url)
@@ -4132,7 +4132,7 @@ impl<'a> GetAllPits<'a> {
   ///Sends a `GET` request to `/_search/point_in_time/_all`
   pub async fn send(self) -> Result<ResponseValue<types::GetAllPitsResponseContent>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_search/point_in_time/_all", client.baseurl,);
+    let url = format!("{}_search/point_in_time/_all", client.baseurl,);
     let request = client
       .client
       .get(url)
@@ -4170,7 +4170,7 @@ impl<'a> DeleteAllPits<'a> {
   ///Sends a `DELETE` request to `/_search/point_in_time/_all`
   pub async fn send(self) -> Result<ResponseValue<types::DeleteAllPitsResponseContent>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_search/point_in_time/_all", client.baseurl,);
+    let url = format!("{}_search/point_in_time/_all", client.baseurl,);
     let request = client
       .client
       .delete(url)
@@ -4254,7 +4254,7 @@ impl<'a> ScrollGet<'a> {
     let rest_total_hits_as_int = rest_total_hits_as_int.map_err(Error::InvalidRequest)?;
     let scroll = scroll.map_err(Error::InvalidRequest)?;
     let scroll_id = scroll_id.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_search/scroll", client.baseurl,);
+    let url = format!("{}_search/scroll", client.baseurl,);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &rest_total_hits_as_int {
       query.push(("rest_total_hits_as_int", v.to_string()));
@@ -4354,7 +4354,7 @@ impl<'a> ScrollPost<'a> {
     let scroll = scroll.map_err(Error::InvalidRequest)?;
     let scroll_id = scroll_id.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_search/scroll", client.baseurl,);
+    let url = format!("{}_search/scroll", client.baseurl,);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &rest_total_hits_as_int {
       query.push(("rest_total_hits_as_int", v.to_string()));
@@ -4409,7 +4409,7 @@ impl<'a> ClearScroll<'a> {
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_search/scroll", client.baseurl,);
+    let url = format!("{}_search/scroll", client.baseurl,);
     let request = client.client.delete(url).json(&body).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
@@ -4487,7 +4487,7 @@ impl<'a> ScrollGetWithScrollId<'a> {
     let scroll = scroll.map_err(Error::InvalidRequest)?;
     let scroll_id = scroll_id.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_search/scroll/{}",
+      "{}_search/scroll/{}",
       client.baseurl,
       encode_path(&scroll_id.clone().unwrap_or(String::from("")).to_string()),
     );
@@ -4591,7 +4591,7 @@ impl<'a> ScrollPostWithScrollId<'a> {
     let scroll_id = scroll_id.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_search/scroll/{}",
+      "{}_search/scroll/{}",
       client.baseurl,
       encode_path(&scroll_id.clone().unwrap_or(String::from(""))),
     );
@@ -4625,7 +4625,7 @@ impl<'a> ScrollPostWithScrollId<'a> {
 #[derive(Debug, Clone)]
 pub struct ClearScrollWithScrollId<'a> {
   client: &'a super::OsClient,
-  scroll_id: Result<types::ClearScrollWithScrollIdScrollId, String>,
+  scroll_id: Result<types::OpenSearchId, String>,
   body: Result<types::ClearScrollBodyParams, String>,
 }
 
@@ -4640,10 +4640,10 @@ impl<'a> ClearScrollWithScrollId<'a> {
 
   pub fn scroll_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::ClearScrollWithScrollIdScrollId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.scroll_id = value
       .try_into()
-      .map_err(|_| "conversion to `ClearScrollWithScrollIdScrollId` for scroll_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for scroll_id failed".to_string());
     self
   }
 
@@ -4666,7 +4666,7 @@ impl<'a> ClearScrollWithScrollId<'a> {
     let scroll_id = scroll_id.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_search/scroll/{}",
+      "{}_search/scroll/{}",
       client.baseurl,
       encode_path(&scroll_id.to_string()),
     );
@@ -4886,7 +4886,7 @@ impl<'a> SearchTemplateGet<'a> {
     let scroll = scroll.map_err(Error::InvalidRequest)?;
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_search/template", client.baseurl,);
+    let url = format!("{}_search/template", client.baseurl,);
     let mut query = Vec::with_capacity(13usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -5156,7 +5156,7 @@ impl<'a> SearchTemplatePost<'a> {
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_search/template", client.baseurl,);
+    let url = format!("{}_search/template", client.baseurl,);
     let mut query = Vec::with_capacity(13usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -5315,7 +5315,7 @@ impl<'a> SearchShardsGet<'a> {
     let local = local.map_err(Error::InvalidRequest)?;
     let preference = preference.map_err(Error::InvalidRequest)?;
     let routing = routing.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_search_shards", client.baseurl,);
+    let url = format!("{}_search_shards", client.baseurl,);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -5453,7 +5453,7 @@ impl<'a> SearchShardsPost<'a> {
     let local = local.map_err(Error::InvalidRequest)?;
     let preference = preference.map_err(Error::InvalidRequest)?;
     let routing = routing.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_search_shards", client.baseurl,);
+    let url = format!("{}_search_shards", client.baseurl,);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -5493,7 +5493,7 @@ impl<'a> SearchShardsPost<'a> {
 #[derive(Debug, Clone)]
 pub struct UpdateByQueryRethrottle<'a> {
   client: &'a super::OsClient,
-  task_id: Result<types::UpdateByQueryRethrottleTaskId, String>,
+  task_id: Result<types::OpenSearchId, String>,
   requests_per_second: Result<i32, String>,
 }
 
@@ -5508,10 +5508,10 @@ impl<'a> UpdateByQueryRethrottle<'a> {
 
   pub fn task_id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::UpdateByQueryRethrottleTaskId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.task_id = value
       .try_into()
-      .map_err(|_| "conversion to `UpdateByQueryRethrottleTaskId` for task_id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for task_id failed".to_string());
     self
   }
 
@@ -5534,7 +5534,7 @@ impl<'a> UpdateByQueryRethrottle<'a> {
     let task_id = task_id.map_err(Error::InvalidRequest)?;
     let requests_per_second = requests_per_second.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_update_by_query/{}/_rethrottle",
+      "{}_update_by_query/{}/_rethrottle",
       client.baseurl,
       encode_path(&task_id.to_string()),
     );
@@ -5560,7 +5560,7 @@ impl<'a> UpdateByQueryRethrottle<'a> {
 #[derive(Debug, Clone)]
 pub struct Count<'a> {
   client: &'a super::OsClient,
-  index: Result<Vec<types::IndexName>, String>,
+  index: Result<Vec<types::OpenSearchNameValue>, String>,
   allow_no_indices: Result<Option<bool>, String>,
   analyze_wildcard: Result<Option<bool>, String>,
   analyzer: Result<Option<String>, String>,
@@ -5603,10 +5603,10 @@ impl<'a> Count<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<Vec<types::IndexName>>, {
+    V: std::convert::TryInto<Vec<types::OpenSearchNameValue>>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -5798,9 +5798,9 @@ impl<'a> Count<'a> {
     let body = body.map_err(Error::InvalidRequest)?;
     let indices = index.iter().map(|v| v.to_string()).collect::<Vec<_>>().join(",");
     let url = if indices.len() > 0 {
-      format!("{}/{}/_count", client.baseurl, encode_path(&indices),)
+      format!("{}{}/_count", client.baseurl, encode_path(&indices),)
     } else {
-      format!("{}/_count", client.baseurl)
+      format!("{}_count", client.baseurl)
     };
     let mut query = Vec::with_capacity(14usize);
     if let Some(v) = &allow_no_indices {
@@ -5865,8 +5865,8 @@ impl<'a> Count<'a> {
 #[derive(Debug, Clone)]
 pub struct CreatePut<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
-  id: Result<types::DocumentId, String>,
+  index: Result<types::OpenSearchNameValue, String>,
+  id: Result<types::OpenSearchId, String>,
   pipeline: Result<Option<String>, String>,
   refresh: Result<Option<types::RefreshEnum>, String>,
   routing: Result<Option<String>, String>,
@@ -5896,19 +5896,19 @@ impl<'a> CreatePut<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DocumentId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -6017,7 +6017,7 @@ impl<'a> CreatePut<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_create/{}",
+      "{}{}/_create/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&id.to_string()),
@@ -6566,11 +6566,7 @@ impl<'a> DeleteByQuery<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let wait_for_completion = wait_for_completion.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!(
-      "{}/{}/_delete_by_query",
-      client.baseurl,
-      encode_path(&index.to_string()),
-    );
+    let url = format!("{}{}/_delete_by_query", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(33usize);
     if let Some(v) = &source {
       query.push(("_source", v.join(",")));
@@ -6691,8 +6687,8 @@ impl<'a> DeleteByQuery<'a> {
 #[derive(Debug, Clone)]
 pub struct Get<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
-  id: Result<types::DocumentId, String>,
+  index: Result<types::OpenSearchNameValue, String>,
+  id: Result<types::OpenSearchId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -6726,19 +6722,19 @@ impl<'a> Get<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DocumentId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -6874,7 +6870,7 @@ impl<'a> Get<'a> {
     let version = version.map_err(Error::InvalidRequest)?;
     let version_type = version_type.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_doc/{}",
+      "{}{}/_doc/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&id.to_string()),
@@ -6938,8 +6934,8 @@ impl<'a> Get<'a> {
 #[derive(Debug, Clone)]
 pub struct IndexPutWithId<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
-  id: Result<types::DocumentId, String>,
+  index: Result<types::OpenSearchNameValue, String>,
+  id: Result<types::OpenSearchId, String>,
   if_primary_term: Result<Option<i32>, String>,
   if_seq_no: Result<Option<i32>, String>,
   op_type: Result<Option<types::OpType>, String>,
@@ -6977,19 +6973,19 @@ impl<'a> IndexPutWithId<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DocumentId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -7146,7 +7142,7 @@ impl<'a> IndexPutWithId<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_doc/{}",
+      "{}{}/_doc/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&id.to_string()),
@@ -7205,7 +7201,7 @@ impl<'a> IndexPutWithId<'a> {
 #[derive(Debug, Clone)]
 pub struct IndexPost<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
+  index: Result<types::OpenSearchNameValue, String>,
   id: Result<Option<String>, String>,
   if_primary_term: Result<Option<i32>, String>,
   if_seq_no: Result<Option<i32>, String>,
@@ -7244,10 +7240,10 @@ impl<'a> IndexPost<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -7414,13 +7410,13 @@ impl<'a> IndexPost<'a> {
     let url = match &id {
       Some(id) => {
         format!(
-          "{}/{}/_doc/{}",
+          "{}{}/_doc/{}",
           client.baseurl,
           encode_path(&index.to_string()),
           encode_path(&id.to_string()),
         )
       }
-      None => format!("{}/{}/_doc", client.baseurl, encode_path(&index.to_string()),),
+      None => format!("{}{}/_doc", client.baseurl, encode_path(&index.to_string()),),
     };
     let mut query = Vec::with_capacity(11usize);
     if let Some(v) = &if_primary_term {
@@ -7476,8 +7472,8 @@ impl<'a> IndexPost<'a> {
 #[derive(Debug, Clone)]
 pub struct Delete<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
-  id: Result<types::DocumentId, String>,
+  index: Result<types::OpenSearchNameValue, String>,
+  id: Result<types::OpenSearchId, String>,
   if_primary_term: Result<Option<i32>, String>,
   if_seq_no: Result<Option<i32>, String>,
   refresh: Result<Option<types::RefreshEnum>, String>,
@@ -7507,19 +7503,19 @@ impl<'a> Delete<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DocumentId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -7629,7 +7625,7 @@ impl<'a> Delete<'a> {
     let version_type = version_type.map_err(Error::InvalidRequest)?;
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_doc/{}",
+      "{}{}/_doc/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&id.to_string()),
@@ -7679,8 +7675,8 @@ impl<'a> Delete<'a> {
 #[derive(Debug, Clone)]
 pub struct Exists<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
-  id: Result<types::DocumentId, String>,
+  index: Result<types::OpenSearchNameValue, String>,
+  id: Result<types::OpenSearchId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -7714,19 +7710,19 @@ impl<'a> Exists<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DocumentId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -7860,7 +7856,7 @@ impl<'a> Exists<'a> {
     let version = version.map_err(Error::InvalidRequest)?;
     let version_type = version_type.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_doc/{}",
+      "{}{}/_doc/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&id.to_string()),
@@ -7916,8 +7912,8 @@ impl<'a> Exists<'a> {
 #[derive(Debug, Clone)]
 pub struct ExplainPost<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
-  id: Result<types::DocumentId, String>,
+  index: Result<types::OpenSearchNameValue, String>,
+  id: Result<types::OpenSearchId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -7957,19 +7953,19 @@ impl<'a> ExplainPost<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DocumentId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -8138,7 +8134,7 @@ impl<'a> ExplainPost<'a> {
     let stored_fields = stored_fields.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_explain/{}",
+      "{}{}/_explain/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&id.to_string()),
@@ -8297,7 +8293,7 @@ impl<'a> FieldCapsGetWithIndex<'a> {
     let fields = fields.map_err(Error::InvalidRequest)?;
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let include_unmapped = include_unmapped.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_field_caps", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_field_caps", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -8444,7 +8440,7 @@ impl<'a> FieldCapsPostWithIndex<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let include_unmapped = include_unmapped.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_field_caps", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_field_caps", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(5usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -8481,7 +8477,7 @@ impl<'a> FieldCapsPostWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct MgetGetWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
+  index: Result<types::OpenSearchNameValue, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -8510,10 +8506,10 @@ impl<'a> MgetGetWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -8620,7 +8616,7 @@ impl<'a> MgetGetWithIndex<'a> {
     let refresh = refresh.map_err(Error::InvalidRequest)?;
     let routing = routing.map_err(Error::InvalidRequest)?;
     let stored_fields = stored_fields.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_mget", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_mget", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &source {
       query.push(("_source", v.join(",")));
@@ -8666,7 +8662,7 @@ impl<'a> MgetGetWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct MgetWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
+  index: Result<types::OpenSearchNameValue, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -8697,10 +8693,10 @@ impl<'a> MgetWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -8818,7 +8814,7 @@ impl<'a> MgetWithIndex<'a> {
     let routing = routing.map_err(Error::InvalidRequest)?;
     let stored_fields = stored_fields.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_mget", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_mget", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(8usize);
     if let Some(v) = &source {
       query.push(("_source", v.join(",")));
@@ -8864,7 +8860,7 @@ impl<'a> MgetWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct MsearchPostWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
+  index: Result<types::OpenSearchNameValue, String>,
   ccs_minimize_roundtrips: Result<Option<bool>, String>,
   max_concurrent_searches: Result<Option<i32>, String>,
   max_concurrent_shard_requests: Result<Option<i32>, String>,
@@ -8893,10 +8889,10 @@ impl<'a> MsearchPostWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -9002,7 +8998,7 @@ impl<'a> MsearchPostWithIndex<'a> {
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_msearch", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_msearch", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(7usize);
     if let Some(v) = &ccs_minimize_roundtrips {
       query.push(("ccs_minimize_roundtrips", v.to_string()));
@@ -9045,7 +9041,7 @@ impl<'a> MsearchPostWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct MsearchTemplatePostWithIndex<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
+  index: Result<types::OpenSearchNameValue, String>,
   ccs_minimize_roundtrips: Result<Option<bool>, String>,
   max_concurrent_searches: Result<Option<i32>, String>,
   rest_total_hits_as_int: Result<Option<bool>, String>,
@@ -9070,10 +9066,10 @@ impl<'a> MsearchTemplatePostWithIndex<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -9156,7 +9152,7 @@ impl<'a> MsearchTemplatePostWithIndex<'a> {
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_msearch/template",
+      "{}{}/_msearch/template",
       client.baseurl,
       encode_path(&index.to_string()),
     );
@@ -9292,7 +9288,7 @@ impl<'a> RankEvalPostWithIndex<'a> {
     let ignore_unavailable = ignore_unavailable.map_err(Error::InvalidRequest)?;
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_rank_eval", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_rank_eval", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -9967,7 +9963,7 @@ impl<'a> SearchPostWithIndex<'a> {
       Some(body) => body,
       None => Search::default(),
     };
-    let url = format!("{}/{}/_search", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_search", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(42usize);
     if let Some(v) = &source {
       query.push(("_source", v.join(",")));
@@ -10222,7 +10218,7 @@ impl<'a> CreatePit<'a> {
     let preference = preference.map_err(Error::InvalidRequest)?;
     let routing = routing.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_search/point_in_time",
+      "{}{}/_search/point_in_time",
       client.baseurl,
       encode_path(&index.to_string()),
     );
@@ -10492,11 +10488,7 @@ impl<'a> SearchTemplatePostWithIndex<'a> {
     let search_type = search_type.map_err(Error::InvalidRequest)?;
     let typed_keys = typed_keys.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!(
-      "{}/{}/_search/template",
-      client.baseurl,
-      encode_path(&index.to_string()),
-    );
+    let url = format!("{}{}/_search/template", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(13usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -10668,7 +10660,7 @@ impl<'a> SearchShardsGetWithIndex<'a> {
     let local = local.map_err(Error::InvalidRequest)?;
     let preference = preference.map_err(Error::InvalidRequest)?;
     let routing = routing.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_search_shards", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_search_shards", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -10819,7 +10811,7 @@ impl<'a> SearchShardsPostWithIndex<'a> {
     let local = local.map_err(Error::InvalidRequest)?;
     let preference = preference.map_err(Error::InvalidRequest)?;
     let routing = routing.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_search_shards", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_search_shards", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(6usize);
     if let Some(v) = &allow_no_indices {
       query.push(("allow_no_indices", v.to_string()));
@@ -10859,8 +10851,8 @@ impl<'a> SearchShardsPostWithIndex<'a> {
 #[derive(Debug, Clone)]
 pub struct GetSource<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
-  id: Result<types::DocumentId, String>,
+  index: Result<types::OpenSearchNameValue, String>,
+  id: Result<types::OpenSearchId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -10892,19 +10884,19 @@ impl<'a> GetSource<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DocumentId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -11026,7 +11018,7 @@ impl<'a> GetSource<'a> {
     let version = version.map_err(Error::InvalidRequest)?;
     let version_type = version_type.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_source/{}",
+      "{}{}/_source/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&id.to_string()),
@@ -11079,8 +11071,8 @@ impl<'a> GetSource<'a> {
 #[derive(Debug, Clone)]
 pub struct ExistsSource<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
-  id: Result<types::DocumentId, String>,
+  index: Result<types::OpenSearchNameValue, String>,
+  id: Result<types::OpenSearchId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -11112,19 +11104,19 @@ impl<'a> ExistsSource<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DocumentId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -11246,7 +11238,7 @@ impl<'a> ExistsSource<'a> {
     let version = version.map_err(Error::InvalidRequest)?;
     let version_type = version_type.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_source/{}",
+      "{}{}/_source/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&id.to_string()),
@@ -11299,7 +11291,7 @@ impl<'a> ExistsSource<'a> {
 #[derive(Debug, Clone)]
 pub struct TermvectorsGet<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
+  index: Result<types::OpenSearchNameValue, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
   offsets: Result<Option<bool>, String>,
@@ -11334,10 +11326,10 @@ impl<'a> TermvectorsGet<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -11480,7 +11472,7 @@ impl<'a> TermvectorsGet<'a> {
     let term_statistics = term_statistics.map_err(Error::InvalidRequest)?;
     let version = version.map_err(Error::InvalidRequest)?;
     let version_type = version_type.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_termvectors", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_termvectors", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(11usize);
     if let Some(v) = &field_statistics {
       query.push(("field_statistics", v.to_string()));
@@ -11535,7 +11527,7 @@ impl<'a> TermvectorsGet<'a> {
 #[derive(Debug, Clone)]
 pub struct TermvectorsPost<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
+  index: Result<types::OpenSearchNameValue, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
   offsets: Result<Option<bool>, String>,
@@ -11572,10 +11564,10 @@ impl<'a> TermvectorsPost<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
@@ -11729,7 +11721,7 @@ impl<'a> TermvectorsPost<'a> {
     let version = version.map_err(Error::InvalidRequest)?;
     let version_type = version_type.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/{}/_termvectors", client.baseurl, encode_path(&index.to_string()),);
+    let url = format!("{}{}/_termvectors", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(11usize);
     if let Some(v) = &field_statistics {
       query.push(("field_statistics", v.to_string()));
@@ -11784,8 +11776,8 @@ impl<'a> TermvectorsPost<'a> {
 #[derive(Debug, Clone)]
 pub struct TermvectorsGetWithId<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
-  id: Result<types::DocumentId, String>,
+  index: Result<types::OpenSearchNameValue, String>,
+  id: Result<types::OpenSearchId, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
   offsets: Result<Option<bool>, String>,
@@ -11821,19 +11813,19 @@ impl<'a> TermvectorsGetWithId<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DocumentId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -11979,7 +11971,7 @@ impl<'a> TermvectorsGetWithId<'a> {
     let version = version.map_err(Error::InvalidRequest)?;
     let version_type = version_type.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_termvectors/{}",
+      "{}{}/_termvectors/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&id.to_string()),
@@ -12038,8 +12030,8 @@ impl<'a> TermvectorsGetWithId<'a> {
 #[derive(Debug, Clone)]
 pub struct TermvectorsPostWithId<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
-  id: Result<types::DocumentId, String>,
+  index: Result<types::OpenSearchNameValue, String>,
+  id: Result<types::OpenSearchId, String>,
   field_statistics: Result<Option<bool>, String>,
   fields: Result<Option<Vec<String>>, String>,
   offsets: Result<Option<bool>, String>,
@@ -12077,19 +12069,19 @@ impl<'a> TermvectorsPostWithId<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DocumentId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -12246,7 +12238,7 @@ impl<'a> TermvectorsPostWithId<'a> {
     let version_type = version_type.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_termvectors/{}",
+      "{}{}/_termvectors/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&id.to_string()),
@@ -12305,8 +12297,8 @@ impl<'a> TermvectorsPostWithId<'a> {
 #[derive(Debug, Clone)]
 pub struct Update<'a> {
   client: &'a super::OsClient,
-  index: Result<types::IndexName, String>,
-  id: Result<types::DocumentId, String>,
+  index: Result<types::OpenSearchNameValue, String>,
+  id: Result<types::OpenSearchId, String>,
   source: Result<Option<Vec<String>>, String>,
   source_excludes: Result<Option<Vec<String>>, String>,
   source_includes: Result<Option<Vec<String>>, String>,
@@ -12346,19 +12338,19 @@ impl<'a> Update<'a> {
 
   pub fn index<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndexName>, {
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
     self.index = value
       .try_into()
-      .map_err(|_| "conversion to `IndexName` for index failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
     self
   }
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::DocumentId>, {
+    V: std::convert::TryInto<types::OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `DocumentId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -12527,7 +12519,7 @@ impl<'a> Update<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/{}/_update/{}",
+      "{}{}/_update/{}",
       client.baseurl,
       encode_path(&index.to_string()),
       encode_path(&id.to_string()),
@@ -13105,11 +13097,7 @@ impl<'a> UpdateByQuery<'a> {
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let wait_for_completion = wait_for_completion.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!(
-      "{}/{}/_update_by_query",
-      client.baseurl,
-      encode_path(&index.to_string()),
-    );
+    let url = format!("{}{}/_update_by_query", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(34usize);
     if let Some(v) = &source {
       query.push(("_source", v.join(",")));

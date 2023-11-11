@@ -27,7 +27,7 @@ impl<'a> GetAccountDetails<'a> {
   ///Sends a `GET` request to `/_plugins/_security/api/account`
   pub async fn send(self) -> Result<ResponseValue<types::AccountDetails>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_plugins/_security/api/account", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/account", client.baseurl,);
     let request = client
       .client
       .get(url)
@@ -90,7 +90,7 @@ impl<'a> ChangePassword<'a> {
     let body = body
       .and_then(std::convert::TryInto::<types::ChangePasswordRequestContent>::try_into)
       .map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_plugins/_security/api/account", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/account", client.baseurl,);
     let request = client
       .client
       .put(url)
@@ -143,7 +143,7 @@ impl<'a> PatchActionGroups<'a> {
   pub async fn send(self) -> Result<ResponseValue<types::PatchActionGroupsResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_plugins/_security/api/actiongroups", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/actiongroups", client.baseurl,);
     let request = client
       .client
       .patch(url)
@@ -182,7 +182,7 @@ impl<'a> GetActionGroups<'a> {
   ///Sends a `GET` request to `/_plugins/_security/api/actiongroups/`
   pub async fn send(self) -> Result<ResponseValue<types::ActionGroupsMap>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_plugins/_security/api/actiongroups/", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/actiongroups/", client.baseurl,);
     let request = client
       .client
       .get(url)
@@ -236,7 +236,7 @@ impl<'a> GetActionGroup<'a> {
     let Self { client, action_group } = self;
     let action_group = action_group.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/actiongroups/{}",
+      "{}_plugins/_security/api/actiongroups/{}",
       client.baseurl,
       encode_path(&action_group.to_string()),
     );
@@ -319,7 +319,7 @@ impl<'a> CreateActionGroup<'a> {
       .and_then(std::convert::TryInto::<types::ActionGroup>::try_into)
       .map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/actiongroups/{}",
+      "{}_plugins/_security/api/actiongroups/{}",
       client.baseurl,
       encode_path(&action_group.to_string()),
     );
@@ -377,7 +377,7 @@ impl<'a> DeleteActionGroup<'a> {
     let Self { client, action_group } = self;
     let action_group = action_group.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/actiongroups/{}",
+      "{}_plugins/_security/api/actiongroups/{}",
       client.baseurl,
       encode_path(&action_group.to_string()),
     );
@@ -450,7 +450,7 @@ impl<'a> PatchActionGroup<'a> {
     let action_group = action_group.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/actiongroups/{}",
+      "{}_plugins/_security/api/actiongroups/{}",
       client.baseurl,
       encode_path(&action_group.to_string()),
     );
@@ -492,7 +492,7 @@ impl<'a> GetAuditConfiguration<'a> {
   ///Sends a `GET` request to `/_plugins/_security/api/audit`
   pub async fn send(self) -> Result<ResponseValue<types::AuditConfigWithReadOnly>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_plugins/_security/api/audit", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/audit", client.baseurl,);
     let request = client
       .client
       .get(url)
@@ -544,7 +544,7 @@ impl<'a> PatchAuditConfiguration<'a> {
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_plugins/_security/api/audit", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/audit", client.baseurl,);
     let request = client.client.patch(url).json(&body).build()?;
     let result = client.client.execute(request).await;
     let response = result?;
@@ -599,7 +599,7 @@ impl<'a> UpdateAuditConfiguration<'a> {
     let body = body
       .and_then(std::convert::TryInto::<types::AuditConfig>::try_into)
       .map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_plugins/_security/api/audit/config", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/audit/config", client.baseurl,);
     let request = client
       .client
       .put(url)
@@ -638,7 +638,7 @@ impl<'a> FlushCache<'a> {
   ///Sends a `DELETE` request to `/_plugins/_security/api/cache`
   pub async fn send(self) -> Result<ResponseValue<types::FlushCacheResponseContent>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_plugins/_security/api/cache", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/cache", client.baseurl,);
     let request = client
       .client
       .delete(url)
@@ -676,7 +676,7 @@ impl<'a> GetUsers<'a> {
   ///Sends a `GET` request to `/_plugins/_security/api/internalusers`
   pub async fn send(self) -> Result<ResponseValue<types::UsersMap>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_plugins/_security/api/internalusers", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/internalusers", client.baseurl,);
     let request = client
       .client
       .get(url)
@@ -728,7 +728,7 @@ impl<'a> PatchUsers<'a> {
   pub async fn send(self) -> Result<ResponseValue<types::PatchUsersResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_plugins/_security/api/internalusers", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/internalusers", client.baseurl,);
     let request = client
       .client
       .patch(url)
@@ -783,7 +783,7 @@ impl<'a> GetUser<'a> {
     let Self { client, username } = self;
     let username = username.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/internalusers/{}",
+      "{}_plugins/_security/api/internalusers/{}",
       client.baseurl,
       encode_path(&username.to_string()),
     );
@@ -862,7 +862,7 @@ impl<'a> CreateUser<'a> {
       .and_then(std::convert::TryInto::<types::User>::try_into)
       .map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/internalusers/{}",
+      "{}_plugins/_security/api/internalusers/{}",
       client.baseurl,
       encode_path(&username.to_string()),
     );
@@ -920,7 +920,7 @@ impl<'a> DeleteUser<'a> {
     let Self { client, username } = self;
     let username = username.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/internalusers/{}",
+      "{}_plugins/_security/api/internalusers/{}",
       client.baseurl,
       encode_path(&username.to_string()),
     );
@@ -989,7 +989,7 @@ impl<'a> PatchUser<'a> {
     let username = username.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/internalusers/{}",
+      "{}_plugins/_security/api/internalusers/{}",
       client.baseurl,
       encode_path(&username.to_string()),
     );
@@ -1031,7 +1031,7 @@ impl<'a> GetDistinguishedNames<'a> {
   ///Sends a `GET` request to `/_plugins/_security/api/nodesdn`
   pub async fn send(self) -> Result<ResponseValue<types::DistinguishedNamesMap>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_plugins/_security/api/nodesdn", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/nodesdn", client.baseurl,);
     let request = client
       .client
       .get(url)
@@ -1083,7 +1083,7 @@ impl<'a> PatchDistinguishedNames<'a> {
   pub async fn send(self) -> Result<ResponseValue<types::PatchDistinguishedNamesResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_plugins/_security/api/nodesdn", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/nodesdn", client.baseurl,);
     let request = client
       .client
       .patch(url)
@@ -1138,7 +1138,7 @@ impl<'a> GetDistinguishedNamesWithClusterName<'a> {
     let Self { client, cluster_name } = self;
     let cluster_name = cluster_name.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/nodesdn/{}",
+      "{}_plugins/_security/api/nodesdn/{}",
       client.baseurl,
       encode_path(&cluster_name.to_string()),
     );
@@ -1221,7 +1221,7 @@ impl<'a> UpdateDistinguishedNames<'a> {
       .and_then(std::convert::TryInto::<types::DistinguishedNames>::try_into)
       .map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/nodesdn/{}",
+      "{}_plugins/_security/api/nodesdn/{}",
       client.baseurl,
       encode_path(&cluster_name.to_string()),
     );
@@ -1279,7 +1279,7 @@ impl<'a> DeleteDistinguishedNames<'a> {
     let Self { client, cluster_name } = self;
     let cluster_name = cluster_name.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/nodesdn/{}",
+      "{}_plugins/_security/api/nodesdn/{}",
       client.baseurl,
       encode_path(&cluster_name.to_string()),
     );
@@ -1334,7 +1334,7 @@ impl<'a> PatchRoles<'a> {
   pub async fn send(self) -> Result<ResponseValue<types::PatchRolesResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_plugins/_security/api/roles", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/roles", client.baseurl,);
     let request = client
       .client
       .patch(url)
@@ -1373,7 +1373,7 @@ impl<'a> GetRoles<'a> {
   ///Sends a `GET` request to `/_plugins/_security/api/roles/`
   pub async fn send(self) -> Result<ResponseValue<types::RolesMap>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_plugins/_security/api/roles/", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/roles/", client.baseurl,);
     let request = client
       .client
       .get(url)
@@ -1426,7 +1426,7 @@ impl<'a> GetRole<'a> {
     let Self { client, role } = self;
     let role = role.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/roles/{}",
+      "{}_plugins/_security/api/roles/{}",
       client.baseurl,
       encode_path(&role.to_string()),
     );
@@ -1504,7 +1504,7 @@ impl<'a> CreateRole<'a> {
       .and_then(std::convert::TryInto::<types::Role>::try_into)
       .map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/roles/{}",
+      "{}_plugins/_security/api/roles/{}",
       client.baseurl,
       encode_path(&role.to_string()),
     );
@@ -1561,7 +1561,7 @@ impl<'a> DeleteRole<'a> {
     let Self { client, role } = self;
     let role = role.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/roles/{}",
+      "{}_plugins/_security/api/roles/{}",
       client.baseurl,
       encode_path(&role.to_string()),
     );
@@ -1629,7 +1629,7 @@ impl<'a> PatchRole<'a> {
     let role = role.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/roles/{}",
+      "{}_plugins/_security/api/roles/{}",
       client.baseurl,
       encode_path(&role.to_string()),
     );
@@ -1671,7 +1671,7 @@ impl<'a> GetRoleMappings<'a> {
   ///Sends a `GET` request to `/_plugins/_security/api/rolesmapping`
   pub async fn send(self) -> Result<ResponseValue<types::RoleMappings>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_plugins/_security/api/rolesmapping", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/rolesmapping", client.baseurl,);
     let request = client
       .client
       .get(url)
@@ -1723,7 +1723,7 @@ impl<'a> PatchRoleMappings<'a> {
   pub async fn send(self) -> Result<ResponseValue<types::PatchRoleMappingsResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_plugins/_security/api/rolesmapping", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/rolesmapping", client.baseurl,);
     let request = client
       .client
       .patch(url)
@@ -1778,7 +1778,7 @@ impl<'a> GetRoleMapping<'a> {
     let Self { client, role } = self;
     let role = role.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/rolesmapping/{}",
+      "{}_plugins/_security/api/rolesmapping/{}",
       client.baseurl,
       encode_path(&role.to_string()),
     );
@@ -1857,7 +1857,7 @@ impl<'a> CreateRoleMapping<'a> {
       .and_then(std::convert::TryInto::<types::RoleMapping>::try_into)
       .map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/rolesmapping/{}",
+      "{}_plugins/_security/api/rolesmapping/{}",
       client.baseurl,
       encode_path(&role.to_string()),
     );
@@ -1915,7 +1915,7 @@ impl<'a> DeleteRoleMapping<'a> {
     let Self { client, role } = self;
     let role = role.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/rolesmapping/{}",
+      "{}_plugins/_security/api/rolesmapping/{}",
       client.baseurl,
       encode_path(&role.to_string()),
     );
@@ -1984,7 +1984,7 @@ impl<'a> PatchRoleMapping<'a> {
     let role = role.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/rolesmapping/{}",
+      "{}_plugins/_security/api/rolesmapping/{}",
       client.baseurl,
       encode_path(&role.to_string()),
     );
@@ -2026,7 +2026,7 @@ impl<'a> GetConfiguration<'a> {
   ///Sends a `GET` request to `/_plugins/_security/api/securityconfig`
   pub async fn send(self) -> Result<ResponseValue<types::DynamicConfig>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_plugins/_security/api/securityconfig", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/securityconfig", client.baseurl,);
     let request = client
       .client
       .get(url)
@@ -2078,7 +2078,7 @@ impl<'a> PatchConfiguration<'a> {
   pub async fn send(self) -> Result<ResponseValue<types::PatchConfigurationResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_plugins/_security/api/securityconfig", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/securityconfig", client.baseurl,);
     let request = client
       .client
       .patch(url)
@@ -2142,7 +2142,7 @@ impl<'a> UpdateConfiguration<'a> {
     let body = body
       .and_then(std::convert::TryInto::<types::DynamicConfig>::try_into)
       .map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_plugins/_security/api/securityconfig/config", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/securityconfig/config", client.baseurl,);
     let request = client
       .client
       .put(url)
@@ -2181,7 +2181,7 @@ impl<'a> GetCertificates<'a> {
   ///Sends a `GET` request to `/_plugins/_security/api/ssl/certs`
   pub async fn send(self) -> Result<ResponseValue<types::GetCertificatesResponseContent>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_plugins/_security/api/ssl/certs", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/ssl/certs", client.baseurl,);
     let request = client
       .client
       .get(url)
@@ -2220,7 +2220,7 @@ impl<'a> ReloadHttpCertificates<'a> {
   /// `/_plugins/_security/api/ssl/http/reloadcerts`
   pub async fn send(self) -> Result<ResponseValue<types::ReloadHttpCertificatesResponseContent>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_plugins/_security/api/ssl/http/reloadcerts", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/ssl/http/reloadcerts", client.baseurl,);
     let request = client
       .client
       .put(url)
@@ -2259,7 +2259,7 @@ impl<'a> ReloadTransportCertificates<'a> {
   /// `/_plugins/_security/api/ssl/transport/reloadcerts`
   pub async fn send(self) -> Result<ResponseValue<types::ReloadTransportCertificatesResponseContent>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_plugins/_security/api/ssl/transport/reloadcerts", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/ssl/transport/reloadcerts", client.baseurl,);
     let request = client
       .client
       .put(url)
@@ -2297,7 +2297,7 @@ impl<'a> GetTenants<'a> {
   ///Sends a `GET` request to `/_plugins/_security/api/tenants/`
   pub async fn send(self) -> Result<ResponseValue<types::TenantsMap>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_plugins/_security/api/tenants/", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/tenants/", client.baseurl,);
     let request = client
       .client
       .get(url)
@@ -2349,7 +2349,7 @@ impl<'a> PatchTenants<'a> {
   pub async fn send(self) -> Result<ResponseValue<types::PatchTenantsResponseContent>, Error> {
     let Self { client, body } = self;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_plugins/_security/api/tenants/", client.baseurl,);
+    let url = format!("{}_plugins/_security/api/tenants/", client.baseurl,);
     let request = client
       .client
       .patch(url)
@@ -2403,7 +2403,7 @@ impl<'a> GetTenant<'a> {
     let Self { client, tenant } = self;
     let tenant = tenant.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/tenants/{}",
+      "{}_plugins/_security/api/tenants/{}",
       client.baseurl,
       encode_path(&tenant.to_string()),
     );
@@ -2481,7 +2481,7 @@ impl<'a> CreateTenant<'a> {
       .and_then(std::convert::TryInto::<types::CreateTenantParams>::try_into)
       .map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/tenants/{}",
+      "{}_plugins/_security/api/tenants/{}",
       client.baseurl,
       encode_path(&tenant.to_string()),
     );
@@ -2539,7 +2539,7 @@ impl<'a> DeleteTenant<'a> {
     let Self { client, tenant } = self;
     let tenant = tenant.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/tenants/{}",
+      "{}_plugins/_security/api/tenants/{}",
       client.baseurl,
       encode_path(&tenant.to_string()),
     );
@@ -2608,7 +2608,7 @@ impl<'a> PatchTenant<'a> {
     let tenant = tenant.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_plugins/_security/api/tenants/{}",
+      "{}_plugins/_security/api/tenants/{}",
       client.baseurl,
       encode_path(&tenant.to_string()),
     );
@@ -2650,7 +2650,7 @@ impl<'a> SecurityHealth<'a> {
   ///Sends a `GET` request to `/_plugins/_security/health`
   pub async fn send(self) -> Result<ResponseValue<types::SecurityHealthResponseContent>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_plugins/_security/health", client.baseurl,);
+    let url = format!("{}_plugins/_security/health", client.baseurl,);
     let request = client
       .client
       .get(url)

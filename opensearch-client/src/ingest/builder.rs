@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::Value;
 
-use crate::types::Timeout;
+use crate::types::{OpenSearchId, OpenSearchNameValue, Timeout};
 use super::types;
 #[allow(unused_imports)]
 use crate::{
@@ -53,7 +53,7 @@ impl<'a> Simulate<'a> {
     let Self { client, verbose, body } = self;
     let verbose = verbose.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_ingest/pipeline/_simulate", client.baseurl,);
+    let url = format!("{}_ingest/pipeline/_simulate", client.baseurl,);
     let mut query = Vec::with_capacity(1usize);
     if let Some(v) = &verbose {
       query.push(("verbose", v.to_string()));
@@ -98,7 +98,7 @@ impl<'a> IngestGetPipeline<'a> {
     V: std::convert::TryInto<Option<String>>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `IngestGetPipelineWithIdId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -165,7 +165,7 @@ impl<'a> IngestGetPipeline<'a> {
 #[derive(Debug, Clone)]
 pub struct IngestPutPipeline<'a> {
   client: &'a super::OsClient,
-  id: Result<types::IngestPutPipelineId, String>,
+  id: Result<OpenSearchId, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -186,10 +186,10 @@ impl<'a> IngestPutPipeline<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IngestPutPipelineId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `IngestPutPipelineId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -247,7 +247,7 @@ impl<'a> IngestPutPipeline<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_ingest/pipeline/{}", client.baseurl, encode_path(&id.to_string()),);
+    let url = format!("{}_ingest/pipeline/{}", client.baseurl, encode_path(&id.to_string()),);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -278,7 +278,7 @@ impl<'a> IngestPutPipeline<'a> {
 #[derive(Debug, Clone)]
 pub struct IngestDeletePipeline<'a> {
   client: &'a super::OsClient,
-  id: Result<types::IngestDeletePipelineId, String>,
+  id: Result<OpenSearchId, String>,
   cluster_manager_timeout: Result<Option<Timeout>, String>,
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
@@ -297,10 +297,10 @@ impl<'a> IngestDeletePipeline<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IngestDeletePipelineId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `IngestDeletePipelineId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -347,7 +347,7 @@ impl<'a> IngestDeletePipeline<'a> {
     let cluster_manager_timeout = cluster_manager_timeout.map_err(Error::InvalidRequest)?;
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_ingest/pipeline/{}", client.baseurl, encode_path(&id.to_string()),);
+    let url = format!("{}_ingest/pipeline/{}", client.baseurl, encode_path(&id.to_string()),);
     let mut query = Vec::with_capacity(3usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));
@@ -378,7 +378,7 @@ impl<'a> IngestDeletePipeline<'a> {
 #[derive(Debug, Clone)]
 pub struct IngestSimulateWithId<'a> {
   client: &'a super::OsClient,
-  id: Result<types::IngestSimulatePostWithIdId, String>,
+  id: Result<OpenSearchId, String>,
   verbose: Result<Option<bool>, String>,
   body: Result<types::IngestSimulateBodyParams, String>,
 }
@@ -395,10 +395,10 @@ impl<'a> IngestSimulateWithId<'a> {
 
   pub fn id<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IngestSimulatePostWithIdId>, {
+    V: std::convert::TryInto<OpenSearchId>, {
     self.id = value
       .try_into()
-      .map_err(|_| "conversion to `IngestSimulatePostWithIdId` for id failed".to_string());
+      .map_err(|_| "conversion to `OpenSearchId` for id failed".to_string());
     self
   }
 
@@ -433,7 +433,7 @@ impl<'a> IngestSimulateWithId<'a> {
     let verbose = verbose.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
     let url = format!(
-      "{}/_ingest/pipeline/{}/_simulate",
+      "{}_ingest/pipeline/{}/_simulate",
       client.baseurl,
       encode_path(&id.to_string()),
     );
@@ -471,7 +471,7 @@ impl<'a> IngestProcessorGrok<'a> {
   ///Sends a `GET` request to `/_ingest/processor/grok`
   pub async fn send(self) -> Result<ResponseValue<()>, Error> {
     let Self { client } = self;
-    let url = format!("{}/_ingest/processor/grok", client.baseurl,);
+    let url = format!("{}_ingest/processor/grok", client.baseurl,);
     let request = client.client.get(url).build()?;
     let result = client.client.execute(request).await;
     let response = result?;

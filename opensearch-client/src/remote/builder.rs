@@ -82,7 +82,7 @@ impl<'a> RemoteStoreRestore<'a> {
     let body = body
       .and_then(std::convert::TryInto::<types::RemoteStoreRestoreBodyParams>::try_into)
       .map_err(Error::InvalidRequest)?;
-    let url = format!("{}/_remotestore/_restore", client.baseurl,);
+    let url = format!("{}_remotestore/_restore", client.baseurl,);
     let mut query = Vec::with_capacity(2usize);
     if let Some(v) = &cluster_manager_timeout {
       query.push(("cluster_manager_timeout", v.to_string()));

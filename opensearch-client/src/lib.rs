@@ -3686,7 +3686,7 @@ impl OsClient {
   /// ```
   pub async fn search_stream<T: DeserializeOwned + std::default::Default>(
     &self,
-    index: &String,
+    index: &str,
     query: &Query,
     sort: &SortCollection,
     size: u64,
@@ -3695,7 +3695,7 @@ impl OsClient {
       client: Arc::new(self.clone()),
       stop: false,
       search_after: None,
-      index: index.clone(),
+      index: index.to_owned(),
       query: query.clone(),
       sort: sort.clone(),
       size,

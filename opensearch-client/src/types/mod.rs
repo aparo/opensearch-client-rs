@@ -1316,10 +1316,10 @@ impl std::convert::TryFrom<String> for Health {
 pub struct Hit<T> {
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub fields: Option<serde_json::Value>,
-  #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
-  pub id: Option<String>,
-  #[serde(rename = "_index", default, skip_serializing_if = "Option::is_none")]
-  pub index: Option<String>,
+  #[serde(rename = "_id", default)]
+  pub id: String,
+  #[serde(rename = "_index")]
+  pub index: String,
   #[serde(rename = "_score", default, skip_serializing_if = "Option::is_none")]
   pub score: Option<f64>,
   #[serde(rename = "_source", default, skip_serializing_if = "Option::is_none")]
@@ -4832,8 +4832,8 @@ pub mod builder {
   #[derive(Clone, Debug)]
   pub struct Hit<T> {
     fields: Result<Option<serde_json::Value>, String>,
-    id: Result<Option<String>, String>,
-    index: Result<Option<String>, String>,
+    id: Result<String, String>,
+    index: Result<String, String>,
     score: Result<Option<f64>, String>,
     source: Result<Option<T>, String>,
     type_: Result<Option<String>, String>,
@@ -4867,7 +4867,7 @@ pub mod builder {
 
     pub fn id<T>(mut self, value: T) -> Self
     where
-      T: std::convert::TryInto<Option<String>>,
+      T: std::convert::TryInto<String>,
       T::Error: std::fmt::Display, {
       self.id = value
         .try_into()
@@ -4877,7 +4877,7 @@ pub mod builder {
 
     pub fn index<T>(mut self, value: T) -> Self
     where
-      T: std::convert::TryInto<Option<String>>,
+      T: std::convert::TryInto<String>,
       T::Error: std::fmt::Display, {
       self.index = value
         .try_into()

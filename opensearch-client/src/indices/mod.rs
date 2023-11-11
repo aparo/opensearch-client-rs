@@ -75,8 +75,7 @@ impl<'a> Indices<'a> {
   /// - `local`: Return local information, do not retrieve the state from
   ///   cluster-manager node.
   ///```ignore
-  /// let response = client.indices().get_alias_with_name()
-  ///    .name(name)
+  /// let response = client.indices().get_alias_with_name(name)
   ///    .allow_no_indices(allow_no_indices)
   ///    .expand_wildcards(expand_wildcards)
   ///    .ignore_unavailable(ignore_unavailable)
@@ -84,8 +83,8 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn get_alias_with_name(&self) -> builder::IndicesGetAlias {
-    builder::IndicesGetAlias::new(self.os_client)
+  pub fn get_alias_with_name(&self, name: &str) -> builder::IndicesGetAlias {
+    builder::IndicesGetAlias::new(self.os_client).name(Some(name.to_owned()))
   }
 
   ///Returns information about whether a particular alias exists.
@@ -877,14 +876,13 @@ impl<'a> Indices<'a> {
   /// - `expand_wildcards`: Whether to expand wildcard expression to concrete
   ///   indices that are open, closed or both.
   ///```ignore
-  /// let response = client.indices().resolve_index()
-  ///    .name(name)
+  /// let response = client.indices().resolve_index(name)
   ///    .expand_wildcards(expand_wildcards)
   ///    .send()
   ///    .await;
   /// ```
-  pub fn resolve_index(&self) -> builder::IndicesResolveIndex {
-    builder::IndicesResolveIndex::new(self.os_client)
+  pub fn resolve_index(&self, name: &str) -> builder::IndicesResolveIndex {
+    builder::IndicesResolveIndex::new(self.os_client).name(name)
   }
 
   ///Provides low-level information about segments in a Lucene index.

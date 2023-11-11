@@ -5,12 +5,53 @@ use std::convert::TryFrom;
 use serde::{Deserialize, Serialize};
 
 use crate::types::{DataStream, UserDefinedStructure, UserDefinedValueMap};
+use super::Indices;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct AliasDefinition {
   #[serde(default)]
   pub aliases: HashMap<String, serde_json::Value>,
 }
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct IndicesResolveResponseAlias {
+  #[serde(default)]
+  pub name: String,
+  #[serde(default)]
+  pub indices: Vec<String>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct IndicesResolveResponseIndex {
+  #[serde(default)]
+  pub name: String,
+  #[serde(default)]
+  pub aliases: Vec<String>,
+  #[serde(default)]
+  pub attributes: Vec<String>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct IndicesResolveResponse {
+  #[serde(default)]
+  pub indices: Vec<IndicesResolveResponseIndex>,
+  #[serde(default)]
+  pub aliases: Vec<IndicesResolveResponseAlias>,
+  #[serde(default)]
+  pub data_streams: Vec<serde_json::Value>,
+}
+
+impl IndicesResolveResponse {
+  pub fn get_open_indices(&self) -> Vec<String> {
+    self
+      .indices
+      .iter()
+      .filter(|index| index.attributes.contains(&"open".to_string()))
+      .map(|index| index.name.clone())
+      .collect()
+  }
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ActionObjectStructure {
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1270,5 +1311,44 @@ pub mod builder {
         remove_index: Ok(value.remove_index),
       }
     }
+  }
+}
+
+#[cfg(test)]
+mod tests {
+
+  use std::path::PathBuf;
+
+  use serde::de::DeserializeOwned;
+
+  use super::*;
+  fn load_entity<T: DeserializeOwned>(name: &str) -> T {
+    let filename = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(format!("tests/indices/{name}"));
+    let text = std::fs::read_to_string(filename).unwrap();
+    serde_json::from_str(&text).unwrap()
+  }
+
+  #[test]
+  fn test_decode_alias() {
+    let decoded: HashMap<String, AliasDefinition> = load_entity("alias.response.json");
+    assert_eq!(decoded.len(), 2);
+  }
+
+  #[test]
+  fn test_decode_resolve() {
+    let decoded: IndicesResolveResponse = load_entity("resolve.response.json");
+    assert_eq!(decoded.aliases.len(), 1);
+    assert_eq!(decoded.data_streams.len(), 0);
+    assert_eq!(decoded.indices.len(), 5);
+    assert_eq!(
+      decoded.get_open_indices(),
+      vec![
+        "civitai-entry",
+        "civitai-entry2",
+        "civitai-file",
+        "civitai-image",
+        "civitai-model"
+      ]
+    );
   }
 }

@@ -1,0 +1,10 @@
+{
+    "security-auditlog-2023.11.01": {
+        "aliases": {}
+    },
+    "test-file": {
+        "aliases": {
+            "test": {}
+        }
+    }
+}

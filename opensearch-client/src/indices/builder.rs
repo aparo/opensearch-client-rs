@@ -16,7 +16,7 @@ use crate::{
 #[derive(Debug, Clone)]
 pub struct IndicesGetAlias<'a> {
   client: &'a super::OsClient,
-  name: Result<Option<OpenSearchNameValue>, String>,
+  name: Result<Option<String>, String>,
   allow_no_indices: Result<Option<bool>, String>,
   expand_wildcards: Result<Option<ExpandWildcards>, String>,
   ignore_unavailable: Result<Option<bool>, String>,
@@ -36,7 +36,7 @@ impl<'a> IndicesGetAlias<'a> {
 
   pub fn name<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<Option<OpenSearchNameValue>>, {
+    V: std::convert::TryInto<Option<String>>, {
     self.name = value
       .try_into()
       .map_err(|_| "conversion to `OpenSearchNameValue` for name failed".to_string());
@@ -3038,7 +3038,7 @@ impl<'a> IndicesResolveIndex<'a> {
   }
 
   ///Sends a `GET` request to `/_resolve/index/{name}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
+  pub async fn send(self) -> Result<ResponseValue<types::IndicesResolveResponse>, Error> {
     let Self {
       client,
       name,
@@ -3055,7 +3055,7 @@ impl<'a> IndicesResolveIndex<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::from_response(response).await,
       _ => {
         Err(Error::UnexpectedResponse(
           ReqwestResponse::from_response(response).await,

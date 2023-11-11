@@ -7,6 +7,21 @@
     {
       "type": "lldb",
       "request": "launch",
+      "name": "Dump",
+      "cargo": {
+        "args": ["build", "--bin=opensearch-cli", "--package=opensearch-cli"],
+        "filter": {
+          "name": "opensearch-cli",
+          "kind": "bin"
+        }
+      },
+      "args": ["-vv", "dump", "scala-entries"],
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
       "name": "Dump Metadata",
       "cargo": {
         "args": ["build", "--bin=opensearch-cli", "--package=opensearch-cli"],

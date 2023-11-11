@@ -3,6 +3,7 @@ use std::path::PathBuf;
 use tracing::info;
 use clap::{Parser, Subcommand};
 use url::Url;
+mod dumper;
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -93,6 +94,25 @@ pub enum Commands {
     /// Use the contains the pattern to filter the indices
     #[clap(long)]
     contains: Option<String>,
+  },
+  /// Dump index data and mappings
+  /// This command will dump the data and mappings of the indices
+  Dump {
+    /// Compress the data
+    #[clap(long, default_value = "true")]
+    compress: bool,
+    /// Size of the bulk read
+    #[clap(long, default_value = "500")]
+    read_bulk: u64,
+    /// Split file after this number of records (0: no split)
+    #[clap(long, default_value = "0")]
+    max_record_for_file: u32,
+    /// Set the index,indices to dump
+    #[clap(value_name = "indices")]
+    indices: String,
+    /// Sets the output path
+    #[clap(value_name = "FILE", default_value = "output")]
+    output: PathBuf,
   },
 }
 
@@ -202,6 +222,26 @@ async fn main() -> anyhow::Result<()> {
           println!("{}", index);
         }
       }
+    }
+    Commands::Dump {
+      compress,
+      read_bulk,
+      max_record_for_file,
+      indices,
+      output,
+    } => {
+      info!("Dumping index");
+      info!("Output: {:?}", output);
+      let dumper = dumper::Dumper {
+        client: &client,
+        compress: *compress,
+        output: output.clone(),
+        indices: indices.clone(),
+        read_bulk: *read_bulk,
+        max_record_for_file: *max_record_for_file,
+      };
+
+      dumper.dump().await?;
     }
   }
 

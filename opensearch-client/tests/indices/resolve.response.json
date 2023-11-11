@@ -1,0 +1,62 @@
+{
+    "indices": [
+        {
+            "name": "civitai-entry",
+            "aliases": [
+                "civitai"
+            ],
+            "attributes": [
+                "open"
+            ]
+        },
+        {
+            "name": "civitai-entry2",
+            "aliases": [
+                "civitai"
+            ],
+            "attributes": [
+                "open"
+            ]
+        },
+        {
+            "name": "civitai-file",
+            "aliases": [
+                "civitai"
+            ],
+            "attributes": [
+                "open"
+            ]
+        },
+        {
+            "name": "civitai-image",
+            "aliases": [
+                "civitai"
+            ],
+            "attributes": [
+                "open"
+            ]
+        },
+        {
+            "name": "civitai-model",
+            "aliases": [
+                "civitai"
+            ],
+            "attributes": [
+                "open"
+            ]
+        }
+    ],
+    "aliases": [
+        {
+            "name": "civitai",
+            "indices": [
+                "civitai-entry",
+                "civitai-entry2",
+                "civitai-file",
+                "civitai-image",
+                "civitai-model"
+            ]
+        }
+    ],
+    "data_streams": []
+}

@@ -2,15 +2,61 @@ use std::collections::HashMap;
 #[allow(unused_imports)]
 use std::convert::TryFrom;
 
+use opensearch_dsl::Query;
 use serde::{Deserialize, Serialize};
 
 use crate::types::{DataStream, UserDefinedStructure, UserDefinedValueMap};
 use super::Indices;
 
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Alias {
+  filter: Option<serde_json::Value>, //TODO: use typed Query
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  index_routing: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  is_hidden: Option<bool>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  is_write_index: Option<bool>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  routing: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  search_routing: Option<String>,
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct AliasDefinition {
   #[serde(default)]
-  pub aliases: HashMap<String, serde_json::Value>,
+  pub aliases: HashMap<String, Alias>,
+}
+
+#[derive(Default, Clone, Debug, Deserialize, Serialize)]
+pub struct IndexIndexSettings {
+  #[serde(default)]
+  pub number_of_replicas: String,
+  #[serde(default)]
+  pub number_of_shards: String,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  pub creation_date: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  pub uuid: Option<String>,
+  #[serde(default, skip_serializing_if = "HashMap::is_empty")]
+  pub version: HashMap<String, String>,
+}
+
+#[derive(Default, Clone, Debug, Deserialize, Serialize)]
+pub struct IndexSettings {
+  #[serde(default)]
+  pub index: IndexIndexSettings,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct IndexTemplateMapping {
+  #[serde(default)]
+  pub aliases: HashMap<String, Alias>,
+  #[serde(default)]
+  pub mappings: HashMap<String, serde_json::Value>, //TODO: use typed TypeMapping
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  pub settings: Option<IndexSettings>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]

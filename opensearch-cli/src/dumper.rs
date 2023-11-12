@@ -43,7 +43,7 @@ impl<'a> Dumper<'a> {
     indices.sort();
     for index in indices {
       self.dump_mapping(index.as_str()).await?;
-      // self.dump_index(index.as_str()).await?;
+      self.dump_index(index.as_str()).await?;
     }
     Ok(())
   }
@@ -58,7 +58,8 @@ impl<'a> Dumper<'a> {
     let file = File::create(&path).await?;
     let mut writer = BufWriter::new(file);
     let mapping = self.client.indices().get().index(index).send().await?.into_inner();
-    let mapping = mapping.get(index).unwrap();
+    let mut mapping = mapping.get(index).unwrap().clone();
+    mapping.settings = None;
     writer
       .write_all(serde_json::to_string_pretty(&mapping).unwrap().as_bytes())
       .await?;

@@ -5413,7 +5413,7 @@ impl<'a> IndicesGet<'a> {
   }
 
   ///Sends a `GET` request to `/{index}`
-  pub async fn send(self) -> Result<ResponseValue<HashMap<String, serde_json::Value>>, Error> {
+  pub async fn send(self) -> Result<ResponseValue<HashMap<String, types::IndexTemplateMapping>>, Error> {
     let Self {
       client,
       index,

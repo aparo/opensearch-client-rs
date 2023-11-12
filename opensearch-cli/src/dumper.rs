@@ -42,8 +42,28 @@ impl<'a> Dumper<'a> {
     let mut indices = resolve_response.get_open_indices();
     indices.sort();
     for index in indices {
-      self.dump_index(index.as_str()).await?;
+      self.dump_mapping(index.as_str()).await?;
+      // self.dump_index(index.as_str()).await?;
     }
+    Ok(())
+  }
+
+  pub async fn dump_mapping(&self, index: &str) -> anyhow::Result<()> {
+    let mut path = self.output.clone();
+    path.push(index);
+    if !path.exists() {
+      std::fs::create_dir_all(path.clone())?;
+    }
+    path.push(format!("{}.json", index));
+    let file = File::create(&path).await?;
+    let mut writer = BufWriter::new(file);
+    let mapping = self.client.indices().get().index(index).send().await?.into_inner();
+    let mapping = mapping.get(index).unwrap();
+    writer
+      .write_all(serde_json::to_string_pretty(&mapping).unwrap().as_bytes())
+      .await?;
+    writer.flush().await?;
+    println!("Written file {}", path.to_str().unwrap());
     Ok(())
   }
 

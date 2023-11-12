@@ -1,6 +1,7 @@
 use reqwest::Body;
 use serde::{de::DeserializeOwned, Serialize};
 use opensearch_dsl::Search;
+use tracing::debug;
 
 use crate::types::bulk::BulkResponse;
 use super::types;
@@ -10091,6 +10092,8 @@ impl<'a> SearchPostWithIndex<'a> {
     if let Some(v) = &version {
       query.push(("version", v.to_string()));
     }
+    debug!("{}/_search\n{}", &url, serde_json::to_string(&body)?);
+
     let request = client
       .client
       .post(url)

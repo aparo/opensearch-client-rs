@@ -26,14 +26,14 @@ mod tools;
 
 use std::sync::{Arc, Mutex};
 
-use opensearch_dsl::{Query, Search, SortCollection, Terms};
+use opensearch_dsl::{Query, Search, SortCollection, Term, Terms};
 #[allow(unused_imports)]
 use client::{encode_path, encode_path_option_vec_string, RequestBuilderExt};
 pub use client::{ByteStream, Error, ResponseValue};
 #[allow(unused_imports)]
 use reqwest::header::{HeaderMap, HeaderValue};
 use serde::{de::DeserializeOwned, Serialize};
-use tracing::info;
+use tracing::{debug, info};
 use types::bulk::{BulkAction, BulkResponse, UpdateAction};
 use futures::{
   stream::{self, StreamExt},
@@ -3730,7 +3730,6 @@ impl OsClient {
       if let Some(search_after) = state.search_after.clone() {
         body = body.search_after(search_after.clone());
       }
-
       let response = state
         .client
         .clone()
@@ -3742,7 +3741,17 @@ impl OsClient {
       let hits = response.into_inner().hits.unwrap().hits;
       let next_state = SearchAfterState {
         stop: (hits.len() as u64) < state.size,
-        search_after: hits.iter().last().and_then(|f| Some(Terms::from(f.sort.clone()))),
+        search_after: hits.iter().last().and_then(|f| {
+          if let Some(last_sort) = f.sort.clone().unwrap().as_array() {
+            if last_sort.is_empty() {
+              None
+            } else {
+              Some(Terms::from(last_sort))
+            }
+          } else {
+            None
+          }
+        }),
         ..state
       };
 

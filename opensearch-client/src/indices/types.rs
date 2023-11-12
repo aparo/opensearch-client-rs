@@ -49,6 +49,16 @@ pub struct IndexSettings {
   pub index: IndexIndexSettings,
 }
 
+impl IndexSettings {
+  pub fn clean_for_create(&self) -> Option<Self> {
+    let mut clone = self.clone();
+    clone.index.uuid = None;
+    clone.index.creation_date = None;
+    clone.index.version = HashMap::new();
+    Some(clone)
+  }
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct IndexTemplateMapping {
   #[serde(default)]
@@ -57,6 +67,14 @@ pub struct IndexTemplateMapping {
   pub mappings: HashMap<String, serde_json::Value>, //TODO: use typed TypeMapping
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub settings: Option<IndexSettings>,
+}
+
+impl IndexTemplateMapping {
+  pub fn clean_for_create(&self) -> Self {
+    let mut clone = self.clone();
+    clone.settings = clone.settings.clean_for_create();
+    clone
+  }
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]

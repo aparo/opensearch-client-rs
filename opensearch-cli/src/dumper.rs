@@ -59,7 +59,7 @@ impl<'a> Dumper<'a> {
     let mut writer = BufWriter::new(file);
     let mapping = self.client.indices().get().index(index).send().await?.into_inner();
     let mut mapping = mapping.get(index).unwrap().clone();
-    mapping.settings = None;
+    mapping = mapping.clean_for_create();
     writer
       .write_all(serde_json::to_string_pretty(&mapping).unwrap().as_bytes())
       .await?;

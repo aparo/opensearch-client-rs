@@ -5485,7 +5485,7 @@ pub struct IndicesCreate<'a> {
   master_timeout: Result<Option<Timeout>, String>,
   timeout: Result<Option<Timeout>, String>,
   wait_for_active_shards: Result<Option<String>, String>,
-  body: Result<types::builder::IndicesCreateBodyParams, String>,
+  body: Result<types::IndexTemplateMapping, String>,
 }
 impl<'a> IndicesCreate<'a> {
   pub fn new(client: &'a super::OsClient) -> Self {
@@ -5496,7 +5496,7 @@ impl<'a> IndicesCreate<'a> {
       master_timeout: Ok(None),
       timeout: Ok(None),
       wait_for_active_shards: Ok(None),
-      body: Ok(types::builder::IndicesCreateBodyParams::default()),
+      body: Ok(types::IndexTemplateMapping::default()),
     }
   }
 
@@ -5551,18 +5551,11 @@ impl<'a> IndicesCreate<'a> {
 
   pub fn body<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::IndicesCreateBodyParams>, {
+    V: std::convert::TryInto<types::IndexTemplateMapping>, {
     self.body = value
       .try_into()
       .map(From::from)
-      .map_err(|_| "conversion to `IndicesCreateBodyParams` for body failed".to_string());
-    self
-  }
-
-  pub fn body_map<F>(mut self, f: F) -> Self
-  where
-    F: std::ops::FnOnce(types::builder::IndicesCreateBodyParams) -> types::builder::IndicesCreateBodyParams, {
-    self.body = self.body.map(f);
+      .map_err(|_| "conversion to `IndexTemplateMapping` for body failed".to_string());
     self
   }
 
@@ -5582,9 +5575,7 @@ impl<'a> IndicesCreate<'a> {
     let master_timeout = master_timeout.map_err(Error::InvalidRequest)?;
     let timeout = timeout.map_err(Error::InvalidRequest)?;
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
-    let body = body
-      .and_then(std::convert::TryInto::<types::IndicesCreateBodyParams>::try_into)
-      .map_err(Error::InvalidRequest)?;
+    let body = body.map_err(Error::InvalidRequest)?;
     let url = format!("{}{}", client.baseurl, encode_path(&index.to_string()),);
     let mut query = Vec::with_capacity(4usize);
     if let Some(v) = &cluster_manager_timeout {

@@ -4,6 +4,7 @@ use tracing::info;
 use clap::{Parser, Subcommand};
 use url::Url;
 mod dumper;
+mod restorer;
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -113,6 +114,38 @@ pub enum Commands {
     /// Sets the output path
     #[clap(value_name = "FILE", default_value = "output")]
     output: PathBuf,
+  },
+  /// Restore index data and mappings
+  /// This command will restore the data and mappings of the indices
+  Restore {
+    /// Skip the data
+    #[clap(long, default_value = "false")]
+    skip_data: bool,
+    /// Skip the mappings
+    #[clap(long, default_value = "false")]
+    skip_mappings: bool,
+    /// Size of the bulk
+    #[clap(long, default_value = "1000")]
+    bulk_size: u32,
+    /// Mode to restore the index
+    #[clap(
+    long,
+    require_equals = true,
+    value_name = "MODE",
+    // num_args = 0..=1,
+    default_value_t = restorer::RestoreMode::Index,
+    default_missing_value = "index",
+    value_enum)]
+    mode: restorer::RestoreMode,
+    /// Set the index files to restore
+    #[clap(long)]
+    index: Option<String>,
+    /// Set the index name to restore
+    #[clap(long)]
+    rename_index: Option<String>,
+    /// Sets the input path
+    #[clap(value_name = "FILE", default_value = "output")]
+    input: PathBuf,
   },
 }
 
@@ -242,6 +275,30 @@ async fn main() -> anyhow::Result<()> {
       };
 
       dumper.dump().await?;
+    }
+    Commands::Restore {
+      input,
+      skip_data,
+      skip_mappings,
+      bulk_size,
+      mode,
+      index,
+      rename_index,
+    } => {
+      info!("Restoring index");
+      info!("Input: {:?}", input);
+      let restorer = restorer::Restorer {
+        client: &client,
+        input: input.clone(),
+        skip_data: *skip_data,
+        skip_mapping: *skip_mappings,
+        bulk_size: *bulk_size,
+        mode: mode.clone(),
+        index: index.clone(),
+        rename_index: rename_index.clone(),
+      };
+
+      restorer.restore().await?;
     }
   }
 

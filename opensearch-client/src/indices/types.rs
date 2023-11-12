@@ -59,7 +59,7 @@ impl IndexSettings {
   }
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Default, Clone, Debug, Deserialize, Serialize)]
 pub struct IndexTemplateMapping {
   #[serde(default)]
   pub aliases: HashMap<String, Alias>,
@@ -72,7 +72,9 @@ pub struct IndexTemplateMapping {
 impl IndexTemplateMapping {
   pub fn clean_for_create(&self) -> Self {
     let mut clone = self.clone();
-    clone.settings = clone.settings.clean_for_create();
+    if let Some(settings) = &clone.settings {
+      clone.settings = settings.clean_for_create();
+    }
     clone
   }
 }
@@ -253,26 +255,7 @@ impl From<serde_json::Map<String, serde_json::Value>> for IndicesCloneBodyParams
     Self(value)
   }
 }
-///The configuration for the index (`settings` and `mappings`)
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct IndicesCreateBodyParams {
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub aliases: Option<UserDefinedValueMap>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub mapping: Option<UserDefinedValueMap>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub settings: Option<UserDefinedValueMap>,
-}
-impl From<&IndicesCreateBodyParams> for IndicesCreateBodyParams {
-  fn from(value: &IndicesCreateBodyParams) -> Self {
-    value.clone()
-  }
-}
-impl IndicesCreateBodyParams {
-  pub fn builder() -> builder::IndicesCreateBodyParams {
-    builder::IndicesCreateBodyParams::default()
-  }
-}
+
 ///The data stream definition
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct IndicesCreateDataStreamBodyParams(pub serde_json::Map<String, serde_json::Value>);
@@ -774,78 +757,6 @@ impl From<serde_json::Map<String, serde_json::Value>> for IndicesValidateQueryBo
 }
 
 pub mod builder {
-
-  #[derive(Clone, Debug)]
-  pub struct IndicesCreateBodyParams {
-    aliases: Result<Option<super::UserDefinedValueMap>, String>,
-    mapping: Result<Option<super::UserDefinedValueMap>, String>,
-    settings: Result<Option<super::UserDefinedValueMap>, String>,
-  }
-
-  impl Default for IndicesCreateBodyParams {
-    fn default() -> Self {
-      Self {
-        aliases: Ok(Default::default()),
-        mapping: Ok(Default::default()),
-        settings: Ok(Default::default()),
-      }
-    }
-  }
-
-  impl IndicesCreateBodyParams {
-    pub fn aliases<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<super::UserDefinedValueMap>>,
-      T::Error: std::fmt::Display, {
-      self.aliases = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for aliases: {}", e));
-      self
-    }
-
-    pub fn mapping<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<super::UserDefinedValueMap>>,
-      T::Error: std::fmt::Display, {
-      self.mapping = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for mapping: {}", e));
-      self
-    }
-
-    pub fn settings<T>(mut self, value: T) -> Self
-    where
-      T: std::convert::TryInto<Option<super::UserDefinedValueMap>>,
-      T::Error: std::fmt::Display, {
-      self.settings = value
-        .try_into()
-        .map_err(|e| format!("error converting supplied value for settings: {}", e));
-      self
-    }
-  }
-
-  impl std::convert::TryFrom<IndicesCreateBodyParams> for super::IndicesCreateBodyParams {
-    type Error = String;
-
-    fn try_from(value: IndicesCreateBodyParams) -> Result<Self, String> {
-      Ok(Self {
-        aliases: value.aliases?,
-        mapping: value.mapping?,
-        settings: value.settings?,
-      })
-    }
-  }
-
-  impl From<super::IndicesCreateBodyParams> for IndicesCreateBodyParams {
-    fn from(value: super::IndicesCreateBodyParams) -> Self {
-      Self {
-        aliases: Ok(value.aliases),
-        mapping: Ok(value.mapping),
-        settings: Ok(value.settings),
-      }
-    }
-  }
-
   #[derive(Clone, Debug)]
   pub struct IndicesCreateDataStreamResponseContent {
     acknowledged: Result<Option<bool>, String>,

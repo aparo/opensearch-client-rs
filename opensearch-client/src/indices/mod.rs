@@ -2,7 +2,7 @@ use serde::Serialize;
 
 use crate::{types::OpenSearchNameValue, Error, OsClient};
 mod builder;
-mod types;
+pub mod types;
 pub struct Indices<'a> {
   os_client: &'a OsClient,
 }
@@ -1440,8 +1440,8 @@ impl<'a> Indices<'a> {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn create(&self) -> builder::IndicesCreate {
-    builder::IndicesCreate::new(self.os_client)
+  pub fn create(&self, index: &str, body: types::IndexTemplateMapping) -> builder::IndicesCreate {
+    builder::IndicesCreate::new(self.os_client).index(index).body(body)
   }
 
   ///Deletes an index.

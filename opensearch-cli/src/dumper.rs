@@ -5,21 +5,13 @@ use opensearch_dsl::{
   search::sort::{FieldSort, SortCollection},
   Query,
 };
-use async_compression::tokio::{
-  bufread::ZstdDecoder,
-  write::{GzipEncoder, ZstdEncoder},
-};
+use async_compression::tokio::write::ZstdEncoder;
 use serde::{Deserialize, Serialize};
-use serde_json::json;
 use tokio::{
   fs::File,
-  io::{self, stderr, stdin, stdout, AsyncWriteExt, BufReader, BufWriter},
+  io::{AsyncWriteExt, BufWriter},
 };
-use tokio::io::{
-  AsyncReadExt as _,  // for `read_to_end`
-  AsyncWriteExt as _, // for `write_all` and `shutdown`
-};
-use futures::{pin_mut, stream, StreamExt};
+use futures::{pin_mut, StreamExt};
 
 pub struct Dumper<'a> {
   pub client: &'a OsClient,
@@ -59,7 +51,7 @@ impl<'a> Dumper<'a> {
     let mut writer = BufWriter::new(file);
     let mapping = self.client.indices().get().index(index).send().await?.into_inner();
     let mut mapping = mapping.get(index).unwrap().clone();
-    mapping = mapping.clean_for_create();
+    mapping = mapping.clean_for_create().clone();
     writer
       .write_all(serde_json::to_string_pretty(&mapping).unwrap().as_bytes())
       .await?;

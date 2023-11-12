@@ -6,7 +6,7 @@ mod cat;
 #[cfg(feature = "cluster")]
 mod cluster;
 #[cfg(feature = "indices")]
-mod indices;
+pub mod indices;
 #[cfg(feature = "ingest")]
 mod ingest;
 #[cfg(feature = "nodes")]

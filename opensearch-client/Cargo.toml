@@ -23,7 +23,7 @@ reqwest = { version = "0.11.22", default-features = false, features = [
     "gzip",
     "native-tls",
 ] }
-serde = { version = "1.0.190", features = ["derive"] }
+serde = { version = "1.0.192", features = ["derive"] }
 serde_json = "1.0.108"
 serde_urlencoded = "0.7.1"
 tracing = "0.1.40"
@@ -39,7 +39,7 @@ anyhow = "1.0.75"
 async-trait = "0.1.74"
 url = "2.4.1"
 miette = "5.10.0"
-walkdir = {version = "2.4.0", optional = true }
+walkdir = { version = "2.4.0", optional = true }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 http-cache-reqwest = "0.12.0"

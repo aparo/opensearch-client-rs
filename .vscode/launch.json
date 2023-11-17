@@ -15,7 +15,7 @@
           "kind": "bin"
         }
       },
-      "args": ["-vv", "dump", "scala-entries"],
+      "args": ["-vv", "dump", "*"],
       "cwd": "${workspaceFolder}",
       "envFile": "${workspaceFolder}/.env"
     },

@@ -3832,3 +3832,24 @@ struct SearchAfterState {
 pub mod prelude {
   pub use self::super::OsClient;
 }
+
+#[cfg(test)]
+mod tests {
+
+  use std::path::PathBuf;
+
+  use serde::de::DeserializeOwned;
+
+  use super::*;
+  fn load_entity<T: DeserializeOwned>(name: &str) -> T {
+    let filename = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(format!("tests/base/{name}"));
+    let text = std::fs::read_to_string(filename).unwrap();
+    serde_json::from_str(&text).unwrap()
+  }
+
+  #[test]
+  fn test_document_delete_response() {
+    let decoded: types::DocumentDeleteResponse = load_entity("document_delete.response.json");
+    assert_eq!(decoded.id, String::from("MzcIJX8BA7mbufL6DOwl"));
+  }
+}

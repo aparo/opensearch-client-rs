@@ -7601,7 +7601,7 @@ impl<'a> Delete<'a> {
   }
 
   ///Sends a `DELETE` request to `/{index}/_doc/{id}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
+  pub async fn send(self) -> Result<ResponseValue<types::DocumentDeleteResponse>, Error> {
     let Self {
       client,
       index,
@@ -7660,7 +7660,7 @@ impl<'a> Delete<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::from_response(response).await,
       _ => {
         Err(Error::UnexpectedResponse(
           ReqwestResponse::from_response(response).await,

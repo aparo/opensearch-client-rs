@@ -2,6 +2,7 @@ use serde::Serialize;
 
 use crate::{Error, OsClient, ResponseValue};
 pub mod types;
+use crate::types::DocumentDeleteResponse;
 
 pub struct ML<'a> {
   os_client: &'a OsClient,
@@ -26,6 +27,16 @@ impl<'a> ML<'a> {
     self
       .os_client
       .send(types::GetModelRequest::new(model_id.to_string()))
+      .await
+  }
+
+  ///Delete a model.
+  ///
+  ///Sends a `Delete` request to `/_plugins/_ml/models/<model_id>`
+  pub async fn delete_model(&self, model_id: &str) -> Result<ResponseValue<DocumentDeleteResponse>, Error> {
+    self
+      .os_client
+      .send(types::DeleteModelRequest::new(model_id.to_string()))
       .await
   }
 }

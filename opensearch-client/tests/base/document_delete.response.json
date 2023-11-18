@@ -1,0 +1,13 @@
+{
+    "_index": ".plugins-ml-model",
+    "_id": "MzcIJX8BA7mbufL6DOwl",
+    "_version": 2,
+    "result": "deleted",
+    "_shards": {
+        "total": 2,
+        "successful": 2,
+        "failed": 0
+    },
+    "_seq_no": 27,
+    "_primary_term": 18
+}

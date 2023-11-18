@@ -7035,3 +7035,20 @@ pub mod builder {
     }
   }
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct DocumentDeleteResponse {
+  #[serde(rename = "_index")]
+  pub index: String,
+  #[serde(rename = "_id")]
+  pub id: String,
+  #[serde(rename = "_version")]
+  pub version: u32,
+  pub result: String,
+  #[serde(rename = "_shards")]
+  pub shards: ShardStatistics,
+  #[serde(rename = "_seq_no")]
+  pub seq_no: u32,
+  #[serde(rename = "_primary_term")]
+  pub primary_term: u32,
+}

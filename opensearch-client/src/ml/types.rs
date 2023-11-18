@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use derive_builder::Builder;
 
-use crate::Request;
+use crate::{types::DocumentDeleteResponse, Request};
 
 #[derive(Default, Builder, Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[builder(setter(into))]
@@ -282,6 +282,36 @@ impl Request for GetModelRequest {
   }
 }
 
+#[derive(Serialize)]
+pub struct DeleteModelRequest {
+  model_id: String,
+}
+
+impl DeleteModelRequest {
+  pub fn new(model_id: String) -> Self {
+    Self { model_id }
+  }
+}
+
+impl Request for DeleteModelRequest {
+  type Response = DocumentDeleteResponse;
+
+  fn body(&self) -> Result<Option<String>, crate::Error> {
+    Ok(None)
+  }
+
+  fn method(&self) -> reqwest::Method {
+    reqwest::Method::DELETE
+  }
+
+  fn path(&self) -> Result<String, crate::Error> {
+    Ok(format!("/_plugins/_ml/models/{}", self.model_id))
+  }
+
+  fn query_args(&self) -> Result<Option<std::collections::HashMap<String, String>>, crate::Error> {
+    Ok(None)
+  }
+}
 #[cfg(test)]
 mod tests {
 

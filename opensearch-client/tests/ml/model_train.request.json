@@ -1,0 +1,17 @@
+{
+    "parameters": {
+        "centroids": 3,
+        "iterations": 10,
+        "distance_type": "COSINE"
+    },
+    "input_query": {
+        "_source": [
+            "petal_length_in_cm",
+            "petal_width_in_cm"
+        ],
+        "size": 10000
+    },
+    "input_index": [
+        "iris_data"
+    ]
+}

@@ -11,6 +11,8 @@ pub mod indices;
 mod ingest;
 #[cfg(feature = "nodes")]
 mod nodes;
+#[cfg(feature = "ml")]
+mod ml;
 #[cfg(feature = "mtermvectors")]
 mod mtermvectors;
 #[cfg(feature = "remote")]
@@ -284,6 +286,22 @@ pub struct OsClient {
   pub(crate) max_bulk_size: u32,
 }
 
+pub trait Request {
+  type Response: DeserializeOwned + Send + Sync;
+  fn method(&self) -> reqwest::Method;
+  fn path(&self) -> Result<String, Error>;
+  fn body(&self) -> Result<Option<String>, Error>;
+  fn query_args(&self) -> Result<Option<HashMap<String, String>>, Error>;
+  fn url(&self, base_url: &Url) -> Result<Url, Error> {
+    let mut url = base_url.clone();
+    url.set_path(&self.path()?);
+    if let Some(query_args) = self.query_args()? {
+      url.query_pairs_mut().clear().extend_pairs(query_args.iter());
+    }
+    Ok(url)
+  }
+}
+
 impl OsClient {
   /// Create a new client.
   ///
@@ -355,6 +373,11 @@ impl OsClient {
     mtermvectors::Mtermvectors::new(&self)
   }
 
+  #[cfg(feature = "ml")]
+  pub fn ml(&self) -> ml::ML {
+    ml::ML::new(&self)
+  }
+
   #[cfg(feature = "nodes")]
   pub fn nodes(&self) -> nodes::Nodes {
     nodes::Nodes::new(&self)
@@ -402,6 +425,24 @@ impl OsClient {
   /// document and may be in any format the API selects.
   pub fn api_version(&self) -> &'static str {
     "2021-11-23"
+  }
+
+  pub async fn send<T: Request + Serialize>(&self, request: T) -> Result<ResponseValue<T::Response>, Error> {
+    let body = request.body()?;
+    let url = request.url(self.baseurl.clone().as_ref())?;
+    let mut request_builder = self.client.request(request.method(), url);
+    if let Some(body) = body {
+      request_builder = request_builder.body(body);
+    }
+    let response = request_builder.send().await?;
+    match response.status().as_u16() {
+      200u16 => ResponseValue::from_response(response).await,
+      _ => {
+        Err(Error::UnexpectedResponse(
+          ReqwestResponse::from_response(response).await,
+        ))
+      }
+    }
   }
 }
 

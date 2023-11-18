@@ -16,7 +16,6 @@ use serde::{
   de::{value, DeserializeOwned},
   Serialize,
 };
-use miette::{Diagnostic, NamedSource, SourceOffset};
 use thiserror::Error;
 
 #[cfg(not(target_arch = "wasm32"))]
@@ -270,7 +269,6 @@ pub enum Error {
   InvalidResponse(String),
   /// An invalid URL was provided.
   #[error(transparent)]
-  // #[diagnostic(code(oro_client::url_parse_error), url(docsrs))]
   UrlParseError(#[from] url::ParseError),
   /// There is an error in provided credentials.
   #[error("Credential error: {0}")]
@@ -301,103 +299,6 @@ pub enum Error {
   UnexpectedResponse(ReqwestResponse),
 }
 
-// impl<E> Error {
-//   /// Returns the status code, if the error was generated from a response.
-//   pub fn status(&self) -> Option<reqwest::StatusCode> {
-//     match self {
-//       Error::InvalidRequest(_) => None,
-//       Error::CredentialsConfigError(_) => None,
-//       Error::UrlParseError(_) => None,
-//       Error::JsonExceptionError(_) => None,
-//       Error::CommunicationError(e) => e.status(),
-//       Error::ErrorResponse(rv) => Some(rv.status()),
-//       Error::InvalidResponsePayload(e) => e.status(),
-//       Error::UnexpectedResponse(r) => Some(r.status()),
-//     }
-//   }
-
-//   // /// Converts this error into one without a typed body.
-//   // ///
-//   // /// This is useful for unified error handling with APIs that distinguish
-//   // /// various error response bodies.
-//   // pub fn into_untyped(self) -> Error {
-//   //   match self {
-//   //     Error::InvalidRequest(s) => Error::InvalidRequest(s),
-//   //     Error::CredentialsConfigError(s) =>
-// Error::CredentialsConfigError(s),   //     Error::UrlParseError(e) =>
-// Error::UrlParseError(e),   //     Error::CommunicationError(e) =>
-// Error::CommunicationError(e),   //     Error::JsonExceptionError(e) =>
-// Error::JsonExceptionError(e),   //     Error::ErrorResponse(ResponseValue {
-//   //       inner: _,
-//   //       status,
-//   //       headers,
-//   //     }) => {
-//   //       Error::ErrorResponse(ResponseValue {
-//   //         inner: (),
-//   //         status,
-//   //         headers,
-//   //       })
-//   //     }
-//   //     Error::InvalidResponsePayload(e) =>
-// Error::InvalidResponsePayload(e),   //     Error::UnexpectedResponse(r) =>
-// Error::UnexpectedResponse(r),   //   }
-//   // }
-// }
-
-// impl<E> From<reqwest::Error> for Error {
-//   fn from(e: reqwest::Error) -> Self {
-//     Self::CommunicationError(e)
-//   }
-// }
-
-// impl<E> From<serde_json::Error> for Error {
-//   fn from(e: serde_json::Error) -> Self {
-//     Self::JsonExceptionError(e)
-//   }
-// }
-
-// impl<E> From<reqwest::header::InvalidHeaderValue> for Error {
-//   fn from(e: reqwest::header::InvalidHeaderValue) -> Self {
-//     Self::InvalidRequest(e.to_string())
-//   }
-// }
-
-// impl<E> std::fmt::Display for Error
-// where
-//   ResponseValue<E>: ErrorFormat,
-// {
-//   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-//     match self {
-//       Error::InvalidRequest(s) => {
-//         write!(f, "Invalid Request: {}", s)
-//       }
-//       Error::CredentialsConfigError(s) => {
-//         write!(f, "Invalid Credentials Configuration: {}", s)
-//       }
-//       Error::UrlParseError(e) => {
-//         write!(f, "Invalid URL: {}", e)
-//       }
-//       Error::JsonExceptionError(s) => {
-//         write!(f, "Invalid Foramt for Json: {}", s)
-//       }
-
-//       Error::CommunicationError(e) => {
-//         write!(f, "Communication Error: {}", e)
-//       }
-//       Error::ErrorResponse(rve) => {
-//         write!(f, "Error Response: ")?;
-//         rve.fmt_info(f)
-//       }
-//       Error::InvalidResponsePayload(e) => {
-//         write!(f, "Invalid Response Payload: {}", e)
-//       }
-//       Error::UnexpectedResponse(r) => {
-//         write!(f, "Unexpected Response: {:?}", r)
-//       }
-//     }
-//   }
-// }
-
 trait ErrorFormat {
   fn fmt_info(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result;
 }
@@ -424,27 +325,6 @@ impl ErrorFormat for ResponseValue<ByteStream> {
     )
   }
 }
-
-// impl<E> std::fmt::Debug for Error
-// where
-//   ResponseValue<E>: ErrorFormat,
-// {
-//   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-//     std::fmt::Display::fmt(self, f)
-//   }
-// }
-// impl<E> std::error::Error for Error
-// where
-//   ResponseValue<E>: ErrorFormat,
-// {
-//   fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-//     match self {
-//       Error::CommunicationError(e) => Some(e),
-//       Error::InvalidResponsePayload(e) => Some(e),
-//       _ => None,
-//     }
-//   }
-// }
 
 // See https://url.spec.whatwg.org/#url-path-segment-string
 const PATH_SET: &percent_encoding::AsciiSet = &percent_encoding::CONTROLS

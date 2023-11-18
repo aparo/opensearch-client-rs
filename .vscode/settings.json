@@ -28,5 +28,13 @@
     "security",
     "mtermvectors",
     "tools"
-  ]
+  ],
+  "rust-analyzer.linkedProjects": [
+    "./opensearch-client/Cargo.toml",
+    "./opensearch-client/Cargo.toml",
+    "./opensearch-client/Cargo.toml",
+    "./opensearch-client/Cargo.toml",
+    "./opensearch-client/Cargo.toml"
+  ],
+  "rust-analyzer.showUnlinkedFileNotification": false
 }

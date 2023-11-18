@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use crate::OsClient;
+use crate::{Error, OsClient, ResponseValue};
 pub mod types;
 
 pub struct ML<'a> {
@@ -12,19 +12,20 @@ impl<'a> ML<'a> {
     Self { os_client }
   }
 
-  ///Training can occur both synchronously and asynchronously..
+  ///Training can occur both synchronously and asynchronously.
   ///
   ///Sends a `POST` request to `/_plugins/_ml/_train/kmeans`
-  ///
-  ///Arguments:
-  ///```ignore
-  /// let response = client.ml().model_train()
-  ///    .verbose(verbose)
-  ///    .body(body)
-  ///    .send()
-  ///    .await;
-  /// ```
   pub fn model_train(&self) -> types::ModelTrainRequestBuilder {
     types::ModelTrainRequestBuilder::default()
+  }
+
+  ///Get a model.
+  ///
+  ///Sends a `GET` request to `/_plugins/_ml/models/<model_id>`
+  pub async fn get_model(&self, model_id: &str) -> Result<ResponseValue<types::Model>, Error> {
+    self
+      .os_client
+      .send(types::GetModelRequest::new(model_id.to_string()))
+      .await
   }
 }

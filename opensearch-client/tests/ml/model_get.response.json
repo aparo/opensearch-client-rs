@@ -1,0 +1,11 @@
+{
+    "name": "huggingface/sentence-transformers/all-MiniLM-L12-v2",
+    "algorithm": "TEXT_EMBEDDING",
+    "model_version": "1",
+    "model_format": "TORCH_SCRIPT",
+    "created_time": 1700206017026,
+    "last_updated_time": 1700206017026,
+    "model_id": "Yxcs3IsB60LkDx6YwTAr",
+    "chunk_number": 0,
+    "total_chunks": 14
+}

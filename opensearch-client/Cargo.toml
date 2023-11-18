@@ -13,7 +13,7 @@ readme = { workspace = true }
 opensearch-dsl = { path = "../opensearch-dsl/" }
 
 bytes = "1.5.0"
-futures-core = "0.3.29"
+futures-util = "0.3.29"
 futures = "0.3.29"
 percent-encoding = "2.3.0"
 regress = "0.7.1"

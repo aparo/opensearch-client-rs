@@ -28,7 +28,7 @@ mod tools;
 
 use std::sync::{Arc, Mutex};
 
-use opensearch_dsl::{Query, Search, SortCollection, Term, Terms};
+use opensearch_dsl::{Query, Search, SortCollection, Terms};
 #[allow(unused_imports)]
 use client::{encode_path, encode_path_option_vec_string, RequestBuilderExt};
 pub use client::{ByteStream, Error, ResponseValue};
@@ -3745,29 +3745,11 @@ impl OsClient {
     async fn stream_next<T: DeserializeOwned + std::default::Default>(
       state: SearchAfterState,
     ) -> Result<(Vec<types::Hit<T>>, SearchAfterState), Error> {
-      // let sort = {
-      //   let mut values: Vec<serde_json::Value> = match state.sort.clone() {
-      //     serde_json::Value::Null => vec![],
-      //     serde_json::Value::Bool(_) => vec![],
-      //     serde_json::Value::Number(_) => vec![],
-      //     serde_json::Value::String(_) => vec![],
-      //     serde_json::Value::Array(values) => values,
-      //     serde_json::Value::Object(x) => vec![serde_json::Value::Object(x)],
-      //   };
-      //   values.push(serde_json::json!({"_doc":{"order":"asc"}}));
-      //   serde_json::Value::Array(values)
-      // };
-
       let mut body: Search = Search::new()
         .size(state.size)
         .query(state.query.clone())
         .sort(state.sort.clone());
 
-      // let mut body = serde_json::json!({
-      //     "query": state.query,
-      //     "size": state.size,
-      //     "sort": sort
-      // });
       if let Some(search_after) = state.search_after.clone() {
         body = body.search_after(search_after.clone());
       }

@@ -1,8 +1,4 @@
-// Copyright 2023 Oxide Computer Company
-
 #![allow(dead_code)]
-
-//! Support code for generated clients.
 
 use std::{
   fmt::Display,
@@ -10,7 +6,7 @@ use std::{
 };
 
 use bytes::Bytes;
-use futures_core::Stream;
+use futures::Stream;
 use reqwest::RequestBuilder;
 use serde::{
   de::{value, DeserializeOwned},

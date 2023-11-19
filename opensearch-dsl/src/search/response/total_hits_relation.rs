@@ -1,5 +1,5 @@
 /// Relation to total number of matched documents
-#[derive(Debug, Copy, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, Deserialize, Serialize, PartialEq, Eq)]
 pub enum TotalHitsRelation {
   /// When `track_total_hits` is `false` (default), OpenSearch returns that
   /// there have been more than 10,000 documents

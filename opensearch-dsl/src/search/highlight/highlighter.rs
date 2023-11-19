@@ -1,7 +1,7 @@
 use crate::{search::*, util::*};
 
 /// Highlighter settings
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum Highlighter {
   /// Default highlighter
@@ -19,45 +19,45 @@ pub enum Highlighter {
 
 /// Highlighting settings can be set on a global level and overridden at the
 /// field level
-#[derive(Debug, Clone, Default, PartialEq, Serialize)]
+#[derive(Debug, Clone, Default, PartialEq, Deserialize, Serialize)]
 pub struct DefaultHighlighter {
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boundary_chars: Option<String>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boundary_max_scan: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   encoder: Option<Encoder>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   force_source: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   fragment_size: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   highlight_query: Option<Query>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   no_match_size: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   number_of_fragments: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   order: Option<Order>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pre_tags: Option<Vec<String>>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   post_tags: Option<Vec<String>>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   require_field_match: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", flatten)]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", flatten)]
   tags: Option<Tags>,
 }
 
@@ -83,61 +83,62 @@ pub struct DefaultHighlighter {
 /// try an alternative highlighter, such as the `unified` highlighter.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/highlighting.html#fast-vector-highlighter>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct FastVectorHighlighter {
   // Common
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boundary_chars: Option<String>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boundary_max_scan: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   encoder: Option<Encoder>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   force_source: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   fragment_size: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   highlight_query: Option<Query>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   no_match_size: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   number_of_fragments: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   order: Option<Order>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pre_tags: Option<Vec<String>>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   post_tags: Option<Vec<String>>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   require_field_match: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", flatten)]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", flatten)]
   tags: Option<Tags>,
 
   // Highlighter specific
-  r#type: &'static str,
+  r#type: String,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  // #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(skip)]
   boundary_scanner: Option<FvhBoundaryScanner>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   fragment_offset: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   matched_fields: Option<MatchedFields>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   phrase_limit: Option<u32>,
 }
 
@@ -157,52 +158,52 @@ pub struct FastVectorHighlighter {
 /// or `term_vector` fields.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/highlighting.html#plain-highlighter>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct PlainHighlighter {
   // Common
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boundary_chars: Option<String>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boundary_max_scan: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   encoder: Option<Encoder>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   force_source: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   fragment_size: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   highlight_query: Option<Query>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   no_match_size: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   number_of_fragments: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   order: Option<Order>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pre_tags: Option<Vec<String>>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   post_tags: Option<Vec<String>>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   require_field_match: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", flatten)]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", flatten)]
   tags: Option<Tags>,
 
   // Highlighter specific
-  r#type: &'static str,
+  r#type: String,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   fragmenter: Option<Fragmenter>,
 }
 
@@ -213,52 +214,53 @@ pub struct PlainHighlighter {
 /// This is the default highlighter.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/highlighting.html#unified-highlighter>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct UnifiedHighlighter {
   // Common
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boundary_chars: Option<String>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boundary_max_scan: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   encoder: Option<Encoder>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   force_source: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   fragment_size: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   highlight_query: Option<Query>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   no_match_size: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   number_of_fragments: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   order: Option<Order>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pre_tags: Option<Vec<String>>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   post_tags: Option<Vec<String>>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   require_field_match: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", flatten)]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", flatten)]
   tags: Option<Tags>,
 
   // Highlighter specific
-  r#type: &'static str,
+  r#type: String,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", flatten)]
+  // #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", flatten)]
+  #[serde(skip)]
   boundary_scanner: Option<UnifiedBoundaryScanner>,
 }
 
@@ -294,7 +296,7 @@ impl Highlighter {
 impl Default for FastVectorHighlighter {
   fn default() -> Self {
     Self {
-      r#type: "fvh",
+      r#type: "fvh".to_owned(),
       boundary_chars: None,
       boundary_max_scan: None,
       encoder: None,
@@ -319,7 +321,7 @@ impl Default for FastVectorHighlighter {
 impl Default for PlainHighlighter {
   fn default() -> Self {
     Self {
-      r#type: "plain",
+      r#type: "plain".to_owned(),
       boundary_chars: None,
       boundary_max_scan: None,
       encoder: None,
@@ -341,7 +343,7 @@ impl Default for PlainHighlighter {
 impl Default for UnifiedHighlighter {
   fn default() -> Self {
     Self {
-      r#type: "unified",
+      r#type: "unified".to_owned(),
       boundary_chars: None,
       boundary_max_scan: None,
       encoder: None,

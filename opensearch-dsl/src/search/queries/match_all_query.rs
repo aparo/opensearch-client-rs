@@ -12,17 +12,18 @@ use crate::util::*;
 /// Query::match_all().boost(2).name("matches_everything");
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-match-all-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize, Default)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
 #[serde(remote = "Self")]
 pub struct MatchAllQuery {
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
 serialize_with_root!("match_all": MatchAllQuery);
+deserialize_with_root!("match_all": MatchAllQuery);
 
 impl Query {
   /// Creates an instance of [`MatchAllQuery`]

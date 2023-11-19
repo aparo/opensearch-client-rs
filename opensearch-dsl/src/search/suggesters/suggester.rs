@@ -1,7 +1,7 @@
 use super::CompletionSuggester;
 
 /// Suggester variants
-#[derive(Clone, PartialEq, Serialize)]
+#[derive(Clone, PartialEq, Deserialize, Serialize)]
 #[serde(untagged)]
 #[allow(missing_docs)]
 pub enum Suggester {

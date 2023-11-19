@@ -15,15 +15,15 @@ use crate::{search::*, util::*};
 ///   .name("test");
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-constant-score-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct ConstantScoreQuery {
   filter: Box<Query>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -58,6 +58,7 @@ impl ShouldSkip for ConstantScoreQuery {
 }
 
 serialize_with_root!("constant_score": ConstantScoreQuery);
+deserialize_with_root!("constant_score": ConstantScoreQuery);
 
 #[cfg(test)]
 mod tests {

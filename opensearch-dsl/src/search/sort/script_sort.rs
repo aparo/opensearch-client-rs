@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use super::SortOrder;
 use crate::{util::ShouldSkip, Script, ScriptSortType};
@@ -6,15 +6,15 @@ use crate::{util::ShouldSkip, Script, ScriptSortType};
 /// Sorts search hits by script result
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/sort-search-results.html#script-based-sorting>
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct ScriptSort {
   script: Script,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   order: Option<SortOrder>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   r#type: Option<ScriptSortType>,
 }
 
@@ -63,6 +63,7 @@ impl IntoIterator for ScriptSort {
 }
 
 serialize_with_root!("_script": ScriptSort);
+deserialize_with_root!("_script": ScriptSort);
 
 #[cfg(test)]
 mod tests {

@@ -15,23 +15,23 @@ use crate::{search::*, util::*};
 /// determines by which properties a result set get sliced into.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-metrics-top-hits-aggregation.html>
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct TopHitsAggregation {
   top_hits: TopHitsAggregationInner,
 }
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 struct TopHitsAggregationInner {
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _source: Option<SourceFilter>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   from: Option<u64>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   size: Option<u64>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   sort: SortCollection,
 }
 

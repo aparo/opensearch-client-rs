@@ -1,9 +1,12 @@
-use std::{fmt::Display, str::FromStr};
+use std::{fmt, fmt::Display, str::FromStr};
 
-use serde::Serialize;
+use serde::{
+  de::{self, SeqAccess, Visitor},
+  Deserialize, Deserializer, Serialize,
+};
 
 /// Represents a point in two dimensional space
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
+#[derive(Default, Debug, Clone, Copy, PartialEq, PartialOrd)]
 pub struct Coordinate {
   x: f32,
   y: f32,
@@ -27,6 +30,28 @@ impl Serialize for Coordinate {
   where
     S: serde::Serializer, {
     [self.x, self.y].serialize(serializer)
+  }
+}
+
+struct CoordinateVisitor;
+
+impl<'de> Visitor<'de> for CoordinateVisitor {
+  type Value = Coordinate;
+
+  fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+    formatter.write_str("a sequence of two floats")
+  }
+
+  fn visit_seq<A: SeqAccess<'de>>(self, mut seq: A) -> Result<Self::Value, A::Error> {
+    let x = seq.next_element()?.ok_or_else(|| de::Error::invalid_length(0, &self))?;
+    let y = seq.next_element()?.ok_or_else(|| de::Error::invalid_length(1, &self))?;
+    Ok(Coordinate { x, y })
+  }
+}
+
+impl<'de> Deserialize<'de> for Coordinate {
+  fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+    deserializer.deserialize_tuple(2, CoordinateVisitor)
   }
 }
 

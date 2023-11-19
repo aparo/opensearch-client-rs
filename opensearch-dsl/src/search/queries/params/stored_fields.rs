@@ -1,4 +1,9 @@
-use serde::Serialize;
+use std::fmt;
+
+use serde::{
+  de::{self, Deserialize, Deserializer, Visitor},
+  Serialize,
+};
 
 use crate::{types::Set, util::ShouldSkip};
 
@@ -39,6 +44,44 @@ impl Serialize for StoredFields {
       Self::None => serializer.serialize_str("_none_"),
       Self::Fields(fields) => fields.serialize(serializer),
     }
+  }
+}
+
+impl<'de> Deserialize<'de> for StoredFields {
+  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+  where
+    D: Deserializer<'de>, {
+    struct StoredFieldsVisitor;
+
+    impl<'de> Visitor<'de> for StoredFieldsVisitor {
+      type Value = StoredFields;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("a string or a set of strings")
+      }
+
+      fn visit_str<E>(self, value: &str) -> Result<StoredFields, E>
+      where
+        E: de::Error, {
+        if value == "_none_" {
+          Ok(StoredFields::None)
+        } else {
+          Err(de::Error::invalid_value(de::Unexpected::Str(value), &self))
+        }
+      }
+
+      fn visit_seq<A>(self, mut seq: A) -> Result<StoredFields, A::Error>
+      where
+        A: de::SeqAccess<'de>, {
+        let mut fields = Set::new();
+        while let Some(field) = seq.next_element()? {
+          let _ = fields.insert(field);
+        }
+        Ok(StoredFields::Fields(fields))
+      }
+    }
+
+    deserializer.deserialize_any(StoredFieldsVisitor)
   }
 }
 

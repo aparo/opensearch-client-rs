@@ -5,10 +5,10 @@ use super::{Explanation, NestedIdentity, Source};
 use crate::{util::ShouldSkip, InnerHitsResult, Map};
 
 /// Represents a single matched document
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct Hit {
   /// Search explanation
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", rename = "_explanation")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", rename = "_explanation")]
   pub explanation: Option<Explanation>,
 
   /// Document index
@@ -21,35 +21,35 @@ pub struct Hit {
 
   /// Document score. [`None`] when documents are implicitly sorted by a
   /// field other than `_score`
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", rename = "_score")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", rename = "_score")]
   pub score: Option<f32>,
 
   /// Nested document identity
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", rename = "_nested")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", rename = "_nested")]
   pub nested: Option<NestedIdentity>,
 
   /// Document source
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", rename = "_source", default)]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", rename = "_source")]
   pub source: Source,
 
   /// Highlighted matches
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", default)]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pub highlight: Map<String, Vec<String>>,
 
   /// Inner hits
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", default)]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pub inner_hits: Map<String, InnerHitsResult>,
 
   /// Matched queries
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", default)]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pub matched_queries: Vec<String>,
 
   /// Values document was sorted by
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", default)]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pub sort: Vec<Value>,
 
   /// Field values for the documents. Need to be specified in the request
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", default)]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pub fields: Map<String, Value>,
 }
 

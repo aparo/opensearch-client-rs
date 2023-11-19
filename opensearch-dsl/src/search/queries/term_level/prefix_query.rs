@@ -19,7 +19,7 @@ use crate::{search::*, util::*};
 /// Query::prefix("test", "username").boost(2).name("test");
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-prefix-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct PrefixQuery {
   #[serde(skip_serializing)]
@@ -27,16 +27,16 @@ pub struct PrefixQuery {
 
   value: Option<Term>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   rewrite: Option<Rewrite>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   case_insensitive: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -88,6 +88,7 @@ impl ShouldSkip for PrefixQuery {
 }
 
 serialize_with_root_keyed!("prefix": PrefixQuery);
+deserialize_with_root_keyed!("prefix": PrefixQuery);
 
 #[cfg(test)]
 mod tests {

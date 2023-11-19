@@ -6,16 +6,16 @@ use crate::{search::*, util::*};
 /// matches that share a common value such as an "author".
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-bucket-diversified-sampler-aggregation.html>
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct DiversifiedSamplerAggregation {
   diversified_sampler: DiversifiedSamplerAggregationInner,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   aggs: Aggregations,
 }
 
 /// `execution_hint` field values.
-#[derive(Debug, Clone, Serialize, PartialEq, Eq, Copy)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Copy)]
 #[serde(rename_all = "snake_case")]
 pub enum ExecutionHint {
   /// Hold field values directly
@@ -28,17 +28,17 @@ pub enum ExecutionHint {
   GlobalOrdinals,
 }
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 struct DiversifiedSamplerAggregationInner {
   field: String,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   shard_size: Option<u64>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   max_docs_per_value: Option<u64>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   execution_hint: Option<ExecutionHint>,
 }
 

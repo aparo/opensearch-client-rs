@@ -1,5 +1,5 @@
 /// Matched fields logic with type conversions
-#[derive(Clone, Default, PartialEq, Eq, Serialize)]
+#[derive(Clone, Default, PartialEq, Eq, Deserialize, Serialize)]
 pub struct MatchedFields(Vec<String>);
 
 impl std::fmt::Debug for MatchedFields {

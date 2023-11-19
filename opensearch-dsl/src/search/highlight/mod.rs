@@ -60,11 +60,11 @@ pub use self::{boundary_scanner::*, encoder::*, fragmenter::*, highlighter::*, o
 pub use self::matched_fields::*;
 
 /// Highlight structure
-#[derive(Debug, Clone, Default, PartialEq, Serialize)]
+#[derive(Debug, Clone, Default, PartialEq, Deserialize, Serialize)]
 pub struct Highlight {
   #[serde(flatten, skip_serializing_if = "ShouldSkip::should_skip")]
   highlighter: Option<Highlighter>,
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   fields: Vec<KeyValuePair<String, Highlighter>>,
 }
 

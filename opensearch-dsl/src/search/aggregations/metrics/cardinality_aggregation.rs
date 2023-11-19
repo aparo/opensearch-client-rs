@@ -4,19 +4,19 @@ use crate::{search::*, util::*};
 /// distinct values.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-metrics-cardinality-aggregation.html>
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct CardinalityAggregation {
   cardinality: CardinalityAggregationInner,
 }
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 struct CardinalityAggregationInner {
   field: String,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   precision_threshold: Option<u16>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   missing: Option<String>,
 }
 

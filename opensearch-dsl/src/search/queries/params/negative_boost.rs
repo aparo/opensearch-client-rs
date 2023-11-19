@@ -2,7 +2,7 @@
 use std::{f32, fmt};
 
 /// A container type for boost values
-#[derive(Clone, Copy, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Copy, PartialEq, PartialOrd, Deserialize, Serialize)]
 pub struct NegativeBoost(f32);
 
 impl fmt::Debug for NegativeBoost {

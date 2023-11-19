@@ -1,5 +1,10 @@
-use serde::ser::{Serialize, Serializer};
+use std::fmt;
 
+use serde::{
+  de::{Error, Unexpected, Visitor},
+  ser::{Serialize, Serializer},
+  Deserialize, Deserializer,
+};
 /// Method used to rewrite the query.
 ///
 /// > **This parameter is for expert users only. Changing the value of this
@@ -111,5 +116,45 @@ impl Serialize for Rewrite {
       Self::TopTermsBoost(n) => format!("top_terms_boost_{n}").serialize(serializer),
       Self::TopTerms(n) => format!("top_terms_{n}").serialize(serializer),
     }
+  }
+}
+impl<'de> Deserialize<'de> for Rewrite {
+  fn deserialize<D>(deserializer: D) -> Result<Rewrite, D::Error>
+  where
+    D: Deserializer<'de>, {
+    struct RewriteVisitor;
+
+    impl<'de> Visitor<'de> for RewriteVisitor {
+      type Value = Rewrite;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("a string representing a Rewrite variant")
+      }
+
+      fn visit_str<E>(self, value: &str) -> Result<Rewrite, E>
+      where
+        E: Error, {
+        match value {
+          "constant_score" => Ok(Rewrite::ConstantScore),
+          "constant_score_boolean" => Ok(Rewrite::ConstantScoreBoolean),
+          "scoring_boolean" => Ok(Rewrite::ScoringBoolean),
+          s if s.starts_with("top_terms_blended_freqs_") => {
+            let n = s[23..].parse::<u64>().map_err(E::custom)?;
+            Ok(Rewrite::TopTermsBlendedFrequencies(n))
+          }
+          s if s.starts_with("top_terms_boost_") => {
+            let n = s[15..].parse::<u64>().map_err(E::custom)?;
+            Ok(Rewrite::TopTermsBoost(n))
+          }
+          s if s.starts_with("top_terms_") => {
+            let n = s[10..].parse::<u64>().map_err(E::custom)?;
+            Ok(Rewrite::TopTerms(n))
+          }
+          _ => Err(E::invalid_value(Unexpected::Str(value), &self)),
+        }
+      }
+    }
+
+    deserializer.deserialize_str(RewriteVisitor)
   }
 }

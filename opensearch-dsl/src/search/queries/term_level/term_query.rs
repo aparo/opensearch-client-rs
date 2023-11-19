@@ -22,7 +22,7 @@ use crate::{search::*, util::*};
 /// Query::term("test", "username").boost(2).name("test");
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-term-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct TermQuery {
   #[serde(skip)]
@@ -30,10 +30,10 @@ pub struct TermQuery {
 
   value: Option<Term>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -68,6 +68,7 @@ impl ShouldSkip for TermQuery {
 }
 
 serialize_with_root_keyed!("term": TermQuery);
+deserialize_with_root_keyed!("term": TermQuery);
 
 #[cfg(test)]
 mod tests {

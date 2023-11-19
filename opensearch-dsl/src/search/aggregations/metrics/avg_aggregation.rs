@@ -5,16 +5,16 @@ use crate::{search::*, util::*};
 /// extracted either from specific numeric fields in the documents.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-metrics-avg-aggregation.html>
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct AvgAggregation {
   avg: AvgAggregationInner,
 }
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 struct AvgAggregationInner {
   field: String,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   missing: Option<Number>,
 }
 

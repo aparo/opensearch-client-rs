@@ -31,7 +31,7 @@ pub use self::{bucket::*, metrics::*, params::*, pipeline::*};
 macro_rules! aggregation {
     ($($variant:ident($query:ty)),+ $(,)?) => {
         /// A container enum for supported OpenSearch query types
-        #[derive(Clone, PartialEq, Serialize)]
+        #[derive(Clone, PartialEq, Deserialize,  Serialize)]
         #[serde(untagged)]
         #[allow(missing_docs, clippy::large_enum_variant)]
         pub enum Aggregation {

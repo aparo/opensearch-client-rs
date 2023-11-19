@@ -5,7 +5,7 @@ use super::{ClusterStatistics, HitsMetadata, ShardStatistics, Suggest};
 use crate::{util::ShouldSkip, Map};
 
 /// Search response
-#[derive(Debug, Default, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Default, Clone, Deserialize, Serialize, PartialEq)]
 pub struct SearchResponse {
   /// The time that it took OpenSearch to process the query
   pub took: u32,
@@ -14,33 +14,33 @@ pub struct SearchResponse {
   pub timed_out: bool,
 
   /// Indicates if search has been terminated early
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pub terminated_early: Option<bool>,
 
   /// Scroll Id
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   #[serde(rename = "_scroll_id")]
   pub scroll_id: Option<String>,
 
   /// Dynamically fetched fields
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", default)]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pub fields: Map<String, Value>,
 
   /// Point in time Id
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pub pit_id: Option<String>,
 
   /// Number of reduce phases
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pub num_reduce_phases: Option<u64>,
 
   /// Maximum document score. [None] when documents are implicitly sorted
   /// by a field other than `_score`
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pub max_score: Option<f32>,
 
   /// Number of clusters touched with their states
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", rename = "_clusters")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", rename = "_clusters")]
   pub clusters: Option<ClusterStatistics>,
 
   /// Number of shards touched with their states
@@ -51,11 +51,11 @@ pub struct SearchResponse {
   pub hits: HitsMetadata,
 
   /// Search aggregations
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pub aggregations: Option<Value>,
 
   /// Suggest response
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", default)]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pub suggest: Map<String, Vec<Suggest>>,
 }
 

@@ -10,7 +10,7 @@ use crate::{util::*, Query};
 /// from `little` that are enclosed within `big` are returned.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-span-within-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct SpanWithinQuery {
   big: Box<SpanQuery>,
@@ -33,6 +33,7 @@ impl Query {
 impl ShouldSkip for SpanWithinQuery {}
 
 serialize_with_root!("span_within": SpanWithinQuery);
+deserialize_with_root!("span_within": SpanWithinQuery);
 
 #[cfg(test)]
 mod tests {

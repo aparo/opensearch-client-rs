@@ -16,52 +16,56 @@ use crate::{search::*, util::*};
 ///   .name("test");
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-simple-query-string-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct SimpleQueryStringQuery {
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   query: Text,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   fields: Vec<String>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   default_operator: Option<Operator>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   analyze_wildcard: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   analyzer: Option<String>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   auto_generate_synonyms_phrase_query: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", serialize_with = "join_with_pipe")]
+  #[serde(
+    default,
+    skip_serializing_if = "ShouldSkip::should_skip",
+    serialize_with = "join_with_pipe"
+  )]
   flags: Vec<SimpleQueryStringQueryFlags>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   fuzzy_max_expansions: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   fuzzy_prefix_length: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   fuzzy_transpositions: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   lenient: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   minimum_should_match: Option<String>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   quote_field_suffix: Option<String>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -233,6 +237,7 @@ impl ShouldSkip for SimpleQueryStringQuery {
 }
 
 serialize_with_root!("simple_query_string": SimpleQueryStringQuery);
+deserialize_with_root!("simple_query_string": SimpleQueryStringQuery);
 
 #[cfg(test)]
 mod tests {

@@ -1,7 +1,9 @@
-use std::ops::Range;
+use std::{fmt, ops::Range};
 
-use serde::{Serialize, Serializer};
-
+use serde::{
+  de::{Error, Visitor},
+  Deserialize, Deserializer, Serialize, Serializer,
+};
 /// Some queries and APIs support parameters to allow inexact _fuzzy_ matching,
 /// using the `fuzziness` parameter.
 ///
@@ -48,6 +50,44 @@ impl Serialize for Fuzziness {
       Self::Range(start, end) => format!("AUTO:{start},{end}").serialize(serializer),
       Self::Distance(d) => d.serialize(serializer),
     }
+  }
+}
+
+impl<'de> Deserialize<'de> for Fuzziness {
+  fn deserialize<D>(deserializer: D) -> Result<Fuzziness, D::Error>
+  where
+    D: Deserializer<'de>, {
+    struct FuzzinessVisitor;
+
+    impl<'de> Visitor<'de> for FuzzinessVisitor {
+      type Value = Fuzziness;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("a string representing a Fuzziness variant")
+      }
+
+      fn visit_str<E>(self, value: &str) -> Result<Fuzziness, E>
+      where
+        E: Error, {
+        if value == "AUTO" {
+          return Ok(Fuzziness::Auto);
+        }
+
+        if value.starts_with("AUTO:") {
+          let parts: Vec<&str> = value[5..].split(',').collect();
+          if parts.len() == 2 {
+            let start = parts[0].parse::<u8>().map_err(E::custom)?;
+            let end = parts[1].parse::<u8>().map_err(E::custom)?;
+            return Ok(Fuzziness::Range(start, end));
+          }
+        }
+
+        let distance = value.parse::<u8>().map_err(E::custom)?;
+        Ok(Fuzziness::Distance(distance))
+      }
+    }
+
+    deserializer.deserialize_str(FuzzinessVisitor)
   }
 }
 

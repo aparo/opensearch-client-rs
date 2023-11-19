@@ -1,13 +1,16 @@
-use std::fmt::Debug;
+use std::{fmt, fmt::Debug};
 
+use serde::{
+  de::{self, Deserialize, DeserializeOwned, Deserializer, MapAccess, Visitor},
+  ser::{Serialize, SerializeMap, Serializer},
+};
 use chrono::{DateTime, Utc};
-use serde::ser::{Serialize, SerializeMap, Serializer};
 
 use crate::{search::*, util::*};
 
 /// Each document is scored by the defined functions. The parameter `score_mode`
 /// specifies how the computed scores are combined
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum FunctionScoreMode {
   /// Scores are multiplied (default)
@@ -37,7 +40,7 @@ impl Default for FunctionScoreMode {
 
 /// The newly computed score is combined with the score of the query. The
 /// parameter `boost_mode` defines how.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum FunctionBoostMode {
   /// Query score and function score is multiplied (default)
@@ -68,7 +71,7 @@ impl Default for FunctionBoostMode {
 macro_rules! function {
     ($name:ident { $($variant:ident($query:ty)),+ $(,)? }) => {
         /// Functions available for use in [FunctionScoreQuery](crate::FunctionScoreQuery)
-        #[derive(Debug, Clone, PartialEq, Serialize)]
+        #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
         #[allow(missing_docs)]
         #[serde(untagged)]
         pub enum $name {
@@ -168,10 +171,10 @@ impl Function {
 ///
 /// This can sometimes be desired since boost value set on specific queries gets
 /// normalized, while for this score function it does not
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct Weight {
   weight: f32,
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   filter: Option<Query>,
 }
 
@@ -208,23 +211,23 @@ impl Weight {
 /// default choice might be to use the `_seq_no` field, whose only drawback is
 /// that scores will change if the document is updated since update operations
 /// also update the value of the `_seq_no` field.
-#[derive(Debug, Default, Clone, PartialEq, Serialize)]
+#[derive(Debug, Default, Clone, PartialEq, Deserialize, Serialize)]
 pub struct RandomScore {
   random_score: RandomScoreInner,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   filter: Option<Query>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   weight: Option<f32>,
 }
 
-#[derive(Debug, Default, Clone, PartialEq, Serialize)]
+#[derive(Debug, Default, Clone, PartialEq, Deserialize, Serialize)]
 struct RandomScoreInner {
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   seed: Option<Term>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   field: Option<String>,
 }
 
@@ -292,28 +295,28 @@ impl RandomScore {
 /// ```text
 /// sqrt(1.2 * doc['my-int'].value)
 /// ```
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct FieldValueFactor {
   field_value_factor: FieldValueFactorInner,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   filter: Option<Query>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   weight: Option<f32>,
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 struct FieldValueFactorInner {
   field: String,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   factor: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   modifier: Option<FieldValueFactorModifier>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   missing: Option<f32>,
 }
 
@@ -378,7 +381,7 @@ impl FieldValueFactor {
 /// Modifier to apply to the field value
 ///
 /// Defaults to [none](FieldValueFactorModifier::None)
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum FieldValueFactorModifier {
   /// Do not apply any multiplier to the field value
@@ -424,9 +427,9 @@ pub enum FieldValueFactorModifier {
 }
 
 #[doc(hidden)]
-pub trait Origin: Debug + PartialEq + Serialize + Clone {
-  type Scale: Debug + PartialEq + Serialize + Clone;
-  type Offset: Debug + PartialEq + Serialize + Clone;
+pub trait Origin: Debug + PartialEq + DeserializeOwned + Serialize + Clone {
+  type Scale: Debug + PartialEq + DeserializeOwned + Serialize + Clone;
+  type Offset: Debug + PartialEq + DeserializeOwned + Serialize + Clone;
 }
 
 impl Origin for DateTime<Utc> {
@@ -462,7 +465,7 @@ impl_origin_for_numbers![i8, i16, i32, i64, u8, u16, u32, u64, f32, f64];
 /// to define the “central point” from which the distance is calculated, and the
 /// `scale` to define the rate of decay.
 #[derive(Debug, Clone, PartialEq)]
-pub struct Decay<T: Origin> {
+pub struct Decay<T: Origin + DeserializeOwned> {
   function: DecayFunction,
 
   inner: DecayFieldInner<T>,
@@ -471,8 +474,90 @@ pub struct Decay<T: Origin> {
 
   weight: Option<f32>,
 }
+
+impl<T: Origin> Serialize for Decay<T> {
+  fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+  where
+    S: Serializer, {
+    let mut map = serializer.serialize_map(Some(3))?;
+
+    map.serialize_entry(&self.function, &self.inner)?;
+
+    if let Some(filter) = &self.filter {
+      map.serialize_entry("filter", filter)?;
+    }
+
+    if let Some(weight) = &self.weight {
+      map.serialize_entry("weight", weight)?;
+    }
+
+    map.end()
+  }
+}
+
+impl<'de, T: Origin + DeserializeOwned> Deserialize<'de> for Decay<T> {
+  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+  where
+    D: Deserializer<'de>, {
+    struct DecayVisitor<T: Origin + DeserializeOwned> {
+      _marker: std::marker::PhantomData<T>,
+    }
+
+    impl<'de, T: Origin + DeserializeOwned> Visitor<'de> for DecayVisitor<T> {
+      type Value = Decay<T>;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("struct Decay")
+      }
+
+      fn visit_map<A>(self, mut map: A) -> Result<Decay<T>, A::Error>
+      where
+        A: MapAccess<'de>, {
+        let mut function = None;
+        let inner = None;
+        let mut filter = None;
+        let mut weight = None;
+
+        while let Some(key) = map.next_key()? {
+          match key {
+            "function" => function = Some(map.next_value()?),
+            // TODO: fix me issues with Deserialize<'de>
+            // "inner" => inner = Some(map.next_value()?),
+            "filter" => filter = Some(map.next_value()?),
+            "weight" => weight = Some(map.next_value()?),
+            _ => {
+              return Err(de::Error::unknown_field(
+                key,
+                &["function", "inner", "filter", "weight"],
+              ))
+            }
+          }
+        }
+
+        let function = function.ok_or_else(|| de::Error::missing_field("function"))?;
+        let inner = inner.ok_or_else(|| de::Error::missing_field("inner"))?;
+
+        Ok(Decay {
+          function,
+          inner,
+          filter,
+          weight,
+        })
+      }
+    }
+
+    deserializer.deserialize_struct(
+      "Decay",
+      &["function", "inner", "filter", "weight"],
+      DecayVisitor {
+        _marker: std::marker::PhantomData,
+      },
+    )
+  }
+}
+
 #[derive(Debug, Clone, PartialEq)]
-struct DecayFieldInner<T: Origin> {
+struct DecayFieldInner<T: Origin + DeserializeOwned> {
   field: String,
   inner: DecayInner<T>,
 }
@@ -480,16 +565,83 @@ struct DecayFieldInner<T: Origin> {
 #[derive(Debug, Clone, PartialEq, Serialize)]
 struct DecayInner<O>
 where
-  O: Origin, {
+  O: Origin + DeserializeOwned, {
   origin: O,
 
   scale: <O as Origin>::Scale,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   offset: Option<<O as Origin>::Offset>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   decay: Option<f32>,
+}
+
+impl<T: Origin> Serialize for DecayFieldInner<T> {
+  fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+  where
+    S: Serializer, {
+    let mut map = serializer.serialize_map(Some(1))?;
+
+    map.serialize_entry(&self.field, &self.inner)?;
+
+    map.end()
+  }
+}
+
+impl<'de, O: Origin + DeserializeOwned> Deserialize<'de> for DecayInner<O> {
+  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+  where
+    D: Deserializer<'de>, {
+    struct DecayInnerVisitor<O: Origin + DeserializeOwned> {
+      _marker: std::marker::PhantomData<O>,
+    }
+
+    impl<'de, O: Origin + DeserializeOwned> Visitor<'de> for DecayInnerVisitor<O> {
+      type Value = DecayInner<O>;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("struct DecayInner")
+      }
+
+      fn visit_map<A>(self, mut map: A) -> Result<DecayInner<O>, A::Error>
+      where
+        A: MapAccess<'de>, {
+        let mut origin = None;
+        let mut scale = None;
+        let mut offset = None;
+        let mut decay = None;
+
+        while let Some(key) = map.next_key()? {
+          match key {
+            "origin" => origin = Some(map.next_value()?),
+            "scale" => scale = Some(map.next_value()?),
+            "offset" => offset = map.next_value()?,
+            "decay" => decay = map.next_value()?,
+            _ => return Err(de::Error::unknown_field(key, &["origin", "scale", "offset", "decay"])),
+          }
+        }
+
+        let origin = origin.ok_or_else(|| de::Error::missing_field("origin"))?;
+        let scale = scale.ok_or_else(|| de::Error::missing_field("scale"))?;
+
+        Ok(DecayInner {
+          origin,
+          scale,
+          offset,
+          decay,
+        })
+      }
+    }
+
+    deserializer.deserialize_struct(
+      "DecayInner",
+      &["origin", "scale", "offset", "decay"],
+      DecayInnerVisitor {
+        _marker: std::marker::PhantomData,
+      },
+    )
+  }
 }
 
 impl<O> Decay<O>
@@ -568,42 +720,10 @@ where
   }
 }
 
-impl<T: Origin> Serialize for Decay<T> {
-  fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-  where
-    S: Serializer, {
-    let mut map = serializer.serialize_map(Some(3))?;
-
-    map.serialize_entry(&self.function, &self.inner)?;
-
-    if let Some(filter) = &self.filter {
-      map.serialize_entry("filter", filter)?;
-    }
-
-    if let Some(weight) = &self.weight {
-      map.serialize_entry("weight", weight)?;
-    }
-
-    map.end()
-  }
-}
-
-impl<T: Origin> Serialize for DecayFieldInner<T> {
-  fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-  where
-    S: Serializer, {
-    let mut map = serializer.serialize_map(Some(1))?;
-
-    map.serialize_entry(&self.field, &self.inner)?;
-
-    map.end()
-  }
-}
-
 /// Decay function variants
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-function-score-query.html#_supported_decay_functions>
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum DecayFunction {
   /// Linear decay
@@ -619,21 +739,21 @@ pub enum DecayFunction {
 /// The script_score function allows you to wrap another query and customize the
 /// scoring of it optionally with a computation derived from other numeric field
 /// values in the doc using a script expression
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct FunctionScoreScript {
   script_score: ScriptInnerWrapper,
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 struct ScriptInnerWrapper {
   script: ScriptInner,
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 struct ScriptInner {
   source: String,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   params: Option<serde_json::Value>,
 }
 

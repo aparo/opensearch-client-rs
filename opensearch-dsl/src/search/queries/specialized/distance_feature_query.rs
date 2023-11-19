@@ -1,13 +1,13 @@
 use std::fmt::Debug;
 
 use chrono::{DateTime, Utc};
-use serde::ser::Serialize;
+use serde::{de::DeserializeOwned, ser::Serialize};
 
 use crate::{search::*, util::*};
 
 #[doc(hidden)]
-pub trait Origin: Debug + PartialEq + Serialize + Clone {
-  type Pivot: Debug + PartialEq + Serialize + Clone;
+pub trait Origin: Debug + PartialEq + DeserializeOwned + Serialize + Clone {
+  type Pivot: Debug + PartialEq + DeserializeOwned + Serialize + Clone;
 }
 
 impl Origin for DateTime<Utc> {
@@ -100,17 +100,17 @@ impl Origin for GeoLocation {
 #[serde(remote = "Self")]
 pub struct DistanceFeatureQuery<O>
 where
-  O: Origin, {
+  O: Origin + DeserializeOwned, {
   field: String,
 
   origin: O,
 
   pivot: <O as Origin>::Pivot,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -174,7 +174,9 @@ where
 impl<O> ShouldSkip for DistanceFeatureQuery<O> where O: Origin {}
 
 serialize_with_root!("distance_feature": DistanceFeatureQuery<DateTime<Utc>>);
+deserialize_with_root!("distance_feature": DistanceFeatureQuery<DateTime<Utc>>);
 serialize_with_root!("distance_feature": DistanceFeatureQuery<GeoLocation>);
+deserialize_with_root!("distance_feature": DistanceFeatureQuery<GeoLocation>);
 
 #[cfg(test)]
 mod tests {

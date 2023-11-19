@@ -3,7 +3,7 @@ use std::borrow::Cow;
 use super::{FieldSort, GeoDistanceSort, ScriptSort, SortSpecialField};
 
 /// Sorting criterion
-#[derive(Clone, PartialEq, Serialize)]
+#[derive(Clone, PartialEq, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum Sort {
   /// Special sort field,

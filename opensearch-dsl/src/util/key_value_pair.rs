@@ -1,4 +1,10 @@
-use serde::ser::{Serialize, SerializeMap, Serializer};
+use std::fmt;
+
+use serde::{
+  de::{self, MapAccess, Visitor},
+  ser::{Serialize, SerializeMap, Serializer},
+  Deserialize, Deserializer,
+};
 
 #[derive(Clone, PartialEq, Eq)]
 pub(crate) struct KeyValuePair<K, V> {
@@ -36,6 +42,51 @@ where
     let mut map = serializer.serialize_map(Some(1))?;
     map.serialize_entry(&self.key, &self.value)?;
     map.end()
+  }
+}
+
+impl<'de, K, V> Deserialize<'de> for KeyValuePair<K, V>
+where
+  K: Deserialize<'de>,
+  V: Deserialize<'de>,
+{
+  fn deserialize<D>(deserializer: D) -> Result<KeyValuePair<K, V>, D::Error>
+  where
+    D: Deserializer<'de>, {
+    struct KeyValuePairVisitor<K, V> {
+      marker: std::marker::PhantomData<(K, V)>,
+    }
+
+    impl<'de, K, V> Visitor<'de> for KeyValuePairVisitor<K, V>
+    where
+      K: Deserialize<'de>,
+      V: Deserialize<'de>,
+    {
+      type Value = KeyValuePair<K, V>;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("a map with a single key/value pair")
+      }
+
+      fn visit_map<M>(self, mut access: M) -> Result<KeyValuePair<K, V>, M::Error>
+      where
+        M: MapAccess<'de>, {
+        let (key, value) = match access.next_entry()? {
+          Some(entry) => entry,
+          None => return Err(de::Error::invalid_length(0, &self)),
+        };
+
+        if access.next_entry::<K, V>()?.is_some() {
+          return Err(de::Error::invalid_length(2, &self));
+        }
+
+        Ok(KeyValuePair::new(key, value))
+      }
+    }
+
+    deserializer.deserialize_map(KeyValuePairVisitor {
+      marker: std::marker::PhantomData,
+    })
   }
 }
 

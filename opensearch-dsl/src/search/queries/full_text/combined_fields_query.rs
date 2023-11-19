@@ -16,31 +16,31 @@ use crate::{search::*, util::*};
 ///   .name("test");
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-combined-fields-query.html>
-#[derive(Debug, Default, Clone, PartialEq, Serialize)]
+#[derive(Debug, Default, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct CombinedFieldsQuery {
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   fields: Vec<String>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   query: Text,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   auto_generate_synonyms_phrase_query: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   operator: Option<Operator>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   minimum_should_match: Option<String>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   zero_terms_query: Option<ZeroTermsQuery>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -117,6 +117,7 @@ impl ShouldSkip for CombinedFieldsQuery {
 }
 
 serialize_with_root!("combined_fields": CombinedFieldsQuery);
+deserialize_with_root!("combined_fields": CombinedFieldsQuery);
 
 #[cfg(test)]
 mod tests {

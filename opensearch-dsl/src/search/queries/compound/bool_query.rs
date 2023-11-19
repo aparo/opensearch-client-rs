@@ -1,3 +1,5 @@
+use serde::{Deserialize, Serialize};
+
 use crate::{search::*, util::*};
 
 /// A query that matches documents matching boolean combinations of other
@@ -28,28 +30,28 @@ use crate::{search::*, util::*};
 ///   .name("test");
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-bool-query.html>
-#[derive(Debug, Default, Clone, PartialEq, Serialize)]
+#[derive(Debug, Default, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct BoolQuery {
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   must: QueryCollection,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   filter: QueryCollection,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   should: QueryCollection,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   must_not: QueryCollection,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   minimum_should_match: Option<String>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -130,6 +132,7 @@ impl ShouldSkip for BoolQuery {
 }
 
 serialize_with_root!("bool": BoolQuery);
+deserialize_with_root!("bool": BoolQuery);
 
 #[cfg(test)]
 mod tests {

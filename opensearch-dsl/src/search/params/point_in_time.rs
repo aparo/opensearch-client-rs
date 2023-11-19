@@ -2,7 +2,7 @@ use super::Time;
 
 /// A point in time (PIT) is a point that represents a consistent view of the
 /// data at that time.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 pub struct PointInTime {
   id: String,
   keep_alive: Time,

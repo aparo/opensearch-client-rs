@@ -5,7 +5,7 @@
 /// will be used for missing docs as the sort value). The default is `_last`.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/sort-search-results.html#_missing_values>
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
 pub enum SortMissing {
   /// Sorts missing fields first
   #[serde(rename = "_first")]

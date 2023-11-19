@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Deserializer, Serialize};
 
 use super::{SortMode, SortOrder};
 use crate::{util::ShouldSkip, Term};
@@ -6,25 +6,25 @@ use crate::{util::ShouldSkip, Term};
 /// Sorts search hits by other field values
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/sort-search-results.html#sort-search-results>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Default, Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct FieldSort {
   #[serde(skip)]
   field: String,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   order: Option<SortOrder>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   mode: Option<SortMode>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   unmapped_type: Option<String>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   format: Option<String>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   missing: Option<Term>,
 }
 
@@ -115,6 +115,106 @@ impl IntoIterator for FieldSort {
 }
 
 serialize_keyed!(FieldSort: field);
+impl<'de> Deserialize<'de> for FieldSort {
+  fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+  where
+    D: Deserializer<'de>, {
+    use std::fmt;
+    struct WrapperVisitor;
+
+    impl<'de> serde::de::Visitor<'de> for WrapperVisitor {
+      type Value = FieldSort;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("struct fieldsort")
+      }
+
+      fn visit_map<A>(self, mut map: A) -> Result<FieldSort, A::Error>
+      where
+        A: serde::de::MapAccess<'de>, {
+        let mut sorter: FieldSort = FieldSort::default();
+
+        while let Some(key) = map.next_key::<String>()? {
+          let inner_map = map.next_value::<serde_json::Map<String, serde_json::Value>>()?;
+          sorter.field = key.to_owned();
+          for (k, v) in inner_map.iter() {
+            match k.as_str() {
+              "unmapped_type" => {
+                match v.as_str() {
+                  Some(value) => {
+                    sorter.unmapped_type = Some(value.to_string());
+                  }
+                  None => {
+                    return Err(serde::de::Error::invalid_type(
+                      serde::de::Unexpected::Other("not a string"),
+                      &"a string",
+                    ));
+                  }
+                }
+              }
+              "format" => {
+                match v.as_str() {
+                  Some(value) => {
+                    sorter.format = Some(value.to_string());
+                  }
+                  None => {
+                    return Err(serde::de::Error::invalid_type(
+                      serde::de::Unexpected::Other("not a string"),
+                      &"a string",
+                    ));
+                  }
+                }
+              }
+              "order" => {
+                let value = serde_json::from_value::<SortOrder>(v.clone());
+                match value {
+                  Ok(value) => {
+                    sorter.order = Some(value);
+                  }
+                  Err(e) => {
+                    return Err(serde::de::Error::custom(format!("error parsing {}: {}", k, e)));
+                  }
+                }
+              }
+              "mode" => {
+                let value = serde_json::from_value::<SortMode>(v.clone());
+                match value {
+                  Ok(value) => {
+                    sorter.mode = Some(value);
+                  }
+                  Err(e) => {
+                    return Err(serde::de::Error::custom(format!("error parsing {}: {}", k, e)));
+                  }
+                }
+              }
+              "missing" => {
+                let value = serde_json::from_value::<Term>(v.clone());
+                match value {
+                  Ok(value) => {
+                    sorter.missing = Some(value);
+                  }
+                  Err(e) => {
+                    return Err(serde::de::Error::custom(format!("error parsing {}: {}", k, e)));
+                  }
+                }
+              }
+              _ => {
+                return Err(serde::de::Error::custom(format!("fielderror: error parsing {}", k)));
+              }
+            }
+          }
+        }
+        if sorter.field != "" {
+          Ok(sorter)
+        } else {
+          Err(serde::de::Error::missing_field("required field"))
+        }
+      }
+    }
+
+    deserializer.deserialize_map(WrapperVisitor)
+  }
+}
 
 #[cfg(test)]
 mod tests {

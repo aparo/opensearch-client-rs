@@ -17,7 +17,7 @@ use crate::{search::*, util::*};
 /// Query::wildcard("test", 123);
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-wildcard-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct WildcardQuery {
   #[serde(skip_serializing)]
@@ -25,16 +25,16 @@ pub struct WildcardQuery {
 
   value: Option<Term>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   rewrite: Option<Rewrite>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   case_insensitive: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -86,6 +86,7 @@ impl ShouldSkip for WildcardQuery {
 }
 
 serialize_with_root_keyed!("wildcard": WildcardQuery);
+deserialize_with_root_keyed!("wildcard": WildcardQuery);
 
 #[cfg(test)]
 mod tests {

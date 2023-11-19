@@ -7,7 +7,7 @@
 use crate::Script;
 
 /// A script to calculate field value from the `_source` fields
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 pub struct ScriptField {
   script: Script,
 }

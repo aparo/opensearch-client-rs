@@ -4,17 +4,17 @@ use crate::{search::*, util::*};
 /// sample of the top-scoring documents.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-bucket-sampler-aggregation.html>
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct SamplerAggregation {
   sampler: SamplerAggregationInner,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   aggs: Aggregations,
 }
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 struct SamplerAggregationInner {
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   shard_size: Option<u64>,
 }
 

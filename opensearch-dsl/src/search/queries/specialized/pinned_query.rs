@@ -13,7 +13,7 @@ use crate::{search::*, util::*};
 ///   .name("matches_everything");
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-match-all-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct PinnedQuery {
   #[serde(flatten)]
@@ -23,10 +23,10 @@ pub struct PinnedQuery {
   /// the "pinned" documents.
   organic: Box<Query>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -55,6 +55,7 @@ impl ShouldSkip for PinnedQuery {
 }
 
 serialize_with_root!("pinned": PinnedQuery);
+deserialize_with_root!("pinned": PinnedQuery);
 
 #[cfg(test)]
 mod tests {

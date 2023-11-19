@@ -2,7 +2,7 @@ use super::{FieldSort, Sort};
 use crate::util::ShouldSkip;
 
 /// A sorting criteria
-#[derive(Default, Clone, PartialEq, Serialize)]
+#[derive(Default, Clone, PartialEq, Deserialize, Serialize)]
 pub struct SortCollection(Vec<Sort>);
 
 impl std::fmt::Debug for SortCollection {

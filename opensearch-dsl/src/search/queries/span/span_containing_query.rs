@@ -7,7 +7,7 @@ use crate::{util::*, Query};
 /// from `big` that contain matches from `little` are returned.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-span-containing-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct SpanContainingQuery {
   little: Box<SpanQuery>,
@@ -30,6 +30,7 @@ impl Query {
 impl ShouldSkip for SpanContainingQuery {}
 
 serialize_with_root!("span_containing": SpanContainingQuery);
+deserialize_with_root!("span_containing": SpanContainingQuery);
 
 #[cfg(test)]
 mod tests {

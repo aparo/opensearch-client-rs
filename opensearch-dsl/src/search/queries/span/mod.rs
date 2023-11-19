@@ -31,7 +31,7 @@ use crate::{util::*, FuzzyQuery, PrefixQuery, RangeQuery, RegexpQuery, WildcardQ
 macro_rules! span_query {
     ($($variant:ident($query:ty)),+ $(,)?) => {
         /// A container enum for supported OpenSearch query types
-        #[derive(Clone, PartialEq, Serialize)]
+        #[derive(Clone, PartialEq, Deserialize,  Serialize)]
         #[serde(untagged)]
         #[allow(missing_docs)]
         pub enum SpanQuery {
@@ -114,7 +114,7 @@ macro_rules! span_query {
 macro_rules! multi_term_query {
     ($($variant:ident($query:ty)),+ $(,)?) => {
         /// A container enum for supported OpenSearch query types
-        #[derive(Clone, PartialEq, Serialize)]
+        #[derive(Clone, PartialEq, Deserialize,  Serialize)]
         #[serde(untagged)]
         #[allow(missing_docs)]
         pub enum MultiTermQuery {

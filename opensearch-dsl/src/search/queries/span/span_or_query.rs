@@ -9,7 +9,7 @@ use crate::{util::*, Query};
 /// The `clauses` element is a list of one or more other span type queries.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-span-or-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct SpanOrQuery {
   clauses: Vec<SpanQuery>,
@@ -30,6 +30,7 @@ impl Query {
 }
 
 serialize_with_root!("span_or": SpanOrQuery);
+deserialize_with_root!("span_or": SpanOrQuery);
 
 #[cfg(test)]
 mod tests {

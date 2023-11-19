@@ -1,6 +1,6 @@
 use crate::{search::*, util::*};
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 /// A single bucket aggregation that narrows the set of documents to those that
 /// match a query.
 ///
@@ -8,7 +8,7 @@ use crate::{search::*, util::*};
 pub struct FilterAggregation {
   filter: Query,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   aggs: Aggregations,
 }
 

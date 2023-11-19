@@ -4,7 +4,7 @@ use crate::search::*;
 /// arbitrary `x, y` cartesian shapes such as rectangles and polygons. It can
 /// be used to index and query geometries whose coordinates fall in a
 /// 2-dimensional planar coordinate system.
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(tag = "type")]
 pub enum Shape {
   /// A single `x, y` coordinate
@@ -66,6 +66,14 @@ pub enum Shape {
     /// A collection of shapes
     geometries: Vec<Shape>,
   },
+}
+
+impl Default for Shape {
+  fn default() -> Self {
+    Self::Point {
+      coordinates: Coordinate::default(),
+    }
+  }
 }
 
 impl Shape {

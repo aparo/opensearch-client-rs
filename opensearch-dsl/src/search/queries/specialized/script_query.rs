@@ -13,15 +13,15 @@ use crate::{search::*, util::*};
 /// Query::script(Script::source("return doc['amount'].value < 10;"));
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-script-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct ScriptQuery {
   script: Script,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -46,6 +46,7 @@ impl ScriptQuery {
 impl ShouldSkip for ScriptQuery {}
 
 serialize_with_root!("script": ScriptQuery);
+deserialize_with_root!("script": ScriptQuery);
 
 #[cfg(test)]
 mod tests {

@@ -4,7 +4,7 @@ use crate::search::*;
 /// arbitrary geo shapes such as rectangles and polygons. It should be used
 /// when either the data being indexed or the queries being executed contain
 /// shapes other than just points.
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(tag = "type")]
 pub enum GeoShape {
   /// A single geographic coordinate
@@ -185,6 +185,13 @@ impl GeoShape {
   }
 }
 
+impl Default for GeoShape {
+  fn default() -> Self {
+    Self::Point {
+      coordinates: GeoLocation::default(),
+    }
+  }
+}
 #[cfg(test)]
 mod tests {
   use super::*;

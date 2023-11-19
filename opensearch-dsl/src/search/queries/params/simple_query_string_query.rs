@@ -1,5 +1,10 @@
-use serde::ser::{Serialize, Serializer};
+use std::fmt;
 
+use serde::{
+  de::{Error, Unexpected, Visitor},
+  ser::{Serialize, Serializer},
+  Deserialize, Deserializer,
+};
 /// You can use the flags parameter to enable more optional operators for
 /// Lucene’s regular expression engine.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -87,5 +92,44 @@ impl Serialize for SimpleQueryStringQueryFlags {
   where
     S: Serializer, {
     <&'static str>::from(*self).serialize(serializer)
+  }
+}
+
+impl<'de> Deserialize<'de> for SimpleQueryStringQueryFlags {
+  fn deserialize<D>(deserializer: D) -> Result<SimpleQueryStringQueryFlags, D::Error>
+  where
+    D: Deserializer<'de>, {
+    struct SimpleQueryStringQueryFlagsVisitor;
+
+    impl<'de> Visitor<'de> for SimpleQueryStringQueryFlagsVisitor {
+      type Value = SimpleQueryStringQueryFlags;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("a string representing a SimpleQueryStringQueryFlags variant")
+      }
+
+      fn visit_str<E>(self, value: &str) -> Result<SimpleQueryStringQueryFlags, E>
+      where
+        E: Error, {
+        match value {
+          "ALL" => Ok(SimpleQueryStringQueryFlags::All),
+          "AND" => Ok(SimpleQueryStringQueryFlags::And),
+          "ESCAPE" => Ok(SimpleQueryStringQueryFlags::Escape),
+          "FUZZY" => Ok(SimpleQueryStringQueryFlags::Fuzzy),
+          "NEAR" => Ok(SimpleQueryStringQueryFlags::Near),
+          "NONE" => Ok(SimpleQueryStringQueryFlags::None),
+          "NOT" => Ok(SimpleQueryStringQueryFlags::Not),
+          "OR" => Ok(SimpleQueryStringQueryFlags::Or),
+          "PHRASE" => Ok(SimpleQueryStringQueryFlags::Phrase),
+          "PRECEDENCE" => Ok(SimpleQueryStringQueryFlags::Precedence),
+          "PREFIX" => Ok(SimpleQueryStringQueryFlags::Prefix),
+          "SLOP" => Ok(SimpleQueryStringQueryFlags::Slop),
+          "WHITESPACE" => Ok(SimpleQueryStringQueryFlags::Whitespace),
+          _ => Err(E::invalid_value(Unexpected::Str(value), &self)),
+        }
+      }
+    }
+
+    deserializer.deserialize_str(SimpleQueryStringQueryFlagsVisitor)
   }
 }

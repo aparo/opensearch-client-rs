@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Deserializer, Serialize};
 
 use super::{SortMode, SortOrder};
 use crate::{
@@ -9,7 +9,7 @@ use crate::{
 /// Sorts search hits by other field values
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/sort-search-results.html#sort-search-results>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Default, Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct GeoDistanceSort {
   #[serde(skip)]
@@ -18,19 +18,19 @@ pub struct GeoDistanceSort {
   #[serde(skip)]
   points: Vec<GeoLocation>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   order: Option<SortOrder>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   unit: Option<DistanceUnit>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   mode: Option<SortMode>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   distance_type: Option<GeoDistanceType>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   ignore_unmapped: Option<bool>,
 }
 
@@ -125,6 +125,129 @@ impl IntoIterator for GeoDistanceSort {
 }
 
 serialize_with_root_key_value_pair!("_geo_distance": GeoDistanceSort, field, points);
+impl<'de> Deserialize<'de> for GeoDistanceSort {
+  fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+  where
+    D: Deserializer<'de>, {
+    use std::fmt;
+    struct WrapperVisitor;
+
+    impl<'de> serde::de::Visitor<'de> for WrapperVisitor {
+      type Value = GeoDistanceSort;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("struct shape")
+      }
+
+      fn visit_map<A>(self, mut map: A) -> Result<GeoDistanceSort, A::Error>
+      where
+        A: serde::de::MapAccess<'de>, {
+        let mut query: GeoDistanceSort = GeoDistanceSort::default();
+        let mut found_value = false;
+
+        while let Some(key) = map.next_key::<String>()? {
+          if key == "_geo_distance" {
+            let inner_map = map.next_value::<serde_json::Map<String, serde_json::Value>>()?;
+            for (k, v) in inner_map.iter() {
+              match k.as_str() {
+                "field" => {
+                  match v.as_str() {
+                    Some(field) => {
+                      query.field = field.to_string();
+                    }
+                    None => {
+                      return Err(serde::de::Error::invalid_type(
+                        serde::de::Unexpected::Other("not a string"),
+                        &"a string",
+                      ));
+                    }
+                  }
+                }
+                "ignore_unmapped" => {
+                  match v.as_bool() {
+                    Some(ignore_unmapped) => {
+                      query.ignore_unmapped = Some(ignore_unmapped);
+                    }
+                    None => {
+                      return Err(serde::de::Error::invalid_type(
+                        serde::de::Unexpected::Other("not a boolean"),
+                        &"a boolean",
+                      ));
+                    }
+                  }
+                }
+                "order" => {
+                  let value = serde_json::from_value::<SortOrder>(v.clone());
+                  match value {
+                    Ok(value) => {
+                      query.order = Some(value);
+                    }
+                    Err(e) => {
+                      return Err(serde::de::Error::custom(format!("error parsing order: {}", e)));
+                    }
+                  }
+                }
+                "unit" => {
+                  let value = serde_json::from_value::<DistanceUnit>(v.clone());
+                  match value {
+                    Ok(value) => {
+                      query.unit = Some(value);
+                    }
+                    Err(e) => {
+                      return Err(serde::de::Error::custom(format!("error parsing unit: {}", e)));
+                    }
+                  }
+                }
+                "mode" => {
+                  let value = serde_json::from_value::<SortMode>(v.clone());
+                  match value {
+                    Ok(value) => {
+                      query.mode = Some(value);
+                    }
+                    Err(e) => {
+                      return Err(serde::de::Error::custom(format!("error parsing mode: {}", e)));
+                    }
+                  }
+                }
+                "distance_type" => {
+                  let value = serde_json::from_value::<GeoDistanceType>(v.clone());
+                  match value {
+                    Ok(value) => {
+                      query.distance_type = Some(value);
+                    }
+                    Err(e) => {
+                      return Err(serde::de::Error::custom(format!("error parsing distance_type: {}", e)));
+                    }
+                  }
+                }
+                _ => {
+                  query.field = k.to_owned();
+                  let value = serde_json::from_value::<Vec<GeoLocation>>(v.clone());
+                  match value {
+                    Ok(value) => {
+                      query.points = value;
+                      found_value = true;
+                    }
+                    Err(e) => {
+                      return Err(serde::de::Error::custom(format!("error parsing {}: {}", k, e)));
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        if found_value {
+          Ok(query)
+        } else {
+          Err(serde::de::Error::missing_field("point values"))
+        }
+      }
+    }
+
+    deserializer.deserialize_struct("Wrapper", &["_geo_distance"], WrapperVisitor)
+  }
+}
 
 #[cfg(test)]
 mod tests {

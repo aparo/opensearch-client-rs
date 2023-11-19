@@ -1,7 +1,7 @@
 use serde::Serialize;
 
 /// Represents a point in two dimensional space
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Deserialize, Default)]
 pub struct GeoLocation {
   latitude: f32,
   longitude: f32,

@@ -3,7 +3,7 @@ use serde::Serialize;
 use crate::search::*;
 
 /// Strategies to verify the correctness of coordinates
-#[derive(Debug, PartialEq, Eq, Clone, Serialize)]
+#[derive(Debug, PartialEq, Eq, Clone, Deserialize, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum ValidationMethod {
   /// accept geo points with invalid latitude or longitude
@@ -17,7 +17,7 @@ pub enum ValidationMethod {
 }
 
 /// Different representations of geo bounding box
-#[derive(Debug, PartialEq, Clone, Serialize)]
+#[derive(Debug, PartialEq, Clone, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum GeoBoundingBox {
   /// MainDiagonal vertices of geo bounding box
@@ -57,6 +57,15 @@ pub enum GeoBoundingBox {
     /// Set right separately
     right: f32,
   },
+}
+
+impl Default for GeoBoundingBox {
+  fn default() -> Self {
+    GeoBoundingBox::MainDiagonal {
+      top_left: GeoLocation::new(0.0, 0.0),
+      bottom_right: GeoLocation::new(0.0, 0.0),
+    }
+  }
 }
 
 #[cfg(test)]

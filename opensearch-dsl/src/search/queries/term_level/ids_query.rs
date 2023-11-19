@@ -12,16 +12,16 @@ use crate::{search::*, util::*, Set};
 /// Query::ids(vec!["2"]);
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-ids-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct IdsQuery {
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   values: Set<String>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -53,6 +53,7 @@ impl ShouldSkip for IdsQuery {
 }
 
 serialize_with_root!("ids": IdsQuery);
+deserialize_with_root!("ids": IdsQuery);
 
 #[cfg(test)]
 mod tests {

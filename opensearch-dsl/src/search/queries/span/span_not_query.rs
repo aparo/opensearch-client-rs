@@ -13,22 +13,22 @@ use crate::{util::*, Query, SpanQuery};
 /// returned.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-span-not-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct SpanNotQuery {
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   dist: Option<i32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   exclude: Vec<SpanQuery>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   include: Vec<SpanQuery>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   post: Option<i32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pre: Option<i32>,
 }
 
@@ -82,6 +82,7 @@ impl SpanNotQuery {
 impl ShouldSkip for SpanNotQuery {}
 
 serialize_with_root!("span_not": SpanNotQuery);
+deserialize_with_root!("span_not": SpanNotQuery);
 
 #[cfg(test)]
 mod tests {

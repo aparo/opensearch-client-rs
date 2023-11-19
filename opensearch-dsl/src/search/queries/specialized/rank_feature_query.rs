@@ -28,15 +28,15 @@ use crate::{search::*, util::*};
 /// Query::rank_feature("test").linear();
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-rank-feature-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct RankFeatureQuery {
   field: String,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -66,17 +66,17 @@ pub struct RankFeatureQuery {
 /// Query::rank_feature("test").linear();
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-rank-feature-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct RankFeatureSaturationQuery {
   field: String,
 
   saturation: Saturation,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -106,17 +106,17 @@ pub struct RankFeatureSaturationQuery {
 /// Query::rank_feature("test").linear();
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-rank-feature-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct RankFeatureLogarithmQuery {
   field: String,
 
   log: Logarithm,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -146,17 +146,17 @@ pub struct RankFeatureLogarithmQuery {
 /// Query::rank_feature("test").linear();
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-rank-feature-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct RankFeatureSigmoidQuery {
   field: String,
 
   sigmoid: Sigmoid,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -186,38 +186,38 @@ pub struct RankFeatureSigmoidQuery {
 /// Query::rank_feature("test").linear();
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-rank-feature-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct RankFeatureLinearQuery {
   field: String,
 
   linear: Linear,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 struct Saturation {
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pivot: Option<f64>,
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 struct Logarithm {
   scaling_factor: f64,
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 struct Sigmoid {
   pivot: f64,
   exponent: f64,
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 struct Linear {}
 
 impl Query {
@@ -344,6 +344,11 @@ serialize_with_root!("rank_feature": RankFeatureSaturationQuery);
 serialize_with_root!("rank_feature": RankFeatureLogarithmQuery);
 serialize_with_root!("rank_feature": RankFeatureSigmoidQuery);
 serialize_with_root!("rank_feature": RankFeatureLinearQuery);
+deserialize_with_root!("rank_feature": RankFeatureQuery);
+deserialize_with_root!("rank_feature": RankFeatureSaturationQuery);
+deserialize_with_root!("rank_feature": RankFeatureLogarithmQuery);
+deserialize_with_root!("rank_feature": RankFeatureSigmoidQuery);
+deserialize_with_root!("rank_feature": RankFeatureLinearQuery);
 
 #[cfg(test)]
 mod tests {

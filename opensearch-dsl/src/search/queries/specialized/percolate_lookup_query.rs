@@ -14,7 +14,7 @@ use crate::{search::*, util::*};
 /// Query::percolate_lookup("field", "index_name", "document_id");
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-percolate-query.html#_percolating_an_existing_document>
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct PercolateLookupQuery {
   field: String,
@@ -23,16 +23,16 @@ pub struct PercolateLookupQuery {
 
   id: String,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   routing: Option<String>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   preference: Option<String>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   version: Option<u64>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   name: Option<String>,
 }
 
@@ -96,6 +96,7 @@ impl PercolateLookupQuery {
 impl ShouldSkip for PercolateLookupQuery {}
 
 serialize_with_root!("percolate": PercolateLookupQuery);
+deserialize_with_root!("percolate": PercolateLookupQuery);
 
 #[cfg(test)]
 mod tests {

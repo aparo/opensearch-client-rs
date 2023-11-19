@@ -1,7 +1,7 @@
 use serde::Serialize;
 
 /// Relation between coordinates
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Deserialize, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum SpatialRelation {
   /// Return all documents whose `shape` field intersects the query geometry

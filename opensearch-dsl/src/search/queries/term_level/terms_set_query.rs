@@ -28,7 +28,7 @@ use crate::{search::*, util::*};
 /// );
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-terms-set-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct TermsSetQuery {
   #[serde(skip)]
@@ -39,10 +39,10 @@ pub struct TermsSetQuery {
   #[serde(flatten)]
   minimum_should_match: TermsSetMinimumShouldMatch,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -79,6 +79,7 @@ impl ShouldSkip for TermsSetQuery {
 }
 
 serialize_with_root_keyed!("terms_set": TermsSetQuery);
+deserialize_with_root_keyed!("terms_set": TermsSetQuery);
 
 #[cfg(test)]
 mod tests {

@@ -5,7 +5,7 @@
 /// highlighter applies its own logic to compute relevancy scores. See the
 /// document [How highlighters work internally](https://www.elastic.co/guide/en/opensearch/reference/current/highlighting.html#how-es-highlighters-work-internally)
 /// for more details how different highlighters find the best fragments.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Order {
   /// Sorts highlighted fragments by score.

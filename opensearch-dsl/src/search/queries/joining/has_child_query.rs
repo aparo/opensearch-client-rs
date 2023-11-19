@@ -12,32 +12,32 @@ use crate::{search::*, util::*};
 /// Query::has_child("child", Query::term("tag", "opensearch"));
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-has-child-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct HasChildQuery {
   r#type: String,
 
   query: Box<Query>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   ignore_unmapped: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   max_children: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   min_children: Option<u32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   score_mode: Option<HasChildScoreMode>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   inner_hits: Option<Box<InnerHits>>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -138,6 +138,7 @@ impl ShouldSkip for HasChildQuery {
 }
 
 serialize_with_root!("has_child": HasChildQuery);
+deserialize_with_root!("has_child": HasChildQuery);
 
 #[cfg(test)]
 mod tests {

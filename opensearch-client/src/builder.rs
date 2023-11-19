@@ -9869,7 +9869,7 @@ impl<'a> SearchPostWithIndex<'a> {
   ///Sends a `POST` request to `/{index}/_search`
   pub async fn send<T: DeserializeOwned + std::default::Default>(
     self,
-  ) -> Result<ResponseValue<types::SearchPostWithIndexResponseContent<T>>, Error> {
+  ) -> Result<ResponseValue<types::SearchResult<T>>, Error> {
     let Self {
       client,
       index,

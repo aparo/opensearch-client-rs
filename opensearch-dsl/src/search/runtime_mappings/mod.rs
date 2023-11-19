@@ -10,7 +10,13 @@
 //!
 //! <https://www.elastic.co/guide/en/opensearch/reference/master/runtime-search-request.html>
 
-use serde::ser::{Serialize, SerializeStruct, Serializer};
+use std::fmt;
+
+use serde::{
+  de::{Error, Unexpected, Visitor},
+  ser::{Serialize, SerializeStruct, Serializer},
+  Deserialize, Deserializer,
+};
 
 /// A runtime data type that is used in a search request.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd)]
@@ -99,15 +105,49 @@ impl Serialize for RuntimeDataType {
   }
 }
 
+impl<'de> Deserialize<'de> for RuntimeDataType {
+  fn deserialize<D>(deserializer: D) -> Result<RuntimeDataType, D::Error>
+  where
+    D: Deserializer<'de>, {
+    struct RuntimeDataTypeVisitor;
+
+    impl<'de> Visitor<'de> for RuntimeDataTypeVisitor {
+      type Value = RuntimeDataType;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("a string representing a RuntimeDataType variant")
+      }
+
+      fn visit_str<E>(self, value: &str) -> Result<RuntimeDataType, E>
+      where
+        E: Error, {
+        match value {
+          "boolean" => Ok(RuntimeDataType::Boolean),
+          "composite" => Ok(RuntimeDataType::Composite),
+          "date" => Ok(RuntimeDataType::Date(None)), // default to None for format
+          "double" => Ok(RuntimeDataType::Double),
+          "geo_point" => Ok(RuntimeDataType::GeoPoint),
+          "ip" => Ok(RuntimeDataType::Ip),
+          "keyword" => Ok(RuntimeDataType::Keyword),
+          "long" => Ok(RuntimeDataType::Long),
+          _ => Err(E::invalid_value(Unexpected::Str(value), &self)),
+        }
+      }
+    }
+
+    deserializer.deserialize_str(RuntimeDataTypeVisitor)
+  }
+}
+
 /// A runtime field that is used in a search request.
-#[derive(Debug, Clone, PartialEq, PartialOrd, Serialize)]
+#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize)]
 pub struct RuntimeMapping {
   #[serde(flatten)]
   r#type: RuntimeDataType,
   script: RuntimeScript,
 }
 
-#[derive(Debug, Clone, PartialEq, PartialOrd, Serialize)]
+#[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize)]
 struct RuntimeScript {
   source: String,
 }

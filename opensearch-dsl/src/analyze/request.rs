@@ -40,13 +40,13 @@ use crate::util::*;
 pub struct Analyze {
   text: StringOrVecString,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", flatten)]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", flatten)]
   analysis: Option<Analysis>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   attributes: Vec<String>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   explain: Option<bool>,
 }
 
@@ -55,20 +55,20 @@ pub struct Analyze {
 pub struct CustomAnalyzer {
   tokenizer: String,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   char_filter: Vec<StringOrObject>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   filter: Vec<StringOrObject>,
 }
 
 /// Structure of custom normalizer
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Default)]
 pub struct CustomNormalizer {
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   char_filter: Vec<StringOrObject>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   filter: Vec<StringOrObject>,
 }
 
@@ -107,7 +107,7 @@ pub enum Analysis {
 }
 
 /// Structure of filters
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum StringOrObject {
   /// Built-in filters
@@ -118,7 +118,7 @@ pub enum StringOrObject {
 }
 
 /// Type for text field. Text can be string or array of strings
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum StringOrVecString {
   /// One text input to analyze

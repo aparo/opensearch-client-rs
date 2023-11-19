@@ -6,18 +6,18 @@ use crate::{search::*, util::*};
 /// in the documents.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-metrics-rate-aggregation.html>
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct RateAggregation {
   rate: RateAggregationInner,
 }
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 struct RateAggregationInner {
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   field: Option<String>,
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   unit: Option<CalendarInterval>,
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   mode: Option<RateMode>,
 }
 

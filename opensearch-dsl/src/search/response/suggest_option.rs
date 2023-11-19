@@ -48,7 +48,7 @@ pub struct CompletionSuggestOption {
   ///
   /// Not using [crate::Source] due to a bug in enums and RawValue
   /// <https://github.com/serde-rs/json/issues/779>
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", rename = "_source", default)]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", rename = "_source")]
   pub source: Option<serde_json::Value>,
 
   /// The contexts associated with the completed document

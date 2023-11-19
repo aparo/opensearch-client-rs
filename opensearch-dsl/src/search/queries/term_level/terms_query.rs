@@ -1,5 +1,6 @@
-use crate::{search::*, util::*};
+use serde::{de, Deserialize, Serialize};
 
+use crate::{search::*, util::*};
 /// Returns documents that contain one or more **exact** terms in a provided
 /// field. The terms query is the same as the term query, except you can search
 /// for multiple values.
@@ -19,7 +20,7 @@ use crate::{search::*, util::*};
 /// Query::terms("test", vec!["username"]).boost(2).name("test");
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-terms-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Default, Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct TermsQuery {
   #[serde(skip)]
@@ -28,10 +29,10 @@ pub struct TermsQuery {
   #[serde(skip)]
   terms: Terms,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -72,6 +73,111 @@ impl ShouldSkip for TermsQuery {
 }
 
 serialize_with_root_key_value_pair!("terms": TermsQuery, field, terms);
+
+impl<'de> Deserialize<'de> for TermsQuery {
+  fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+  where
+    D: de::Deserializer<'de>, {
+    use std::fmt;
+    struct WrapperVisitor;
+
+    impl<'de> serde::de::Visitor<'de> for WrapperVisitor {
+      type Value = TermsQuery;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("struct Wrapper")
+      }
+
+      fn visit_map<A>(self, mut map: A) -> Result<TermsQuery, A::Error>
+      where
+        A: serde::de::MapAccess<'de>, {
+        let mut terms_query: TermsQuery = TermsQuery::default();
+        let mut found_terms = false;
+
+        while let Some(key) = map.next_key::<String>()? {
+          if key == "terms" {
+            let inner_map = map.next_value::<serde_json::Map<String, serde_json::Value>>()?;
+            for (k, v) in inner_map.iter() {
+              match k.as_str() {
+                "field" => {
+                  match v.as_str() {
+                    Some(field) => {
+                      terms_query.field = field.to_string();
+                    }
+                    None => {
+                      return Err(serde::de::Error::invalid_type(
+                        serde::de::Unexpected::Other("not a string"),
+                        &"a string",
+                      ));
+                    }
+                  }
+                }
+                "boost" => {
+                  match v.as_f64() {
+                    Some(boost) => {
+                      terms_query.boost = Some(boost as f32);
+                    }
+                    None => {
+                      return Err(serde::de::Error::invalid_type(
+                        serde::de::Unexpected::Other("not a float"),
+                        &"a float",
+                      ));
+                    }
+                  }
+                }
+                "_name" => {
+                  match v.as_str() {
+                    Some(_name) => {
+                      terms_query._name = Some(_name.to_string());
+                    }
+                    None => {
+                      return Err(serde::de::Error::invalid_type(
+                        serde::de::Unexpected::Other("not a string"),
+                        &"a string",
+                      ));
+                    }
+                  }
+                }
+                "values" => {
+                  let values = serde_json::from_value::<Terms>(v.clone());
+                  match values {
+                    Ok(values) => {
+                      terms_query.terms = values;
+                      found_terms = true;
+                    }
+                    Err(e) => {
+                      return Err(serde::de::Error::custom(format!("error parsing terms: {}", e)));
+                    }
+                  }
+                }
+                _ => {
+                  terms_query.field = k.to_owned();
+                  let values = serde_json::from_value::<Terms>(v.clone());
+                  match values {
+                    Ok(values) => {
+                      terms_query.terms = values;
+                      found_terms = true;
+                    }
+                    Err(e) => {
+                      return Err(serde::de::Error::custom(format!("error parsing terms: {}", e)));
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        if found_terms {
+          Ok(terms_query)
+        } else {
+          Err(serde::de::Error::missing_field("values or terms array"))
+        }
+      }
+    }
+
+    deserializer.deserialize_struct("Wrapper", &["terms"], WrapperVisitor)
+  }
+}
 
 #[cfg(test)]
 mod tests {

@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Deserializer, Serialize};
 
 use crate::{search::*, util::*};
 
@@ -15,7 +15,7 @@ use crate::{search::*, util::*};
 /// as defined for the field mapping.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-geo-shape-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Default, Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct GeoShapeQuery {
   #[serde(skip)]
@@ -24,21 +24,21 @@ pub struct GeoShapeQuery {
   #[serde(skip)]
   shape: InlineShape,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   ignore_unmapped: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Default, Debug, Clone, PartialEq, Deserialize, Serialize)]
 struct InlineShape {
   shape: GeoShape,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   relation: Option<SpatialRelation>,
 }
 
@@ -89,6 +89,123 @@ impl GeoShapeQuery {
 impl ShouldSkip for GeoShapeQuery {}
 
 serialize_with_root_key_value_pair!("geo_shape": GeoShapeQuery, field, shape);
+impl<'de> Deserialize<'de> for GeoShapeQuery {
+  fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+  where
+    D: Deserializer<'de>, {
+    use std::fmt;
+    struct WrapperVisitor;
+
+    impl<'de> serde::de::Visitor<'de> for WrapperVisitor {
+      type Value = GeoShapeQuery;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("struct geo_shape")
+      }
+
+      fn visit_map<A>(self, mut map: A) -> Result<GeoShapeQuery, A::Error>
+      where
+        A: serde::de::MapAccess<'de>, {
+        let mut query: GeoShapeQuery = GeoShapeQuery::default();
+        let mut found_value = false;
+
+        while let Some(key) = map.next_key::<String>()? {
+          if key == "geo_shape" {
+            let inner_map = map.next_value::<serde_json::Map<String, serde_json::Value>>()?;
+            for (k, v) in inner_map.iter() {
+              match k.as_str() {
+                "field" => {
+                  match v.as_str() {
+                    Some(field) => {
+                      query.field = field.to_string();
+                    }
+                    None => {
+                      return Err(serde::de::Error::invalid_type(
+                        serde::de::Unexpected::Other("not a string"),
+                        &"a string",
+                      ));
+                    }
+                  }
+                }
+                "boost" => {
+                  match v.as_f64() {
+                    Some(boost) => {
+                      query.boost = Some(boost as f32);
+                    }
+                    None => {
+                      return Err(serde::de::Error::invalid_type(
+                        serde::de::Unexpected::Other("not a float"),
+                        &"a float",
+                      ));
+                    }
+                  }
+                }
+                "_name" => {
+                  match v.as_str() {
+                    Some(_name) => {
+                      query._name = Some(_name.to_string());
+                    }
+                    None => {
+                      return Err(serde::de::Error::invalid_type(
+                        serde::de::Unexpected::Other("not a string"),
+                        &"a string",
+                      ));
+                    }
+                  }
+                }
+                "ignore_unmapped" => {
+                  match v.as_bool() {
+                    Some(ignore_unmapped) => {
+                      query.ignore_unmapped = Some(ignore_unmapped);
+                    }
+                    None => {
+                      return Err(serde::de::Error::invalid_type(
+                        serde::de::Unexpected::Other("not a boolean"),
+                        &"a boolean",
+                      ));
+                    }
+                  }
+                }
+                "value" => {
+                  let shape = serde_json::from_value::<InlineShape>(v.clone());
+                  match shape {
+                    Ok(shape) => {
+                      query.shape = shape;
+                      found_value = true;
+                    }
+                    Err(e) => {
+                      return Err(serde::de::Error::custom(format!("error parsing distance: {}", e)));
+                    }
+                  }
+                }
+                _ => {
+                  query.field = k.to_owned();
+                  let value = serde_json::from_value::<InlineShape>(v.clone());
+                  match value {
+                    Ok(value) => {
+                      query.shape = value;
+                      found_value = true;
+                    }
+                    Err(e) => {
+                      return Err(serde::de::Error::custom(format!("error parsing {}: {}", k, e)));
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        if found_value {
+          Ok(query)
+        } else {
+          Err(serde::de::Error::missing_field("location value"))
+        }
+      }
+    }
+
+    deserializer.deserialize_struct("Wrapper", &["geo_shape"], WrapperVisitor)
+  }
+}
 
 #[cfg(test)]
 mod tests {

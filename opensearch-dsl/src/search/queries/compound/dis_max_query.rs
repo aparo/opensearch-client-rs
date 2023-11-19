@@ -24,18 +24,18 @@ use crate::{search::*, util::*};
 ///   .name("test");
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-dis-max-query.html>
-#[derive(Debug, Default, Clone, PartialEq, Serialize)]
+#[derive(Debug, Default, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct DisMaxQuery {
   queries: QueryCollection,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   tie_breaker: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -93,6 +93,7 @@ impl ShouldSkip for DisMaxQuery {
 }
 
 serialize_with_root!("dis_max": DisMaxQuery);
+deserialize_with_root!("dis_max": DisMaxQuery);
 
 #[cfg(test)]
 mod tests {

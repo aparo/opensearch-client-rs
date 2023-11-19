@@ -17,7 +17,7 @@ use crate::{util::*, Query, SpanQuery};
 /// scoring behavior.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-span-field-masking-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct SpanFieldMaskingQuery {
   query: Box<SpanQuery>,
@@ -41,6 +41,7 @@ impl Query {
 impl ShouldSkip for SpanFieldMaskingQuery {}
 
 serialize_with_root!("span_field_masking": SpanFieldMaskingQuery);
+deserialize_with_root!("span_field_masking": SpanFieldMaskingQuery);
 
 #[cfg(test)]
 mod tests {

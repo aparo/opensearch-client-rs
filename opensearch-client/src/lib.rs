@@ -3691,6 +3691,16 @@ impl OsClient {
     Ok(response.into_inner())
   }
 
+  pub async fn search_typed<T: DeserializeOwned + std::default::Default>(
+    &self,
+    index: &String,
+    search: Search,
+  ) -> Result<types::SearchResult<T>, Error> {
+    let response = self.search().index(index).body(search).send().await?;
+    let result = response.into_inner();
+    Ok(result)
+  }
+
   /// Searches for documents in the specified index and returns a stream of
   /// hits.
   ///

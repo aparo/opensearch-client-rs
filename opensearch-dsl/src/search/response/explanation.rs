@@ -1,5 +1,5 @@
 /// Score explanation
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct Explanation {
   /// Cumulative score description
   pub description: String,

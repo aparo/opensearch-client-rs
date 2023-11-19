@@ -2801,8 +2801,8 @@ impl<'de> serde::Deserialize<'de> for SearchPostScroll {
   }
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct SearchPostWithIndexResponseContent<T> {
+#[derive(Clone, Debug, Deserialize, Serialize, Default)]
+pub struct SearchResult<T> {
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub hits: Option<HitsMetadata<T>>,
   #[serde(rename = "_scroll_id", default, skip_serializing_if = "Option::is_none")]
@@ -2815,15 +2815,15 @@ pub struct SearchPostWithIndexResponseContent<T> {
   pub took: Option<i64>,
 }
 
-impl<T> From<&SearchPostWithIndexResponseContent<T>> for SearchPostWithIndexResponseContent<T> {
-  fn from(value: &SearchPostWithIndexResponseContent<T>) -> Self {
+impl<T> From<&SearchResult<T>> for SearchResult<T> {
+  fn from(value: &SearchResult<T>) -> Self {
     value.into()
   }
 }
 
-impl<T> SearchPostWithIndexResponseContent<T> {
-  pub fn builder() -> builder::SearchPostWithIndexResponseContent<T> {
-    builder::SearchPostWithIndexResponseContent::default()
+impl<T> SearchResult<T> {
+  pub fn builder() -> builder::SearchResult<T> {
+    builder::SearchResult::default()
   }
 }
 
@@ -5841,7 +5841,7 @@ pub mod builder {
   }
 
   #[derive(Clone, Debug)]
-  pub struct SearchPostWithIndexResponseContent<T> {
+  pub struct SearchResult<T> {
     hits: Result<Option<super::HitsMetadata<T>>, String>,
     scroll_id: Result<Option<String>, String>,
     shards: Result<Option<super::ShardStatistics>, String>,
@@ -5849,7 +5849,7 @@ pub mod builder {
     took: Result<Option<i64>, String>,
   }
 
-  impl<T> Default for SearchPostWithIndexResponseContent<T> {
+  impl<T> Default for SearchResult<T> {
     fn default() -> Self {
       Self {
         hits: Ok(Default::default()),
@@ -5861,7 +5861,7 @@ pub mod builder {
     }
   }
 
-  impl<T2> SearchPostWithIndexResponseContent<T2> {
+  impl<T2> SearchResult<T2> {
     pub fn hits<T>(mut self, value: T) -> Self
     where
       T: std::convert::TryInto<Option<super::HitsMetadata<T2>>>,
@@ -5913,10 +5913,10 @@ pub mod builder {
     }
   }
 
-  impl<T> std::convert::TryFrom<SearchPostWithIndexResponseContent<T>> for super::SearchPostWithIndexResponseContent<T> {
+  impl<T> std::convert::TryFrom<SearchResult<T>> for super::SearchResult<T> {
     type Error = String;
 
-    fn try_from(value: SearchPostWithIndexResponseContent<T>) -> Result<Self, String> {
+    fn try_from(value: SearchResult<T>) -> Result<Self, String> {
       Ok(Self {
         hits: value.hits?,
         scroll_id: value.scroll_id?,
@@ -5927,8 +5927,8 @@ pub mod builder {
     }
   }
 
-  impl<T> From<super::SearchPostWithIndexResponseContent<T>> for SearchPostWithIndexResponseContent<T> {
-    fn from(value: super::SearchPostWithIndexResponseContent<T>) -> Self {
+  impl<T> From<super::SearchResult<T>> for SearchResult<T> {
+    fn from(value: super::SearchResult<T>) -> Self {
       Self {
         hits: Ok(value.hits),
         scroll_id: Ok(value.scroll_id),

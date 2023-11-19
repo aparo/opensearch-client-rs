@@ -23,12 +23,12 @@ use crate::{search::*, util::*};
 /// Query::percolate("field", vec![json!({ "message": "search text" }), json!({ "message": "another search text" })]);
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-percolate-query.html>
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct PercolateQuery {
   field: String,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   name: Option<String>,
 
   #[serde(flatten)]
@@ -78,6 +78,7 @@ impl ShouldSkip for PercolateQuery {
 }
 
 serialize_with_root!("percolate": PercolateQuery);
+deserialize_with_root!("percolate": PercolateQuery);
 
 #[cfg(test)]
 mod tests {

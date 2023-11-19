@@ -2,7 +2,7 @@ use super::ShardFailure;
 use crate::util::ShouldSkip;
 
 /// Number of shards touched with their states
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct ShardStatistics {
   /// Total number of touched shards
   pub total: u32,
@@ -17,7 +17,7 @@ pub struct ShardStatistics {
   pub failed: u32,
 
   /// Partial response failures
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", default)]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   pub failures: Vec<ShardFailure>,
 }
 

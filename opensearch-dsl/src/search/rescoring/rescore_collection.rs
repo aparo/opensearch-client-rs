@@ -2,7 +2,7 @@ use super::Rescore;
 use crate::util::ShouldSkip;
 
 /// Rescoring criteria
-#[derive(Default, Clone, PartialEq, Serialize)]
+#[derive(Default, Clone, PartialEq, Deserialize, Serialize)]
 pub struct RescoreCollection(Vec<Rescore>);
 
 impl std::fmt::Debug for RescoreCollection {

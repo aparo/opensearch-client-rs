@@ -17,7 +17,7 @@ use crate::{search::*, util::*};
 ///   .name("test");
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-boosting-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct BoostingQuery {
   positive: Box<Query>,
@@ -26,10 +26,10 @@ pub struct BoostingQuery {
 
   negative_boost: NegativeBoost,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -76,6 +76,7 @@ impl ShouldSkip for BoostingQuery {
 }
 
 serialize_with_root!("boosting": BoostingQuery);
+deserialize_with_root!("boosting": BoostingQuery);
 
 #[cfg(test)]
 mod tests {

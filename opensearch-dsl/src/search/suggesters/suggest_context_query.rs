@@ -10,14 +10,14 @@ use crate::util::ShouldSkip;
 /// context mappings for a completion field. Every context mapping has a unique
 /// name and a type. There are two types: `category` and `geo`. Context mappings
 /// are configured under the contexts parameter in the field mapping.
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct SuggestContextQuery {
   context: String,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   prefix: Option<bool>,
 }
 

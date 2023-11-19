@@ -2,7 +2,7 @@ use super::Query;
 use crate::util::ShouldSkip;
 
 /// A collection of queries
-#[derive(Default, Clone, PartialEq, Serialize)]
+#[derive(Default, Clone, PartialEq, Deserialize, Serialize)]
 pub struct QueryCollection(Vec<Query>);
 
 impl std::fmt::Debug for QueryCollection {

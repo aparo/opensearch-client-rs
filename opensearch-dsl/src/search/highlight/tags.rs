@@ -1,7 +1,7 @@
 use serde::ser::{Serialize, SerializeStruct, Serializer};
 
 /// Set to `styled` to use the built-in tag schema or use custom tags
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Deserialize)]
 pub enum Tags {
   /// Defines the following `pre_tags` and defines `post_tags` as `</em>`.
   ///
@@ -18,7 +18,7 @@ pub enum Tags {
 }
 
 /// Contains `pre_tags` and `post_tags` highlighting values
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Deserialize, Serialize)]
 pub struct PrePostTags {
   pre_tags: Vec<String>,
   post_tags: Vec<String>,

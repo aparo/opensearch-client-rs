@@ -1,7 +1,7 @@
 /// Indicates how scores for matching child objects affect the root parent
 /// document’s
 /// [relevance score](https://www.elastic.co/guide/en/opensearch/reference/current/query-filter-context.html#relevance-scores).
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 pub enum NestedQueryScoreMode {
   /// Use the mean relevance score of all matching child objects.
   #[serde(rename = "avg")]

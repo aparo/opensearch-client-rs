@@ -17,7 +17,7 @@ use crate::{search::*, util::*};
 /// Query::regexp("test", "username");
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-regexp-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct RegexpQuery {
   #[serde(skip)]
@@ -25,22 +25,26 @@ pub struct RegexpQuery {
 
   value: String,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip", serialize_with = "join_with_pipe")]
+  #[serde(
+    default,
+    skip_serializing_if = "ShouldSkip::should_skip",
+    serialize_with = "join_with_pipe"
+  )]
   flags: Vec<RegexpFlag>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   case_insensitive: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   max_determinized_states: Option<u64>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   rewrite: Option<Rewrite>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -125,6 +129,7 @@ impl ShouldSkip for RegexpQuery {
 }
 
 serialize_with_root_keyed!("regexp": RegexpQuery);
+deserialize_with_root_keyed!("regexp": RegexpQuery);
 
 #[cfg(test)]
 mod tests {

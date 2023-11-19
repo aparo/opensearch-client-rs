@@ -1,7 +1,10 @@
-use serde::ser::{self, Serialize};
+use serde::{
+  ser::{self, Serialize},
+  Deserialize,
+};
 
 /// OpenSearch term value
-#[derive(Clone, Serialize)]
+#[derive(Clone, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum Term {
   /// Boolean value

@@ -1,4 +1,9 @@
-use serde::ser::{Serialize, Serializer};
+use std::fmt;
+
+use serde::{
+  de::{self, Deserialize, Deserializer, Visitor},
+  ser::{Serialize, Serializer},
+};
 
 /// You can use the flags parameter to enable more optional operators for
 /// Lucene’s regular expression engine.
@@ -65,5 +70,41 @@ impl Serialize for RegexpFlag {
   where
     S: Serializer, {
     <&'static str>::from(*self).serialize(serializer)
+  }
+}
+
+impl<'de> Deserialize<'de> for RegexpFlag {
+  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+  where
+    D: Deserializer<'de>, {
+    struct RegexpFlagVisitor;
+
+    impl<'de> Visitor<'de> for RegexpFlagVisitor {
+      type Value = RegexpFlag;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("a string representing a regexp flag")
+      }
+
+      fn visit_str<E>(self, value: &str) -> Result<RegexpFlag, E>
+      where
+        E: de::Error, {
+        match value {
+          "ALL" => Ok(RegexpFlag::All),
+          "COMPLEMENT" => Ok(RegexpFlag::Complement),
+          "INTERVAL" => Ok(RegexpFlag::Interval),
+          "INTERSECTION" => Ok(RegexpFlag::Intersection),
+          "ANYSTRING" => Ok(RegexpFlag::Anystring),
+          _ => {
+            Err(de::Error::unknown_variant(
+              value,
+              &["ALL", "COMPLEMENT", "INTERVAL", "INTERSECTION", "ANYSTRING"],
+            ))
+          }
+        }
+      }
+    }
+
+    deserializer.deserialize_str(RegexpFlagVisitor)
   }
 }

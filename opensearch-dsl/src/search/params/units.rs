@@ -1,4 +1,10 @@
-use serde::ser::{Serialize, Serializer};
+use std::fmt;
+
+use serde::{
+  de::{self, Unexpected, Visitor},
+  ser::{Serialize, Serializer},
+  Deserialize, Deserializer,
+};
 
 /// Whenever durations need to be specified, e.g. for a `timeout` parameter,
 /// the duration must specify the unit, like `2d` for 2 days.
@@ -33,13 +39,51 @@ impl Serialize for Time {
   }
 }
 
+impl<'de> Deserialize<'de> for Time {
+  fn deserialize<D>(deserializer: D) -> Result<Time, D::Error>
+  where
+    D: Deserializer<'de>, {
+    struct TimeVisitor;
+
+    impl<'de> Visitor<'de> for TimeVisitor {
+      type Value = Time;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("a string representing a duration")
+      }
+
+      fn visit_str<E>(self, value: &str) -> Result<Time, E>
+      where
+        E: de::Error, {
+        let len = value.len();
+        let number = &value[..len - 1];
+        let unit = &value[len - 1..];
+
+        let number = number.parse::<u64>().map_err(E::custom)?;
+
+        match unit {
+          "d" => Ok(Time::Days(number)),
+          "h" => Ok(Time::Hours(number)),
+          "m" => Ok(Time::Minutes(number)),
+          "s" => Ok(Time::Seconds(number)),
+          "ms" => Ok(Time::Milliseconds(number)),
+          "micros" => Ok(Time::Microseconds(number)),
+          "nanos" => Ok(Time::Nanoseconds(number)),
+          _ => Err(E::custom(format!("unknown time unit: {}", unit))),
+        }
+      }
+    }
+
+    deserializer.deserialize_str(TimeVisitor)
+  }
+}
 /// Calendar-aware intervals are configured with the `calendar_interval`
 /// parameter. You can specify calendar intervals using the unit name, such as
 /// `month`, or as a single unit quantity, such as `1M`. For example,`day` and
 /// `1d` are equivalent. Multiple quantities, such as `2d`, are not supported.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-bucket-datehistogram-aggregation.html#calendar_intervals>
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Copy, Serialize)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Copy, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum CalendarInterval {
   /// All minutes begin at 00 seconds. One minute is the interval between 00
@@ -113,6 +157,44 @@ impl Serialize for Byte {
   }
 }
 
+impl<'de> Deserialize<'de> for Byte {
+  fn deserialize<D>(deserializer: D) -> Result<Byte, D::Error>
+  where
+    D: Deserializer<'de>, {
+    struct ByteVisitor;
+
+    impl<'de> Visitor<'de> for ByteVisitor {
+      type Value = Byte;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("a string representing a byte size")
+      }
+
+      fn visit_str<E>(self, value: &str) -> Result<Byte, E>
+      where
+        E: de::Error, {
+        let len = value.len();
+        let number = &value[..len - 2];
+        let unit = &value[len - 2..];
+
+        let number = number.parse::<u64>().map_err(E::custom)?;
+
+        match unit {
+          "b" => Ok(Byte::Bytes(number)),
+          "kb" => Ok(Byte::Kilobytes(number)),
+          "mb" => Ok(Byte::Megabytes(number)),
+          "gb" => Ok(Byte::Gigabytes(number)),
+          "tb" => Ok(Byte::Terabytes(number)),
+          "pb" => Ok(Byte::Petabytes(number)),
+          _ => Err(E::custom(format!("unknown byte unit: {}", unit))),
+        }
+      }
+    }
+
+    deserializer.deserialize_str(ByteVisitor)
+  }
+}
+
 /// Unit-less quantities means that they don’t have a "unit"
 /// like "bytes" or "Hertz" or "meter" or "long tonne".
 ///
@@ -145,6 +227,43 @@ impl Serialize for Size {
   }
 }
 
+impl<'de> Deserialize<'de> for Size {
+  fn deserialize<D>(deserializer: D) -> Result<Size, D::Error>
+  where
+    D: Deserializer<'de>, {
+    struct SizeVisitor;
+
+    impl<'de> Visitor<'de> for SizeVisitor {
+      type Value = Size;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("a string representing a size")
+      }
+
+      fn visit_str<E>(self, value: &str) -> Result<Size, E>
+      where
+        E: de::Error, {
+        let len = value.len();
+        let number = &value[..len - 1];
+        let unit = &value[len - 1..];
+
+        let number = number.parse::<u64>().map_err(E::custom)?;
+
+        match unit {
+          "k" => Ok(Size::Kilo(number)),
+          "m" => Ok(Size::Mega(number)),
+          "g" => Ok(Size::Giga(number)),
+          "t" => Ok(Size::Tera(number)),
+          "p" => Ok(Size::Peta(number)),
+          _ => Err(E::custom(format!("unknown size unit: {}", unit))),
+        }
+      }
+    }
+
+    deserializer.deserialize_str(SizeVisitor)
+  }
+}
+
 /// Wherever distances need to be specified, such as the `distance` parameter
 /// in the
 /// [Geo-distance](https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-geo-distance-query.html)
@@ -167,6 +286,12 @@ pub enum Distance {
   NauticalMiles(u64),
 }
 
+impl Default for Distance {
+  fn default() -> Self {
+    Self::Meters(100)
+  }
+}
+
 impl Serialize for Distance {
   fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
   where
@@ -183,6 +308,47 @@ impl Serialize for Distance {
       Self::NauticalMiles(u) => format!("{u}nmi"),
     }
     .serialize(serializer)
+  }
+}
+
+impl<'de> Deserialize<'de> for Distance {
+  fn deserialize<D>(deserializer: D) -> Result<Distance, D::Error>
+  where
+    D: Deserializer<'de>, {
+    struct DistanceVisitor;
+
+    impl<'de> Visitor<'de> for DistanceVisitor {
+      type Value = Distance;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("a string representing a distance")
+      }
+
+      fn visit_str<E>(self, value: &str) -> Result<Distance, E>
+      where
+        E: de::Error, {
+        let len = value.len();
+        let number = &value[..len - 2];
+        let unit = &value[len - 2..];
+
+        let number = number.parse::<u64>().map_err(E::custom)?;
+
+        match unit {
+          "mi" => Ok(Distance::Miles(number)),
+          "yd" => Ok(Distance::Yards(number)),
+          "ft" => Ok(Distance::Feet(number)),
+          "in" => Ok(Distance::Inches(number)),
+          "km" => Ok(Distance::Kilometers(number)),
+          "m" => Ok(Distance::Meters(number)),
+          "cm" => Ok(Distance::Centimeter(number)),
+          "mm" => Ok(Distance::Millimeters(number)),
+          "nmi" => Ok(Distance::NauticalMiles(number)),
+          _ => Err(E::custom(format!("unknown distance unit: {}", unit))),
+        }
+      }
+    }
+
+    deserializer.deserialize_str(DistanceVisitor)
   }
 }
 
@@ -224,5 +390,40 @@ impl Serialize for DistanceUnit {
       Self::NauticalMiles => "nmi",
     }
     .serialize(serializer)
+  }
+}
+
+impl<'de> Deserialize<'de> for DistanceUnit {
+  fn deserialize<D>(deserializer: D) -> Result<DistanceUnit, D::Error>
+  where
+    D: Deserializer<'de>, {
+    struct DistanceUnitVisitor;
+
+    impl<'de> Visitor<'de> for DistanceUnitVisitor {
+      type Value = DistanceUnit;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("a string representing a distance unit")
+      }
+
+      fn visit_str<E>(self, value: &str) -> Result<DistanceUnit, E>
+      where
+        E: de::Error, {
+        match value {
+          "mi" => Ok(DistanceUnit::Miles),
+          "yd" => Ok(DistanceUnit::Yards),
+          "ft" => Ok(DistanceUnit::Feet),
+          "in" => Ok(DistanceUnit::Inches),
+          "km" => Ok(DistanceUnit::Kilometers),
+          "m" => Ok(DistanceUnit::Meters),
+          "cm" => Ok(DistanceUnit::Centimeter),
+          "mm" => Ok(DistanceUnit::Millimeters),
+          "nmi" => Ok(DistanceUnit::NauticalMiles),
+          _ => Err(E::invalid_value(Unexpected::Str(value), &self)),
+        }
+      }
+    }
+
+    deserializer.deserialize_str(DistanceUnitVisitor)
   }
 }

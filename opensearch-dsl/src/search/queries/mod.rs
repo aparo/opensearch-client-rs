@@ -46,7 +46,7 @@ use crate::util::*;
 macro_rules! query {
     ($($variant:ident($query:ty)),+ $(,)?) => {
         /// A container enum for supported OpenSearch query types
-        #[derive(Clone, PartialEq, Serialize)]
+        #[derive(Clone, PartialEq, Serialize, Deserialize)]
         #[serde(untagged)]
         #[allow(missing_docs)]
         pub enum Query {

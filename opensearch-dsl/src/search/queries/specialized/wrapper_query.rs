@@ -16,7 +16,7 @@ use crate::{search::*, util::*};
 /// Query::wrapper("eyJ0ZXJtIiA6IHsgInVzZXIuaWQiIDogImtpbWNoeSIgfX0=");
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-wrapper-query.html>
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct WrapperQuery {
   query: String,
@@ -36,6 +36,7 @@ impl Query {
 impl ShouldSkip for WrapperQuery {}
 
 serialize_with_root!("wrapper": WrapperQuery);
+deserialize_with_root!("wrapper": WrapperQuery);
 
 #[cfg(test)]
 mod tests {

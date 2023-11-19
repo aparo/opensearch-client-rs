@@ -16,20 +16,20 @@ use crate::{search::*, util::*};
 /// );
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-script-score-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct ScriptScoreQuery {
   query: Box<Query>,
 
   script: Script,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   min_score: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -59,6 +59,7 @@ impl ScriptScoreQuery {
 impl ShouldSkip for ScriptScoreQuery {}
 
 serialize_with_root!("script_score": ScriptScoreQuery);
+deserialize_with_root!("script_score": ScriptScoreQuery);
 
 #[cfg(test)]
 mod tests {

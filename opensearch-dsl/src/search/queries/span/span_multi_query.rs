@@ -9,7 +9,7 @@ use crate::{util::*, MultiTermQuery, Query};
 /// so it can be nested.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-span-multi-term-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct SpanMultiQuery {
   r#match: Box<MultiTermQuery>,
@@ -18,6 +18,7 @@ pub struct SpanMultiQuery {
 impl ShouldSkip for SpanMultiQuery {}
 
 serialize_with_root!("span_multi": SpanMultiQuery);
+deserialize_with_root!("span_multi": SpanMultiQuery);
 
 impl Query {
   /// Creates an instance of [`SpanMultiQuery`]

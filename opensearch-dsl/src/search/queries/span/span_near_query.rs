@@ -10,15 +10,15 @@ use crate::{util::*, Query, SpanQuery};
 /// unmatched positions permitted.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-span-near-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct SpanNearQuery {
   clauses: Vec<SpanQuery>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   in_order: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   slop: Option<i32>,
 }
 
@@ -60,6 +60,7 @@ impl SpanNearQuery {
 }
 
 serialize_with_root!("span_near": SpanNearQuery);
+deserialize_with_root!("span_near": SpanNearQuery);
 
 #[cfg(test)]
 mod tests {

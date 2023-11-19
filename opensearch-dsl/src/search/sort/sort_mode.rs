@@ -7,7 +7,7 @@
 /// the highest value is picked.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/sort-search-results.html#_sort_mode_option>
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum SortMode {
   /// Pick the lowest value.

@@ -3,7 +3,7 @@ use std::borrow::Cow;
 use crate::util::*;
 
 /// Search text
-#[derive(Default, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize)]
+#[derive(Default, Clone, PartialEq, Eq, PartialOrd, Ord, Deserialize, Serialize)]
 pub struct Text(Option<String>);
 
 impl std::fmt::Debug for Text {

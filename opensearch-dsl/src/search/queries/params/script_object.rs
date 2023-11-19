@@ -9,7 +9,12 @@
 //!
 //! <https://www.elastic.co/guide/en/opensearch/reference/current/modules-scripting.html>
 
-use serde::{Serialize, Serializer};
+use std::fmt;
+
+use serde::{
+  de::{self, Deserialize, Deserializer, Visitor},
+  Serialize, Serializer,
+};
 
 use crate::{util::*, Map};
 
@@ -18,15 +23,15 @@ use crate::{util::*, Map};
 /// script logic (or source, and add parameters that are passed into the script.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/modules-scripting-using.html>
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 pub struct Script {
   #[serde(flatten)]
   source: ScriptSource,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   lang: Option<ScriptLang>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   params: Map<String, serde_json::Value>,
 }
 
@@ -34,7 +39,7 @@ pub struct Script {
 /// `id` for a stored script. Use the
 /// [stored script APIs](https://www.elastic.co/guide/en/opensearch/reference/current/modules-scripting-using.html#prefer-params)
 /// to create and manage stored scripts.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ScriptSource {
   /// Inline script
@@ -144,6 +149,35 @@ impl Serialize for ScriptLang {
       Self::Mustache => serializer.serialize_str("mustache"),
       Self::Custom(lang) => lang.serialize(serializer),
     }
+  }
+}
+
+impl<'de> Deserialize<'de> for ScriptLang {
+  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+  where
+    D: Deserializer<'de>, {
+    struct ScriptLangVisitor;
+
+    impl<'de> Visitor<'de> for ScriptLangVisitor {
+      type Value = ScriptLang;
+
+      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("a string representing a script language")
+      }
+
+      fn visit_str<E>(self, value: &str) -> Result<ScriptLang, E>
+      where
+        E: de::Error, {
+        match value {
+          "painless" => Ok(ScriptLang::Painless),
+          "expression" => Ok(ScriptLang::Expression),
+          "mustache" => Ok(ScriptLang::Mustache),
+          _ => Ok(ScriptLang::Custom(value.to_string())),
+        }
+      }
+    }
+
+    deserializer.deserialize_str(ScriptLangVisitor)
   }
 }
 

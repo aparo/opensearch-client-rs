@@ -8,7 +8,7 @@ use crate::{util::*, Query, SpanQuery};
 /// maximum end position permitted in a match.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-span-first-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct SpanFirstQuery {
   r#match: Box<SpanQuery>,
@@ -30,6 +30,7 @@ impl Query {
 impl ShouldSkip for SpanFirstQuery {}
 
 serialize_with_root!("span_first": SpanFirstQuery);
+deserialize_with_root!("span_first": SpanFirstQuery);
 
 #[cfg(test)]
 mod tests {

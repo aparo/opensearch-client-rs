@@ -12,23 +12,23 @@ use crate::{search::*, util::*};
 /// Query::has_parent("parent", Query::term("tag", "opensearch"));
 /// ```
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/query-dsl-HasParent-query.html>
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct HasParentQuery {
   parent_type: String,
 
   query: Box<Query>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   score: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   ignore_unmapped: Option<bool>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   boost: Option<f32>,
 
-  #[serde(skip_serializing_if = "ShouldSkip::should_skip")]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _name: Option<String>,
 }
 
@@ -92,6 +92,7 @@ impl ShouldSkip for HasParentQuery {
 }
 
 serialize_with_root!("has_parent": HasParentQuery);
+deserialize_with_root!("has_parent": HasParentQuery);
 
 #[cfg(test)]
 mod tests {

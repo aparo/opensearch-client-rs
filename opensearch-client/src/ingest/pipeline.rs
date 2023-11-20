@@ -1,4 +1,4 @@
-use std::{option::Option, vec::Vec};
+use std::{collections::HashMap, option::Option, vec::Vec};
 
 use serde::{Deserialize, Serialize};
 
@@ -20,16 +20,45 @@ impl Pipeline {
   }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(tag = "type")]
 pub enum Processor {
   KeyValueProcessor(KeyValueProcessor),
   SetSecurityUserProcessor(SetSecurityUserProcessor),
   JoinProcessor(JoinProcessor),
   AttachmentProcessor(AttachmentProcessor),
+  ForeachProcessor(ForeachProcessor),
+  CsvProcessor(CsvProcessor),
+  PipelineProcessor(PipelineProcessor),
+  DissectProcessor(DissectProcessor),
+  UserAgentProcessor(UserAgentProcessor),
+  RemoveProcessor(RemoveProcessor),
+  UrlDecodeProcessor(UrlDecodeProcessor),
+  SplitProcessor(SplitProcessor),
+  FailProcessor(FailProcessor),
+  SortProcessor(SortProcessor),
+  // CircleProcessor(CircleProcessor),
+  TrimProcessor(TrimProcessor),
+  ScriptProcessor(ScriptProcessor),
+  JsonProcessor(JsonProcessor),
+  UppercaseProcessor(UppercaseProcessor),
+  DateProcessor(DateProcessor),
+  DotExpanderProcessor(DotExpanderProcessor),
+  LowercaseProcessor(LowercaseProcessor),
+  SetProcessor(SetProcessor),
+  GrokProcessor(GrokProcessor),
+  GsubProcessor(GsubProcessor),
+  ConvertProcessor(ConvertProcessor),
+  GeoIpProcessor(GeoIpProcessor),
+  BytesProcessor(BytesProcessor),
+  InferenceProcessor(InferenceProcessor),
+  RenameProcessor(RenameProcessor),
+  AppendProcessor(AppendProcessor),
+  DateIndexNameProcessor(DateIndexNameProcessor),
+  DropProcessor(DropProcessor),
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct KeyValueProcessor {
   field: String,
   field_split: String,
@@ -63,7 +92,7 @@ pub struct KeyValueProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct SetSecurityUserProcessor {
   field: String,
@@ -81,7 +110,7 @@ pub struct SetSecurityUserProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct JoinProcessor {
   field: String,
   separator: String,
@@ -98,7 +127,7 @@ pub struct JoinProcessor {
   #[serde(default, skip_serializing_if = "Option::is_none")]
   tag: Option<String>,
 }
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct AttachmentProcessor {
   field: String,
@@ -128,11 +157,11 @@ pub struct AttachmentProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct ForeachProcessor {
   field: String,
-  processor: Processor,
+  processor: Box<Processor>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
   ignore_missing: Option<bool>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -147,7 +176,7 @@ pub struct ForeachProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct CsvProcessor {
   field: String,
@@ -174,7 +203,7 @@ pub struct CsvProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct PipelineProcessor {
   name: String,
@@ -192,7 +221,7 @@ pub struct PipelineProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct DissectProcessor {
   field: String,
@@ -213,7 +242,7 @@ pub struct DissectProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct UserAgentProcessor {
   field: String,
@@ -237,7 +266,7 @@ pub struct UserAgentProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct RemoveProcessor {
   field: Vec<String>,
@@ -254,7 +283,7 @@ pub struct RemoveProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct UrlDecodeProcessor {
   field: String,
@@ -274,7 +303,7 @@ pub struct UrlDecodeProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct SplitProcessor {
   field: String,
@@ -297,7 +326,7 @@ pub struct SplitProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct FailProcessor {
   message: String,
@@ -313,7 +342,7 @@ pub struct FailProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct SortProcessor {
   field: String,
@@ -333,7 +362,7 @@ pub struct SortProcessor {
   tag: Option<String>,
 }
 
-// #[derive(Serialize, Deserialize)]
+// #[derive(Debug, Serialize, Deserialize)]
 // #[serde(rename_all = "snake_case")]
 // pub struct CircleProcessor {
 //   field: String,
@@ -355,7 +384,7 @@ pub struct SortProcessor {
 //   tag: Option<String>,
 // }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct TrimProcessor {
   field: String,
@@ -375,7 +404,7 @@ pub struct TrimProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct ScriptProcessor {
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -398,7 +427,7 @@ pub struct ScriptProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct JsonProcessor {
   field: String,
@@ -422,8 +451,7 @@ pub struct JsonProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct UppercaseProcessor {
   field: String,
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -438,6 +466,332 @@ pub struct UppercaseProcessor {
   ignore_failure: Option<bool>,
   #[serde(default, skip_serializing_if = "Vec::is_empty")]
   on_failure: Vec<Processor>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  tag: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct DateProcessor {
+  field: String,
+  formats: Vec<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  locale: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  target_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  timezone: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  description: Option<String>,
+  #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+  if_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_failure: Option<bool>,
+  #[serde(default, skip_serializing_if = "Vec::is_empty")]
+  on_failure: Vec<Processor>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  tag: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct DotExpanderProcessor {
+  field: String,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  path: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  description: Option<String>,
+  #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+  if_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_failure: Option<bool>,
+  #[serde(default, skip_serializing_if = "Vec::is_empty")]
+  on_failure: Vec<Processor>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  tag: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct LowercaseProcessor {
+  field: String,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_missing: Option<bool>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  target_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  description: Option<String>,
+  #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+  if_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_failure: Option<bool>,
+  #[serde(default, skip_serializing_if = "Vec::is_empty")]
+  on_failure: Vec<Processor>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  tag: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct SetProcessor {
+  field: String,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  copy_from: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_empty_value: Option<bool>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  media_type: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  override_field: Option<bool>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  value: Option<serde_json::Value>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  description: Option<String>,
+  #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+  if_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_failure: Option<bool>,
+  #[serde(default, skip_serializing_if = "Vec::is_empty")]
+  on_failure: Vec<Processor>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  tag: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct GrokProcessor {
+  field: String,
+  patterns: Vec<String>,
+  #[serde(default, skip_serializing_if = "HashMap::is_empty")]
+  pattern_definitions: HashMap<String, String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_missing: Option<bool>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  trace_match: Option<bool>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  description: Option<String>,
+  #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+  if_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_failure: Option<bool>,
+  #[serde(default, skip_serializing_if = "Vec::is_empty")]
+  on_failure: Vec<Processor>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  tag: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct GsubProcessor {
+  field: String,
+  pattern: String,
+  replacement: String,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_missing: Option<bool>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  target_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  description: Option<String>,
+  #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+  if_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_failure: Option<bool>,
+  #[serde(default, skip_serializing_if = "Vec::is_empty")]
+  on_failure: Vec<Processor>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  tag: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct ConvertProcessor {
+  field: String,
+  type_field: String,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_missing: Option<bool>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  target_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  description: Option<String>,
+  #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+  if_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_failure: Option<bool>,
+  #[serde(default, skip_serializing_if = "Vec::is_empty")]
+  on_failure: Vec<Processor>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  tag: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct GeoIpProcessor {
+  field: String,
+  #[serde(default, skip_serializing_if = "Vec::is_empty")]
+  properties: Vec<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  database_file: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  first_only: Option<bool>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_missing: Option<bool>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  target_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  description: Option<String>,
+  #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+  if_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_failure: Option<bool>,
+  #[serde(default, skip_serializing_if = "Vec::is_empty")]
+  on_failure: Vec<Processor>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  tag: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct BytesProcessor {
+  field: String,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  target_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_missing: Option<bool>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  description: Option<String>,
+  #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+  if_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_failure: Option<bool>,
+  #[serde(default, skip_serializing_if = "Vec::is_empty")]
+  on_failure: Vec<Processor>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  tag: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct InferenceProcessor {
+  model_id: String,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  target_field: Option<String>,
+  #[serde(default, skip_serializing_if = "HashMap::is_empty")]
+  field_map: HashMap<String, serde_json::Value>,
+  #[serde(default, skip_serializing_if = "HashMap::is_empty")]
+  inference_config: HashMap<String, serde_json::Value>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  description: Option<String>,
+  #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+  if_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_failure: Option<bool>,
+  #[serde(default, skip_serializing_if = "Vec::is_empty")]
+  on_failure: Vec<Processor>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  tag: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct RenameProcessor {
+  field: String,
+  target_field: String,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_missing: Option<bool>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  description: Option<String>,
+  #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+  if_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_failure: Option<bool>,
+  #[serde(default, skip_serializing_if = "Vec::is_empty")]
+  on_failure: Vec<Processor>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  tag: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct AppendProcessor {
+  field: String,
+  value: Vec<serde_json::Value>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  allow_duplicates: Option<bool>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  description: Option<String>,
+  #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+  if_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_failure: Option<bool>,
+  #[serde(default, skip_serializing_if = "Vec::is_empty")]
+  on_failure: Vec<Processor>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  tag: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct DateIndexNameProcessor {
+  field: String,
+  date_rounding: String,
+  #[serde(default, skip_serializing_if = "Vec::is_empty")]
+  date_formats: Vec<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  index_name_format: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  index_name_prefix: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  locale: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  timezone: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  description: Option<String>,
+  #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+  if_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_failure: Option<bool>,
+  #[serde(default, skip_serializing_if = "Vec::is_empty")]
+  on_failure: Vec<Processor>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  tag: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct DropProcessor {
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  description: Option<String>,
+  #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+  if_field: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  ignore_failure: Option<bool>,
+  #[serde(default, skip_serializing_if = "Vec::is_empty")]
+  on_failure: Vec<Processor>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  tag: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct SparseEncodingProcessor {
+  model_id: String,
+  field_map: HashMap<String, String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  description: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  tag: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct TextEmbeddingProcessor {
+  model_id: String,
+  field_map: HashMap<String, String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  description: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  tag: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct TextImageEmbedding {
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  text: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  image: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct TextImageEmbeddingProcessor {
+  model_id: String,
+  embedding: TextImageEmbedding,
+  field_map: HashMap<String, String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  description: Option<String>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
   tag: Option<String>,
 }

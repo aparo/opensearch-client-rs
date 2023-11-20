@@ -28,6 +28,7 @@ mod tools;
 
 use std::sync::{Arc, Mutex};
 
+pub use opensearch_dsl as dsl;
 use opensearch_dsl::{Query, Search, SortCollection, Terms};
 #[allow(unused_imports)]
 use client::{encode_path, encode_path_option_vec_string, RequestBuilderExt};
@@ -3771,7 +3772,7 @@ impl OsClient {
         .body(body)
         .send::<T>()
         .await?;
-      let hits = response.into_inner().hits.unwrap().hits;
+      let hits = response.into_inner().hits.hits;
       let next_state = SearchAfterState {
         stop: (hits.len() as u64) < state.size,
         search_after: hits.iter().last().and_then(|f| {

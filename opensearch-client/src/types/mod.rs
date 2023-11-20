@@ -1364,6 +1364,16 @@ impl<T> HitsMetadata<T> {
   }
 }
 
+impl<T> Default for HitsMetadata<T> {
+  fn default() -> Self {
+    Self {
+      hits: Vec::new(),
+      max_score: None,
+      total: None,
+    }
+  }
+}
+
 ///The document
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct IndexBodyParams(pub serde_json::Value);
@@ -2803,8 +2813,8 @@ impl<'de> serde::Deserialize<'de> for SearchPostScroll {
 
 #[derive(Clone, Debug, Deserialize, Serialize, Default)]
 pub struct SearchResult<T> {
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub hits: Option<HitsMetadata<T>>,
+  #[serde(default)]
+  pub hits: HitsMetadata<T>,
   #[serde(rename = "_scroll_id", default, skip_serializing_if = "Option::is_none")]
   pub scroll_id: Option<String>,
   #[serde(rename = "_shards", default, skip_serializing_if = "Option::is_none")]
@@ -5842,7 +5852,7 @@ pub mod builder {
 
   #[derive(Clone, Debug)]
   pub struct SearchResult<T> {
-    hits: Result<Option<super::HitsMetadata<T>>, String>,
+    hits: Result<super::HitsMetadata<T>, String>,
     scroll_id: Result<Option<String>, String>,
     shards: Result<Option<super::ShardStatistics>, String>,
     timed_out: Result<Option<bool>, String>,
@@ -5852,7 +5862,7 @@ pub mod builder {
   impl<T> Default for SearchResult<T> {
     fn default() -> Self {
       Self {
-        hits: Ok(Default::default()),
+        hits: Ok(super::HitsMetadata::<T>::default()),
         scroll_id: Ok(Default::default()),
         shards: Ok(Default::default()),
         timed_out: Ok(Default::default()),
@@ -5864,7 +5874,7 @@ pub mod builder {
   impl<T2> SearchResult<T2> {
     pub fn hits<T>(mut self, value: T) -> Self
     where
-      T: std::convert::TryInto<Option<super::HitsMetadata<T2>>>,
+      T: std::convert::TryInto<super::HitsMetadata<T2>>,
       T::Error: std::fmt::Display, {
       self.hits = value
         .try_into()

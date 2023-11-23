@@ -1,14 +1,15 @@
 use std::{collections::HashMap, option::Option, vec::Vec};
 
 use serde::{Deserialize, Serialize};
+use serde_json::Map;
 
-#[derive(Default, Serialize, Deserialize)]
+#[derive(Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Pipeline {
   #[serde(default, skip_serializing_if = "Option::is_none")]
   description: Option<String>,
   #[serde(default, rename = "on_failure", skip_serializing_if = "Vec::is_empty")]
   on_failure: Vec<Processor>,
-  #[serde(default, rename = "on_failure", skip_serializing_if = "Vec::is_empty")]
+  #[serde(default, rename = "processors", skip_serializing_if = "Vec::is_empty")]
   processors: Vec<Processor>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
   version: Option<u32>,
@@ -20,45 +21,93 @@ impl Pipeline {
   }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(tag = "type")]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub enum Processor {
+  #[serde(rename = "key_value")]
   KeyValueProcessor(KeyValueProcessor),
+  #[serde(rename = "set_security_user")]
   SetSecurityUserProcessor(SetSecurityUserProcessor),
+  #[serde(rename = "join")]
   JoinProcessor(JoinProcessor),
+  #[serde(rename = "attachment")]
   AttachmentProcessor(AttachmentProcessor),
+  #[serde(rename = "foreach")]
   ForeachProcessor(ForeachProcessor),
+  #[serde(rename = "csv")]
   CsvProcessor(CsvProcessor),
+  #[serde(rename = "pipeline")]
   PipelineProcessor(PipelineProcessor),
+  #[serde(rename = "dissect")]
   DissectProcessor(DissectProcessor),
+  #[serde(rename = "user_agent")]
   UserAgentProcessor(UserAgentProcessor),
+  #[serde(rename = "remove")]
   RemoveProcessor(RemoveProcessor),
+  #[serde(rename = "url_decode")]
   UrlDecodeProcessor(UrlDecodeProcessor),
+  #[serde(rename = "split")]
   SplitProcessor(SplitProcessor),
+  #[serde(rename = "fail")]
   FailProcessor(FailProcessor),
+  #[serde(rename = "sort")]
   SortProcessor(SortProcessor),
   // CircleProcessor(CircleProcessor),
+  #[serde(rename = "trim")]
   TrimProcessor(TrimProcessor),
+  #[serde(rename = "script")]
   ScriptProcessor(ScriptProcessor),
+  #[serde(rename = "json")]
   JsonProcessor(JsonProcessor),
+  #[serde(rename = "uppercase")]
   UppercaseProcessor(UppercaseProcessor),
+  #[serde(rename = "date")]
   DateProcessor(DateProcessor),
+  #[serde(rename = "dot_expander")]
   DotExpanderProcessor(DotExpanderProcessor),
+  #[serde(rename = "lowercase")]
   LowercaseProcessor(LowercaseProcessor),
+  #[serde(rename = "set")]
   SetProcessor(SetProcessor),
+  #[serde(rename = "grok")]
   GrokProcessor(GrokProcessor),
+  #[serde(rename = "gsub")]
   GsubProcessor(GsubProcessor),
+  #[serde(rename = "convert")]
   ConvertProcessor(ConvertProcessor),
+  #[serde(rename = "geo_ip")]
   GeoIpProcessor(GeoIpProcessor),
+  #[serde(rename = "bytes")]
   BytesProcessor(BytesProcessor),
+  #[serde(rename = "inference")]
   InferenceProcessor(InferenceProcessor),
+  #[serde(rename = "rename")]
   RenameProcessor(RenameProcessor),
+  #[serde(rename = "append")]
   AppendProcessor(AppendProcessor),
+  #[serde(rename = "date_index_name")]
   DateIndexNameProcessor(DateIndexNameProcessor),
+  #[serde(rename = "drop")]
   DropProcessor(DropProcessor),
+  #[serde(rename = "sparse_encoding")]
+  SparseEncodingProcessor(SparseEncodingProcessor),
+  #[serde(rename = "text_embedding")]
+  TextEmbeddingProcessor(TextEmbeddingProcessor),
+  #[serde(rename = "text_image_embedding")]
+  TextImageEmbeddingProcessor(TextImageEmbeddingProcessor),
+  #[serde(untagged)]
+  CustomProcessor(CustomProcessor),
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+impl Default for Processor {
+  fn default() -> Self {
+    Processor::CustomProcessor(CustomProcessor::default())
+  }
+}
+
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
+pub struct CustomProcessor(Map<String, serde_json::Value>);
+
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct KeyValueProcessor {
   field: String,
   field_split: String,
@@ -92,7 +141,7 @@ pub struct KeyValueProcessor {
   tag: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub struct SetSecurityUserProcessor {
   field: String,
@@ -110,7 +159,7 @@ pub struct SetSecurityUserProcessor {
   tag: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct JoinProcessor {
   field: String,
   separator: String,
@@ -127,7 +176,7 @@ pub struct JoinProcessor {
   #[serde(default, skip_serializing_if = "Option::is_none")]
   tag: Option<String>,
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub struct AttachmentProcessor {
   field: String,
@@ -157,7 +206,7 @@ pub struct AttachmentProcessor {
   tag: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub struct ForeachProcessor {
   field: String,
@@ -176,7 +225,7 @@ pub struct ForeachProcessor {
   tag: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub struct CsvProcessor {
   field: String,
@@ -203,7 +252,7 @@ pub struct CsvProcessor {
   tag: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub struct PipelineProcessor {
   name: String,
@@ -221,7 +270,7 @@ pub struct PipelineProcessor {
   tag: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub struct DissectProcessor {
   field: String,
@@ -242,7 +291,7 @@ pub struct DissectProcessor {
   tag: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub struct UserAgentProcessor {
   field: String,
@@ -266,7 +315,7 @@ pub struct UserAgentProcessor {
   tag: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub struct RemoveProcessor {
   field: Vec<String>,
@@ -283,7 +332,7 @@ pub struct RemoveProcessor {
   tag: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub struct UrlDecodeProcessor {
   field: String,
@@ -303,7 +352,7 @@ pub struct UrlDecodeProcessor {
   tag: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub struct SplitProcessor {
   field: String,
@@ -326,7 +375,7 @@ pub struct SplitProcessor {
   tag: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub struct FailProcessor {
   message: String,
@@ -342,7 +391,7 @@ pub struct FailProcessor {
   tag: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub struct SortProcessor {
   field: String,
@@ -362,7 +411,7 @@ pub struct SortProcessor {
   tag: Option<String>,
 }
 
-// #[derive(Debug, Serialize, Deserialize)]
+// #[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 // #[serde(rename_all = "snake_case")]
 // pub struct CircleProcessor {
 //   field: String,
@@ -384,7 +433,7 @@ pub struct SortProcessor {
 //   tag: Option<String>,
 // }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub struct TrimProcessor {
   field: String,
@@ -404,7 +453,7 @@ pub struct TrimProcessor {
   tag: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub struct ScriptProcessor {
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -427,7 +476,7 @@ pub struct ScriptProcessor {
   tag: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub struct JsonProcessor {
   field: String,
@@ -451,7 +500,7 @@ pub struct JsonProcessor {
   tag: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct UppercaseProcessor {
   field: String,
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -470,7 +519,7 @@ pub struct UppercaseProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct DateProcessor {
   field: String,
   formats: Vec<String>,
@@ -492,7 +541,7 @@ pub struct DateProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct DotExpanderProcessor {
   field: String,
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -509,7 +558,7 @@ pub struct DotExpanderProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct LowercaseProcessor {
   field: String,
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -528,7 +577,7 @@ pub struct LowercaseProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct SetProcessor {
   field: String,
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -553,7 +602,7 @@ pub struct SetProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct GrokProcessor {
   field: String,
   patterns: Vec<String>,
@@ -575,7 +624,7 @@ pub struct GrokProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct GsubProcessor {
   field: String,
   pattern: String,
@@ -596,7 +645,7 @@ pub struct GsubProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct ConvertProcessor {
   field: String,
   type_field: String,
@@ -616,7 +665,7 @@ pub struct ConvertProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct GeoIpProcessor {
   field: String,
   #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -641,7 +690,7 @@ pub struct GeoIpProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct BytesProcessor {
   field: String,
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -660,7 +709,7 @@ pub struct BytesProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct InferenceProcessor {
   model_id: String,
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -681,7 +730,7 @@ pub struct InferenceProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct RenameProcessor {
   field: String,
   target_field: String,
@@ -699,7 +748,7 @@ pub struct RenameProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct AppendProcessor {
   field: String,
   value: Vec<serde_json::Value>,
@@ -717,7 +766,7 @@ pub struct AppendProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct DateIndexNameProcessor {
   field: String,
   date_rounding: String,
@@ -743,7 +792,7 @@ pub struct DateIndexNameProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct DropProcessor {
   #[serde(default, skip_serializing_if = "Option::is_none")]
   description: Option<String>,
@@ -757,7 +806,7 @@ pub struct DropProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct SparseEncodingProcessor {
   model_id: String,
   field_map: HashMap<String, String>,
@@ -767,7 +816,7 @@ pub struct SparseEncodingProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct TextEmbeddingProcessor {
   model_id: String,
   field_map: HashMap<String, String>,
@@ -777,7 +826,7 @@ pub struct TextEmbeddingProcessor {
   tag: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct TextImageEmbedding {
   #[serde(default, skip_serializing_if = "Option::is_none")]
   text: Option<String>,
@@ -785,13 +834,64 @@ pub struct TextImageEmbedding {
   image: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct TextImageEmbeddingProcessor {
   model_id: String,
-  embedding: TextImageEmbedding,
-  field_map: HashMap<String, String>,
+  embedding: String,
+  field_map: TextImageEmbedding,
   #[serde(default, skip_serializing_if = "Option::is_none")]
   description: Option<String>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
   tag: Option<String>,
+}
+#[cfg(test)]
+mod tests {
+
+  use std::{default, path::PathBuf};
+
+  use serde::de::DeserializeOwned;
+
+  use super::*;
+  fn load_entity<T: DeserializeOwned>(name: &str) -> T {
+    let filename = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(format!("tests/ingest/pipeline.{name}.json"));
+    let text = std::fs::read_to_string(filename).unwrap();
+    serde_json::from_str(&text).unwrap()
+  }
+
+  #[test]
+  fn test_ml_processors() {
+    let decoded: Pipeline = load_entity("ml");
+    let expected = Pipeline {
+      description: Some("A ml pipeline".to_owned()),
+      processors: vec![
+        Processor::SparseEncodingProcessor(SparseEncodingProcessor {
+          model_id: "aP2Q8ooBpBj3wT4HVS8a".to_owned(),
+          field_map: vec![("passage_text".to_owned(), "passage_embedding".to_owned())]
+            .into_iter()
+            .collect(),
+          ..default::Default::default()
+        }),
+        Processor::TextEmbeddingProcessor(TextEmbeddingProcessor {
+          model_id: "bQ1J8ooBpBj3wT4HVUsb".to_owned(),
+          field_map: vec![("passage_text".to_owned(), "passage_embedding".to_owned())]
+            .into_iter()
+            .collect(),
+          ..default::Default::default()
+        }),
+        Processor::TextImageEmbeddingProcessor(TextImageEmbeddingProcessor {
+          model_id: "bQ1J8ooBpBj3wT4HVUsb".to_owned(),
+          embedding: "vector_embedding".to_owned(),
+          field_map: TextImageEmbedding {
+            text: Some("image_description".to_owned()),
+            image: Some("image_binary".to_owned()),
+          },
+          ..default::Default::default()
+        }),
+      ],
+      ..Default::default()
+    };
+    // println!("{}", serde_json::to_string(&expected).unwrap());
+    assert_eq!(decoded.description, Some("A ml pipeline".to_owned()));
+    assert_eq!(decoded, expected);
+  }
 }

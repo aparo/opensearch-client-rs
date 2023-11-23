@@ -84,7 +84,7 @@
   overflowing_literals,
   path_statements,
   patterns_in_fns_without_body,
-  private_in_public,
+  // private_in_public,
   trivial_casts,
   trivial_numeric_casts,
   unconditional_recursion,

@@ -2,27 +2,21 @@ use std::path::PathBuf;
 
 use clap::ValueEnum;
 use opensearch::{indices::types::IndexTemplateMapping, OsClient};
-use opensearch_dsl::{
-  search::sort::{FieldSort, SortCollection},
-  Query,
-};
+
 use async_compression::tokio::{
   bufread::ZstdDecoder,
-  write::{GzipEncoder, ZstdEncoder},
 };
 use serde::{Deserialize, Serialize};
-use serde_json::json;
+
 use tokio::{
   fs::File,
-  io::{self, stderr, stdin, stdout, AsyncBufReadExt, AsyncWriteExt, BufReader, BufWriter, Lines},
+  io::{AsyncBufReadExt, BufReader, Lines},
 };
 use tokio::io::{
-  AsyncBufRead as _,
-  AsyncReadExt as _,  // for `read_to_end`
-  AsyncWriteExt as _, // for `write_all` and `shutdown`
+  AsyncReadExt as _, // for `write_all` and `shutdown`
 };
-use futures::{pin_mut, stream, StreamExt};
-use tracing::{debug, error};
+use futures::{StreamExt};
+use tracing::{error};
 type Decoder<T> = ZstdDecoder<T>;
 
 #[derive(ValueEnum, Copy, Clone, Debug, PartialEq, Eq)]
@@ -92,7 +86,7 @@ impl<'a> Restorer<'a> {
               continue;
             }
           }
-          self.restore_index(&file, &index).await?;
+          self.restore_index(file, &index).await?;
         }
       }
     }
@@ -157,8 +151,8 @@ pub async fn create_lines(file_path: &PathBuf) -> Lines<BufReader<Decoder<BufRea
   let reader = BufReader::new(file);
   let gzip_decoder = ZstdDecoder::new(reader);
   let buf_reader = tokio::io::BufReader::with_capacity(100000, gzip_decoder);
-  let lines = buf_reader.lines();
-  return lines;
+  
+  buf_reader.lines()
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]

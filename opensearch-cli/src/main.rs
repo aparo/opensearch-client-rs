@@ -293,7 +293,7 @@ async fn main() -> anyhow::Result<()> {
         skip_data: *skip_data,
         skip_mapping: *skip_mappings,
         bulk_size: *bulk_size,
-        mode: mode.clone(),
+        mode: *mode,
         index: index.clone(),
         rename_index: rename_index.clone(),
       };

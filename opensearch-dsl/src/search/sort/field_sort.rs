@@ -204,7 +204,7 @@ impl<'de> Deserialize<'de> for FieldSort {
             }
           }
         }
-        if sorter.field != "" {
+        if !sorter.field.is_empty() {
           Ok(sorter)
         } else {
           Err(serde::de::Error::missing_field("required field"))

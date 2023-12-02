@@ -3301,13 +3301,13 @@ impl OsClient {
   /// ```
   pub async fn bulk_index_document<T: Serialize>(
     &self,
-    index: &String,
+    index: &str,
     id: Option<String>,
     body: &T,
   ) -> Result<serde_json::Value, Error> {
     let body_json = serde_json::to_value(body)?;
     let action = BulkAction {
-      index: index.clone(),
+      index: index.to_owned(),
       id: id.clone(),
       pipeline: None,
     };
@@ -3392,15 +3392,15 @@ impl OsClient {
   /// `Error` on failure.
   pub async fn bulk_create_document<T: Serialize>(
     &self,
-    index: &String,
-    id: &String,
+    index: &str,
+    id: &str,
     body: &T,
   ) -> Result<serde_json::Value, Error> {
     let body_json = serde_json::to_value(body)?;
 
     let action = BulkAction {
-      index: index.clone(),
-      id: Some(id.clone()),
+      index: index.to_owned(),
+      id: Some(id.to_owned()),
       pipeline: None,
     };
 
@@ -3422,13 +3422,13 @@ impl OsClient {
   /// `Error` on failure.
   pub async fn bulk_update_document(
     &self,
-    index: &String,
-    id: &String,
+    index: &str,
+    id: &str,
     body: &UpdateAction,
   ) -> Result<serde_json::Value, Error> {
     let action = BulkAction {
-      index: index.clone(),
-      id: Some(id.clone()),
+      index: index.to_owned(),
+      id: Some(id.to_owned()),
       pipeline: None,
     };
     let j = serde_json::to_value(body)?;
@@ -3637,8 +3637,8 @@ impl OsClient {
   /// `std::default::Default` traits.
   pub async fn get_typed<T: DeserializeOwned + std::default::Default>(
     &self,
-    index: &String,
-    id: &String,
+    index: &str,
+    id: &str,
   ) -> Result<types::GetResponseContent<T>, Error> {
     let response = self.get().index(index).id(id).send::<T>().await?;
     let result = response.into_inner();
@@ -3682,8 +3682,8 @@ impl OsClient {
   /// ```
   pub async fn update_document(
     &self,
-    index: &String,
-    id: &String,
+    index: &str,
+    id: &str,
     action: &UpdateAction,
   ) -> Result<types::IndexResponse, Error> {
     let body = serde_json::to_value(&action)?;
@@ -3694,7 +3694,7 @@ impl OsClient {
 
   pub async fn search_typed<T: DeserializeOwned + std::default::Default>(
     &self,
-    index: &String,
+    index: &str,
     search: Search,
   ) -> Result<types::SearchResult<T>, Error> {
     let response = self.search().index(index).body(search).send().await?;

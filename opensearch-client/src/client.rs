@@ -257,6 +257,9 @@ impl Display for ReqwestResponse {
 /// if there are no structured returns expected.
 #[derive(Error, Debug)]
 pub enum Error {
+  // Generic Internal Error
+  #[error("Internal Error: {0}")]
+  InternalError(String),
   /// The request did not conform to API requirements.
   #[error("Invalid request: {0}")]
   InvalidRequest(String),

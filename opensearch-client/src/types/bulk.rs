@@ -1,12 +1,12 @@
 use std::collections::HashMap;
 
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 use super::ShardStatistics;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
-pub struct UpdateAction {
+pub struct UpdateActionBody {
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub doc: Option<Value>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -33,14 +33,55 @@ pub struct IndexResponse {
   pub primary_term: i64,
 }
 
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum BulkAction {
+  #[serde(rename = "index")]
+  Index(IndexAction),
+  #[serde(rename = "create")]
+  Create(CreateAction),
+  #[serde(rename = "update")]
+  Update(UpdateAction),
+  #[serde(rename = "delete")]
+  Delete(DeleteAction),
+}
+
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
-pub struct BulkAction {
-  #[serde(rename = "_id")]
-  pub id: Option<String>,
+pub struct IndexAction {
   #[serde(rename = "_index")]
   pub index: String,
+  #[serde(rename = "_id")]
+  pub id: Option<String>,
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub pipeline: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
+pub struct CreateAction {
+  #[serde(rename = "_index")]
+  pub index: String,
+  #[serde(rename = "_id")]
+  pub id: String,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  pub pipeline: Option<String>,
+}
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
+pub struct UpdateAction {
+  #[serde(rename = "_index")]
+  pub index: String,
+  #[serde(rename = "_id")]
+  pub id: String,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  pub pipeline: Option<String>,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  pub script: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
+pub struct DeleteAction {
+  #[serde(rename = "_index")]
+  pub index: String,
+  #[serde(rename = "_id")]
+  pub id: String,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]

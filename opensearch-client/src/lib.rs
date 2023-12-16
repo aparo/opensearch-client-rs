@@ -1,6 +1,7 @@
 mod client;
 mod credentials;
 mod auth_middleware;
+mod bulker;
 #[cfg(feature = "cat")]
 mod cat;
 #[cfg(feature = "cluster")]
@@ -28,6 +29,7 @@ mod tools;
 
 use std::sync::{Arc, Mutex};
 
+use bulker::Bulker;
 pub use opensearch_dsl as dsl;
 use opensearch_dsl::{Query, Search, SortCollection, Terms};
 #[allow(unused_imports)]
@@ -36,8 +38,9 @@ pub use client::{ByteStream, Error, ResponseValue};
 #[allow(unused_imports)]
 use reqwest::header::{HeaderMap, HeaderValue};
 use serde::{de::DeserializeOwned, Serialize};
+use tokio::task::JoinHandle;
 use tracing::{debug, info};
-use types::bulk::{BulkAction, BulkResponse, UpdateAction};
+use types::bulk::{BulkAction, BulkResponse, CreateAction, DeleteAction, IndexAction, UpdateAction, UpdateActionBody};
 use futures::{
   stream::{self, StreamExt},
   Stream,
@@ -3304,14 +3307,14 @@ impl OsClient {
     index: &str,
     id: Option<String>,
     body: &T,
-  ) -> Result<serde_json::Value, Error> {
+  ) -> Result<(), Error> {
     let body_json = serde_json::to_value(body)?;
-    let action = BulkAction {
+    let action = BulkAction::Index(IndexAction {
       index: index.to_owned(),
       id: id.clone(),
       pipeline: None,
-    };
-    self.bulk_action("index", action, Some(&body_json)).await
+    });
+    self.bulk_action(action, Some(&body_json)).await
   }
 
   /// Sends a bulk action to the OpenSearch server.
@@ -3343,15 +3346,8 @@ impl OsClient {
   ///   Ok(())
   /// }
   /// ```
-  pub async fn bulk_action(
-    &self,
-    command: &str,
-    action: BulkAction,
-    body: Option<&serde_json::Value>,
-  ) -> Result<serde_json::Value, Error> {
-    let mut m: serde_json::Map<String, serde_json::Value> = serde_json::Map::new();
-    m.insert(command.to_owned(), serde_json::json!(action));
-    let j = serde_json::to_string(&serde_json::Value::Object(m.clone()))?;
+  pub async fn bulk_action(&self, action: BulkAction, body: Option<&serde_json::Value>) -> Result<(), Error> {
+    let j = serde_json::to_string(&action)?;
     let bulker_arc = Arc::clone(&self.bulker);
     let mut bulker = bulker_arc.lock().unwrap();
     bulker.push_str(j.as_str());
@@ -3373,7 +3369,7 @@ impl OsClient {
       drop(bulker);
       self.flush_bulk().await?;
     }
-    Ok(serde_json::Value::Object(m))
+    Ok(())
   }
 
   /// Sends a bulk create request to the OpenSearch cluster with the specified
@@ -3390,21 +3386,16 @@ impl OsClient {
   ///
   /// Returns a `Result` containing a `serde_json::Value` on success, or an
   /// `Error` on failure.
-  pub async fn bulk_create_document<T: Serialize>(
-    &self,
-    index: &str,
-    id: &str,
-    body: &T,
-  ) -> Result<serde_json::Value, Error> {
+  pub async fn bulk_create_document<T: Serialize>(&self, index: &str, id: &str, body: &T) -> Result<(), Error> {
     let body_json = serde_json::to_value(body)?;
 
-    let action = BulkAction {
+    let action = BulkAction::Create(CreateAction {
       index: index.to_owned(),
-      id: Some(id.to_owned()),
-      pipeline: None,
-    };
+      id: id.to_owned(),
+      ..Default::default()
+    });
 
-    self.bulk_action("create", action, Some(&body_json)).await
+    self.bulk_action(action, Some(&body_json)).await
   }
 
   /// Asynchronously updates a document in bulk.
@@ -3420,19 +3411,14 @@ impl OsClient {
   ///
   /// Returns a `Result` containing a `serde_json::Value` on success, or an
   /// `Error` on failure.
-  pub async fn bulk_update_document(
-    &self,
-    index: &str,
-    id: &str,
-    body: &UpdateAction,
-  ) -> Result<serde_json::Value, Error> {
-    let action = BulkAction {
+  pub async fn bulk_update_document(&self, index: &str, id: &str, body: &UpdateActionBody) -> Result<(), Error> {
+    let action = BulkAction::Update(UpdateAction {
       index: index.to_owned(),
-      id: Some(id.to_owned()),
-      pipeline: None,
-    };
+      id: id.to_owned(),
+      ..Default::default()
+    });
     let j = serde_json::to_value(body)?;
-    self.bulk_action("update", action, Some(&j)).await
+    self.bulk_action(action, Some(&j)).await
   }
 
   /// Sends a bulk request to the OpenSearch server and returns a
@@ -3690,6 +3676,10 @@ impl OsClient {
 
     let response = self.update().body(body).index(index).id(id).send().await?;
     Ok(response.into_inner())
+  }
+
+  pub fn get_bulker(&self, bulk_size: u32, max_concurrent_connections: u32) -> (JoinHandle<()>, Bulker) {
+    Bulker::new(Arc::new(self.clone()), bulk_size, max_concurrent_connections)
   }
 
   pub async fn search_typed<T: DeserializeOwned + std::default::Default>(

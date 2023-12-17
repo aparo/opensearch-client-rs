@@ -1,10 +1,12 @@
 [workspace]
 members = [
+  "opensearch-testcontainer",
   "opensearch-dsl",
   "opensearch-client",
   "opensearch-cli",
   "xtask",
   "examples/*",
+  "opensearch-testcontainer",
 ]
 resolver = "2"
 

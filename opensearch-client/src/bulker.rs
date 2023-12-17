@@ -1,17 +1,45 @@
 use std::sync::{Arc, Mutex};
 
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use tokio::{
   sync::mpsc,
   task::JoinHandle,
   time::{sleep, Duration},
 };
-use tracing::debug;
+use tracing::{debug, error};
 
 use crate::{
   types::bulk::{BulkAction, CreateAction, DeleteAction, IndexAction, UpdateAction, UpdateActionBody},
   Error, OsClient,
 };
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct BulkerStatistic {
+  // Number of deleted actions
+  pub delete_actions: u64,
+  // Number of created actions
+  pub create_actions: u64,
+  // Number of updated actions
+  pub update_actions: u64,
+  // Number of index actions
+  pub index_actions: u64,
+  // Number of records in the queue
+  pub queue_size: usize,
+  // Number of running Reqwest calls
+  pub running_reqwest_calls: usize,
+  // Number of total Reqwest calls
+  pub total_reqwest_calls: usize,
+  // Number of finished Reqwest calls
+  pub finished_reqwest_calls: usize,
+  // Number of error calls
+  pub error_reqwest_calls: usize,
+  // Number of action without errors
+  pub success_actions: usize,
+  // Number of action with errors
+  pub error_actions: usize,
+  // Number of creation action with errors
+  pub error_create_actions: usize,
+}
 
 #[derive(Debug, Clone)]
 struct Action {
@@ -73,6 +101,8 @@ pub struct Bulker {
   bulk_size: u32,
   // Max parallel bulks
   max_concurrent_connections: u32,
+  // statistics
+  statistics: Arc<Mutex<BulkerStatistic>>,
 }
 
 impl Bulker {
@@ -80,12 +110,14 @@ impl Bulker {
   /// instance to interact with it
   pub fn new(os_client: Arc<OsClient>, bulk_size: u32, max_concurrent_connections: u32) -> (JoinHandle<()>, Bulker) {
     let (sender, receiver) = mpsc::channel::<Action>((bulk_size * (max_concurrent_connections + 1)) as usize);
+    let statistics = Arc::new(Mutex::new(BulkerStatistic::default()));
     let service = Bulker {
       bulk_size,
       max_concurrent_connections,
       sender,
       os_client: os_client.clone(),
       queue: Arc::new(Mutex::new(Vec::new())),
+      statistics: statistics.clone(),
     };
     let queue = service.queue.clone();
     let o_client = os_client.clone();
@@ -97,11 +129,17 @@ impl Bulker {
         o_client,
         bulk_size as usize,
         max_concurrent_connections as usize,
+        statistics.clone(),
       )
-      .await;
+      .await
+      .unwrap();
     });
 
     (handle, service)
+  }
+
+  pub fn statistics(&self) -> BulkerStatistic {
+    self.statistics.lock().unwrap().clone()
   }
 
   /// Sends a bulk index request to OpenSearch with the specified index, id and
@@ -131,6 +169,7 @@ impl Bulker {
       .await
       .map_err(|e| Error::InternalError(format!("{}", e)))?;
 
+    self.statistics.lock().unwrap().index_actions += 1;
     Ok(())
   }
 
@@ -161,6 +200,7 @@ impl Bulker {
       })
       .await
       .map_err(|e| Error::InternalError(format!("{}", e)))?;
+    self.statistics.lock().unwrap().create_actions += 1;
     Ok(())
   }
 
@@ -186,6 +226,7 @@ impl Bulker {
       .send(Action { action, document: None })
       .await
       .map_err(|e| Error::InternalError(format!("{}", e)))?;
+    self.statistics.lock().unwrap().delete_actions += 1;
     Ok(())
   }
 
@@ -216,7 +257,27 @@ impl Bulker {
       })
       .await
       .map_err(|e| Error::InternalError(format!("{}", e)))?;
+    self.statistics.lock().unwrap().update_actions += 1;
     Ok(())
+  }
+
+  // wait that every reqwest is completed
+  pub async fn flush(&self) {
+    loop {
+      self.refresh_queue_size();
+      let statistics = self.statistics.lock().unwrap();
+      if statistics.finished_reqwest_calls == statistics.total_reqwest_calls && statistics.queue_size == 0 {
+        break;
+      }
+      drop(statistics);
+      sleep(Duration::from_secs(1)).await;
+    }
+  }
+
+  fn refresh_queue_size(&self) {
+    // we fresh the queue size
+    let mut statistics = self.statistics.lock().unwrap();
+    statistics.queue_size = self.queue.lock().unwrap().len();
   }
 }
 
@@ -228,7 +289,7 @@ impl Drop for Bulker {
         let records_to_process: Vec<Action> = self.queue.lock().unwrap().clone();
         if records_to_process.len() > 0 {
           debug!("Bulker: Processing remaining records: {:?}", records_to_process.len());
-          make_reqwest_calls(self.os_client.clone(), records_to_process).await;
+          make_reqwest_calls(self.os_client.clone(), records_to_process, self.statistics.clone()).await;
         }
         // Clear the queue
         self.queue.lock().unwrap().clear();
@@ -243,9 +304,10 @@ async fn process_queue(
   os_client: Arc<OsClient>,
   bulk_size: usize,
   max_concurrent_connections: usize,
+  statistics: Arc<Mutex<BulkerStatistic>>,
 ) -> Result<(), Error> {
   let mut reqwest_calls: Vec<tokio::task::JoinHandle<()>> = Vec::new();
-
+  let mut start = std::time::Instant::now();
   loop {
     tokio::select! {
         // Handle incoming JSON records
@@ -255,17 +317,29 @@ async fn process_queue(
 
             // Check conditions for making async Reqwest calls
             let queue_size = queue.lock().unwrap().len();
-            let elapsed_time = reqwest_calls.iter().filter(|task| !task.is_finished()).count();
+            let running_reqwest_calls = reqwest_calls.iter().filter(|task| !task.is_finished()).count();
+            {
+                let mut statistics = statistics.lock().unwrap();
+                statistics.queue_size = queue_size;
+                statistics.running_reqwest_calls = running_reqwest_calls;
+            }
+            let end= std::time::Instant::now();
 
-            if queue_size >= bulk_size || (queue_size > 0 && elapsed_time <= max_concurrent_connections) {
+            if (queue_size >= bulk_size && running_reqwest_calls <= max_concurrent_connections) || (queue_size > 0 && end.duration_since(start).as_secs() > 1 && running_reqwest_calls <= max_concurrent_connections) {
                 // Clone the records from the queue to process asynchronously
                 let records_to_process: Vec<Action> = queue.lock().unwrap().clone();
 
                 // Clear the queue
                 queue.lock().unwrap().clear();
+                {
+                  let mut statistics = statistics.lock().unwrap();
+                  statistics.total_reqwest_calls += 1;
+                  statistics.queue_size = 0;
+                }
 
                 // Spawn an async task to make the Reqwest calls
-                reqwest_calls.push(tokio::spawn(make_reqwest_calls(os_client.clone(), records_to_process)));
+                reqwest_calls.push(tokio::spawn(make_reqwest_calls(os_client.clone(), records_to_process, statistics.clone())));
+                start= std::time::Instant::now();
             }
         }
         // Handle elapsed time for Reqwest calls
@@ -273,11 +347,42 @@ async fn process_queue(
             reqwest_calls.retain(|task| !task.is_finished());
         }
     }
+    // Check if all the records have been processed or timeout to send data
+    {
+      let end = std::time::Instant::now();
+      let queue_size = queue.lock().unwrap().len();
+      let running_reqwest_calls = reqwest_calls.iter().filter(|task| !task.is_finished()).count();
+      if (queue_size >= bulk_size && running_reqwest_calls <= max_concurrent_connections)
+        || (queue_size > 0
+          && end.duration_since(start).as_secs() > 1
+          && running_reqwest_calls <= max_concurrent_connections)
+      {
+        // Clone the records from the queue to process asynchronously
+        let records_to_process: Vec<Action> = queue.lock().unwrap().clone();
+
+        // Clear the queue
+        queue.lock().unwrap().clear();
+        {
+          let mut statistics = statistics.lock().unwrap();
+          statistics.total_reqwest_calls += 1;
+          statistics.queue_size = 0;
+        }
+
+        // Spawn an async task to make the Reqwest calls
+        reqwest_calls.push(tokio::spawn(make_reqwest_calls(
+          os_client.clone(),
+          records_to_process,
+          statistics.clone(),
+        )));
+        start = std::time::Instant::now();
+      }
+    }
   }
 }
 
-async fn make_reqwest_calls(os_client: Arc<OsClient>, records: Vec<Action>) {
+async fn make_reqwest_calls(os_client: Arc<OsClient>, records: Vec<Action>, statistics: Arc<Mutex<BulkerStatistic>>) {
   let mut bulker = String::new();
+  let total = &records.len();
 
   for record in records {
     let j = serde_json::to_string(&record.action).unwrap();
@@ -291,14 +396,74 @@ async fn make_reqwest_calls(os_client: Arc<OsClient>, records: Vec<Action>) {
 
   match os_client.bulk().body(bulker).send().await {
     Ok(response) => {
+      let mut statistics = statistics.lock().unwrap();
+      statistics.finished_reqwest_calls += 1;
       if response.status().is_success() {
-        println!("Request successful for record: {:?}", response.into_inner().items.len());
+        let bulk_response = response.into_inner();
+        statistics.success_actions += bulk_response.count_ok();
+        statistics.error_actions += bulk_response.count_errors();
+        statistics.error_create_actions += bulk_response.count_create_errors();
+        debug!("Request successful for record: {:?}", &bulk_response.items.len());
       } else {
-        println!("Request failed for record: {:?}", response.into_inner().items.len());
+        statistics.error_reqwest_calls += 1;
+        statistics.error_actions += total;
+        error!("Request failed for record: {:?}", response.into_inner().items.len());
       }
     }
     Err(e) => {
-      eprintln!("Error making Reqwest call: {:?}", e);
+      let mut statistics = statistics.lock().unwrap();
+      statistics.total_reqwest_calls += 1;
+      statistics.finished_reqwest_calls += 1;
+      statistics.error_reqwest_calls += 1;
+      statistics.error_actions += total;
+      let message = format!("Error making Reqwest call: {:?}", e);
+      error!(message);
     }
+  }
+}
+
+#[cfg(test)]
+mod tests {
+  use serde_json::json;
+  use testcontainers::clients;
+  use opensearch_testcontainer::*;
+  use tracing_test::traced_test;
+
+  use crate::{url::Url, OsClientBuilder};
+
+  #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+  #[traced_test]
+  async fn bulker_ingester() -> Result<(), Box<dyn std::error::Error>> {
+    let docker = clients::Cli::default();
+    let os_image = OpenSearch::default();
+    let node = docker.run(os_image.clone());
+    let host_port = node.get_host_port_ipv4(9200);
+
+    let client = OsClientBuilder::new()
+      .accept_invalid_certificates(true)
+      .base_url(Url::parse(&format!("https://127.0.0.1:{host_port}")).unwrap())
+      .basic_auth(os_image.username(), os_image.password())
+      .build();
+
+    let bulker = client.bulker().bulk_size(1000).max_concurrent_connections(10).build();
+    for i in 0..10000 {
+      bulker
+        .index("test", &json!({"id":i}), Some(i.to_string()))
+        .await
+        .unwrap();
+    }
+    bulker.flush().await;
+    let statitics = bulker.statistics();
+    drop(bulker);
+
+    assert_eq!(statitics.index_actions, 10000);
+    assert_eq!(statitics.create_actions, 0);
+    assert_eq!(statitics.delete_actions, 0);
+    assert_eq!(statitics.update_actions, 0);
+    client.indices().refresh_post().send().await.unwrap();
+
+    let count = client.count().index("test").send().await.unwrap().into_inner();
+    assert_eq!(count.count, 10000);
+    Ok(())
   }
 }

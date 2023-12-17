@@ -30,11 +30,22 @@
     "tools"
   ],
   "rust-analyzer.linkedProjects": [
-    "./opensearch-client/Cargo.toml",
-    "./opensearch-client/Cargo.toml",
-    "./opensearch-client/Cargo.toml",
-    "./opensearch-client/Cargo.toml",
     "./opensearch-client/Cargo.toml"
   ],
-  "rust-analyzer.showUnlinkedFileNotification": false
+  "rust-analyzer.showUnlinkedFileNotification": false,
+  "rust-analyzer.runnables.extraEnv": [
+    {
+        // "mask": null, // null mask means that this rule will be applied for all runnables
+        "env": {
+            //  "APP_ID": "1",
+            //  "APP_DATA": "asdf"
+        }
+    },
+    {
+        "mask": "^test.*",
+        "env": {
+             "RUST_LOG": "all"
+        }
+    }
+]
 }

@@ -7,6 +7,20 @@
     {
       "type": "lldb",
       "request": "launch",
+      "name": "opensearch-client: Debug unit tests in library",
+      "cargo": {
+        "args": ["test", "--no-run", "--lib", "--package=opensearch"],
+        "filter": {
+          "name": "opensearch",
+          "kind": "lib"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}/opensearch-client"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
       "name": "Dump",
       "cargo": {
         "args": ["build", "--bin=opensearch-cli", "--package=opensearch-cli"],

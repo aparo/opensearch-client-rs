@@ -91,6 +91,32 @@ pub struct BulkResponse {
   pub items: Vec<HashMap<String, BulkItemResponse>>,
 }
 
+impl BulkResponse {
+  pub fn is_ok(&self) -> bool {
+    !self.errors
+  }
+
+  pub fn count_errors(&self) -> usize {
+    self
+      .items
+      .iter()
+      .filter(|i| i.values().any(|i| i.status >= 400))
+      .count()
+  }
+
+  pub fn count_ok(&self) -> usize {
+    self.items.iter().filter(|i| i.values().all(|i| i.status < 400)).count()
+  }
+
+  pub fn count_create_errors(&self) -> usize {
+    self
+      .items
+      .iter()
+      .filter(|i| i.values().any(|i| i.status == 409))
+      .count()
+  }
+}
+
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
 pub struct BulkError {
   #[serde(rename = "_index")]

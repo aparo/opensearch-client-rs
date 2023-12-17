@@ -1,7 +1,7 @@
 #[allow(unused_imports)]
 use std::convert::TryFrom;
 
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 pub mod bulk;
 pub use bulk::{BulkAction, BulkError, BulkItemResponse, BulkResponse, IndexResponse, UpdateAction};
 
@@ -257,6 +257,14 @@ impl std::convert::TryFrom<String> for Conflicts {
   fn try_from(value: String) -> Result<Self, &'static str> {
     value.parse()
   }
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct CountResponse {
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  pub _shards: Option<ShardStatistics>,
+  #[serde(default)]
+  pub count: u32,
 }
 
 ///Query to restrict the results specified with the Query DSL (optional)

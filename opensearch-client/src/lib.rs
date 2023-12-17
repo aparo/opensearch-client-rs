@@ -1,3 +1,5 @@
+pub extern crate url;
+
 mod client;
 mod credentials;
 mod auth_middleware;
@@ -29,7 +31,7 @@ mod tools;
 
 use std::sync::{Arc, Mutex};
 
-use bulker::Bulker;
+use bulker::{Bulker, BulkerBuilder};
 pub use opensearch_dsl as dsl;
 use opensearch_dsl::{Query, Search, SortCollection, Terms};
 #[allow(unused_imports)]
@@ -128,25 +130,29 @@ impl OsClientBuilder {
     self
   }
 
-  pub fn basic_auth(mut self, baseurl: Url, username: String, password: Option<String>) -> Self {
+  pub fn basic_auth(mut self, username: impl Into<String>, password: impl Into<String>) -> Self {
     self.credentials.insert(
-      auth_middleware::nerf_dart(&baseurl),
-      Credentials::Basic { username, password },
+      auth_middleware::nerf_dart(&self.baseurl),
+      Credentials::Basic {
+        username: username.into(),
+        password: Some(password.into()),
+      },
     );
     self
   }
 
-  pub fn token_auth(mut self, baseurl: Url, token: String) -> Self {
-    self
-      .credentials
-      .insert(auth_middleware::nerf_dart(&baseurl), Credentials::Token(token));
+  pub fn token_auth(mut self, token: impl Into<String>) -> Self {
+    self.credentials.insert(
+      auth_middleware::nerf_dart(&self.baseurl),
+      Credentials::Token(token.into()),
+    );
     self
   }
 
-  pub fn legacy_auth(mut self, baseurl: Url, legacy_auth_token: String) -> Self {
+  pub fn legacy_auth(mut self, legacy_auth_token: impl Into<String>) -> Self {
     self.credentials.insert(
-      auth_middleware::nerf_dart(&baseurl),
-      Credentials::EncodedBasic(legacy_auth_token),
+      auth_middleware::nerf_dart(&self.baseurl),
+      Credentials::EncodedBasic(legacy_auth_token.into()),
     );
     self
   }
@@ -340,7 +346,7 @@ impl OsClient {
     if accept_invalid_certificates {
       builder = builder.accept_invalid_certificates(true);
     }
-    builder = builder.basic_auth(Url::parse(&server)?, user, Some(password));
+    builder = builder.basic_auth(user, password);
 
     if let Ok(max_bulk_size) = std::env::var("OPENSEARCH_MAX_BULK_SIZE") {
       match max_bulk_size.parse::<u32>() {
@@ -1801,7 +1807,7 @@ impl OsClient {
   ///   shard, upon reaching which the query execution will terminate early.
   /// - `body`
   ///```ignore
-  /// let response = client.count_post_with_index()
+  /// let response = client.count()
   ///    .index(index)
   ///    .allow_no_indices(allow_no_indices)
   ///    .analyze_wildcard(analyze_wildcard)
@@ -1821,7 +1827,7 @@ impl OsClient {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn count_post_with_index(&self) -> builder::Count {
+  pub fn count(&self) -> builder::Count {
     builder::Count::new(self)
   }
 
@@ -3680,6 +3686,10 @@ impl OsClient {
 
   pub fn get_bulker(&self, bulk_size: u32, max_concurrent_connections: u32) -> (JoinHandle<()>, Bulker) {
     Bulker::new(Arc::new(self.clone()), bulk_size, max_concurrent_connections)
+  }
+
+  pub fn bulker(&self) -> BulkerBuilder {
+    BulkerBuilder::new(Arc::new(self.clone()), self.max_bulk_size)
   }
 
   pub async fn search_typed<T: DeserializeOwned + std::default::Default>(

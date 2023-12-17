@@ -172,7 +172,7 @@ async fn main() -> anyhow::Result<()> {
   let client = {
     let url = Url::parse(cli.server.clone().as_str())?;
     let mut builder = opensearch::OsClientBuilder::new().base_url(url.clone());
-    builder = builder.basic_auth(url, cli.user.clone(), Some(cli.password.clone()));
+    builder = builder.basic_auth(cli.user.clone(), cli.password.clone());
     builder.build()
   };
 

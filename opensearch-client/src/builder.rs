@@ -5555,9 +5555,9 @@ impl<'a> UpdateByQueryRethrottle<'a> {
   }
 }
 
-///Builder for [`Client::count_post_with_index`]
+///Builder for [`Client::count`]
 ///
-///[`Client::count_post_with_index`]: super::OsClient::count_post_with_index
+///[`Client::count`]: super::OsClient::count
 #[derive(Debug, Clone)]
 pub struct Count<'a> {
   client: &'a super::OsClient,
@@ -5576,7 +5576,7 @@ pub struct Count<'a> {
   q: Result<Option<String>, String>,
   routing: Result<Option<Vec<String>>, String>,
   terminate_after: Result<Option<i32>, String>,
-  body: Result<types::CountBodyParams, String>,
+  body: Result<Search, String>,
 }
 
 impl<'a> Count<'a> {
@@ -5598,16 +5598,26 @@ impl<'a> Count<'a> {
       q: Ok(None),
       routing: Ok(None),
       terminate_after: Ok(None),
-      body: Err("body was not initialized".to_string()),
+      body: Ok(Search::default()),
     }
   }
 
-  pub fn index<V>(mut self, value: V) -> Self
+  pub fn indices<V>(mut self, value: V) -> Self
   where
     V: std::convert::TryInto<Vec<types::OpenSearchNameValue>>, {
     self.index = value
       .try_into()
       .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string());
+    self
+  }
+
+  pub fn index<V>(mut self, value: V) -> Self
+  where
+    V: std::convert::TryInto<types::OpenSearchNameValue>, {
+    self.index = value
+      .try_into()
+      .map_err(|_| "conversion to `OpenSearchNameValue` for index failed".to_string())
+      .map(|i| vec![i]);
     self
   }
 
@@ -5753,7 +5763,7 @@ impl<'a> Count<'a> {
 
   pub fn body<V>(mut self, value: V) -> Self
   where
-    V: std::convert::TryInto<types::CountBodyParams>, {
+    V: std::convert::TryInto<Search>, {
     self.body = value
       .try_into()
       .map_err(|_| "conversion to `CountBodyParams` for body failed".to_string());
@@ -5761,7 +5771,7 @@ impl<'a> Count<'a> {
   }
 
   ///Sends a `POST` request to `/{index}/_count`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
+  pub async fn send(self) -> Result<ResponseValue<types::CountResponse>, Error> {
     let Self {
       client,
       index,
@@ -5850,7 +5860,7 @@ impl<'a> Count<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
+      200u16 => ResponseValue::from_response(response).await,
       _ => {
         Err(Error::UnexpectedResponse(
           ReqwestResponse::from_response(response).await,

@@ -35,12 +35,12 @@ impl OpenSearch {
     self
   }
 
-  pub fn username(&self) -> &str {
-    self.username.as_str()
+  pub fn username(&self) -> String {
+    self.username.to_owned()
   }
 
-  pub fn password(&self) -> &str {
-    self.password.as_str()
+  pub fn password(&self) -> String {
+    self.password.to_owned()
   }
 }
 
@@ -62,7 +62,7 @@ impl Image for OpenSearch {
   type Args = ();
 
   fn name(&self) -> String {
-    NAME.to_owned()
+    self.image_name.to_owned()
   }
 
   fn tag(&self) -> String {
@@ -70,7 +70,10 @@ impl Image for OpenSearch {
   }
 
   fn ready_conditions(&self) -> Vec<WaitFor> {
-    vec![WaitFor::message_on_stdout("[YELLOW] to [GREEN]")]
+    vec![
+      WaitFor::message_on_stdout("[YELLOW] to [GREEN]"),
+      WaitFor::message_on_stdout("ML configuration initialized successfully"),
+    ]
   }
 
   fn env_vars(&self) -> Box<dyn Iterator<Item = (&String, &String)> + '_> {
@@ -84,7 +87,7 @@ impl Image for OpenSearch {
 
 #[cfg(test)]
 mod tests {
-  use testcontainers::{clients, RunnableImage};
+  use testcontainers::clients;
 
   use crate::OpenSearch as OpenSearchImage;
 
@@ -92,7 +95,7 @@ mod tests {
   fn opensearch_default() {
     let docker = clients::Cli::default();
     let os_image = OpenSearchImage::default();
-    let node = docker.run(os_image.clone());
+    let node: testcontainers::Container<'_, OpenSearchImage> = docker.run(os_image.clone());
     let host_port = node.get_host_port_ipv4(9200);
 
     let client = reqwest::blocking::Client::builder()

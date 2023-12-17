@@ -44,6 +44,10 @@ walkdir = { version = "2.4.0", optional = true }
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 http-cache-reqwest = "0.12.0"
 
+[dev-dependencies]
+opensearch-testcontainer = { path = "../opensearch-testcontainer/" }
+testcontainers = "0.15.0"
+
 [features]
 default = [
     "cat",

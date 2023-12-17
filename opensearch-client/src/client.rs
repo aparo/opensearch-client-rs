@@ -8,10 +8,7 @@ use std::{
 use bytes::Bytes;
 use futures::Stream;
 use reqwest::RequestBuilder;
-use serde::{
-  de::{value, DeserializeOwned},
-  Serialize,
-};
+use serde::{de::DeserializeOwned, Serialize};
 use thiserror::Error;
 
 #[cfg(not(target_arch = "wasm32"))]

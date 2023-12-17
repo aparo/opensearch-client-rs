@@ -6,6 +6,7 @@ use tokio::{
   task::JoinHandle,
   time::{sleep, Duration},
 };
+use tracing::debug;
 
 use crate::{
   types::bulk::{BulkAction, CreateAction, DeleteAction, IndexAction, UpdateAction, UpdateActionBody},
@@ -17,8 +18,50 @@ struct Action {
   action: BulkAction,
   document: Option<String>,
 }
+// BulkerBuilder is a helper struct to build a Bulker instance.
+#[derive(Debug, Clone)]
+pub struct BulkerBuilder {
+  // OpenSearch Client
+  os_client: Arc<OsClient>,
+  // Max items for bulk
+  bulk_size: u32,
+  // Max parallel bulks
+  max_concurrent_connections: u32,
+}
 
-/// Runner for translation
+impl BulkerBuilder {
+  /// Create a new BulkerBuilder instance.
+  pub fn new(os_client: Arc<OsClient>, bulk_size: u32) -> Self {
+    BulkerBuilder {
+      os_client,
+      bulk_size,
+      max_concurrent_connections: 10,
+    }
+  }
+
+  /// Set the bulk size.
+  pub fn bulk_size(mut self, bulk_size: u32) -> Self {
+    self.bulk_size = bulk_size;
+    self
+  }
+
+  /// Set the max concurrent connections.
+  pub fn max_concurrent_connections(mut self, max_concurrent_connections: u32) -> Self {
+    self.max_concurrent_connections = max_concurrent_connections;
+    self
+  }
+
+  /// Build a Bulker instance.
+  pub fn build(self) -> Bulker {
+    let (handle, bulker) = Bulker::new(self.os_client, self.bulk_size, self.max_concurrent_connections);
+    tokio::spawn(async move {
+      handle.await.unwrap();
+    });
+    bulker
+  }
+}
+
+/// Bulker is a helper struct to make bulk requests to OpenSearch.
 #[derive(Debug, Clone)]
 pub struct Bulker {
   sender: mpsc::Sender<Action>,
@@ -73,7 +116,7 @@ impl Bulker {
   /// # Returns
   ///
   /// Returns () on success, or an `Error` on failure.
-  pub async fn index<T: Serialize>(&self, index: &String, body: &T, id: Option<String>) -> Result<(), Error> {
+  pub async fn index<T: Serialize>(&self, index: &str, body: &T, id: Option<String>) -> Result<(), Error> {
     let action = BulkAction::Index(IndexAction {
       index: index.to_owned(),
       id: id.clone(),
@@ -82,7 +125,7 @@ impl Bulker {
     self
       .sender
       .send(Action {
-        action: action,
+        action,
         document: Some(serde_json::to_string(&body)?),
       })
       .await
@@ -113,7 +156,7 @@ impl Bulker {
     self
       .sender
       .send(Action {
-        action: action,
+        action,
         document: Some(serde_json::to_string(&body)?),
       })
       .await
@@ -140,10 +183,7 @@ impl Bulker {
     });
     self
       .sender
-      .send(Action {
-        action: action,
-        document: None,
-      })
+      .send(Action { action, document: None })
       .await
       .map_err(|e| Error::InternalError(format!("{}", e)))?;
     Ok(())
@@ -186,7 +226,10 @@ impl Drop for Bulker {
       tokio::runtime::Handle::current().block_on(async {
         // Clone the records from the queue to process synchronously
         let records_to_process: Vec<Action> = self.queue.lock().unwrap().clone();
-        make_reqwest_calls(self.os_client.clone(), records_to_process).await;
+        if records_to_process.len() > 0 {
+          debug!("Bulker: Processing remaining records: {:?}", records_to_process.len());
+          make_reqwest_calls(self.os_client.clone(), records_to_process).await;
+        }
         // Clear the queue
         self.queue.lock().unwrap().clear();
       });
@@ -240,18 +283,19 @@ async fn make_reqwest_calls(os_client: Arc<OsClient>, records: Vec<Action>) {
     let j = serde_json::to_string(&record.action).unwrap();
     bulker.push_str(j.as_str());
     bulker.push('\n');
-    let j = serde_json::to_string(&record.document).unwrap();
-    bulker.push_str(j.as_str());
-    bulker.push('\n');
+    if let Some(document) = record.document {
+      bulker.push_str(document.as_str());
+      bulker.push('\n');
+    }
   }
 
   match os_client.bulk().body(bulker).send().await {
-    Ok(_response) => {
-      // if response.status().is_success() {
-      //   println!("Request successful for record: {:?}", cloned_record);
-      // } else {
-      //   println!("Request failed for record: {:?}", cloned_record);
-      // }
+    Ok(response) => {
+      if response.status().is_success() {
+        println!("Request successful for record: {:?}", response.into_inner().items.len());
+      } else {
+        println!("Request failed for record: {:?}", response.into_inner().items.len());
+      }
     }
     Err(e) => {
       eprintln!("Error making Reqwest call: {:?}", e);

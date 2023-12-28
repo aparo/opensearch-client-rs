@@ -3,7 +3,7 @@ pub extern crate url;
 mod client;
 mod credentials;
 mod auth_middleware;
-mod bulker;
+pub mod bulker;
 #[cfg(feature = "cat")]
 mod cat;
 #[cfg(feature = "cluster")]

@@ -4,6 +4,7 @@ mod client;
 mod credentials;
 mod auth_middleware;
 pub mod bulker;
+
 #[cfg(feature = "cat")]
 mod cat;
 #[cfg(feature = "cluster")]
@@ -41,7 +42,7 @@ pub use client::{ByteStream, Error, ResponseValue};
 use reqwest::header::{HeaderMap, HeaderValue};
 use serde::{de::DeserializeOwned, Serialize};
 use tokio::task::JoinHandle;
-use tracing::{debug, info};
+use tracing::info;
 use types::bulk::{BulkAction, BulkResponse, CreateAction, DeleteAction, IndexAction, UpdateAction, UpdateActionBody};
 use futures::{
   stream::{self, StreamExt},

@@ -16,7 +16,9 @@
     "termvectors",
     "urlencode"
   ],
-  "rust-analyzer.cargo.features": "all",
+  "rust-analyzer.cargo.features": [
+    "quickwit"
+  ],
   "rust-analyzer.linkedProjects": [
     "./opensearch-client/Cargo.toml"
   ],

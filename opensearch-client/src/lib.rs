@@ -37,6 +37,9 @@ use bulker::{Bulker, BulkerBuilder};
 pub use opensearch_dsl as dsl;
 #[cfg(feature = "search")]
 use opensearch_dsl::{Query, Search, SortCollection, Terms};
+#[cfg(feature = "search")]
+mod builder_search;
+
 #[allow(unused_imports)]
 use client::{encode_path, encode_path_option_vec_string, RequestBuilderExt};
 pub use client::{ByteStream, Error, ResponseValue};
@@ -1866,8 +1869,9 @@ impl OsClient {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn count(&self) -> builder::Count {
-    builder::Count::new(self)
+  #[cfg(feature = "search")]
+  pub fn count(&self) -> builder_search::Count {
+    builder_search::Count::new(self)
   }
 
   ///Creates a new document in the index.
@@ -2710,8 +2714,9 @@ impl OsClient {
   ///    .send()
   ///    .await;
   /// ```
-  pub fn search(&self) -> builder::SearchPostWithIndex {
-    builder::SearchPostWithIndex::new(self)
+  #[cfg(feature = "search")]
+  pub fn search(&self) -> builder_search::SearchPostWithIndex {
+    builder_search::SearchPostWithIndex::new(self)
   }
 
   ///Creates point in time context.

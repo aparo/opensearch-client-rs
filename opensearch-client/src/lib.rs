@@ -48,7 +48,7 @@ use reqwest::header::{HeaderMap, HeaderValue};
 use serde::{de::DeserializeOwned, Serialize};
 use tokio::task::JoinHandle;
 use tracing::info;
-use types::bulk::{BulkAction, BulkResponse, CreateAction, DeleteAction, IndexAction, UpdateAction, UpdateActionBody};
+use types::bulk::{BulkAction, BulkResponse, CreateAction, IndexAction, UpdateAction, UpdateActionBody};
 use futures::{
   stream::{self, StreamExt},
   Stream,

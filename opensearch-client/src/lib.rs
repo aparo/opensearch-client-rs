@@ -368,16 +368,19 @@ impl OsClient {
       Err(_) => false,
     };
 
-    let server = match std::env::var("QUICKWIT_URL") {
+    let mut server = match std::env::var("QUICKWIT_URL") {
       Ok(server) => server,
       Err(_) => "http://localhost:7280".into(),
     };
+    // api/v1/_elastic
+    if !server.ends_with("/api/v1/_elastic") {
+      server.push_str("/api/v1/_elastic");
+    }
 
     let mut builder = OsClientBuilder::new().base_url(Url::parse(&server)?);
     if accept_invalid_certificates {
       builder = builder.accept_invalid_certificates(true);
     }
-    builder = builder.basic_auth(user, password);
 
     if let Ok(max_bulk_size) = std::env::var("QUICKWIT_MAX_BULK_SIZE") {
       match max_bulk_size.parse::<u32>() {

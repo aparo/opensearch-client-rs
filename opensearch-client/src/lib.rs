@@ -33,7 +33,9 @@ mod tools;
 use std::sync::{Arc, Mutex};
 
 use bulker::{Bulker, BulkerBuilder};
+#[cfg(feature = "search")]
 pub use opensearch_dsl as dsl;
+#[cfg(feature = "search")]
 use opensearch_dsl::{Query, Search, SortCollection, Terms};
 #[allow(unused_imports)]
 use client::{encode_path, encode_path_option_vec_string, RequestBuilderExt};
@@ -353,6 +355,34 @@ impl OsClient {
       match max_bulk_size.parse::<u32>() {
         Ok(max_bulk_size) => builder = builder.max_bulk_size(max_bulk_size),
         Err(_) => info!("Invalid value for OPENSEARCH_MAX_BULK_SIZE, using default"),
+      }
+    };
+
+    Ok(builder.build())
+  }
+
+  #[cfg(feature = "quickwit")]
+  pub fn from_quickwit_environment() -> Result<OsClient, Error> {
+    let accept_invalid_certificates: bool = match std::env::var("QUICKWIT_SSL_VERIFY") {
+      Ok(value) => value.eq_ignore_ascii_case("false"),
+      Err(_) => false,
+    };
+
+    let server = match std::env::var("QUICKWIT_URL") {
+      Ok(server) => server,
+      Err(_) => "http://localhost:7280".into(),
+    };
+
+    let mut builder = OsClientBuilder::new().base_url(Url::parse(&server)?);
+    if accept_invalid_certificates {
+      builder = builder.accept_invalid_certificates(true);
+    }
+    builder = builder.basic_auth(user, password);
+
+    if let Ok(max_bulk_size) = std::env::var("QUICKWIT_MAX_BULK_SIZE") {
+      match max_bulk_size.parse::<u32>() {
+        Ok(max_bulk_size) => builder = builder.max_bulk_size(max_bulk_size),
+        Err(_) => info!("Invalid value for QUICKWIT_MAX_BULK_SIZE, using default"),
       }
     };
 
@@ -1412,6 +1442,7 @@ impl OsClient {
   ///    .send()
   ///    .await;
   /// ```
+  #[cfg(feature = "search")]
   pub fn search_post(&self) -> builder::SearchPost {
     builder::SearchPost::new(self)
   }
@@ -1631,6 +1662,7 @@ impl OsClient {
   ///    .send()
   ///    .await;
   /// ```
+  #[cfg(feature = "search")]
   pub fn search_template_get(&self) -> builder::SearchTemplateGet {
     builder::SearchTemplateGet::new(self)
   }
@@ -1684,6 +1716,7 @@ impl OsClient {
   ///    .send()
   ///    .await;
   /// ```
+  #[cfg(feature = "search")]
   pub fn search_template_post(&self) -> builder::SearchTemplatePost {
     builder::SearchTemplatePost::new(self)
   }
@@ -1717,6 +1750,7 @@ impl OsClient {
   ///    .send()
   ///    .await;
   /// ```
+  #[cfg(feature = "search")]
   pub fn search_shards_get(&self) -> builder::SearchShardsGet {
     builder::SearchShardsGet::new(self)
   }
@@ -1750,6 +1784,7 @@ impl OsClient {
   ///    .send()
   ///    .await;
   /// ```
+  #[cfg(feature = "search")]
   pub fn search_shards_post(&self) -> builder::SearchShardsPost {
     builder::SearchShardsPost::new(self)
   }
@@ -2758,6 +2793,7 @@ impl OsClient {
   ///    .send()
   ///    .await;
   /// ```
+  #[cfg(feature = "search")]
   pub fn search_template_with_index(&self) -> builder::SearchTemplatePostWithIndex {
     builder::SearchTemplatePostWithIndex::new(self)
   }
@@ -2794,6 +2830,7 @@ impl OsClient {
   ///    .send()
   ///    .await;
   /// ```
+  #[cfg(feature = "search")]
   pub fn search_shards_get_with_index(&self) -> builder::SearchShardsGetWithIndex {
     builder::SearchShardsGetWithIndex::new(self)
   }
@@ -2830,6 +2867,7 @@ impl OsClient {
   ///    .send()
   ///    .await;
   /// ```
+  #[cfg(feature = "search")]
   pub fn search_shards_post_with_index(&self) -> builder::SearchShardsPostWithIndex {
     builder::SearchShardsPostWithIndex::new(self)
   }
@@ -3693,6 +3731,7 @@ impl OsClient {
     BulkerBuilder::new(Arc::new(self.clone()), self.max_bulk_size)
   }
 
+  #[cfg(feature = "search")]
   pub async fn search_typed<T: DeserializeOwned + std::default::Default>(
     &self,
     index: &str,
@@ -3737,6 +3776,7 @@ impl OsClient {
   ///   Ok(())
   /// }
   /// ```
+  #[cfg(feature = "search")]
   pub async fn search_stream<T: DeserializeOwned + std::default::Default>(
     &self,
     index: &str,
@@ -3813,6 +3853,7 @@ impl OsClient {
 
 /// Represents the state of a search operation that uses the "search after"
 /// feature.
+#[cfg(feature = "search")]
 struct SearchAfterState {
   client: Arc<OsClient>,
   index: String,

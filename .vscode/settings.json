@@ -16,19 +16,7 @@
     "termvectors",
     "urlencode"
   ],
-  "rust-analyzer.cargo.features": [
-    "cat",
-    "cluster",
-    "indices",
-    "ingest",
-    "nodes",
-    "remote",
-    "snapshot",
-    "tasks",
-    "security",
-    "mtermvectors",
-    "tools"
-  ],
+  "rust-analyzer.cargo.features": "all",
   "rust-analyzer.linkedProjects": [
     "./opensearch-client/Cargo.toml"
   ],

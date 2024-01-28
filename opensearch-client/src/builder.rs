@@ -238,7 +238,7 @@ impl<'a> BulkPost<'a> {
     let type_ = type_.map_err(Error::InvalidRequest)?;
     let wait_for_active_shards = wait_for_active_shards.map_err(Error::InvalidRequest)?;
     let body = body.map_err(Error::InvalidRequest)?;
-    let url = format!("{}_bulk", client.baseurl,);
+    let url = client.baseurl.join("_bulk").unwrap();
     let mut query = Vec::with_capacity(10usize);
     if let Some(v) = &source_excludes {
       query.push(("_source_excludes", v.join(",")));

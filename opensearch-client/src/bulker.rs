@@ -445,8 +445,9 @@ mod tests {
       .basic_auth(os_image.username(), os_image.password())
       .build();
 
+    let test_size: u32 = 100000;
     let bulker = client.bulker().bulk_size(1000).max_concurrent_connections(10).build();
-    for i in 0..10000 {
+    for i in 0..test_size {
       bulker
         .index("test", &json!({"id":i}), Some(i.to_string()))
         .await
@@ -456,14 +457,14 @@ mod tests {
     let statitics = bulker.statistics();
     drop(bulker);
 
-    assert_eq!(statitics.index_actions, 10000);
+    assert_eq!(statitics.index_actions, test_size as u64);
     assert_eq!(statitics.create_actions, 0);
     assert_eq!(statitics.delete_actions, 0);
     assert_eq!(statitics.update_actions, 0);
     client.indices().refresh_post().send().await.unwrap();
 
     let count = client.count().index("test").send().await.unwrap().into_inner();
-    assert_eq!(count.count, 10000);
+    assert_eq!(count.count, test_size);
     Ok(())
   }
 }

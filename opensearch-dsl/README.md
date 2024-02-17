@@ -5,8 +5,8 @@
 [![Crates.io](https://img.shields.io/crates/d/opensearch-dsl)](https://crates.io/crates/opensearch-dsl)
 [![Docs.io](https://docs.rs/opensearch-dsl/badge.svg)](https://docs.rs/opensearch-dsl)
 
-A high level library, giving a strongly typed DSL that maps one to one with the official
-OpenSearch query DSL.
+A high level library, giving a strongly typed DSL that maps one to one with the official OpenSearch query DSL.
+This is a Opensearch fork based on the https://github.com/vinted/elasticsearch-dsl-rs
 
 ## Features
 

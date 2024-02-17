@@ -1,6 +1,7 @@
 [package]
 name = "opensearch-client"
-version = { workspace = true }
+description = "Strongly typed OpenSearch Client"
+version = "0.1.0"
 authors = { workspace = true }
 edition = { workspace = true }
 documentation = { workspace = true }

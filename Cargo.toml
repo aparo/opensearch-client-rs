@@ -6,7 +6,6 @@ members = [
   "opensearch-cli",
   "xtask",
   "examples/*",
-  "opensearch-testcontainer",
 ]
 resolver = "2"
 

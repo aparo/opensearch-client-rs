@@ -12,12 +12,11 @@ resolver = "2"
 
 [workspace.package]
 version = "0.1.0"
-# rust-version = "1.68.0"
 edition = "2021"
-authors = ["QScala Team"]
-documentation = "https://sidrai.com/"
-license = "Private"
-repository = "https://sidrai.com/"
+authors = ["Alberto Paro"]
+documentation = "https://docs.rs/opensearch-client"
+license = "Apache-2.0"
+repository = "https://github.com/aparo/opensearch-client-rs"
 keywords = ["opensearch"]
 readme = "README.md"
 

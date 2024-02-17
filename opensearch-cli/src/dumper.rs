@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use opensearch::OsClient;
+use opensearch_client::OsClient;
 use opensearch_dsl::{
   search::sort::{FieldSort, SortCollection},
   Query,

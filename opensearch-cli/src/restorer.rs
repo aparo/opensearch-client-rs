@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use clap::ValueEnum;
-use opensearch::{indices::types::IndexTemplateMapping, OsClient};
+use opensearch_client::{indices::types::IndexTemplateMapping, OsClient};
 use async_compression::tokio::bufread::ZstdDecoder;
 use serde::{Deserialize, Serialize};
 use tokio::{

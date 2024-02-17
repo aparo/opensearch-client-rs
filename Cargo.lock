@@ -21,7 +21,7 @@ checksum = "f26201604c87b1e01bd3d98f8d5d9a8fcbb815e8cedb41ffccbeb4bf593a35fe"
 name = "aggregations"
 version = "0.1.0"
 dependencies = [
- "opensearch-dsl",
+ "opensearch-dsl 0.1.0",
  "serde_json",
 ]
 
@@ -229,7 +229,7 @@ dependencies = [
 name = "boolean-query"
 version = "0.1.0"
 dependencies = [
- "opensearch-dsl",
+ "opensearch-dsl 0.1.0",
  "serde_json",
 ]
 
@@ -375,7 +375,7 @@ checksum = "acbf1af155f9b9ef647e42cdc158db4b64a1b61f743629225fde6f3e0be2a7c7"
 name = "completion-suggester"
 version = "0.1.0"
 dependencies = [
- "opensearch-dsl",
+ "opensearch-dsl 0.1.0",
  "serde_json",
 ]
 
@@ -894,7 +894,7 @@ dependencies = [
 name = "handle-search-response"
 version = "0.1.0"
 dependencies = [
- "opensearch-dsl",
+ "opensearch-dsl 0.1.0",
  "serde",
  "serde_json",
 ]
@@ -1363,7 +1363,7 @@ dependencies = [
  "clap 4.5.1",
  "futures",
  "opensearch-client",
- "opensearch-dsl",
+ "opensearch-dsl 0.1.0",
  "serde",
  "serde_json",
  "tokio",
@@ -1384,8 +1384,8 @@ dependencies = [
  "futures",
  "futures-util",
  "http-cache-reqwest",
- "opensearch-dsl",
- "opensearch-testcontainer",
+ "opensearch-dsl 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "opensearch-testcontainer 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "percent-encoding",
  "regress",
  "reqwest",
@@ -1417,12 +1417,33 @@ dependencies = [
 ]
 
 [[package]]
+name = "opensearch-dsl"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9d19a369170b78590bff2ea1c5102c01594b92a32f854df88e38dcef783f66f7"
+dependencies = [
+ "chrono",
+ "num-traits",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "opensearch-testcontainer"
 version = "0.1.0"
 dependencies = [
  "reqwest",
  "serde",
  "serde_json",
+ "testcontainers",
+]
+
+[[package]]
+name = "opensearch-testcontainer"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5bc1383c07bce714cd928972312ba7f1a146f6468fe43600da40e23d2ddea1f5"
+dependencies = [
  "testcontainers",
 ]
 
@@ -2052,7 +2073,7 @@ dependencies = [
 name = "simple-query"
 version = "0.1.0"
 dependencies = [
- "opensearch-dsl",
+ "opensearch-dsl 0.1.0",
  "serde_json",
 ]
 

@@ -1411,7 +1411,7 @@ dependencies = [
 
 [[package]]
 name = "opensearch-client"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1423,7 +1423,7 @@ dependencies = [
  "http",
  "http-cache-reqwest",
  "opensearch-dsl",
- "opensearch-testcontainer 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "opensearch-testcontainer 0.1.0",
  "percent-encoding",
  "regress",
  "reqwest",
@@ -1445,7 +1445,7 @@ dependencies = [
 
 [[package]]
 name = "opensearch-dsl"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "chrono",
  "num-traits",
@@ -1457,19 +1457,19 @@ dependencies = [
 [[package]]
 name = "opensearch-testcontainer"
 version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5bc1383c07bce714cd928972312ba7f1a146f6468fe43600da40e23d2ddea1f5"
 dependencies = [
- "reqwest",
- "serde",
- "serde_json",
  "testcontainers",
 ]
 
 [[package]]
 name = "opensearch-testcontainer"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5bc1383c07bce714cd928972312ba7f1a146f6468fe43600da40e23d2ddea1f5"
+version = "0.1.1"
 dependencies = [
+ "reqwest",
+ "serde",
+ "serde_json",
  "testcontainers",
 ]
 

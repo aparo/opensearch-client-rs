@@ -2,7 +2,7 @@ use std::{collections::HashMap, sync::Arc};
 
 use reqwest::{header::HeaderValue, Request, Response};
 use reqwest_middleware::{Middleware, Next, Result};
-use task_local_extensions::Extensions;
+use http::Extensions;
 use url::Url;
 
 use crate::credentials::Credentials;

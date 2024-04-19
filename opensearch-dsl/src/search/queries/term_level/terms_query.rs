@@ -81,7 +81,7 @@ impl<'de> Deserialize<'de> for TermsQuery {
     use std::fmt;
     struct WrapperVisitor;
 
-    impl<'de> serde::de::Visitor<'de> for WrapperVisitor {
+    impl<'de> de::Visitor<'de> for WrapperVisitor {
       type Value = TermsQuery;
 
       fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
@@ -90,7 +90,7 @@ impl<'de> Deserialize<'de> for TermsQuery {
 
       fn visit_map<A>(self, mut map: A) -> Result<TermsQuery, A::Error>
       where
-        A: serde::de::MapAccess<'de>, {
+        A: de::MapAccess<'de>, {
         let mut terms_query: TermsQuery = TermsQuery::default();
         let mut found_terms = false;
 
@@ -105,8 +105,8 @@ impl<'de> Deserialize<'de> for TermsQuery {
                       terms_query.field = field.to_string();
                     }
                     None => {
-                      return Err(serde::de::Error::invalid_type(
-                        serde::de::Unexpected::Other("not a string"),
+                      return Err(de::Error::invalid_type(
+                        de::Unexpected::Other("not a string"),
                         &"a string",
                       ));
                     }
@@ -118,8 +118,8 @@ impl<'de> Deserialize<'de> for TermsQuery {
                       terms_query.boost = Some(boost as f32);
                     }
                     None => {
-                      return Err(serde::de::Error::invalid_type(
-                        serde::de::Unexpected::Other("not a float"),
+                      return Err(de::Error::invalid_type(
+                        de::Unexpected::Other("not a float"),
                         &"a float",
                       ));
                     }
@@ -131,8 +131,8 @@ impl<'de> Deserialize<'de> for TermsQuery {
                       terms_query._name = Some(_name.to_string());
                     }
                     None => {
-                      return Err(serde::de::Error::invalid_type(
-                        serde::de::Unexpected::Other("not a string"),
+                      return Err(de::Error::invalid_type(
+                        de::Unexpected::Other("not a string"),
                         &"a string",
                       ));
                     }
@@ -146,7 +146,7 @@ impl<'de> Deserialize<'de> for TermsQuery {
                       found_terms = true;
                     }
                     Err(e) => {
-                      return Err(serde::de::Error::custom(format!("error parsing terms: {}", e)));
+                      return Err(de::Error::custom(format!("error parsing terms: {}", e)));
                     }
                   }
                 }
@@ -159,7 +159,7 @@ impl<'de> Deserialize<'de> for TermsQuery {
                       found_terms = true;
                     }
                     Err(e) => {
-                      return Err(serde::de::Error::custom(format!("error parsing terms: {}", e)));
+                      return Err(de::Error::custom(format!("error parsing terms: {}", e)));
                     }
                   }
                 }
@@ -170,7 +170,7 @@ impl<'de> Deserialize<'de> for TermsQuery {
         if found_terms {
           Ok(terms_query)
         } else {
-          Err(serde::de::Error::missing_field("values or terms array"))
+          Err(de::Error::missing_field("values or terms array"))
         }
       }
     }

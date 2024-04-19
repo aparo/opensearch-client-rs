@@ -11,39 +11,40 @@ keywords = { workspace = true }
 readme = { workspace = true }
 
 [dependencies]
-opensearch-dsl = { version = "0.1.0", optional = true }
-tokio = { version = "1.36.0", features = ["full"] }
-bytes = "1.5.0"
+opensearch-dsl = { workspace = true, optional = true }
+tokio = { version = "1.37.0", features = ["full"] }
+bytes = "1.6.0"
 futures-util = "0.3.30"
 futures = "0.3.30"
 percent-encoding = "2.3.1"
-regress = "0.8.0"
-reqwest = { version = "0.11.24", default-features = false, features = [
+regress = "0.9.1"
+http = "1.0"
+reqwest = { version = "0.12.3", default-features = false, features = [
     "json",
     "stream",
     "gzip",
     "native-tls",
 ] }
-serde = { version = "1.0.196", features = ["derive"] }
-serde_json = "1.0.113"
+serde = { version = "1.0.198", features = ["derive"] }
+serde_json = "1.0.116"
 serde_urlencoded = "0.7.1"
 tracing = "0.1.40"
-thiserror = "1.0.57"
+thiserror = "1.0.58"
 derive_builder = "0.20.0"
 # client stuff
-base64 = "0.21.7"
+base64 = "0.22.0"
 task-local-extensions = "0.1.4"
-reqwest-middleware = "0.2.4"
-reqwest-retry = "0.3.0"
-reqwest-tracing = "0.4.7"
-anyhow = "1.0.79"
-async-trait = "0.1.77"
+reqwest-middleware = { version = "0.3.0", features = ["json"] }
+reqwest-retry = "0.5.0"
+reqwest-tracing = "0.5.0"
+anyhow = "1.0.82"
+async-trait = "0.1.80"
 url = "2.5.0"
 # miette = "5.10.0"
-walkdir = { version = "2.4.0", optional = true }
+walkdir = { version = "2.5.0", optional = true }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-http-cache-reqwest = "0.13.0"
+http-cache-reqwest = "0.14.0"
 
 [dev-dependencies]
 opensearch-testcontainer = { version = "0.1.0" }

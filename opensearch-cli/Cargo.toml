@@ -1,6 +1,6 @@
 [package]
 name = "opensearch-cli"
-version = "0.1.0"
+version = "0.1.1"
 edition.workspace = true
 authors.workspace = true
 documentation.workspace = true
@@ -12,19 +12,19 @@ readme.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-opensearch-client = { path = "../opensearch-client/", features = [
+opensearch-client = { workspace = true, features = [
     "search",
     "indices",
     "tools",
 ] }
-opensearch-dsl = { path = "../opensearch-dsl/" }
-clap = { version = "4.5.1", features = ["derive", "env"] }
+opensearch-dsl = { workspace = true }
+clap = { version = "4.5.4", features = ["derive", "env"] }
 tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
-anyhow = "1.0.79"
-tokio = { version = "1.36.0", features = ["full"] }
+anyhow = "1.0.82"
+tokio = { version = "1.37.0", features = ["full"] }
 url = "2.5.0"
-serde = { version = "1.0.196", features = ["derive"] }
-serde_json = "1.0.113"
-async-compression = { version = "0.4.6", features = ["tokio", "zstd"] }
+serde = { version = "1.0.198", features = ["derive"] }
+serde_json = "1.0.116"
+async-compression = { version = "0.4.8", features = ["tokio", "zstd"] }
 futures = "0.3.30"

@@ -59,8 +59,8 @@ impl From<RegexpFlag> for String {
   }
 }
 
-impl std::fmt::Display for RegexpFlag {
-  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl fmt::Display for RegexpFlag {
+  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
     <&'static str>::from(*self).fmt(f)
   }
 }

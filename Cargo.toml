@@ -19,6 +19,11 @@ repository = "https://github.com/aparo/opensearch-client-rs"
 keywords = ["opensearch"]
 readme = "README.md"
 
+[workspace.dependencies]
+opensearch-client = { path = "./opensearch-client/" }
+opensearch-dsl = { path = "./opensearch-dsl/" }
+
+
 [workspace.metadata.precommit]
 fmt = "cargo fmt"
 sort = "cargo sort -w"

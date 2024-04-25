@@ -4959,7 +4959,8 @@ impl<'a> CreatePut<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => ResponseValue::from_response(response).await,
+      200u16 | 201u16 => ResponseValue::from_response(response).await,
+      409u16 => Err(Error::DocumentAlreadyExistsError(index.to_string(), id.to_string())),
       _ => {
         Err(Error::UnexpectedResponse(
           ReqwestResponse::from_response(response).await,

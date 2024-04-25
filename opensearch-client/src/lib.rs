@@ -3644,8 +3644,8 @@ impl OsClient {
   /// ```
   pub async fn create_document<T: Serialize>(
     &self,
-    index: &String,
-    id: &String,
+    index: &str,
+    id: &str,
     body: &T,
   ) -> Result<types::IndexResponse, Error> {
     let body_json = serde_json::to_value(body)?;
@@ -3723,7 +3723,7 @@ impl OsClient {
     &self,
     index: &str,
     id: &str,
-    action: &UpdateAction,
+    action: &UpdateActionBody,
   ) -> Result<types::IndexResponse, Error> {
     let body = serde_json::to_value(&action)?;
 

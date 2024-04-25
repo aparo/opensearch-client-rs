@@ -15,6 +15,143 @@ pub struct UpdateActionBody {
   pub script: Option<Script>,
 }
 
+/// Represents the body of an update action.
+///
+/// This struct provides methods for creating different types of update actions.
+/// An update action can be created with a document, a script, or a script with
+/// parameters.
+///
+/// # Examples
+///
+/// Creating an update action with a document:
+///
+/// ```
+/// use serde_json::json;
+/// use opensearch_client::types::bulk::UpdateActionBody;
+///
+/// let doc = json!({
+///     "name": "John Doe",
+///     "age": 30,
+/// });
+///
+/// let update_action = UpdateActionBody::new(doc);
+/// ```
+///
+/// Creating an update action with a script:
+///
+/// ```
+/// use opensearch_client::types::bulk::UpdateActionBody;
+///
+/// let script = r#"ctx._source.age += params.age"#;
+///
+/// let update_action = UpdateActionBody::from_script(script);
+/// ```
+///
+/// Creating an update action with a script and parameters:
+///
+/// ```
+/// use serde_json::json;
+/// use opensearch_client::types::bulk::UpdateActionBody;
+///
+/// let script = r#"ctx._source.age += params.age"#;
+/// let params = json!({
+///     "age": 5,
+/// });
+///
+/// let update_action = UpdateActionBody::from_script_parameters(script, params);
+/// ```
+///
+/// Creating an update action with a pre-defined script:
+///
+/// ```
+/// use opensearch_client::types::bulk::{UpdateActionBody, Script};
+///
+/// let script = Script {
+///     source: r#"ctx._source.age += params.age"#.to_string(),
+///     params: Some(json!({
+///         "age": 5,
+///     })),
+/// };
+///
+/// let update_action = UpdateActionBody::with_script(script);
+/// ```
+impl UpdateActionBody {
+  /// Creates a new update action with a document.
+  ///
+  /// # Arguments
+  ///
+  /// * `doc` - The document to be updated.
+  ///
+  /// # Returns
+  ///
+  /// The update action body.
+  pub fn new(doc: Value) -> Self {
+    Self {
+      doc: Some(doc),
+      doc_as_upsert: None,
+      script: None,
+    }
+  }
+
+  /// Creates a new update action with a script.
+  ///
+  /// # Arguments
+  ///
+  /// * `script` - The script to be executed for the update action.
+  ///
+  /// # Returns
+  ///
+  /// The update action body.
+  pub fn from_script(script: &str) -> Self {
+    Self {
+      doc: None,
+      doc_as_upsert: None,
+      script: Some(Script {
+        source: script.to_string(),
+        params: None,
+      }),
+    }
+  }
+
+  /// Creates a new update action with a script and parameters.
+  ///
+  /// # Arguments
+  ///
+  /// * `script` - The script to be executed for the update action.
+  /// * `params` - The parameters to be passed to the script.
+  ///
+  /// # Returns
+  ///
+  /// The update action body.
+  pub fn from_script_parameters(script: &str, params: serde_json::Value) -> Self {
+    Self {
+      doc: None,
+      doc_as_upsert: None,
+      script: Some(Script {
+        source: script.to_string(),
+        params: Some(params),
+      }),
+    }
+  }
+
+  /// Creates a new update action with a pre-defined script.
+  ///
+  /// # Arguments
+  ///
+  /// * `script` - The pre-defined script to be executed for the update action.
+  ///
+  /// # Returns
+  ///
+  /// The update action body.
+  pub fn with_script(script: Script) -> Self {
+    Self {
+      doc: None,
+      doc_as_upsert: None,
+      script: Some(script),
+    }
+  }
+}
+
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct IndexResponse {
   #[serde(rename = "_index")]

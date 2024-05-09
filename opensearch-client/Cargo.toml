@@ -25,19 +25,19 @@ reqwest = { version = "0.12.4", default-features = false, features = [
     "gzip",
     "native-tls",
 ] }
-serde = { version = "1.0.198", features = ["derive"] }
-serde_json = "1.0.116"
+serde = { version = "1.0.201", features = ["derive"] }
+serde_json = "1.0.117"
 serde_urlencoded = "0.7.1"
 tracing = "0.1.40"
-thiserror = "1.0.59"
+thiserror = "1.0.60"
 derive_builder = "0.20.0"
 # client stuff
-base64 = "0.22.0"
+base64 = "0.22.1"
 task-local-extensions = "0.1.4"
-reqwest-middleware = { version = "0.3.0", features = ["json"] }
+reqwest-middleware = { version = "0.3.1", features = ["json"] }
 reqwest-retry = "0.5.0"
 reqwest-tracing = "0.5.0"
-anyhow = "1.0.82"
+anyhow = "1.0.83"
 async-trait = "0.1.80"
 url = "2.5.0"
 # miette = "5.10.0"
@@ -48,7 +48,7 @@ http-cache-reqwest = "0.14.0"
 
 [dev-dependencies]
 opensearch-testcontainer = { version = "0.1.0" }
-testcontainers = "0.15.0"
+testcontainers = "0.16.7"
 tracing-test = "0.2.4"
 
 

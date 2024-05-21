@@ -22,6 +22,7 @@ readme = "README.md"
 [workspace.dependencies]
 opensearch-client = { path = "./opensearch-client/" }
 opensearch-dsl = { path = "./opensearch-dsl/" }
+opensearch-testcontainer = { path = "./opensearch-testcontainer/" }
 
 
 [workspace.metadata.precommit]

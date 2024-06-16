@@ -1,9 +1,9 @@
-use std::collections::HashMap;
+use std::{borrow::Cow, collections::HashMap};
 
-use testcontainers::{core::WaitFor, Image};
+use testcontainers::{core::*, Image};
 
 const NAME: &str = "opensearchproject/opensearch";
-const TAG: &str = "2.11.1";
+const TAG: &str = "2.14.0";
 
 #[derive(Debug, Clone)]
 pub struct OpenSearch {
@@ -59,14 +59,12 @@ impl Default for OpenSearch {
 }
 
 impl Image for OpenSearch {
-  type Args = ();
-
-  fn name(&self) -> String {
-    self.image_name.to_owned()
+  fn name(&self) -> &str {
+    &self.image_name.as_str()
   }
 
-  fn tag(&self) -> String {
-    self.tag.to_owned()
+  fn tag(&self) -> &str {
+    self.tag.as_str()
   }
 
   fn ready_conditions(&self) -> Vec<WaitFor> {
@@ -76,27 +74,30 @@ impl Image for OpenSearch {
     ]
   }
 
-  fn env_vars(&self) -> Box<dyn Iterator<Item = (&String, &String)> + '_> {
+  fn env_vars(&self) -> impl IntoIterator<Item = (impl Into<Cow<'_, str>>, impl Into<Cow<'_, str>>)> {
     Box::new(self.env_vars.iter())
   }
 
-  fn expose_ports(&self) -> Vec<u16> {
-    vec![9200, 9300, 9600]
+  fn expose_ports(&self) -> &[ContainerPort] {
+    &[
+      ContainerPort::Tcp(9200),
+      ContainerPort::Tcp(9300),
+      ContainerPort::Tcp(9600),
+    ]
   }
 }
 
 #[cfg(test)]
 mod tests {
-  use testcontainers::clients;
+  use testcontainers::runners::AsyncRunner;
 
   use crate::OpenSearch as OpenSearchImage;
 
-  #[test]
-  fn opensearch_default() {
-    let docker = clients::Cli::default();
+  #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+  async fn opensearch_default() {
     let os_image = OpenSearchImage::default();
-    let node: testcontainers::Container<'_, OpenSearchImage> = docker.run(os_image.clone());
-    let host_port = node.get_host_port_ipv4(9200);
+    let opensearch = os_image.clone().start().await.unwrap();
+    let host_port = opensearch.get_host_port_ipv4(9200).await.unwrap();
 
     let client = reqwest::blocking::Client::builder()
       .danger_accept_invalid_certs(true)
@@ -114,6 +115,6 @@ mod tests {
     println!("response: {}", response);
     let response: serde_json::Value = serde_json::from_str(&response).unwrap();
 
-    assert_eq!(response["version"]["number"], "2.11.1");
+    assert_eq!(response["version"]["number"], "2.14.0");
   }
 }

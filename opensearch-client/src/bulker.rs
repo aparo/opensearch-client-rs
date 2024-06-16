@@ -425,7 +425,6 @@ async fn make_reqwest_calls(os_client: Arc<OsClient>, records: Vec<Action>, stat
 #[cfg(test)]
 mod tests {
   use serde_json::json;
-  use testcontainers::clients;
   use opensearch_testcontainer::*;
   use tracing_test::traced_test;
 
@@ -434,9 +433,8 @@ mod tests {
   #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
   #[traced_test]
   async fn bulker_ingester() -> Result<(), Box<dyn std::error::Error>> {
-    let docker = clients::Cli::default();
     let os_image = OpenSearch::default();
-    let node = docker.run(os_image.clone());
+    let node = os_image.clone().start().await.unwrap();
     let host_port = node.get_host_port_ipv4(9200);
 
     let client = OsClientBuilder::new()

@@ -1102,7 +1102,7 @@ impl<'a> SearchPostWithIndex<'a> {
     if let Some(v) = &version {
       query.push(("version", v.to_string()));
     }
-    debug!("{}/_search\n{}", &url, serde_json::to_string(&body)?);
+    debug!("{}\n{}", &url, serde_json::to_string(&body)?);
 
     let request = client
       .client

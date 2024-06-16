@@ -12,12 +12,12 @@ readme = { workspace = true }
 
 [dependencies]
 opensearch-dsl = { workspace = true, optional = true }
-tokio = { version = "1.37.0", features = ["full"] }
+tokio = { version = "1.38.0", features = ["full"] }
 bytes = "1.6.0"
 futures-util = "0.3.30"
 futures = "0.3.30"
 percent-encoding = "2.3.1"
-regress = "0.9.1"
+regress = "0.10.0"
 http = "1.1"
 reqwest = { version = "0.12.4", default-features = false, features = [
     "json",
@@ -25,7 +25,7 @@ reqwest = { version = "0.12.4", default-features = false, features = [
     "gzip",
     "native-tls",
 ] }
-serde = { version = "1.0.202", features = ["derive"] }
+serde = { version = "1.0.203", features = ["derive"] }
 serde_json = "1.0.117"
 serde_urlencoded = "0.7.1"
 tracing = "0.1.40"
@@ -39,7 +39,7 @@ reqwest-retry = "0.5.0"
 reqwest-tracing = "0.5.0"
 anyhow = "1.0.86"
 async-trait = "0.1.80"
-url = "2.5.0"
+url = "2.5.1"
 # miette = "5.10.0"
 walkdir = { version = "2.5.0", optional = true }
 
@@ -48,8 +48,8 @@ http-cache-reqwest = "0.14.0"
 
 [dev-dependencies]
 opensearch-testcontainer = { workspace = true }
-testcontainers = "0.16.7"
-tracing-test = "0.2.4"
+testcontainers = "0.17.0"
+tracing-test = "0.2.5"
 
 
 [features]

@@ -260,7 +260,12 @@ impl OsClientBuilder {
       }));
     }
 
-    let retry_policy = ExponentialBackoff::builder().build_with_max_retries(self.retries);
+    let retry_policy = ExponentialBackoff::builder()
+      .retry_bounds(
+        std::time::Duration::from_millis(30),
+        std::time::Duration::from_millis(100),
+      )
+      .build_with_max_retries(self.retries);
     let retry_strategy = RetryTransientMiddleware::new_with_policy(retry_policy);
 
     let client_uncached_builder = reqwest_middleware::ClientBuilder::new(client_raw)

@@ -1,10 +1,8 @@
-use reqwest::Body;
-use serde::{de::DeserializeOwned, Serialize};
+use serde::de::DeserializeOwned;
 #[cfg(feature = "search")]
 use opensearch_dsl::Search;
 use tracing::debug;
 
-use crate::types::bulk::BulkResponse;
 use super::types;
 #[allow(unused_imports)]
 use super::{

@@ -3594,7 +3594,7 @@ impl OsClient {
   /// ```
   pub async fn index_document<T: Serialize>(
     &self,
-    index: &String,
+    index: &str,
     body: &T,
     id: Option<String>,
   ) -> Result<types::IndexResponse, Error> {

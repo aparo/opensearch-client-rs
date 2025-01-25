@@ -7,4 +7,4 @@ edition = "2018"
 
 [dependencies]
 opensearch-dsl = { path = "../../opensearch-dsl/" }
-serde_json = "1.0.132"
+serde_json = "1.0.134"

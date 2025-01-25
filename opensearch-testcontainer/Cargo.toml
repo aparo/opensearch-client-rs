@@ -20,7 +20,7 @@ readme.workspace = true
 testcontainers = "0.23.1"
 
 [dev-dependencies]
-reqwest = { version = "0.12.9", features = ["blocking"] }
-serde = { version = "1.0.215", features = ["derive"] }
-serde_json = "1.0.132"
+reqwest = { version = "0.12.11", features = ["blocking"] }
+serde = { version = "1.0.217", features = ["derive"] }
+serde_json = "1.0.134"
 tokio = { version = "*", features = ["full"] }

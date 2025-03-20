@@ -238,29 +238,16 @@ mod tests {
     let json_response = json!({
         "detail": {
             "custom_analyzer": true,
-            "charfilters": [
-                {
-                    "name": "html_strip",
-                    "filtered_text": [
-                        "test"
-                    ]
-                }
-            ],
-            "tokenizer": {
-                "name": "lowercase",
-                "tokens": [
+                "charfilters": [
                     {
-                        "token": "test",
-                        "start_offset": 0,
-                        "end_offset": 6,
-                        "type": "SYNONYM",
-                        "position": 0
+                        "name": "html_strip",
+                        "filtered_text": [
+                            "test"
+                        ]
                     }
-                ]
-            },
-            "tokenfilters": [
-                {
-                    "name": "__anonymous__stop",
+                ],
+                "tokenizer": {
+                    "name": "lowercase",
                     "tokens": [
                         {
                             "token": "test",
@@ -270,9 +257,23 @@ mod tests {
                             "position": 0
                         }
                     ]
-                }
-            ]
-        }
+                },
+                "tokenfilters": [
+                    {
+                        "name": "__anonymous__stop",
+                        "tokens": [
+                            {
+                                "token": "test",
+                                "start_offset": 0,
+                                "end_offset": 6,
+                                "type": "SYNONYM",
+                                "position": 0
+                            }
+                        ]
+                    }
+                ]
+            }
+
     });
 
     let token = Token {

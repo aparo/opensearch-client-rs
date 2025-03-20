@@ -14,7 +14,9 @@ mod response;
 
 // Public modules
 pub mod aggregations;
+pub mod collapse;
 pub mod highlight;
+pub mod knn;
 pub mod params;
 pub mod queries;
 pub mod request;
@@ -27,7 +29,9 @@ pub mod suggesters;
 // Public re-exports
 pub use self::{
   aggregations::*,
+  collapse::*,
   highlight::*,
+  knn::*,
   params::*,
   queries::{params::*, *},
   request::*,

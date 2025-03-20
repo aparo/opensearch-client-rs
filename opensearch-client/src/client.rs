@@ -254,7 +254,7 @@ impl Display for ReqwestResponse {
 /// if there are no structured returns expected.
 #[derive(Error, Debug)]
 pub enum Error {
-  #[error("Documetn Already Exists: ({0},{1})")]
+  #[error("Document Already Exists: ({0},{1})")]
   DocumentAlreadyExistsError(String, String),
   // Generic Internal Error
   #[error("Internal Error: {0}")]

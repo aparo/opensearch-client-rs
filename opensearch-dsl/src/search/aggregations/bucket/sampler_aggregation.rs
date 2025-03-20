@@ -29,49 +29,49 @@ impl Aggregation {
 }
 
 impl SamplerAggregation {
-  add_aggregate!();
+    /// The shard_size parameter limits how many top-scoring documents are
+    /// collected in the sample processed on each shard. The default value is 100.
+    pub fn shard_size(mut self, shard_size: u64) -> Self {
+        self.sampler.shard_size = Some(shard_size);
+        self
+    }
 
-  /// The shard_size parameter limits how many top-scoring documents are
-  /// collected in the sample processed on each shard. The default value is 100.
-  pub fn shard_size(mut self, shard_size: u64) -> Self {
-    self.sampler.shard_size = Some(shard_size);
-    self
-  }
+    add_aggregate!();
 }
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_aggregation(Aggregation::sampler(), json!({ "sampler": {} }));
+    #[test]
+    fn serialization() {
+        assert_serialize_aggregation(Aggregation::sampler(), json!({ "sampler": {} }));
 
-    assert_serialize_aggregation(
-      Aggregation::sampler().shard_size(100),
-      json!({ "sampler": { "shard_size": 100 } }),
-    );
+        assert_serialize_aggregation(
+            Aggregation::sampler().shard_size(100),
+            json!({ "sampler": { "shard_size": 100 } }),
+        );
 
-    assert_serialize_aggregation(
-      Aggregation::sampler()
-        .shard_size(50)
-        .aggregate("catalog", Aggregation::terms("catalog_id"))
-        .aggregate("brand", Aggregation::terms("brand_id")),
-      json!({
-          "sampler": { "shard_size": 50 },
-          "aggs": {
-              "catalog": {
-                  "terms": {
-                      "field": "catalog_id"
-                  }
-              },
-              "brand": {
-                  "terms": {
-                      "field": "brand_id"
-                  }
-              }
-          }
-      }),
-    );
-  }
+        assert_serialize_aggregation(
+            Aggregation::sampler()
+                .shard_size(50)
+                .aggregate("catalog", Aggregation::terms("catalog_id"))
+                .aggregate("brand", Aggregation::terms("brand_id")),
+            json!({
+                "sampler": { "shard_size": 50 },
+                "aggs": {
+                    "catalog": {
+                        "terms": {
+                            "field": "catalog_id"
+                        }
+                    },
+                    "brand": {
+                        "terms": {
+                            "field": "brand_id"
+                        }
+                    }
+                }
+            }),
+        );
+    }
 }

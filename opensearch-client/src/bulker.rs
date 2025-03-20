@@ -427,8 +427,9 @@ mod tests {
   use serde_json::json;
   use opensearch_testcontainer::*;
   use tracing_test::traced_test;
+  use url::Url;
 
-  use crate::{url::Url, OsClientBuilder};
+  use crate::OsClientBuilder;
 
   #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
   #[traced_test]

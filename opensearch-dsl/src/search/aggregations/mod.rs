@@ -61,19 +61,24 @@ macro_rules! aggregation {
 }
 
 aggregation!(
-  Terms(TermsAggregation),
-  TopHits(TopHitsAggregation),
-  Cardinality(CardinalityAggregation),
-  Avg(AvgAggregation),
-  Max(MaxAggregation),
-  Min(MinAggregation),
-  Sum(SumAggregation),
-  Rate(RateAggregation),
-  Sampler(SamplerAggregation),
-  Filter(FilterAggregation),
-  DiversifiedSampler(DiversifiedSamplerAggregation),
-  Boxplot(BoxplotAggregation),
-  DateHistogram(DateHistogramAggregation),
+    Terms(TermsAggregation),
+    TopHits(TopHitsAggregation),
+    Cardinality(CardinalityAggregation),
+    Avg(AvgAggregation),
+    Max(MaxAggregation),
+    Min(MinAggregation),
+    Sum(SumAggregation),
+    Rate(RateAggregation),
+    Sampler(SamplerAggregation),
+    Filter(FilterAggregation),
+    DiversifiedSampler(DiversifiedSamplerAggregation),
+    Boxplot(BoxplotAggregation),
+    DateHistogram(DateHistogramAggregation),
+    GeotileGrid(GeotileGridAggregation),
+    BucketSelector(BucketSelectorAggregation),
+    Children(ChildrenAggregation),
+    Composite(CompositeAggregation),
+    Nested(NestedAggregation),
 );
 
 /// Type alias for a collection of aggregations

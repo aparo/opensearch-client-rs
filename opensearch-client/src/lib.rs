@@ -1,5 +1,3 @@
-pub extern crate url;
-
 mod client;
 mod credentials;
 mod auth_middleware;
@@ -268,14 +266,9 @@ impl OsClientBuilder {
       .build_with_max_retries(self.retries);
     let retry_strategy = RetryTransientMiddleware::new_with_policy(retry_policy);
 
-    let client_uncached_builder = reqwest_middleware::ClientBuilder::new(client_raw)
-      .with(retry_strategy)
-      .with(AuthMiddleware(credentials));
-
     OsClient {
       baseurl: Arc::new(self.baseurl),
       client: client_builder.build(),
-      client_uncached: client_uncached_builder.build(),
       bulker: Arc::new(Mutex::new(String::new())),
       bulker_size: Arc::new(Mutex::new(0)),
       max_bulk_size: self.max_bulk_size,
@@ -301,7 +294,6 @@ impl OsClientBuilder {
 pub struct OsClient {
   pub(crate) baseurl: Arc<Url>,
   pub(crate) client: ClientWithMiddleware,
-  pub(crate) client_uncached: ClientWithMiddleware,
   pub(crate) bulker: Arc<Mutex<String>>,
   pub(crate) bulker_size: Arc<Mutex<u32>>,
   pub(crate) max_bulk_size: u32,

@@ -31,16 +31,25 @@ pub mod span;
 pub mod specialized;
 pub mod term_level;
 
-pub use self::{
-  compound::*, custom::*, full_text::*, geo::*, joining::*, shape::*, span::*, specialized::*, term_level::*,
-};
+pub use self::compound::*;
+pub use self::custom::*;
+pub use self::full_text::*;
+pub use self::geo::*;
+pub use self::joining::*;
+pub use self::shape::*;
+pub use self::span::*;
+pub use self::specialized::*;
+pub use self::term_level::*;
 
 // Very special queries
 mod match_all_query;
 mod match_none_query;
 mod query_collection;
 
-pub use self::{match_all_query::*, match_none_query::*, query_collection::*};
+pub use self::match_all_query::*;
+pub use self::match_none_query::*;
+pub use self::query_collection::*;
+
 use crate::util::*;
 
 macro_rules! query {
@@ -141,66 +150,67 @@ macro_rules! query {
 }
 
 query!(
-  Bool(BoolQuery),
-  Prefix(PrefixQuery),
-  Regexp(RegexpQuery),
-  Wildcard(WildcardQuery),
-  TermsSet(TermsSetQuery),
-  Term(TermQuery),
-  Terms(TermsQuery),
-  TermsLookup(TermsLookupQuery),
-  Exists(ExistsQuery),
-  Range(RangeQuery),
-  Ids(IdsQuery),
-  ConstantScore(ConstantScoreQuery),
-  DistanceFeatureDate(DistanceFeatureQuery<chrono::DateTime<chrono::Utc>>),
-  DistanceFeatureGeo(DistanceFeatureQuery<crate::GeoLocation>),
-  Match(MatchQuery),
-  MatchBoolPrefix(MatchBoolPrefixQuery),
-  MatchPhrasePrefix(MatchPhrasePrefixQuery),
-  MatchAll(MatchAllQuery),
-  MatchNone(MatchNoneQuery),
-  MatchPhrase(MatchPhraseQuery),
-  MultiMatch(MultiMatchQuery),
-  Nested(NestedQuery),
-  Boosting(BoostingQuery),
-  DisMax(DisMaxQuery),
-  Pinned(PinnedQuery),
-  Percolate(PercolateQuery),
-  PercolateLookup(PercolateLookupQuery),
-  FunctionScore(FunctionScoreQuery),
-  RankFeature(RankFeatureQuery),
-  RankFeatureSaturation(RankFeatureSaturationQuery),
-  RankFeatureLogarithm(RankFeatureLogarithmQuery),
-  RankFeatureSigmoid(RankFeatureSigmoidQuery),
-  RankFeatureLinear(RankFeatureLinearQuery),
-  MoreLikeThis(MoreLikeThisQuery),
-  Fuzzy(FuzzyQuery),
-  GeoDistance(GeoDistanceQuery),
-  GeoBoundingBox(GeoBoundingBoxQuery),
-  GeoShapeLookup(GeoShapeLookupQuery),
-  GeoShape(GeoShapeQuery),
-  ShapeLookup(ShapeLookupQuery),
-  Shape(ShapeQuery),
-  Json(JsonQuery),
-  Wrapper(WrapperQuery),
-  Script(ScriptQuery),
-  ScriptScore(ScriptScoreQuery),
-  ParentId(ParentIdQuery),
-  HasParent(HasParentQuery),
-  HasChild(HasChildQuery),
-  SimpleQueryString(SimpleQueryStringQuery),
-  QueryString(QueryStringQuery),
-  CombinedFields(CombinedFieldsQuery),
-  SpanContaining(SpanContainingQuery),
-  SpanFieldMasking(SpanFieldMaskingQuery),
-  SpanFirst(SpanFirstQuery),
-  SpanMulti(SpanMultiQuery),
-  SpanNear(SpanNearQuery),
-  SpanNot(SpanNotQuery),
-  SpanOr(SpanOrQuery),
-  SpanTerm(SpanTermQuery),
-  SpanWithin(SpanWithinQuery),
+    Bool(BoolQuery),
+    Prefix(PrefixQuery),
+    Regexp(RegexpQuery),
+    Wildcard(WildcardQuery),
+    TermsSet(TermsSetQuery),
+    Term(TermQuery),
+    Terms(TermsQuery),
+    TermsLookup(TermsLookupQuery),
+    Exists(ExistsQuery),
+    Range(RangeQuery),
+    Ids(IdsQuery),
+    ConstantScore(ConstantScoreQuery),
+    DistanceFeatureDate(DistanceFeatureQuery<chrono::DateTime<chrono::Utc>>),
+    DistanceFeatureGeo(DistanceFeatureQuery<crate::GeoLocation>),
+    Match(MatchQuery),
+    MatchBoolPrefix(MatchBoolPrefixQuery),
+    MatchPhrasePrefix(MatchPhrasePrefixQuery),
+    MatchAll(MatchAllQuery),
+    MatchNone(MatchNoneQuery),
+    MatchPhrase(MatchPhraseQuery),
+    MultiMatch(MultiMatchQuery),
+    Nested(NestedQuery),
+    Boosting(BoostingQuery),
+    DisMax(DisMaxQuery),
+    Pinned(PinnedQuery),
+    Percolate(PercolateQuery),
+    PercolateLookup(PercolateLookupQuery),
+    FunctionScore(FunctionScoreQuery),
+    RankFeature(RankFeatureQuery),
+    RankFeatureSaturation(RankFeatureSaturationQuery),
+    RankFeatureLogarithm(RankFeatureLogarithmQuery),
+    RankFeatureSigmoid(RankFeatureSigmoidQuery),
+    RankFeatureLinear(RankFeatureLinearQuery),
+    MoreLikeThis(MoreLikeThisQuery),
+    Fuzzy(FuzzyQuery),
+    GeoDistance(GeoDistanceQuery),
+    GeoBoundingBox(GeoBoundingBoxQuery),
+    GeoShapeLookup(GeoShapeLookupQuery),
+    GeoShape(GeoShapeQuery),
+    ShapeLookup(ShapeLookupQuery),
+    Shape(ShapeQuery),
+    Json(JsonQuery),
+    Wrapper(WrapperQuery),
+    Script(ScriptQuery),
+    ScriptScore(ScriptScoreQuery),
+    ParentId(ParentIdQuery),
+    HasParent(HasParentQuery),
+    HasChild(HasChildQuery),
+    SimpleQueryString(SimpleQueryStringQuery),
+    QueryString(QueryStringQuery),
+    CombinedFields(CombinedFieldsQuery),
+    SpanContaining(SpanContainingQuery),
+    SpanFieldMasking(SpanFieldMaskingQuery),
+    SpanFirst(SpanFirstQuery),
+    SpanMulti(SpanMultiQuery),
+    SpanNear(SpanNearQuery),
+    SpanNot(SpanNotQuery),
+    SpanOr(SpanOrQuery),
+    SpanTerm(SpanTermQuery),
+    SpanWithin(SpanWithinQuery),
+    Knn(KnnQuery),
 );
 
 #[cfg(test)]

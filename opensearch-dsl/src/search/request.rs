@@ -69,6 +69,19 @@ pub struct Search {
 
   #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   timeout: Option<Time>,
+
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+  knn: Vec<Knn>,
+
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+  collapse: Option<Collapse>,
+
+  #[serde(flatten)]
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+  extra: Map<String, serde_json::Value>,
+
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+  track_scores: Option<bool>,
 }
 
 impl Search {
@@ -190,6 +203,13 @@ impl Search {
     self
   }
 
+  /// If true, calculate and return document scores, even if the scores are not
+  /// used for sorting.
+  pub fn track_scores(mut self, enabled: bool) -> Self {
+    self.track_scores = Some(enabled);
+    self
+  }
+
   /// Highlight
   pub fn highlight<H>(mut self, highlight: H) -> Self
   where
@@ -258,5 +278,77 @@ impl Search {
     T: Into<Time>, {
     self.timeout = Some(timeout.into());
     self
+  }
+
+  /// Defines the kNN query to run.
+  ///
+  /// <https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html#search-api-knn>
+  pub fn knn(mut self, knn: Knn) -> Self {
+    self.knn.push(knn);
+    self
+  }
+
+  /// Parameter to specify collapsing results on some field
+  ///
+  /// <https://www.elastic.co/guide/en/elasticsearch/reference/current/collapse-search-results.html>
+  pub fn collapse<C>(mut self, collapse: C) -> Self
+  where
+    C: Into<Collapse>, {
+    self.collapse = Some(collapse.into());
+    self
+  }
+
+  /// Extra fields for something not yet supported.
+  ///
+  /// ```
+  /// # use elasticsearch_dsl::Search;
+  /// # use serde_json::json;
+  /// # let search =
+  /// Search::new()
+  ///     .size(10)
+  ///     .extra([
+  ///         (
+  ///             "knn".to_owned(),
+  ///             json!({ "field": "abc" }),
+  ///         ),
+  ///         (
+  ///             "terminate_after".to_owned(),
+  ///             json!(42)
+  ///         ),
+  ///     ].into());
+  /// ```
+  pub fn extra(mut self, extra: Map<String, serde_json::Value>) -> Self {
+    self.extra = extra;
+    self
+  }
+}
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[test]
+  fn serializes_to_empty_object_by_default() {
+    assert_serialize(Search::new(), json!({}));
+    assert_serialize(Search::default(), json!({}));
+  }
+
+  #[test]
+  fn serializes_extra_fields() {
+    assert_serialize(
+      Search::new().size(10).track_scores(false).extra(
+        [
+          ("knn".to_owned(), json!({ "field": "abc" })),
+          ("terminate_after".to_owned(), json!(42)),
+        ]
+        .into(),
+      ),
+      json!({
+          "size": 10,
+          "track_scores": false,
+          "knn": { "field": "abc" },
+          "terminate_after": 42,
+      }),
+    );
   }
 }

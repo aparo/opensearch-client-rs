@@ -3,7 +3,7 @@ use std::{borrow::Cow, collections::HashMap};
 use testcontainers::{core::*, Image};
 
 const NAME: &str = "opensearchproject/opensearch";
-const TAG: &str = "2.14.0";
+const TAG: &str = "2.19.0";
 
 #[derive(Debug, Clone)]
 pub struct OpenSearch {

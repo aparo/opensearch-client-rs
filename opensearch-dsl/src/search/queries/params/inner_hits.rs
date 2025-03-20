@@ -1,7 +1,7 @@
 use crate::{search::*, util::*, Set};
 
-/// The [parent-join](https://www.elastic.co/guide/en/opensearch/reference/current/parent-join.html)
-/// and [nested](https://www.elastic.co/guide/en/opensearch/reference/current/nested.html)
+/// The [parent-join](https://www.elastic.co/guide/en/elasticsearch/reference/current/parent-join.html)
+/// and [nested](https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html)
 /// features allow the return of documents that have matches in a different
 /// scope. In the parent/child case, parent documents are returned based on
 /// matches in child documents or child documents are returned based on matches
@@ -19,11 +19,14 @@ use crate::{search::*, util::*, Set};
 /// Inner hits can be used by defining an `inner_hits` definition on a `nested`,
 /// `has_child` or `has_parent` query and filter.
 ///
-/// <https://www.elastic.co/guide/en/opensearch/reference/current/inner-hits.html>
-#[derive(Debug, Default, Clone, PartialEq, Deserialize, Serialize)]
+/// <https://www.elastic.co/guide/en/elasticsearch/reference/current/inner-hits.html>
+#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 pub struct InnerHits {
   #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   _source: Option<SourceFilter>,
+
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+  name: Option<String>,
 
   #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   from: Option<u64>,
@@ -39,6 +42,14 @@ pub struct InnerHits {
 
   #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
   docvalue_fields: Set<String>,
+
+  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+  collapse: Option<InnerHitsCollapse>,
+}
+
+#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
+struct InnerHitsCollapse {
+  field: String,
 }
 
 impl InnerHits {
@@ -52,6 +63,15 @@ impl InnerHits {
   where
     T: Into<SourceFilter>, {
     self._source = Some(source.into());
+    self
+  }
+
+  /// Inner hit name, useful when multiple `inner_hits` exist in a single search
+  /// request
+  pub fn name<T>(mut self, name: T) -> Self
+  where
+    T: ToString, {
+    self.name = Some(name.to_string());
     self
   }
 
@@ -96,6 +116,16 @@ impl InnerHits {
     self
       .docvalue_fields
       .extend(docvalue_fields.into_iter().map(|x| x.to_string()));
+    self
+  }
+
+  /// A field to collapse by
+  pub fn collapse<T>(mut self, collapse: T) -> Self
+  where
+    T: ToString, {
+    self.collapse = Some(InnerHitsCollapse {
+      field: collapse.to_string(),
+    });
     self
   }
 }

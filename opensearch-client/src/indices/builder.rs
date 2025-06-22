@@ -1785,6 +1785,10 @@ impl<'a> IndicesGetIndexTemplate<'a> {
         let json: ResponseValue<HashMap<String, Value>> = ResponseValue::from_response(response).await?;
         decode_index_templates(json)
       }
+      404u16 => {
+        let json: ResponseValue<HashMap<String, Value>> = ResponseValue::from_response(response).await?;
+        decode_index_templates(json)
+      }
       _ => {
         Err(Error::UnexpectedResponse(
           ReqwestResponse::from_response(response).await,

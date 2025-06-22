@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::{path::PathBuf, sync::Arc};
 
 use opensearch_client::OsClient;
 use opensearch_dsl::{
@@ -13,8 +13,8 @@ use tokio::{
 };
 use futures::{pin_mut, StreamExt};
 
-pub struct Dumper<'a> {
-  pub client: &'a OsClient,
+pub struct Dumper {
+  pub client: Arc<OsClient>,
   pub compress: bool,
   pub output: PathBuf,
   pub indices: String,
@@ -22,7 +22,7 @@ pub struct Dumper<'a> {
   pub max_record_for_file: u32,
 }
 
-impl<'a> Dumper<'a> {
+impl Dumper {
   pub async fn dump(&self) -> anyhow::Result<()> {
     let resolve_response = self
       .client

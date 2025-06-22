@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::{path::PathBuf, sync::Arc};
 
 use clap::ValueEnum;
 use opensearch_client::{indices::types::IndexTemplateMapping, OsClient};
@@ -11,7 +11,6 @@ use tokio::{
 use tokio::io::{
   AsyncReadExt as _, // for `write_all` and `shutdown`
 };
-use futures::StreamExt;
 use tracing::error;
 type Decoder<T> = ZstdDecoder<T>;
 
@@ -31,8 +30,8 @@ impl std::fmt::Display for RestoreMode {
   }
 }
 
-pub struct Restorer<'a> {
-  pub client: &'a OsClient,
+pub struct Restorer {
+  pub client: Arc<OsClient>,
   pub input: PathBuf,
   pub rename_index: Option<String>,
   pub index: Option<String>,
@@ -42,7 +41,7 @@ pub struct Restorer<'a> {
   pub mode: RestoreMode,
 }
 
-impl<'a> Restorer<'a> {
+impl Restorer {
   pub async fn restore(&self) -> anyhow::Result<()> {
     // we list of files in input path
     let mut files = std::fs::read_dir(&self.input)?

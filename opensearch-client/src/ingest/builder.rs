@@ -150,6 +150,7 @@ impl<'a> IngestGetPipeline<'a> {
     let response = result?;
     match response.status().as_u16() {
       200u16 => ResponseValue::from_response(response).await,
+      404u16 => ResponseValue::from_response(response).await,
       _ => {
         Err(Error::UnexpectedResponse(
           ReqwestResponse::from_response(response).await,

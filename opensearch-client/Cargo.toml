@@ -36,7 +36,7 @@ base64 = "0.22.1"
 task-local-extensions = "0.1.4"
 reqwest-middleware = { version = "0.4.2", features = ["json"] }
 reqwest-retry = "0.7.0"
-reqwest-tracing = "0.5.7"
+reqwest-tracing = "0.5.8"
 anyhow = "1.0.98"
 async-trait = "0.1.88"
 url = "2.5.4"

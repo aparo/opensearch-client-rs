@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::{path::PathBuf, sync::Arc};
 
 use tracing::info;
 use clap::{Parser, Subcommand};
@@ -169,12 +169,12 @@ async fn main() -> anyhow::Result<()> {
     // sets this to be the default, global subscriber for this application.
     .init();
 
-  let client = {
+  let client = Arc::new({
     let url = Url::parse(cli.server.clone().as_str())?;
     let mut builder = opensearch_client::OsClientBuilder::new().base_url(url.clone());
     builder = builder.basic_auth(cli.user.clone(), cli.password.clone());
     builder.build()
-  };
+  });
 
   match &cli.command {
     Commands::DumpMetadata {
@@ -266,7 +266,7 @@ async fn main() -> anyhow::Result<()> {
       info!("Dumping index");
       info!("Output: {:?}", output);
       let dumper = dumper::Dumper {
-        client: &client,
+        client,
         compress: *compress,
         output: output.clone(),
         indices: indices.clone(),
@@ -288,7 +288,7 @@ async fn main() -> anyhow::Result<()> {
       info!("Restoring index");
       info!("Input: {:?}", input);
       let restorer = restorer::Restorer {
-        client: &client,
+        client,
         input: input.clone(),
         skip_data: *skip_data,
         skip_mapping: *skip_mappings,

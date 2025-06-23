@@ -26,6 +26,18 @@ struct Args {
   #[clap(short, long, env = "OPENSEARCH_PASSWORD", default_value = "admin")]
   password: String,
 
+  /// Opensearch server url
+  #[clap(long, env = "OPENSEARCH_REMOTE_URL", default_value = "http://localhost:9200")]
+  remote_server: String,
+
+  /// Opensearch user to be used for the connection
+  #[clap(long, env = "OPENSEARCH_REMOTE_USER", default_value = "admin")]
+  remote_user: String,
+
+  /// Opensearch password to be used for the connection
+  #[clap(long, env = "OPENSEARCH_REMOTE_PASSWORD", default_value = "admin")]
+  remote_password: String,
+
   #[clap(subcommand)]
   command: Commands,
 }
@@ -147,10 +159,40 @@ pub enum Commands {
     #[clap(value_name = "FILE", default_value = "output")]
     input: PathBuf,
   },
+  ///  RemoteCopyIndex
+  /// This command will remotely copy an index from one cluster to another
+  CopyIndex {
+    /// Use a remote cluster
+    #[clap(long, default_value = "false")]
+    remote: bool,
+    /// Copy the mapping
+    #[clap(long, default_value = "true")]
+    copy_mapping: bool,
+    /// Deleting existsing index before copying
+    #[clap(long, default_value = "true")]
+    delete_existing: bool,
+    /// The target index name
+    #[clap(long, default_value = "1000")]
+    size: u64,
+    /// The target index name
+    #[clap(long)]
+    target_index: Option<String>,
+    /// The source index name
+    index: String,
+  },
+}
+
+fn create_remote_client(cli: &Args) -> anyhow::Result<Arc<opensearch_client::OsClient>> {
+  let url = Url::parse(cli.remote_server.as_str())?;
+  let mut builder = opensearch_client::OsClientBuilder::new().base_url(url);
+  builder = builder.basic_auth(cli.remote_user.clone(), cli.remote_password.clone());
+  Ok(Arc::new(builder.build()))
 }
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+  let _ = dotenvy::dotenv();
+
   let cli = Args::parse();
 
   // we setup logging
@@ -299,6 +341,49 @@ async fn main() -> anyhow::Result<()> {
       };
 
       restorer.restore().await?;
+    }
+    Commands::CopyIndex {
+      remote,
+      copy_mapping,
+      delete_existing,
+      size,
+      target_index,
+      index,
+    } => {
+      info!("Copying index");
+      info!("Remote: {}", remote);
+      info!("Copy mapping: {}", copy_mapping);
+      info!("Delete existing: {}", delete_existing);
+      info!("Size: {}", size);
+      info!("Target index: {:?}", target_index);
+      info!("Source index: {}", index);
+
+      // Here you would implement the logic to copy the index
+      // This is a placeholder for the actual implementation
+      if *remote {
+        // Implement remote copy logic
+        let remote_client = create_remote_client(&cli)?;
+        opensearch_client::tools::copy_index_remotely()
+          .source_client(client)
+          .target_client(remote_client)
+          .copy_mappings(*copy_mapping)
+          .delete_existing(*delete_existing)
+          .size(*size)
+          .source_index(index)
+          .maybe_target_index(target_index.clone())
+          .call()
+          .await?;
+
+        //   index.clone(),
+        //   target_index.clone(),
+        //   *copy_mapping,
+        //   *delete_existing,
+        //   *size,
+        // )
+      } else {
+        // Implement local copy logic
+        unimplemented!();
+      }
     }
   }
 

@@ -1,9 +1,8 @@
 use std::{path::PathBuf, sync::Arc};
 
 use clap::ValueEnum;
-use opensearch_client::{indices::types::IndexTemplateMapping, OsClient};
+use opensearch_client::{indices::types::IndexTemplateMapping, tools::Header, OsClient};
 use async_compression::tokio::bufread::ZstdDecoder;
-use serde::{Deserialize, Serialize};
 use tokio::{
   fs::File,
   io::{AsyncBufReadExt, BufReader, Lines},
@@ -12,6 +11,7 @@ use tokio::io::{
   AsyncReadExt as _, // for `write_all` and `shutdown`
 };
 use tracing::error;
+
 type Decoder<T> = ZstdDecoder<T>;
 
 #[derive(ValueEnum, Copy, Clone, Debug, PartialEq, Eq)]
@@ -148,12 +148,4 @@ pub async fn create_lines(file_path: &PathBuf) -> Lines<BufReader<Decoder<BufRea
   let buf_reader = tokio::io::BufReader::with_capacity(100000, gzip_decoder);
 
   buf_reader.lines()
-}
-
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
-struct Header {
-  #[serde(rename = "_index")]
-  pub index: String,
-  #[serde(rename = "_id")]
-  pub id: String,
 }

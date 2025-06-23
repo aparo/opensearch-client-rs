@@ -26,7 +26,7 @@ mod snapshot;
 #[cfg(feature = "tasks")]
 mod tasks;
 #[cfg(feature = "tools")]
-mod tools;
+pub mod tools;
 
 use std::sync::{Arc, Mutex};
 

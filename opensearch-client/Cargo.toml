@@ -13,6 +13,7 @@ readme = { workspace = true }
 [dependencies]
 opensearch-dsl = { workspace = true, optional = true }
 tokio = { version = "1.45.1", features = ["full"] }
+bon = "3.6"
 bytes = "1.10.1"
 futures-util = "0.3.31"
 futures = "0.3.31"

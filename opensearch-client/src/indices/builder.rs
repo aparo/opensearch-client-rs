@@ -5854,7 +5854,7 @@ impl<'a> IndicesExists<'a> {
   }
 
   ///Sends a `HEAD` request to `/{index}`
-  pub async fn send(self) -> Result<ResponseValue<()>, Error> {
+  pub async fn send(self) -> Result<bool, Error> {
     let Self {
       client,
       index,
@@ -5896,12 +5896,8 @@ impl<'a> IndicesExists<'a> {
     let result = client.client.execute(request).await;
     let response = result?;
     match response.status().as_u16() {
-      200u16 => Ok(ResponseValue::empty(response)),
-      _ => {
-        Err(Error::UnexpectedResponse(
-          ReqwestResponse::from_response(response).await,
-        ))
-      }
+      200u16 => Ok(true),
+      _ => Ok(false),
     }
   }
 }

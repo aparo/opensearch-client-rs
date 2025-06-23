@@ -2,13 +2,25 @@ use std::{
   collections::HashMap,
   fs::{self},
   path::PathBuf,
+  sync::Arc,
 };
 
+use futures::{pin_mut, StreamExt};
+use opensearch_dsl::{FieldSort, Query, SortCollection};
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use tracing::info;
 use walkdir::WalkDir;
 
-use crate::OsClient;
+use crate::{indices::types::IndexTemplateMapping, OsClient};
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
+pub struct Header {
+  #[serde(rename = "_index")]
+  pub index: String,
+  #[serde(rename = "_id")]
+  pub id: String,
+}
 
 const PIPELINE_DIRECTORY: &str = "pipelines";
 const TEMPLATE_DIRECTORY: &str = "templates";
@@ -311,4 +323,125 @@ fn get_json_file_recursive(path: &PathBuf) -> anyhow::Result<Vec<PathBuf>> {
     }
   }
   Ok(files)
+}
+
+#[bon::builder]
+pub async fn copy_index_remotely(
+  source_client: Arc<OsClient>,
+  target_client: Arc<OsClient>,
+  source_index: &str,
+  target_index: Option<String>,
+  #[builder(default = true)] copy_mappings: bool,
+  #[builder(default = true)] delete_existing: bool,
+  #[builder(default = 500)] size: u64,
+) -> anyhow::Result<()> {
+  let source_count = source_client
+    .count()
+    .index(source_index)
+    .send()
+    .await?
+    .into_inner()
+    .count;
+
+  if source_count == 0 {
+    info!("Source index {} is empty, nothing to copy", source_index);
+    return Ok(());
+  }
+  let target_index = target_index.unwrap_or_else(|| source_index.to_string());
+  let target_exists: bool = target_client
+    .indices()
+    .exists()
+    .index(target_index.as_str())
+    .send()
+    .await?;
+
+  if delete_existing && target_exists {
+    target_client
+      .indices()
+      .delete()
+      .index(target_index.as_str())
+      .send()
+      .await?;
+    info!("Deleted existing index: {}", target_index);
+  }
+
+  if !target_exists {
+    if copy_mappings {
+      let index_data = source_client
+        .indices()
+        .get()
+        .index(source_index)
+        .send()
+        .await?
+        .into_inner();
+      if let Some(index_template) = index_data.get(source_index) {
+        let mappings = index_template.mappings.clone();
+        if !mappings.is_empty() {
+          let new_template = IndexTemplateMapping {
+            mappings,
+            ..Default::default()
+          };
+          info!("Copying mappings from source index: {}", source_index);
+          target_client
+            .indices()
+            .create(&target_index, new_template)
+            .send()
+            .await?;
+        } else {
+          info!("No mappings to copy from source index: {}", source_index);
+        }
+      }
+    }
+  }
+
+  let query = Query::match_all();
+  let sort = SortCollection::new().field(FieldSort::ascending("_id"));
+
+  let stream = source_client
+    .search_stream::<serde_json::Value>(source_index, &query.into(), &sort, size)
+    .await?;
+  pin_mut!(stream);
+
+  let mut total_count: u32 = 0;
+  while let Some(hit) = stream.next().await {
+    let body = hit.source.unwrap();
+    target_client
+      .bulk_index_document(&target_index, Some(hit.id.clone()), &body)
+      .await?;
+    total_count += 1;
+    if total_count % 10000 == 0 {
+      tracing::info!("Processed {}/{} documents", total_count, source_count);
+    }
+  }
+  target_client.flush_bulk().await?;
+  target_client
+    .indices()
+    .refresh_post_with_index()
+    .index(target_index.as_str())
+    .send()
+    .await?;
+  let target_count = target_client
+    .count()
+    .index(&target_index)
+    .send()
+    .await?
+    .into_inner()
+    .count;
+
+  if total_count != target_count {
+    let error = format!(
+      "Mismatch in document count: source {} vs target {}",
+      total_count, target_count
+    );
+    tracing::error!("{}", error);
+    return Err(anyhow::anyhow!(
+      "Mismatch in document count: source {} vs target {}",
+      total_count,
+      target_count
+    ));
+  }
+
+  println!("Written index {} with records {}", target_index, total_count);
+
+  Ok(())
 }

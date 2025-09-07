@@ -18,7 +18,7 @@ mod track_total_hits;
 mod units;
 
 pub use self::{
-  coordinate::*, date::*, geo_distance_type::*, geo_location::*, geo_shape::*, number::*, point_in_time::*,
-  score_mode::*, script_sort_type::*, search_filter::*, shape::*, term::*, terms::*, text::*, track_total_hits::*,
-  units::*,
+    coordinate::*, date::*, geo_distance_type::*, geo_location::*, geo_shape::*, number::*,
+    point_in_time::*, score_mode::*, script_sort_type::*, search_filter::*, shape::*, term::*,
+    terms::*, text::*, track_total_hits::*, units::*,
 };

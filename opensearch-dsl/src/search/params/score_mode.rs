@@ -2,18 +2,18 @@
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ScoreMode {
-  /// Add the original score and the rescore query score.
-  Total,
+    /// Add the original score and the rescore query score.
+    Total,
 
-  /// Multiply the original score by the rescore query score.
-  Multiply,
+    /// Multiply the original score by the rescore query score.
+    Multiply,
 
-  /// Take the min of the original score and the rescore query score.
-  Min,
+    /// Take the min of the original score and the rescore query score.
+    Min,
 
-  /// Take the max of original score and the rescore query score.
-  Max,
+    /// Take the max of original score and the rescore query score.
+    Max,
 
-  /// Average the original score and the rescore query score.
-  Avg,
+    /// Average the original score and the rescore query score.
+    Avg,
 }

@@ -26,55 +26,57 @@ use crate::{search::*, util::*};
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct PercolateQuery {
-  field: String,
+    field: String,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  name: Option<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    name: Option<String>,
 
-  #[serde(flatten)]
-  source: PercolateSource,
+    #[serde(flatten)]
+    source: PercolateSource,
 }
 
 impl Query {
-  /// Creates an instance of [`PercolateQuery`]
-  ///
-  /// - `field` - The field of type `percolator` that holds the indexed queries
-  /// - `source` - [Source](PercolateSource) to percolate
-  pub fn percolate<S, T>(field: S, source: T) -> PercolateQuery
-  where
-    S: ToString,
-    T: Serialize, {
-    let source = serde_json::to_value(source).unwrap_or_default();
-    let source = if let Some(array) = source.as_array() {
-      PercolateSource::Documents(array.to_vec())
-    } else {
-      PercolateSource::Document(source)
-    };
+    /// Creates an instance of [`PercolateQuery`]
+    ///
+    /// - `field` - The field of type `percolator` that holds the indexed queries
+    /// - `source` - [Source](PercolateSource) to percolate
+    pub fn percolate<S, T>(field: S, source: T) -> PercolateQuery
+    where
+        S: ToString,
+        T: Serialize,
+    {
+        let source = serde_json::to_value(source).unwrap_or_default();
+        let source = if let Some(array) = source.as_array() {
+            PercolateSource::Documents(array.to_vec())
+        } else {
+            PercolateSource::Document(source)
+        };
 
-    PercolateQuery {
-      field: field.to_string(),
-      source,
-      name: None,
+        PercolateQuery {
+            field: field.to_string(),
+            source,
+            name: None,
+        }
     }
-  }
 }
 
 impl PercolateQuery {
-  /// The suffix to be used for the `_percolator_document_slot` field in case
-  /// multiple `percolate` queries have been specified. This is an optional
-  /// parameter
-  pub fn name<S>(mut self, name: S) -> Self
-  where
-    S: ToString, {
-    self.name = Some(name.to_string());
-    self
-  }
+    /// The suffix to be used for the `_percolator_document_slot` field in case
+    /// multiple `percolate` queries have been specified. This is an optional
+    /// parameter
+    pub fn name<S>(mut self, name: S) -> Self
+    where
+        S: ToString,
+    {
+        self.name = Some(name.to_string());
+        self
+    }
 }
 
 impl ShouldSkip for PercolateQuery {
-  fn should_skip(&self) -> bool {
-    self.source.should_skip()
-  }
+    fn should_skip(&self) -> bool {
+        self.source.should_skip()
+    }
 }
 
 serialize_with_root!("percolate": PercolateQuery);
@@ -82,108 +84,108 @@ deserialize_with_root!("percolate": PercolateQuery);
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    #[derive(Serialize)]
-    struct Source {
-      id: i32,
-      message: &'static str,
+    #[test]
+    fn serialization() {
+        #[derive(Serialize)]
+        struct Source {
+            id: i32,
+            message: &'static str,
+        }
+
+        assert_serialize_query(
+            Query::percolate(
+                "field_name",
+                Source {
+                    id: 1,
+                    message: "search text",
+                },
+            ),
+            json!({
+                "percolate": {
+                    "field": "field_name",
+                    "document": {
+                        "id": 1,
+                        "message": "search text",
+                    }
+                }
+            }),
+        );
+
+        assert_serialize_query(
+            Query::percolate(
+                "field_name",
+                [Source {
+                    id: 1,
+                    message: "search text",
+                }],
+            ),
+            json!({
+                "percolate": {
+                    "field": "field_name",
+                    "documents": [
+                        {
+                            "id": 1,
+                            "message": "search text",
+                        }
+                    ]
+                }
+            }),
+        );
+
+        assert_serialize_query(
+            Query::percolate("field_name", json!({"message": "lol"})),
+            json!({
+                "percolate": {
+                    "field": "field_name",
+                    "document": {
+                        "message": "lol"
+                    }
+                }
+            }),
+        );
+
+        assert_serialize_query(
+            Query::percolate("field_name", json!({"message": "lol"})).name("toast"),
+            json!({
+                "percolate": {
+                    "field": "field_name",
+                    "name": "toast",
+                    "document": {
+                        "message": "lol"
+                    }
+                }
+            }),
+        );
+
+        assert_serialize_query(
+            Query::percolate("field_name", [json!({"message": "lol"})]),
+            json!({
+                "percolate": {
+                    "field": "field_name",
+                    "documents": [
+                        {
+                            "message": "lol"
+                        }
+                    ]
+                }
+            }),
+        );
+
+        assert_serialize_query(
+            Query::percolate("field_name", [json!({"message": "lol"})]).name("toast"),
+            json!({
+                "percolate": {
+                    "field": "field_name",
+                    "name": "toast",
+                    "documents": [
+                        {
+                            "message": "lol"
+                        }
+                    ]
+                }
+            }),
+        );
     }
-
-    assert_serialize_query(
-      Query::percolate(
-        "field_name",
-        Source {
-          id: 1,
-          message: "search text",
-        },
-      ),
-      json!({
-          "percolate": {
-              "field": "field_name",
-              "document": {
-                  "id": 1,
-                  "message": "search text",
-              }
-          }
-      }),
-    );
-
-    assert_serialize_query(
-      Query::percolate(
-        "field_name",
-        [Source {
-          id: 1,
-          message: "search text",
-        }],
-      ),
-      json!({
-          "percolate": {
-              "field": "field_name",
-              "documents": [
-                  {
-                      "id": 1,
-                      "message": "search text",
-                  }
-              ]
-          }
-      }),
-    );
-
-    assert_serialize_query(
-      Query::percolate("field_name", json!({"message": "lol"})),
-      json!({
-          "percolate": {
-              "field": "field_name",
-              "document": {
-                  "message": "lol"
-              }
-          }
-      }),
-    );
-
-    assert_serialize_query(
-      Query::percolate("field_name", json!({"message": "lol"})).name("toast"),
-      json!({
-          "percolate": {
-              "field": "field_name",
-              "name": "toast",
-              "document": {
-                  "message": "lol"
-              }
-          }
-      }),
-    );
-
-    assert_serialize_query(
-      Query::percolate("field_name", [json!({"message": "lol"})]),
-      json!({
-          "percolate": {
-              "field": "field_name",
-              "documents": [
-                  {
-                      "message": "lol"
-                  }
-              ]
-          }
-      }),
-    );
-
-    assert_serialize_query(
-      Query::percolate("field_name", [json!({"message": "lol"})]).name("toast"),
-      json!({
-          "percolate": {
-              "field": "field_name",
-              "name": "toast",
-              "documents": [
-                  {
-                      "message": "lol"
-                  }
-              ]
-          }
-      }),
-    );
-  }
 }

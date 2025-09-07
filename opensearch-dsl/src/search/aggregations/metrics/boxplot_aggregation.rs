@@ -17,92 +17,97 @@ use crate::{util::*, Aggregation, Number};
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-metrics-boxplot-aggregation.html>
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct BoxplotAggregation {
-  boxplot: BoxplotAggregationInner,
+    boxplot: BoxplotAggregationInner,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 struct BoxplotAggregationInner {
-  field: String,
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  compression: Option<Number>,
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  missing: Option<Number>,
+    field: String,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    compression: Option<Number>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    missing: Option<Number>,
 }
 
 impl Aggregation {
-  /// Creates an instance of [`BoxplotAggregation`]
-  ///
-  /// - `field` - field to aggregate
-  pub fn boxplot<T>(field: T) -> BoxplotAggregation
-  where
-    T: ToString, {
-    BoxplotAggregation {
-      boxplot: BoxplotAggregationInner {
-        field: field.to_string(),
-        compression: None,
-        missing: None,
-      },
+    /// Creates an instance of [`BoxplotAggregation`]
+    ///
+    /// - `field` - field to aggregate
+    pub fn boxplot<T>(field: T) -> BoxplotAggregation
+    where
+        T: ToString,
+    {
+        BoxplotAggregation {
+            boxplot: BoxplotAggregationInner {
+                field: field.to_string(),
+                compression: None,
+                missing: None,
+            },
+        }
     }
-  }
 }
 
 impl BoxplotAggregation {
-  /// Approximate algorithms must balance memory utilization with estimation
-  /// accuracy.
-  ///
-  /// The TDigest algorithm uses a number of "nodes" to approximate percentiles
-  /// —— the more nodes available, the higher the accuracy (and large memory
-  /// footprint) proportional to the volume of data. The `compression`
-  /// parameter limits the maximum number of nodes to 20 * `compression`.
-  ///
-  /// Therefore, by increasing the compression value, you can increase the
-  /// accuracy of your percentiles at the cost of more memory. Larger
-  /// compression values also make the algorithm slower since the underlying
-  /// tree data structure grows in size, resulting in more expensive
-  /// operations. The default compression value is 100.
-  ///
-  /// A "node" uses roughly 32 bytes of memory, so under worst-case scenarios
-  /// (large amount of data which arrives sorted and in-order) the default
-  /// settings will produce a TDigest roughly 64KB in size. In practice data
-  /// tends to be more random and the TDigest will use less memory.
-  pub fn compression<T>(mut self, compression: T) -> Self
-  where
-    T: Into<Number>, {
-    self.boxplot.compression = Some(compression.into());
-    self
-  }
+    /// Approximate algorithms must balance memory utilization with estimation
+    /// accuracy.
+    ///
+    /// The TDigest algorithm uses a number of "nodes" to approximate percentiles
+    /// —— the more nodes available, the higher the accuracy (and large memory
+    /// footprint) proportional to the volume of data. The `compression`
+    /// parameter limits the maximum number of nodes to 20 * `compression`.
+    ///
+    /// Therefore, by increasing the compression value, you can increase the
+    /// accuracy of your percentiles at the cost of more memory. Larger
+    /// compression values also make the algorithm slower since the underlying
+    /// tree data structure grows in size, resulting in more expensive
+    /// operations. The default compression value is 100.
+    ///
+    /// A "node" uses roughly 32 bytes of memory, so under worst-case scenarios
+    /// (large amount of data which arrives sorted and in-order) the default
+    /// settings will produce a TDigest roughly 64KB in size. In practice data
+    /// tends to be more random and the TDigest will use less memory.
+    pub fn compression<T>(mut self, compression: T) -> Self
+    where
+        T: Into<Number>,
+    {
+        self.boxplot.compression = Some(compression.into());
+        self
+    }
 
-  /// The `missing` parameter defines how documents that are missing a value
-  /// should be treated. By default they will be ignored but it is also
-  /// possible to treat them as if they had a value.
-  pub fn missing<T>(mut self, missing: T) -> Self
-  where
-    T: Into<Number>, {
-    self.boxplot.missing = Some(missing.into());
-    self
-  }
+    /// The `missing` parameter defines how documents that are missing a value
+    /// should be treated. By default they will be ignored but it is also
+    /// possible to treat them as if they had a value.
+    pub fn missing<T>(mut self, missing: T) -> Self
+    where
+        T: Into<Number>,
+    {
+        self.boxplot.missing = Some(missing.into());
+        self
+    }
 }
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_aggregation(
-      Aggregation::boxplot("test_field"),
-      json!({ "boxplot": { "field": "test_field" } }),
-    );
+    #[test]
+    fn serialization() {
+        assert_serialize_aggregation(
+            Aggregation::boxplot("test_field"),
+            json!({ "boxplot": { "field": "test_field" } }),
+        );
 
-    assert_serialize_aggregation(
-      Aggregation::boxplot("test_field").compression(100).missing(10),
-      json!({
-          "boxplot": {
-              "field": "test_field",
-              "compression": 100,
-              "missing": 10
-          }
-      }),
-    );
-  }
+        assert_serialize_aggregation(
+            Aggregation::boxplot("test_field")
+                .compression(100)
+                .missing(10),
+            json!({
+                "boxplot": {
+                    "field": "test_field",
+                    "compression": 100,
+                    "missing": 10
+                }
+            }),
+        );
+    }
 }

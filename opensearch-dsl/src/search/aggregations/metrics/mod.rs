@@ -25,6 +25,6 @@ mod sum_aggregation;
 mod top_hits_aggregation;
 
 pub use self::{
-  avg_aggregation::*, boxplot_aggregation::*, cardinality_aggregation::*, max_aggregation::*, min_aggregation::*,
-  rate_aggregation::*, sum_aggregation::*, top_hits_aggregation::*,
+    avg_aggregation::*, boxplot_aggregation::*, cardinality_aggregation::*, max_aggregation::*,
+    min_aggregation::*, rate_aggregation::*, sum_aggregation::*, top_hits_aggregation::*,
 };

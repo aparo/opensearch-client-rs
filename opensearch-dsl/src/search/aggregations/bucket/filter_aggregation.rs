@@ -6,44 +6,46 @@ use crate::{search::*, util::*};
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-bucket-filter-aggregation.html>
 pub struct FilterAggregation {
-  filter: Query,
+    filter: Query,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  aggs: Aggregations,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    aggs: Aggregations,
 }
 
 impl Aggregation {
-  /// Creates an instance of [`FilterAggregation`]
-  ///
-  /// - `query` - query to filter by
-  pub fn filter<Q>(query: Q) -> FilterAggregation
-  where
-    Q: Into<Query>, {
-    FilterAggregation {
-      filter: query.into(),
-      aggs: Aggregations::new(),
+    /// Creates an instance of [`FilterAggregation`]
+    ///
+    /// - `query` - query to filter by
+    pub fn filter<Q>(query: Q) -> FilterAggregation
+    where
+        Q: Into<Query>,
+    {
+        FilterAggregation {
+            filter: query.into(),
+            aggs: Aggregations::new(),
+        }
     }
-  }
 }
 
 impl FilterAggregation {
-  add_aggregate!();
+    add_aggregate!();
 }
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_aggregation(
-      Aggregation::filter(Query::term("type", "t-shirt")).aggregate("sizes", Aggregation::terms("size")),
-      json!({
-          "filter": { "term": { "type": { "value": "t-shirt"} } },
-          "aggs": {
-              "sizes": { "terms": { "field": "size" } }
-          }
-      }),
-    );
-  }
+    #[test]
+    fn serialization() {
+        assert_serialize_aggregation(
+            Aggregation::filter(Query::term("type", "t-shirt"))
+                .aggregate("sizes", Aggregation::terms("size")),
+            json!({
+                "filter": { "term": { "type": { "value": "t-shirt"} } },
+                "aggs": {
+                    "sizes": { "terms": { "field": "size" } }
+                }
+            }),
+        );
+    }
 }

@@ -15,22 +15,22 @@ use crate::util::*;
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
 #[serde(remote = "Self")]
 pub struct MatchNoneQuery {
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boost: Option<f32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boost: Option<f32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  _name: Option<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    _name: Option<String>,
 }
 
 impl Query {
-  /// Creates an instance of [`MatchNoneQuery`]
-  pub fn match_none() -> MatchNoneQuery {
-    MatchNoneQuery::default()
-  }
+    /// Creates an instance of [`MatchNoneQuery`]
+    pub fn match_none() -> MatchNoneQuery {
+        MatchNoneQuery::default()
+    }
 }
 
 impl MatchNoneQuery {
-  add_boost_and_name!();
+    add_boost_and_name!();
 }
 
 serialize_with_root!("match_none": MatchNoneQuery);
@@ -40,15 +40,15 @@ impl ShouldSkip for MatchNoneQuery {}
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_query(Query::match_none(), json!({"match_none": {} }));
+    #[test]
+    fn serialization() {
+        assert_serialize_query(Query::match_none(), json!({"match_none": {} }));
 
-    assert_serialize_query(
-      Query::match_none().boost(2).name("test"),
-      json!({ "match_none": { "boost": 2.0, "_name": "test" } }),
-    );
-  }
+        assert_serialize_query(
+            Query::match_none().boost(2).name("test"),
+            json!({ "match_none": { "boost": 2.0, "_name": "test" } }),
+        );
+    }
 }

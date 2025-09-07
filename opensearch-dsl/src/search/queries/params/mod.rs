@@ -26,8 +26,9 @@ mod text_query_type;
 
 // Public re-exports
 pub use self::{
-  function_score_query::*, fuzziness::*, geo_query::*, has_child_query::*, inner_hits::*, negative_boost::*,
-  nested_query::*, operator::*, percolate_query::*, pinned_query::*, range_query::*, regexp_query::*, rewrite::*,
-  script_object::*, shape_query::*, simple_query_string_query::*, stored_fields::*, terms_set_query::*,
-  text_query_type::*, zero_terms_query::*,
+    function_score_query::*, fuzziness::*, geo_query::*, has_child_query::*, inner_hits::*,
+    negative_boost::*, nested_query::*, operator::*, percolate_query::*, pinned_query::*,
+    range_query::*, regexp_query::*, rewrite::*, script_object::*, shape_query::*,
+    simple_query_string_query::*, stored_fields::*, terms_set_query::*, text_query_type::*,
+    zero_terms_query::*,
 };

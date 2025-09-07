@@ -19,18 +19,19 @@ use crate::{search::*, util::*};
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct WrapperQuery {
-  query: String,
+    query: String,
 }
 
 impl Query {
-  /// Creates an instance of [`WrapperQuery`]
-  pub fn wrapper<S>(query: S) -> WrapperQuery
-  where
-    S: ToString, {
-    WrapperQuery {
-      query: query.to_string(),
+    /// Creates an instance of [`WrapperQuery`]
+    pub fn wrapper<S>(query: S) -> WrapperQuery
+    where
+        S: ToString,
+    {
+        WrapperQuery {
+            query: query.to_string(),
+        }
     }
-  }
 }
 
 impl ShouldSkip for WrapperQuery {}
@@ -40,13 +41,13 @@ deserialize_with_root!("wrapper": WrapperQuery);
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_query(
-      Query::wrapper("eyJ0ZXJtIiA6IHsgInVzZXIuaWQiIDogImtpbWNoeSIgfX0="),
-      json!({ "wrapper": { "query": "eyJ0ZXJtIiA6IHsgInVzZXIuaWQiIDogImtpbWNoeSIgfX0=" } }),
-    );
-  }
+    #[test]
+    fn serialization() {
+        assert_serialize_query(
+            Query::wrapper("eyJ0ZXJtIiA6IHsgInVzZXIuaWQiIDogImtpbWNoeSIgfX0="),
+            json!({ "wrapper": { "query": "eyJ0ZXJtIiA6IHsgInVzZXIuaWQiIDogImtpbWNoeSIgfX0=" } }),
+        );
+    }
 }

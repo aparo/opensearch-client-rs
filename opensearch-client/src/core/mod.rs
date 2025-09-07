@@ -1,0 +1,19 @@
+pub mod bulk;
+pub mod explain;
+pub mod field_caps;
+pub mod get_script_context;
+pub mod get_script_languages;
+pub mod mget;
+pub mod msearch;
+pub mod msearch_template;
+pub mod mtermvectors;
+pub mod rank_eval;
+pub mod reindex;
+pub mod reindex_rethrottle;
+pub mod scripts_painless_execute;
+pub mod search;
+pub mod search_shards;
+pub mod termvectors;
+pub mod update_by_query_rethrottle;
+
+pub mod get;

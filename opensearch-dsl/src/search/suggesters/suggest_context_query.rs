@@ -12,53 +12,55 @@ use crate::util::ShouldSkip;
 /// are configured under the contexts parameter in the field mapping.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct SuggestContextQuery {
-  context: String,
+    context: String,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boost: Option<f32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boost: Option<f32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  prefix: Option<bool>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    prefix: Option<bool>,
 }
 
 impl SuggestContextQuery {
-  /// Creates an instance of [SuggestContextQuery]
-  ///
-  /// - `context` - The value of the category to filter/boost on
-  pub fn new<T>(context: T) -> Self
-  where
-    T: ToString, {
-    Self {
-      context: context.to_string(),
-      boost: None,
-      prefix: None,
+    /// Creates an instance of [SuggestContextQuery]
+    ///
+    /// - `context` - The value of the category to filter/boost on
+    pub fn new<T>(context: T) -> Self
+    where
+        T: ToString,
+    {
+        Self {
+            context: context.to_string(),
+            boost: None,
+            prefix: None,
+        }
     }
-  }
 
-  /// The factor by which the score of the suggestion should be boosted, the
-  /// score is computed by multiplying the boost with the suggestion weight,
-  /// defaults to `1`
-  pub fn boost<T>(mut self, boost: T) -> Self
-  where
-    T: num_traits::AsPrimitive<f32>, {
-    self.boost = Some(boost.as_());
-    self
-  }
+    /// The factor by which the score of the suggestion should be boosted, the
+    /// score is computed by multiplying the boost with the suggestion weight,
+    /// defaults to `1`
+    pub fn boost<T>(mut self, boost: T) -> Self
+    where
+        T: num_traits::AsPrimitive<f32>,
+    {
+        self.boost = Some(boost.as_());
+        self
+    }
 
-  /// Whether the category value should be treated as a prefix or not. For
-  /// example, if set to `true`, you can filter category of _type1_, _type2_
-  /// and so on, by specifying a category prefix of type. Defaults to `false`
-  pub fn prefix(mut self, prefix: bool) -> Self {
-    self.prefix = Some(prefix);
-    self
-  }
+    /// Whether the category value should be treated as a prefix or not. For
+    /// example, if set to `true`, you can filter category of _type1_, _type2_
+    /// and so on, by specifying a category prefix of type. Defaults to `false`
+    pub fn prefix(mut self, prefix: bool) -> Self {
+        self.prefix = Some(prefix);
+        self
+    }
 }
 
 impl IntoIterator for SuggestContextQuery {
-  type IntoIter = std::option::IntoIter<Self::Item>;
-  type Item = Self;
+    type IntoIter = std::option::IntoIter<Self::Item>;
+    type Item = Self;
 
-  fn into_iter(self) -> Self::IntoIter {
-    Some(self).into_iter()
-  }
+    fn into_iter(self) -> Self::IntoIter {
+        Some(self).into_iter()
+    }
 }

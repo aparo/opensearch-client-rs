@@ -3,8 +3,8 @@
 #[derive(Debug, PartialEq, Eq, Clone, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum RateMode {
-  /// calculate the sum of all values field
-  Sum,
-  /// use the number of values in the field
-  ValueCount,
+    /// calculate the sum of all values field
+    Sum,
+    /// use the number of values in the field
+    ValueCount,
 }

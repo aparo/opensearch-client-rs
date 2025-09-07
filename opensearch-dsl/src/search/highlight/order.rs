@@ -8,10 +8,10 @@
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Order {
-  /// Sorts highlighted fragments by score.
-  Score,
+    /// Sorts highlighted fragments by score.
+    Score,
 
-  /// Highlighted fragments will be output in the order they appear in the
-  /// field.
-  None,
+    /// Highlighted fragments will be output in the order they appear in the
+    /// field.
+    None,
 }

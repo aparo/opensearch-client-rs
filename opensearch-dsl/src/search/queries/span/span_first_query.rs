@@ -11,20 +11,21 @@ use crate::{util::*, Query, SpanQuery};
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct SpanFirstQuery {
-  r#match: Box<SpanQuery>,
-  end: u32,
+    r#match: Box<SpanQuery>,
+    end: u32,
 }
 
 impl Query {
-  /// Creates an instance of [`SpanFirstQuery`]
-  pub fn span_first<T>(r#match: T, end: u32) -> SpanFirstQuery
-  where
-    T: Into<SpanQuery>, {
-    SpanFirstQuery {
-      r#match: Box::new(r#match.into()),
-      end,
+    /// Creates an instance of [`SpanFirstQuery`]
+    pub fn span_first<T>(r#match: T, end: u32) -> SpanFirstQuery
+    where
+        T: Into<SpanQuery>,
+    {
+        SpanFirstQuery {
+            r#match: Box::new(r#match.into()),
+            end,
+        }
     }
-  }
 }
 
 impl ShouldSkip for SpanFirstQuery {}
@@ -34,40 +35,40 @@ deserialize_with_root!("span_first": SpanFirstQuery);
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_query(
-      Query::span_first(Query::span_term("test", 1234), 10),
-      json!({
-          "span_first": {
-              "match": {
-                  "span_term": {
-                      "test": {
-                          "value": 1234
-                      }
-                  }
-              },
-              "end": 10
-          }
-      }),
-    );
+    #[test]
+    fn serialization() {
+        assert_serialize_query(
+            Query::span_first(Query::span_term("test", 1234), 10),
+            json!({
+                "span_first": {
+                    "match": {
+                        "span_term": {
+                            "test": {
+                                "value": 1234
+                            }
+                        }
+                    },
+                    "end": 10
+                }
+            }),
+        );
 
-    assert_serialize_query(
-      Query::span_first(Query::span_term("test", 1234), 10),
-      json!({
-          "span_first": {
-              "match": {
-                  "span_term": {
-                      "test": {
-                          "value": 1234
-                      }
-                  }
-              },
-              "end": 10
-          }
-      }),
-    );
-  }
+        assert_serialize_query(
+            Query::span_first(Query::span_term("test", 1234), 10),
+            json!({
+                "span_first": {
+                    "match": {
+                        "span_term": {
+                            "test": {
+                                "value": 1234
+                            }
+                        }
+                    },
+                    "end": 10
+                }
+            }),
+        );
+    }
 }

@@ -14,6 +14,7 @@ mod query_string_query;
 mod simple_query_string_query;
 
 pub use self::{
-  combined_fields_query::*, match_bool_prefix_query::*, match_phrase_prefix_query::*, match_phrase_query::*,
-  match_query::*, multi_match_query::*, query_string_query::*, simple_query_string_query::*,
+    combined_fields_query::*, match_bool_prefix_query::*, match_phrase_prefix_query::*,
+    match_phrase_query::*, match_query::*, multi_match_query::*, query_string_query::*,
+    simple_query_string_query::*,
 };

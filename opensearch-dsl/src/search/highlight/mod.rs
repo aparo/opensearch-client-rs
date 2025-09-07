@@ -54,140 +54,144 @@ mod matched_fields;
 mod order;
 mod tags;
 
-use crate::util::*;
-pub use self::{boundary_scanner::*, encoder::*, fragmenter::*, highlighter::*, order::*, tags::*};
 /// Reexports
 pub use self::matched_fields::*;
+pub use self::{boundary_scanner::*, encoder::*, fragmenter::*, highlighter::*, order::*, tags::*};
+use crate::util::*;
 
 /// Highlight structure
 #[derive(Debug, Clone, Default, PartialEq, Deserialize, Serialize)]
 pub struct Highlight {
-  #[serde(flatten, skip_serializing_if = "ShouldSkip::should_skip")]
-  highlighter: Option<Highlighter>,
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  fields: Vec<KeyValuePair<String, Highlighter>>,
+    #[serde(flatten, skip_serializing_if = "ShouldSkip::should_skip")]
+    highlighter: Option<Highlighter>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    fields: Vec<KeyValuePair<String, Highlighter>>,
 }
 
 impl Highlight {
-  /// Creates a new instance of [Highlight]
-  pub fn new() -> Self {
-    Default::default()
-  }
+    /// Creates a new instance of [Highlight]
+    pub fn new() -> Self {
+        Default::default()
+    }
 
-  /// Sets highlighter settings
-  pub fn highlighter<H>(mut self, highlighter: H) -> Self
-  where
-    H: Into<Highlighter>, {
-    self.highlighter = Some(highlighter.into());
-    self
-  }
+    /// Sets highlighter settings
+    pub fn highlighter<H>(mut self, highlighter: H) -> Self
+    where
+        H: Into<Highlighter>,
+    {
+        self.highlighter = Some(highlighter.into());
+        self
+    }
 
-  /// Adds field or field pattern to highlighter
-  pub fn field<F>(mut self, field: F) -> Self
-  where
-    F: ToString, {
-    self
-      .fields
-      .push(KeyValuePair::new(field.to_string(), Default::default()));
-    self
-  }
+    /// Adds field or field pattern to highlighter
+    pub fn field<F>(mut self, field: F) -> Self
+    where
+        F: ToString,
+    {
+        self.fields
+            .push(KeyValuePair::new(field.to_string(), Default::default()));
+        self
+    }
 
-  /// Adds field or field pattern to highlighter
-  pub fn field_highlighter<F, H>(mut self, field: F, highlighter: H) -> Self
-  where
-    F: ToString,
-    H: Into<Highlighter>, {
-    self
-      .fields
-      .push(KeyValuePair::new(field.to_string(), highlighter.into()));
-    self
-  }
+    /// Adds field or field pattern to highlighter
+    pub fn field_highlighter<F, H>(mut self, field: F, highlighter: H) -> Self
+    where
+        F: ToString,
+        H: Into<Highlighter>,
+    {
+        self.fields
+            .push(KeyValuePair::new(field.to_string(), highlighter.into()));
+        self
+    }
 }
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize(Highlight::new(), json!({}));
+    #[test]
+    fn serialization() {
+        assert_serialize(Highlight::new(), json!({}));
 
-    assert_serialize(
-      Highlight::new().field("field1").field("field2").field("field3"),
-      json!({
-          "fields": [
-              { "field1": {} },
-              { "field2": {} },
-              { "field3": {} },
-          ]
-      }),
-    );
+        assert_serialize(
+            Highlight::new()
+                .field("field1")
+                .field("field2")
+                .field("field3"),
+            json!({
+                "fields": [
+                    { "field1": {} },
+                    { "field2": {} },
+                    { "field3": {} },
+                ]
+            }),
+        );
 
-    assert_serialize(
-      Highlight::new()
-        .highlighter(Highlighter::new().tags((["<eim>"], ["</eim>"])))
-        .field("field3")
-        .field("field2")
-        .field("field1"),
-      json!({
-          "pre_tags": ["<eim>"],
-          "post_tags": ["</eim>"],
-          "fields": [
-              { "field3": {} },
-              { "field2": {} },
-              { "field1": {} },
-          ]
-      }),
-    );
+        assert_serialize(
+            Highlight::new()
+                .highlighter(Highlighter::new().tags((["<eim>"], ["</eim>"])))
+                .field("field3")
+                .field("field2")
+                .field("field1"),
+            json!({
+                "pre_tags": ["<eim>"],
+                "post_tags": ["</eim>"],
+                "fields": [
+                    { "field3": {} },
+                    { "field2": {} },
+                    { "field1": {} },
+                ]
+            }),
+        );
 
-    assert_serialize(
-      Highlight::new()
-        .highlighter(
-          Highlighter::new()
-            .tags((["<eim>"], ["</eim>"]))
-            .fvh()
-            .matched_fields(["one", "two", "three"]),
-        )
-        .field("field1")
-        .field("field2")
-        .field_highlighter("field3", Highlighter::new().plain().no_match_size(2u32)),
-      json!({
-          "pre_tags": ["<eim>"],
-          "post_tags": ["</eim>"],
-          "matched_fields": ["one", "two", "three"],
-          "type": "fvh",
-          "fields": [
-              { "field1": {} },
-              { "field2": {} },
-              { "field3": { "type": "plain", "no_match_size": 2 } },
-          ]
-      }),
-    );
+        assert_serialize(
+            Highlight::new()
+                .highlighter(
+                    Highlighter::new()
+                        .tags((["<eim>"], ["</eim>"]))
+                        .fvh()
+                        .matched_fields(["one", "two", "three"]),
+                )
+                .field("field1")
+                .field("field2")
+                .field_highlighter("field3", Highlighter::new().plain().no_match_size(2u32)),
+            json!({
+                "pre_tags": ["<eim>"],
+                "post_tags": ["</eim>"],
+                "matched_fields": ["one", "two", "three"],
+                "type": "fvh",
+                "fields": [
+                    { "field1": {} },
+                    { "field2": {} },
+                    { "field3": { "type": "plain", "no_match_size": 2 } },
+                ]
+            }),
+        );
 
-    assert_serialize(
-      Highlight::new()
-        .highlighter(
-          Highlighter::new()
-            .tags((["<eim>"], ["</eim>"]))
-            .fvh()
-            .matched_fields(["one", "two", "three"])
-            .order(Order::Score),
-        )
-        .field("field1")
-        .field("field2")
-        .field_highlighter("field3", Highlighter::new().plain().no_match_size(2u32)),
-      json!({
-          "pre_tags": ["<eim>"],
-          "post_tags": ["</eim>"],
-          "matched_fields": ["one", "two", "three"],
-          "order": "score",
-          "type": "fvh",
-          "fields": [
-              { "field1": {} },
-              { "field2": {} },
-              { "field3": { "type": "plain", "no_match_size": 2 } },
-          ]
-      }),
-    );
-  }
+        assert_serialize(
+            Highlight::new()
+                .highlighter(
+                    Highlighter::new()
+                        .tags((["<eim>"], ["</eim>"]))
+                        .fvh()
+                        .matched_fields(["one", "two", "three"])
+                        .order(Order::Score),
+                )
+                .field("field1")
+                .field("field2")
+                .field_highlighter("field3", Highlighter::new().plain().no_match_size(2u32)),
+            json!({
+                "pre_tags": ["<eim>"],
+                "post_tags": ["</eim>"],
+                "matched_fields": ["one", "two", "three"],
+                "order": "score",
+                "type": "fvh",
+                "fields": [
+                    { "field1": {} },
+                    { "field2": {} },
+                    { "field3": { "type": "plain", "no_match_size": 2 } },
+                ]
+            }),
+        );
+    }
 }

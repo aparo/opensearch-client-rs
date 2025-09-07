@@ -14,93 +14,95 @@ use crate::{search::*, util::*};
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-metrics-max-aggregation.html>
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct MaxAggregation {
-  max: MaxAggregationInner,
+    max: MaxAggregationInner,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 struct MaxAggregationInner {
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  field: Option<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    field: Option<String>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  script: Option<Script>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    script: Option<Script>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  missing: Option<Number>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    missing: Option<Number>,
 }
 
 impl Aggregation {
-  /// Creates an instance of [`MaxAggregation`]
-  ///
-  /// - `field` - field to aggregate
-  pub fn max<T>(field: T) -> MaxAggregation
-  where
-    T: ToString, {
-    MaxAggregation {
-      max: MaxAggregationInner {
-        field: field.to_string().into(),
-        script: None,
-        missing: None,
-      },
+    /// Creates an instance of [`MaxAggregation`]
+    ///
+    /// - `field` - field to aggregate
+    pub fn max<T>(field: T) -> MaxAggregation
+    where
+        T: ToString,
+    {
+        MaxAggregation {
+            max: MaxAggregationInner {
+                field: field.to_string().into(),
+                script: None,
+                missing: None,
+            },
+        }
     }
-  }
 
-  /// Creates an instance of [`MaxAggregation`]
-  ///
-  /// - `script` - script to aggregate
-  pub fn max_script(script: Script) -> MaxAggregation {
-    MaxAggregation {
-      max: MaxAggregationInner {
-        script: script.into(),
-        field: None,
-        missing: None,
-      },
+    /// Creates an instance of [`MaxAggregation`]
+    ///
+    /// - `script` - script to aggregate
+    pub fn max_script(script: Script) -> MaxAggregation {
+        MaxAggregation {
+            max: MaxAggregationInner {
+                script: script.into(),
+                field: None,
+                missing: None,
+            },
+        }
     }
-  }
 }
 
 impl MaxAggregation {
-  /// The `missing` parameter defines how documents that are missing a value
-  /// should be treated. By default they will be ignored but it is also
-  /// possible to treat them as if they had a value.
-  pub fn missing<T>(mut self, missing: T) -> Self
-  where
-    T: Into<Number>, {
-    self.max.missing = Some(missing.into());
-    self
-  }
+    /// The `missing` parameter defines how documents that are missing a value
+    /// should be treated. By default they will be ignored but it is also
+    /// possible to treat them as if they had a value.
+    pub fn missing<T>(mut self, missing: T) -> Self
+    where
+        T: Into<Number>,
+    {
+        self.max.missing = Some(missing.into());
+        self
+    }
 }
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_aggregation(
-      Aggregation::max("test_field"),
-      json!({ "max": { "field": "test_field" } }),
-    );
+    #[test]
+    fn serialization() {
+        assert_serialize_aggregation(
+            Aggregation::max("test_field"),
+            json!({ "max": { "field": "test_field" } }),
+        );
 
-    assert_serialize_aggregation(
-      Aggregation::max("test_field").missing(100.1),
-      json!({
-          "max": {
-              "field": "test_field",
-              "missing": 100.1
-          }
-      }),
-    );
+        assert_serialize_aggregation(
+            Aggregation::max("test_field").missing(100.1),
+            json!({
+                "max": {
+                    "field": "test_field",
+                    "missing": 100.1
+                }
+            }),
+        );
 
-    assert_serialize_aggregation(
-      Aggregation::max_script(Script::source("_score")),
-      json!({
-          "max": {
-              "script": {
-                  "source": "_score"
-              }
-          }
-      }),
-    );
-  }
+        assert_serialize_aggregation(
+            Aggregation::max_script(Script::source("_score")),
+            json!({
+                "max": {
+                    "script": {
+                        "source": "_score"
+                    }
+                }
+            }),
+        );
+    }
 }

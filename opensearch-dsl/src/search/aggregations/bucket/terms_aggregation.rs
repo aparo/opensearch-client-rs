@@ -8,10 +8,10 @@ use crate::{search::*, util::*};
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-bucket-terms-aggregation.html>
 pub struct TermsAggregation {
-  terms: TermsAggregationInner,
+    terms: TermsAggregationInner,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  aggs: Aggregations,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    aggs: Aggregations,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
@@ -19,17 +19,17 @@ struct TermsAggregationInner {
     #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
     field: Option<String>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  size: Option<u64>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    size: Option<u64>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  show_term_doc_count_error: Option<bool>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    show_term_doc_count_error: Option<bool>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  order: TermsOrderCollection,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    order: TermsOrderCollection,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  min_doc_count: Option<u16>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    min_doc_count: Option<u16>,
 
     #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
     missing: Option<Term>,

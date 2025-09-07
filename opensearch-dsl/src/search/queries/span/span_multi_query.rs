@@ -12,7 +12,7 @@ use crate::{util::*, MultiTermQuery, Query};
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct SpanMultiQuery {
-  r#match: Box<MultiTermQuery>,
+    r#match: Box<MultiTermQuery>,
 }
 
 impl ShouldSkip for SpanMultiQuery {}
@@ -21,51 +21,52 @@ serialize_with_root!("span_multi": SpanMultiQuery);
 deserialize_with_root!("span_multi": SpanMultiQuery);
 
 impl Query {
-  /// Creates an instance of [`SpanMultiQuery`]
-  #[allow(unused)]
-  pub fn span_multi<Q>(r#match: Q) -> SpanMultiQuery
-  where
-    Q: Into<MultiTermQuery>, {
-    SpanMultiQuery {
-      r#match: Box::new(r#match.into()),
+    /// Creates an instance of [`SpanMultiQuery`]
+    #[allow(unused)]
+    pub fn span_multi<Q>(r#match: Q) -> SpanMultiQuery
+    where
+        Q: Into<MultiTermQuery>,
+    {
+        SpanMultiQuery {
+            r#match: Box::new(r#match.into()),
+        }
     }
-  }
 }
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_query(
-      Query::span_multi(Query::prefix("test", "1234")),
-      json!({
-          "span_multi": {
-              "match" : {
-                  "prefix": {
-                      "test": {
-                          "value": "1234"
-                      }
-                  }
-              }
-          }
-      }),
-    );
+    #[test]
+    fn serialization() {
+        assert_serialize_query(
+            Query::span_multi(Query::prefix("test", "1234")),
+            json!({
+                "span_multi": {
+                    "match" : {
+                        "prefix": {
+                            "test": {
+                                "value": "1234"
+                            }
+                        }
+                    }
+                }
+            }),
+        );
 
-    assert_serialize_query(
-      Query::span_multi(Query::prefix("test", "1234")),
-      json!({
-          "span_multi": {
-              "match" : {
-                  "prefix": {
-                      "test": {
-                          "value": "1234"
-                      }
-                  }
-              }
-          }
-      }),
-    );
-  }
+        assert_serialize_query(
+            Query::span_multi(Query::prefix("test", "1234")),
+            json!({
+                "span_multi": {
+                    "match" : {
+                        "prefix": {
+                            "test": {
+                                "value": "1234"
+                            }
+                        }
+                    }
+                }
+            }),
+        );
+    }
 }

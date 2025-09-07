@@ -70,7 +70,7 @@
 //! 2.0</a> or <a href="LICENSE-MIT">MIT license</a> at your option.
 //! </sup>
 #![doc(
-  html_logo_url = "https://play-lh.googleusercontent.com/VvtT2Dvf_oOC3DL4c2i5hfNvwIqzdU2apScRMlmeRW10Yf-vJXnXqAjdNWE9KW5YvK0"
+    html_logo_url = "https://play-lh.googleusercontent.com/VvtT2Dvf_oOC3DL4c2i5hfNvwIqzdU2apScRMlmeRW10Yf-vJXnXqAjdNWE9KW5YvK0"
 )]
 #![deny(
   bad_style,
@@ -123,8 +123,8 @@ mod types;
 
 // Crate modules
 #[macro_use]
-pub(crate) mod util;
-pub(crate) use self::types::*;
+pub mod util;
+pub use self::types::*;
 
 // Public modules
 pub mod analyze;

@@ -7,4 +7,6 @@ mod geo_distance_query;
 mod geo_shape_lookup_query;
 mod geo_shape_query;
 
-pub use self::{geo_bounding_box_query::*, geo_distance_query::*, geo_shape_lookup_query::*, geo_shape_query::*};
+pub use self::{
+    geo_bounding_box_query::*, geo_distance_query::*, geo_shape_lookup_query::*, geo_shape_query::*,
+};

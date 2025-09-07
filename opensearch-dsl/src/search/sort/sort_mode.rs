@@ -10,21 +10,21 @@
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum SortMode {
-  /// Pick the lowest value.
-  Min,
+    /// Pick the lowest value.
+    Min,
 
-  /// Pick the highest value.
-  Max,
+    /// Pick the highest value.
+    Max,
 
-  /// Use the sum of all values as sort value.\
-  /// Only applicable for number based array fields.
-  Sum,
+    /// Use the sum of all values as sort value.\
+    /// Only applicable for number based array fields.
+    Sum,
 
-  /// Use the average of all values as sort value.\
-  /// Only applicable for number based array fields.
-  Avg,
+    /// Use the average of all values as sort value.\
+    /// Only applicable for number based array fields.
+    Avg,
 
-  /// Use the median of all values as sort value.\
-  /// Only applicable for number based array fields.
-  Median,
+    /// Use the median of all values as sort value.\
+    /// Only applicable for number based array fields.
+    Median,
 }

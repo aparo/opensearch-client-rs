@@ -13,303 +13,314 @@
 use std::fmt;
 
 use serde::{
-  de::{Error, Unexpected, Visitor},
-  ser::{Serialize, SerializeStruct, Serializer},
-  Deserialize, Deserializer,
+    de::{Error, Unexpected, Visitor},
+    ser::{Serialize, SerializeStruct, Serializer},
+    Deserialize, Deserializer,
 };
 
 /// A runtime data type that is used in a search request.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd)]
 pub enum RuntimeDataType {
-  /// Boolean
-  Boolean,
+    /// Boolean
+    Boolean,
 
-  /// Composite
-  Composite,
+    /// Composite
+    Composite,
 
-  /// Date with optional `format`
-  Date(Option<String>),
+    /// Date with optional `format`
+    Date(Option<String>),
 
-  /// Double
-  Double,
+    /// Double
+    Double,
 
-  /// Geo point
-  GeoPoint,
+    /// Geo point
+    GeoPoint,
 
-  /// IP address
-  Ip,
+    /// IP address
+    Ip,
 
-  /// Keyword
-  Keyword,
+    /// Keyword
+    Keyword,
 
-  /// Long
-  Long,
+    /// Long
+    Long,
 }
 
 impl Serialize for RuntimeDataType {
-  fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-  where
-    S: Serializer, {
-    match self {
-      Self::Boolean => {
-        let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 1)?;
-        state.serialize_field("type", "boolean")?;
-        state.end()
-      }
-      Self::Composite => {
-        let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 1)?;
-        state.serialize_field("type", "composite")?;
-        state.end()
-      }
-      Self::Date(format) => {
-        match format {
-          Some(format) => {
-            let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 2)?;
-            state.serialize_field("type", "date")?;
-            state.serialize_field("format", format)?;
-            state.end()
-          }
-          None => {
-            let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 1)?;
-            state.serialize_field("type", "date")?;
-            state.end()
-          }
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match self {
+            Self::Boolean => {
+                let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 1)?;
+                state.serialize_field("type", "boolean")?;
+                state.end()
+            }
+            Self::Composite => {
+                let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 1)?;
+                state.serialize_field("type", "composite")?;
+                state.end()
+            }
+            Self::Date(format) => match format {
+                Some(format) => {
+                    let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 2)?;
+                    state.serialize_field("type", "date")?;
+                    state.serialize_field("format", format)?;
+                    state.end()
+                }
+                None => {
+                    let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 1)?;
+                    state.serialize_field("type", "date")?;
+                    state.end()
+                }
+            },
+            Self::Double => {
+                let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 1)?;
+                state.serialize_field("type", "double")?;
+                state.end()
+            }
+            Self::GeoPoint => {
+                let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 1)?;
+                state.serialize_field("type", "geo_point")?;
+                state.end()
+            }
+            Self::Ip => {
+                let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 1)?;
+                state.serialize_field("type", "ip")?;
+                state.end()
+            }
+            Self::Keyword => {
+                let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 1)?;
+                state.serialize_field("type", "keyword")?;
+                state.end()
+            }
+            Self::Long => {
+                let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 1)?;
+                state.serialize_field("type", "long")?;
+                state.end()
+            }
         }
-      }
-      Self::Double => {
-        let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 1)?;
-        state.serialize_field("type", "double")?;
-        state.end()
-      }
-      Self::GeoPoint => {
-        let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 1)?;
-        state.serialize_field("type", "geo_point")?;
-        state.end()
-      }
-      Self::Ip => {
-        let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 1)?;
-        state.serialize_field("type", "ip")?;
-        state.end()
-      }
-      Self::Keyword => {
-        let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 1)?;
-        state.serialize_field("type", "keyword")?;
-        state.end()
-      }
-      Self::Long => {
-        let mut state = serializer.serialize_struct("RuntimeDataType_Boolean", 1)?;
-        state.serialize_field("type", "long")?;
-        state.end()
-      }
     }
-  }
 }
 
 impl<'de> Deserialize<'de> for RuntimeDataType {
-  fn deserialize<D>(deserializer: D) -> Result<RuntimeDataType, D::Error>
-  where
-    D: Deserializer<'de>, {
-    struct RuntimeDataTypeVisitor;
+    fn deserialize<D>(deserializer: D) -> Result<RuntimeDataType, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        struct RuntimeDataTypeVisitor;
 
-    impl<'de> Visitor<'de> for RuntimeDataTypeVisitor {
-      type Value = RuntimeDataType;
+        impl<'de> Visitor<'de> for RuntimeDataTypeVisitor {
+            type Value = RuntimeDataType;
 
-      fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        formatter.write_str("a string representing a RuntimeDataType variant")
-      }
+            fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+                formatter.write_str("a string representing a RuntimeDataType variant")
+            }
 
-      fn visit_str<E>(self, value: &str) -> Result<RuntimeDataType, E>
-      where
-        E: Error, {
-        match value {
-          "boolean" => Ok(RuntimeDataType::Boolean),
-          "composite" => Ok(RuntimeDataType::Composite),
-          "date" => Ok(RuntimeDataType::Date(None)), // default to None for format
-          "double" => Ok(RuntimeDataType::Double),
-          "geo_point" => Ok(RuntimeDataType::GeoPoint),
-          "ip" => Ok(RuntimeDataType::Ip),
-          "keyword" => Ok(RuntimeDataType::Keyword),
-          "long" => Ok(RuntimeDataType::Long),
-          _ => Err(E::invalid_value(Unexpected::Str(value), &self)),
+            fn visit_str<E>(self, value: &str) -> Result<RuntimeDataType, E>
+            where
+                E: Error,
+            {
+                match value {
+                    "boolean" => Ok(RuntimeDataType::Boolean),
+                    "composite" => Ok(RuntimeDataType::Composite),
+                    "date" => Ok(RuntimeDataType::Date(None)), // default to None for format
+                    "double" => Ok(RuntimeDataType::Double),
+                    "geo_point" => Ok(RuntimeDataType::GeoPoint),
+                    "ip" => Ok(RuntimeDataType::Ip),
+                    "keyword" => Ok(RuntimeDataType::Keyword),
+                    "long" => Ok(RuntimeDataType::Long),
+                    _ => Err(E::invalid_value(Unexpected::Str(value), &self)),
+                }
+            }
         }
-      }
-    }
 
-    deserializer.deserialize_str(RuntimeDataTypeVisitor)
-  }
+        deserializer.deserialize_str(RuntimeDataTypeVisitor)
+    }
 }
 
 /// A runtime field that is used in a search request.
 #[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize)]
 pub struct RuntimeMapping {
-  #[serde(flatten)]
-  r#type: RuntimeDataType,
-  script: RuntimeScript,
+    #[serde(flatten)]
+    r#type: RuntimeDataType,
+    script: RuntimeScript,
 }
 
 #[derive(Debug, Clone, PartialEq, PartialOrd, Deserialize, Serialize)]
 struct RuntimeScript {
-  source: String,
+    source: String,
 }
 
 impl RuntimeMapping {
-  /// Creates a new instance of [RuntimeMapping]
-  pub fn new<T>(r#type: RuntimeDataType, source: T) -> Self
-  where
-    T: ToString, {
-    RuntimeMapping {
-      r#type,
-      script: RuntimeScript {
-        source: source.to_string(),
-      },
+    /// Creates a new instance of [RuntimeMapping]
+    pub fn new<T>(r#type: RuntimeDataType, source: T) -> Self
+    where
+        T: ToString,
+    {
+        RuntimeMapping {
+            r#type,
+            script: RuntimeScript {
+                source: source.to_string(),
+            },
+        }
     }
-  }
 
-  /// Creates a new instance of [RuntimeDataType::Boolean] [RuntimeMapping]
-  pub fn boolean<T>(source: T) -> Self
-  where
-    T: ToString, {
-    Self::new(RuntimeDataType::Boolean, source)
-  }
+    /// Creates a new instance of [RuntimeDataType::Boolean] [RuntimeMapping]
+    pub fn boolean<T>(source: T) -> Self
+    where
+        T: ToString,
+    {
+        Self::new(RuntimeDataType::Boolean, source)
+    }
 
-  /// Creates a new instance of [RuntimeDataType::Composite] [RuntimeMapping]
-  pub fn composite<T>(source: T) -> Self
-  where
-    T: ToString, {
-    Self::new(RuntimeDataType::Composite, source)
-  }
+    /// Creates a new instance of [RuntimeDataType::Composite] [RuntimeMapping]
+    pub fn composite<T>(source: T) -> Self
+    where
+        T: ToString,
+    {
+        Self::new(RuntimeDataType::Composite, source)
+    }
 
-  /// Creates a new instance of [RuntimeDataType::Date] [RuntimeMapping] without
-  /// format
-  pub fn date<T>(source: T) -> Self
-  where
-    T: ToString, {
-    Self::new(RuntimeDataType::Date(None), source)
-  }
+    /// Creates a new instance of [RuntimeDataType::Date] [RuntimeMapping] without
+    /// format
+    pub fn date<T>(source: T) -> Self
+    where
+        T: ToString,
+    {
+        Self::new(RuntimeDataType::Date(None), source)
+    }
 
-  /// Creates a new instance of [RuntimeDataType::Date] [RuntimeMapping] with
-  /// format
-  pub fn date_format<F, T>(format: F, source: T) -> Self
-  where
-    F: ToString,
-    T: ToString, {
-    Self::new(RuntimeDataType::Date(Some(format.to_string())), source)
-  }
+    /// Creates a new instance of [RuntimeDataType::Date] [RuntimeMapping] with
+    /// format
+    pub fn date_format<F, T>(format: F, source: T) -> Self
+    where
+        F: ToString,
+        T: ToString,
+    {
+        Self::new(RuntimeDataType::Date(Some(format.to_string())), source)
+    }
 
-  /// Creates a new instance of [RuntimeDataType::Double] [RuntimeMapping]
-  pub fn double<T>(source: T) -> Self
-  where
-    T: ToString, {
-    Self::new(RuntimeDataType::Double, source)
-  }
+    /// Creates a new instance of [RuntimeDataType::Double] [RuntimeMapping]
+    pub fn double<T>(source: T) -> Self
+    where
+        T: ToString,
+    {
+        Self::new(RuntimeDataType::Double, source)
+    }
 
-  /// Creates a new instance of [RuntimeDataType::GeoPoint] [RuntimeMapping]
-  pub fn geo_point<T>(source: T) -> Self
-  where
-    T: ToString, {
-    Self::new(RuntimeDataType::GeoPoint, source)
-  }
+    /// Creates a new instance of [RuntimeDataType::GeoPoint] [RuntimeMapping]
+    pub fn geo_point<T>(source: T) -> Self
+    where
+        T: ToString,
+    {
+        Self::new(RuntimeDataType::GeoPoint, source)
+    }
 
-  /// Creates a new instance of [RuntimeDataType::Ip] [RuntimeMapping]
-  pub fn ip<T>(source: T) -> Self
-  where
-    T: ToString, {
-    Self::new(RuntimeDataType::Ip, source)
-  }
+    /// Creates a new instance of [RuntimeDataType::Ip] [RuntimeMapping]
+    pub fn ip<T>(source: T) -> Self
+    where
+        T: ToString,
+    {
+        Self::new(RuntimeDataType::Ip, source)
+    }
 
-  /// Creates a new instance of [RuntimeDataType::Keyword] [RuntimeMapping]
-  pub fn keyword<T>(source: T) -> Self
-  where
-    T: ToString, {
-    Self::new(RuntimeDataType::Keyword, source)
-  }
+    /// Creates a new instance of [RuntimeDataType::Keyword] [RuntimeMapping]
+    pub fn keyword<T>(source: T) -> Self
+    where
+        T: ToString,
+    {
+        Self::new(RuntimeDataType::Keyword, source)
+    }
 
-  /// Creates a new instance of [RuntimeDataType::Long] [RuntimeMapping]
-  pub fn long<T>(source: T) -> Self
-  where
-    T: ToString, {
-    Self::new(RuntimeDataType::Long, source)
-  }
+    /// Creates a new instance of [RuntimeDataType::Long] [RuntimeMapping]
+    pub fn long<T>(source: T) -> Self
+    where
+        T: ToString,
+    {
+        Self::new(RuntimeDataType::Long, source)
+    }
 }
 
 #[cfg(test)]
 mod tests {
-  use super::*;
-  use crate::util::*;
+    use super::*;
+    use crate::util::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize(
-      RuntimeMapping::boolean("doc['field'].value"),
-      json!({
-          "type": "boolean",
-          "script": { "source": "doc['field'].value" }
-      }),
-    );
+    #[test]
+    fn serialization() {
+        assert_serialize(
+            RuntimeMapping::boolean("doc['field'].value"),
+            json!({
+                "type": "boolean",
+                "script": { "source": "doc['field'].value" }
+            }),
+        );
 
-    assert_serialize(
-      RuntimeMapping::composite("doc['field'].value"),
-      json!({
-          "type": "composite",
-          "script": { "source": "doc['field'].value" }
-      }),
-    );
+        assert_serialize(
+            RuntimeMapping::composite("doc['field'].value"),
+            json!({
+                "type": "composite",
+                "script": { "source": "doc['field'].value" }
+            }),
+        );
 
-    assert_serialize(
-      RuntimeMapping::date("doc['field'].value"),
-      json!({
-          "type": "date",
-          "script": { "source": "doc['field'].value" }
-      }),
-    );
+        assert_serialize(
+            RuntimeMapping::date("doc['field'].value"),
+            json!({
+                "type": "date",
+                "script": { "source": "doc['field'].value" }
+            }),
+        );
 
-    assert_serialize(
-      RuntimeMapping::date_format("YYYY-mm-dd", "doc['field'].value"),
-      json!({
-          "type": "date",
-          "format": "YYYY-mm-dd",
-          "script": { "source": "doc['field'].value" }
-      }),
-    );
+        assert_serialize(
+            RuntimeMapping::date_format("YYYY-mm-dd", "doc['field'].value"),
+            json!({
+                "type": "date",
+                "format": "YYYY-mm-dd",
+                "script": { "source": "doc['field'].value" }
+            }),
+        );
 
-    assert_serialize(
-      RuntimeMapping::double("doc['field'].value"),
-      json!({
-          "type": "double",
-          "script": { "source": "doc['field'].value" }
-      }),
-    );
+        assert_serialize(
+            RuntimeMapping::double("doc['field'].value"),
+            json!({
+                "type": "double",
+                "script": { "source": "doc['field'].value" }
+            }),
+        );
 
-    assert_serialize(
-      RuntimeMapping::geo_point("doc['field'].value"),
-      json!({
-          "type": "geo_point",
-          "script": { "source": "doc['field'].value" }
-      }),
-    );
+        assert_serialize(
+            RuntimeMapping::geo_point("doc['field'].value"),
+            json!({
+                "type": "geo_point",
+                "script": { "source": "doc['field'].value" }
+            }),
+        );
 
-    assert_serialize(
-      RuntimeMapping::ip("doc['field'].value"),
-      json!({
-          "type": "ip",
-          "script": { "source": "doc['field'].value" }
-      }),
-    );
+        assert_serialize(
+            RuntimeMapping::ip("doc['field'].value"),
+            json!({
+                "type": "ip",
+                "script": { "source": "doc['field'].value" }
+            }),
+        );
 
-    assert_serialize(
-      RuntimeMapping::keyword("doc['field'].value"),
-      json!({
-          "type": "keyword",
-          "script": { "source": "doc['field'].value" }
-      }),
-    );
+        assert_serialize(
+            RuntimeMapping::keyword("doc['field'].value"),
+            json!({
+                "type": "keyword",
+                "script": { "source": "doc['field'].value" }
+            }),
+        );
 
-    assert_serialize(
-      RuntimeMapping::long("doc['field'].value"),
-      json!({
-          "type": "long",
-          "script": { "source": "doc['field'].value" }
-      }),
-    );
-  }
+        assert_serialize(
+            RuntimeMapping::long("doc['field'].value"),
+            json!({
+                "type": "long",
+                "script": { "source": "doc['field'].value" }
+            }),
+        );
+    }
 }

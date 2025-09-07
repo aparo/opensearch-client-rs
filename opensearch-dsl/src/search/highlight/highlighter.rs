@@ -4,61 +4,61 @@ use crate::{search::*, util::*};
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum Highlighter {
-  /// Default highlighter
-  Default(DefaultHighlighter),
+    /// Default highlighter
+    Default(DefaultHighlighter),
 
-  /// Fast vector highlighter
-  Fvh(FastVectorHighlighter),
+    /// Fast vector highlighter
+    Fvh(FastVectorHighlighter),
 
-  /// Plain highlighter
-  Plain(PlainHighlighter),
+    /// Plain highlighter
+    Plain(PlainHighlighter),
 
-  /// Unified highlighter
-  Unified(UnifiedHighlighter),
+    /// Unified highlighter
+    Unified(UnifiedHighlighter),
 }
 
 /// Highlighting settings can be set on a global level and overridden at the
 /// field level
 #[derive(Debug, Clone, Default, PartialEq, Deserialize, Serialize)]
 pub struct DefaultHighlighter {
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boundary_chars: Option<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boundary_chars: Option<String>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boundary_max_scan: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boundary_max_scan: Option<u32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  encoder: Option<Encoder>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    encoder: Option<Encoder>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  force_source: Option<bool>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    force_source: Option<bool>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  fragment_size: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    fragment_size: Option<u32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  highlight_query: Option<Query>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    highlight_query: Option<Query>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  no_match_size: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    no_match_size: Option<u32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  number_of_fragments: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    number_of_fragments: Option<u32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  order: Option<Order>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    order: Option<Order>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  pre_tags: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    pre_tags: Option<Vec<String>>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  post_tags: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    post_tags: Option<Vec<String>>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  require_field_match: Option<bool>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    require_field_match: Option<bool>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", flatten)]
-  tags: Option<Tags>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", flatten)]
+    tags: Option<Tags>,
 }
 
 /// The `fvh` highlighter uses the Lucene Fast Vector highlighter. This
@@ -85,61 +85,61 @@ pub struct DefaultHighlighter {
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/highlighting.html#fast-vector-highlighter>
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct FastVectorHighlighter {
-  // Common
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boundary_chars: Option<String>,
+    // Common
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boundary_chars: Option<String>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boundary_max_scan: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boundary_max_scan: Option<u32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  encoder: Option<Encoder>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    encoder: Option<Encoder>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  force_source: Option<bool>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    force_source: Option<bool>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  fragment_size: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    fragment_size: Option<u32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  highlight_query: Option<Query>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    highlight_query: Option<Query>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  no_match_size: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    no_match_size: Option<u32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  number_of_fragments: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    number_of_fragments: Option<u32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  order: Option<Order>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    order: Option<Order>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  pre_tags: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    pre_tags: Option<Vec<String>>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  post_tags: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    post_tags: Option<Vec<String>>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  require_field_match: Option<bool>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    require_field_match: Option<bool>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", flatten)]
-  tags: Option<Tags>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", flatten)]
+    tags: Option<Tags>,
 
-  // Highlighter specific
-  r#type: String,
+    // Highlighter specific
+    r#type: String,
 
-  // #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  #[serde(skip)]
-  boundary_scanner: Option<FvhBoundaryScanner>,
+    // #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    #[serde(skip)]
+    boundary_scanner: Option<FvhBoundaryScanner>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  fragment_offset: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    fragment_offset: Option<u32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  matched_fields: Option<MatchedFields>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    matched_fields: Option<MatchedFields>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  phrase_limit: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    phrase_limit: Option<u32>,
 }
 
 /// The `plain` highlighter uses the standard Lucene highlighter. It attempts to
@@ -160,51 +160,51 @@ pub struct FastVectorHighlighter {
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/highlighting.html#plain-highlighter>
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct PlainHighlighter {
-  // Common
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boundary_chars: Option<String>,
+    // Common
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boundary_chars: Option<String>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boundary_max_scan: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boundary_max_scan: Option<u32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  encoder: Option<Encoder>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    encoder: Option<Encoder>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  force_source: Option<bool>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    force_source: Option<bool>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  fragment_size: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    fragment_size: Option<u32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  highlight_query: Option<Query>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    highlight_query: Option<Query>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  no_match_size: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    no_match_size: Option<u32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  number_of_fragments: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    number_of_fragments: Option<u32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  order: Option<Order>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    order: Option<Order>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  pre_tags: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    pre_tags: Option<Vec<String>>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  post_tags: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    post_tags: Option<Vec<String>>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  require_field_match: Option<bool>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    require_field_match: Option<bool>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", flatten)]
-  tags: Option<Tags>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", flatten)]
+    tags: Option<Tags>,
 
-  // Highlighter specific
-  r#type: String,
+    // Highlighter specific
+    r#type: String,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  fragmenter: Option<Fragmenter>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    fragmenter: Option<Fragmenter>,
 }
 
 /// The `unified` highlighter uses the Lucene Unified Highlighter. This
@@ -216,386 +216,390 @@ pub struct PlainHighlighter {
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/highlighting.html#unified-highlighter>
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct UnifiedHighlighter {
-  // Common
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boundary_chars: Option<String>,
+    // Common
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boundary_chars: Option<String>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boundary_max_scan: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boundary_max_scan: Option<u32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  encoder: Option<Encoder>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    encoder: Option<Encoder>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  force_source: Option<bool>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    force_source: Option<bool>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  fragment_size: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    fragment_size: Option<u32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  highlight_query: Option<Query>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    highlight_query: Option<Query>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  no_match_size: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    no_match_size: Option<u32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  number_of_fragments: Option<u32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    number_of_fragments: Option<u32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  order: Option<Order>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    order: Option<Order>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  pre_tags: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    pre_tags: Option<Vec<String>>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  post_tags: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    post_tags: Option<Vec<String>>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  require_field_match: Option<bool>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    require_field_match: Option<bool>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", flatten)]
-  tags: Option<Tags>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", flatten)]
+    tags: Option<Tags>,
 
-  // Highlighter specific
-  r#type: String,
+    // Highlighter specific
+    r#type: String,
 
-  // #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", flatten)]
-  #[serde(skip)]
-  boundary_scanner: Option<UnifiedBoundaryScanner>,
+    // #[serde(default, skip_serializing_if = "ShouldSkip::should_skip", flatten)]
+    #[serde(skip)]
+    boundary_scanner: Option<UnifiedBoundaryScanner>,
 }
 
 impl Default for Highlighter {
-  fn default() -> Self {
-    Self::Default(Default::default())
-  }
+    fn default() -> Self {
+        Self::Default(Default::default())
+    }
 }
 
 impl Highlighter {
-  /// Creates a new instance of [DefaultHighlighter](DefaultHighlighter)
-  #[allow(clippy::new_ret_no_self)]
-  pub fn new() -> DefaultHighlighter {
-    Default::default()
-  }
+    /// Creates a new instance of [DefaultHighlighter](DefaultHighlighter)
+    #[allow(clippy::new_ret_no_self)]
+    pub fn new() -> DefaultHighlighter {
+        Default::default()
+    }
 
-  /// Creates a new instance of [FastVectorHighlighter](FastVectorHighlighter)
-  pub fn fvh() -> FastVectorHighlighter {
-    FastVectorHighlighter::default()
-  }
+    /// Creates a new instance of [FastVectorHighlighter](FastVectorHighlighter)
+    pub fn fvh() -> FastVectorHighlighter {
+        FastVectorHighlighter::default()
+    }
 
-  /// Creates a new instance of [PlainHighlighter](PlainHighlighter)
-  pub fn plain() -> PlainHighlighter {
-    PlainHighlighter::default()
-  }
+    /// Creates a new instance of [PlainHighlighter](PlainHighlighter)
+    pub fn plain() -> PlainHighlighter {
+        PlainHighlighter::default()
+    }
 
-  /// Creates a new instance of [UnifiedHighlighter](UnifiedHighlighter)
-  pub fn unified() -> UnifiedHighlighter {
-    UnifiedHighlighter::default()
-  }
+    /// Creates a new instance of [UnifiedHighlighter](UnifiedHighlighter)
+    pub fn unified() -> UnifiedHighlighter {
+        UnifiedHighlighter::default()
+    }
 }
 
 impl Default for FastVectorHighlighter {
-  fn default() -> Self {
-    Self {
-      r#type: "fvh".to_owned(),
-      boundary_chars: None,
-      boundary_max_scan: None,
-      encoder: None,
-      force_source: None,
-      fragment_size: None,
-      highlight_query: None,
-      no_match_size: None,
-      number_of_fragments: None,
-      order: None,
-      pre_tags: None,
-      post_tags: None,
-      require_field_match: None,
-      tags: None,
-      boundary_scanner: None,
-      fragment_offset: None,
-      matched_fields: None,
-      phrase_limit: None,
+    fn default() -> Self {
+        Self {
+            r#type: "fvh".to_owned(),
+            boundary_chars: None,
+            boundary_max_scan: None,
+            encoder: None,
+            force_source: None,
+            fragment_size: None,
+            highlight_query: None,
+            no_match_size: None,
+            number_of_fragments: None,
+            order: None,
+            pre_tags: None,
+            post_tags: None,
+            require_field_match: None,
+            tags: None,
+            boundary_scanner: None,
+            fragment_offset: None,
+            matched_fields: None,
+            phrase_limit: None,
+        }
     }
-  }
 }
 
 impl Default for PlainHighlighter {
-  fn default() -> Self {
-    Self {
-      r#type: "plain".to_owned(),
-      boundary_chars: None,
-      boundary_max_scan: None,
-      encoder: None,
-      force_source: None,
-      fragment_size: None,
-      highlight_query: None,
-      no_match_size: None,
-      number_of_fragments: None,
-      order: None,
-      pre_tags: None,
-      post_tags: None,
-      require_field_match: None,
-      tags: None,
-      fragmenter: None,
+    fn default() -> Self {
+        Self {
+            r#type: "plain".to_owned(),
+            boundary_chars: None,
+            boundary_max_scan: None,
+            encoder: None,
+            force_source: None,
+            fragment_size: None,
+            highlight_query: None,
+            no_match_size: None,
+            number_of_fragments: None,
+            order: None,
+            pre_tags: None,
+            post_tags: None,
+            require_field_match: None,
+            tags: None,
+            fragmenter: None,
+        }
     }
-  }
 }
 
 impl Default for UnifiedHighlighter {
-  fn default() -> Self {
-    Self {
-      r#type: "unified".to_owned(),
-      boundary_chars: None,
-      boundary_max_scan: None,
-      encoder: None,
-      force_source: None,
-      fragment_size: None,
-      highlight_query: None,
-      no_match_size: None,
-      number_of_fragments: None,
-      order: None,
-      pre_tags: None,
-      post_tags: None,
-      require_field_match: None,
-      tags: None,
-      boundary_scanner: None,
+    fn default() -> Self {
+        Self {
+            r#type: "unified".to_owned(),
+            boundary_chars: None,
+            boundary_max_scan: None,
+            encoder: None,
+            force_source: None,
+            fragment_size: None,
+            highlight_query: None,
+            no_match_size: None,
+            number_of_fragments: None,
+            order: None,
+            pre_tags: None,
+            post_tags: None,
+            require_field_match: None,
+            tags: None,
+            boundary_scanner: None,
+        }
     }
-  }
 }
 
 impl From<DefaultHighlighter> for Highlighter {
-  fn from(highlighter: DefaultHighlighter) -> Self {
-    Self::Default(highlighter)
-  }
+    fn from(highlighter: DefaultHighlighter) -> Self {
+        Self::Default(highlighter)
+    }
 }
 
 impl From<FastVectorHighlighter> for Highlighter {
-  fn from(highlighter: FastVectorHighlighter) -> Self {
-    Self::Fvh(highlighter)
-  }
+    fn from(highlighter: FastVectorHighlighter) -> Self {
+        Self::Fvh(highlighter)
+    }
 }
 
 impl From<PlainHighlighter> for Highlighter {
-  fn from(highlighter: PlainHighlighter) -> Self {
-    Self::Plain(highlighter)
-  }
+    fn from(highlighter: PlainHighlighter) -> Self {
+        Self::Plain(highlighter)
+    }
 }
 
 impl From<UnifiedHighlighter> for Highlighter {
-  fn from(highlighter: UnifiedHighlighter) -> Self {
-    Self::Unified(highlighter)
-  }
+    fn from(highlighter: UnifiedHighlighter) -> Self {
+        Self::Unified(highlighter)
+    }
 }
 
 macro_rules! add_highlighter_methods {
-  () => {
-    /// A string that contains each boundary character. Defaults to `.,!? \t\n`.
-    pub fn boundary_chars<T>(mut self, boundary_chars: T) -> Self
-    where
-      T: ToString, {
-      self.boundary_chars = Some(boundary_chars.to_string());
-      self
-    }
+    () => {
+        /// A string that contains each boundary character. Defaults to `.,!? \t\n`.
+        pub fn boundary_chars<T>(mut self, boundary_chars: T) -> Self
+        where
+            T: ToString,
+        {
+            self.boundary_chars = Some(boundary_chars.to_string());
+            self
+        }
 
-    /// How far to scan for boundary characters. Defaults to `20`.
-    pub fn boundary_max_scan(mut self, boundary_max_scan: u32) -> Self {
-      self.boundary_max_scan = Some(boundary_max_scan);
-      self
-    }
+        /// How far to scan for boundary characters. Defaults to `20`.
+        pub fn boundary_max_scan(mut self, boundary_max_scan: u32) -> Self {
+            self.boundary_max_scan = Some(boundary_max_scan);
+            self
+        }
 
-    /// Indicates if the snippet should be HTML encoded.
-    pub fn encoder(mut self, encoder: Encoder) -> Self {
-      self.encoder = Some(encoder);
-      self
-    }
+        /// Indicates if the snippet should be HTML encoded.
+        pub fn encoder(mut self, encoder: Encoder) -> Self {
+            self.encoder = Some(encoder);
+            self
+        }
 
-    /// Highlight based on the source even if the field is stored separately.
-    /// Defaults to `false`.
-    pub fn force_source(mut self, force_source: bool) -> Self {
-      self.force_source = Some(force_source);
-      self
-    }
+        /// Highlight based on the source even if the field is stored separately.
+        /// Defaults to `false`.
+        pub fn force_source(mut self, force_source: bool) -> Self {
+            self.force_source = Some(force_source);
+            self
+        }
 
-    /// The size of the highlighted fragment in characters. Defaults to
-    /// `100`.
-    pub fn fragment_size(mut self, fragment_size: u32) -> Self {
-      self.fragment_size = Some(fragment_size);
-      self
-    }
+        /// The size of the highlighted fragment in characters. Defaults to
+        /// `100`.
+        pub fn fragment_size(mut self, fragment_size: u32) -> Self {
+            self.fragment_size = Some(fragment_size);
+            self
+        }
 
-    /// Highlight matches for a query other than the search query. This is
-    /// especially useful if you use a rescore query because those are not taken
-    /// into account by highlighting by default.
-    ///
-    /// > **Warning**<br/>
-    /// > OpenSearch does not validate that `highlight_query` contains the search
-    /// > query in any
-    /// way so it is possible to define it so legitimate query results are not
-    /// highlighted. Generally, you should include the search query as part of the
-    /// `highlight_query`.
-    pub fn highlight_query<T>(mut self, highlight_query: T) -> Self
-    where
-      T: Into<Query>, {
-      self.highlight_query = Some(highlight_query.into());
-      self
-    }
+        /// Highlight matches for a query other than the search query. This is
+        /// especially useful if you use a rescore query because those are not taken
+        /// into account by highlighting by default.
+        ///
+        /// > **Warning**<br/>
+        /// > OpenSearch does not validate that `highlight_query` contains the search
+        /// > query in any
+        /// way so it is possible to define it so legitimate query results are not
+        /// highlighted. Generally, you should include the search query as part of the
+        /// `highlight_query`.
+        pub fn highlight_query<T>(mut self, highlight_query: T) -> Self
+        where
+            T: Into<Query>,
+        {
+            self.highlight_query = Some(highlight_query.into());
+            self
+        }
 
-    /// The amount of text you want to return from the beginning of the field if
-    /// there are no matching fragments to highlight. Defaults to `0` (nothing is
-    /// returned).
-    pub fn no_match_size(mut self, no_match_size: u32) -> Self {
-      self.no_match_size = Some(no_match_size);
-      self
-    }
+        /// The amount of text you want to return from the beginning of the field if
+        /// there are no matching fragments to highlight. Defaults to `0` (nothing is
+        /// returned).
+        pub fn no_match_size(mut self, no_match_size: u32) -> Self {
+            self.no_match_size = Some(no_match_size);
+            self
+        }
 
-    /// The maximum number of fragments to return. If the number of fragments is set
-    /// to `0`, no fragments are returned. Instead, the entire field contents are
-    /// highlighted and returned. This can be handy when you need to highlight short
-    /// texts such as a title or address, but fragmentation is not required. If
-    /// `number_of_fragments` is `0`, `fragment_size` is ignored. Defaults to `5`.
-    pub fn number_of_fragments(mut self, number_of_fragments: u32) -> Self {
-      self.number_of_fragments = Some(number_of_fragments);
-      self
-    }
+        /// The maximum number of fragments to return. If the number of fragments is set
+        /// to `0`, no fragments are returned. Instead, the entire field contents are
+        /// highlighted and returned. This can be handy when you need to highlight short
+        /// texts such as a title or address, but fragmentation is not required. If
+        /// `number_of_fragments` is `0`, `fragment_size` is ignored. Defaults to `5`.
+        pub fn number_of_fragments(mut self, number_of_fragments: u32) -> Self {
+            self.number_of_fragments = Some(number_of_fragments);
+            self
+        }
 
-    /// Sorts highlighted fragments by score when set to [`score`](Order::Score). By
-    /// default, fragments will be output in the order they appear in the field
-    /// (order: [`none`](Order::None)). Setting this option to
-    /// [`score`](Order::Score) will output the most relevant fragments first. Each
-    /// highlighter applies its own logic to compute relevancy scores. See the
-    /// document [How highlighters work internally](https://www.elastic.co/guide/en/opensearch/reference/current/highlighting.html#how-es-highlighters-work-internally)
-    /// for more details how different highlighters find the best fragments.
-    pub fn order(mut self, order: Order) -> Self {
-      self.order = Some(order);
-      self
-    }
+        /// Sorts highlighted fragments by score when set to [`score`](Order::Score). By
+        /// default, fragments will be output in the order they appear in the field
+        /// (order: [`none`](Order::None)). Setting this option to
+        /// [`score`](Order::Score) will output the most relevant fragments first. Each
+        /// highlighter applies its own logic to compute relevancy scores. See the
+        /// document [How highlighters work internally](https://www.elastic.co/guide/en/opensearch/reference/current/highlighting.html#how-es-highlighters-work-internally)
+        /// for more details how different highlighters find the best fragments.
+        pub fn order(mut self, order: Order) -> Self {
+            self.order = Some(order);
+            self
+        }
 
-    /// By default, only fields that contains a query match are highlighted. Set
-    /// `require_field_match` to `false` to highlight all fields. Defaults to
-    /// `true`.
-    pub fn require_field_match(mut self, require_field_match: bool) -> Self {
-      self.require_field_match = Some(require_field_match);
-      self
-    }
+        /// By default, only fields that contains a query match are highlighted. Set
+        /// `require_field_match` to `false` to highlight all fields. Defaults to
+        /// `true`.
+        pub fn require_field_match(mut self, require_field_match: bool) -> Self {
+            self.require_field_match = Some(require_field_match);
+            self
+        }
 
-    /// Set to `styled` to use the built-in tag schema or use custom tags
-    pub fn tags<T>(mut self, tags: T) -> Self
-    where
-      T: Into<Tags>, {
-      self.tags = Some(tags.into());
-      self
-    }
-  };
+        /// Set to `styled` to use the built-in tag schema or use custom tags
+        pub fn tags<T>(mut self, tags: T) -> Self
+        where
+            T: Into<Tags>,
+        {
+            self.tags = Some(tags.into());
+            self
+        }
+    };
 }
 
 macro_rules! convert_to_highlighter {
-  ($method:tt, $struct:tt) => {
-    /// Converts [Highlighter](Highlighter) to specific highlighter
-    pub fn $method(self) -> $struct {
-      $struct {
-        boundary_chars: self.boundary_chars,
-        boundary_max_scan: self.boundary_max_scan,
-        encoder: self.encoder,
-        force_source: self.force_source,
-        fragment_size: self.fragment_size,
-        highlight_query: self.highlight_query,
-        no_match_size: self.no_match_size,
-        number_of_fragments: self.number_of_fragments,
-        order: self.order,
-        pre_tags: self.pre_tags,
-        post_tags: self.post_tags,
-        require_field_match: self.require_field_match,
-        tags: self.tags,
-        ..Default::default()
-      }
-    }
-  };
+    ($method:tt, $struct:tt) => {
+        /// Converts [Highlighter](Highlighter) to specific highlighter
+        pub fn $method(self) -> $struct {
+            $struct {
+                boundary_chars: self.boundary_chars,
+                boundary_max_scan: self.boundary_max_scan,
+                encoder: self.encoder,
+                force_source: self.force_source,
+                fragment_size: self.fragment_size,
+                highlight_query: self.highlight_query,
+                no_match_size: self.no_match_size,
+                number_of_fragments: self.number_of_fragments,
+                order: self.order,
+                pre_tags: self.pre_tags,
+                post_tags: self.post_tags,
+                require_field_match: self.require_field_match,
+                tags: self.tags,
+                ..Default::default()
+            }
+        }
+    };
 }
 
 impl DefaultHighlighter {
-  add_highlighter_methods!();
+    add_highlighter_methods!();
 
-  convert_to_highlighter!(fvh, FastVectorHighlighter);
+    convert_to_highlighter!(fvh, FastVectorHighlighter);
 
-  convert_to_highlighter!(plain, PlainHighlighter);
+    convert_to_highlighter!(plain, PlainHighlighter);
 
-  convert_to_highlighter!(unified, UnifiedHighlighter);
+    convert_to_highlighter!(unified, UnifiedHighlighter);
 
-  /// Creates a new [Highlighter](Highlighter) instance
-  pub fn new() -> Self {
-    Default::default()
-  }
+    /// Creates a new [Highlighter](Highlighter) instance
+    pub fn new() -> Self {
+        Default::default()
+    }
 }
 
 impl FastVectorHighlighter {
-  add_highlighter_methods!();
+    add_highlighter_methods!();
 
-  /// Creates a new [FastVectorHighlighter](FastVectorHighlighter) instance
-  pub fn new() -> Self {
-    Default::default()
-  }
+    /// Creates a new [FastVectorHighlighter](FastVectorHighlighter) instance
+    pub fn new() -> Self {
+        Default::default()
+    }
 
-  /// Specifies how to break the highlighted fragments.
-  pub fn boundary_scanner(mut self, boundary_scanner: FvhBoundaryScanner) -> Self {
-    self.boundary_scanner = Some(boundary_scanner);
-    self
-  }
+    /// Specifies how to break the highlighted fragments.
+    pub fn boundary_scanner(mut self, boundary_scanner: FvhBoundaryScanner) -> Self {
+        self.boundary_scanner = Some(boundary_scanner);
+        self
+    }
 
-  /// Controls the margin from which you want to start highlighting.
-  pub fn fragment_offset(mut self, fragment_offset: u32) -> Self {
-    self.fragment_offset = Some(fragment_offset);
-    self
-  }
+    /// Controls the margin from which you want to start highlighting.
+    pub fn fragment_offset(mut self, fragment_offset: u32) -> Self {
+        self.fragment_offset = Some(fragment_offset);
+        self
+    }
 
-  /// Combine matches on multiple fields to highlight a single field. This is
-  /// most intuitive for multi-fields that analyze the same string in
-  /// different ways. All `matched_fields` must have `term_vector` set to
-  /// `with_positions_offsets`, but only the field to which the matches are
-  /// combined is loaded so only that field benefits from having store set to
-  /// yes.
-  pub fn matched_fields<T>(mut self, matched_fields: T) -> Self
-  where
-    T: Into<MatchedFields>, {
-    self.matched_fields = Some(matched_fields.into());
-    self
-  }
+    /// Combine matches on multiple fields to highlight a single field. This is
+    /// most intuitive for multi-fields that analyze the same string in
+    /// different ways. All `matched_fields` must have `term_vector` set to
+    /// `with_positions_offsets`, but only the field to which the matches are
+    /// combined is loaded so only that field benefits from having store set to
+    /// yes.
+    pub fn matched_fields<T>(mut self, matched_fields: T) -> Self
+    where
+        T: Into<MatchedFields>,
+    {
+        self.matched_fields = Some(matched_fields.into());
+        self
+    }
 
-  /// Controls the number of matching phrases in a document that are considered.
-  /// Prevents the highlighter from analyzing too many phrases and consuming
-  /// too much memory. When using `matched_fields`, `phrase_limit` phrases per
-  /// matched field are considered. Raising the limit increases query time and
-  /// consumes more memory. Defaults to 256.
-  pub fn phrase_limit(mut self, phrase_limit: u32) -> Self {
-    self.phrase_limit = Some(phrase_limit);
-    self
-  }
+    /// Controls the number of matching phrases in a document that are considered.
+    /// Prevents the highlighter from analyzing too many phrases and consuming
+    /// too much memory. When using `matched_fields`, `phrase_limit` phrases per
+    /// matched field are considered. Raising the limit increases query time and
+    /// consumes more memory. Defaults to 256.
+    pub fn phrase_limit(mut self, phrase_limit: u32) -> Self {
+        self.phrase_limit = Some(phrase_limit);
+        self
+    }
 }
 
 impl PlainHighlighter {
-  add_highlighter_methods!();
+    add_highlighter_methods!();
 
-  /// Creates a new [PlainHighlighter](PlainHighlighter) instance
-  pub fn new() -> Self {
-    Default::default()
-  }
+    /// Creates a new [PlainHighlighter](PlainHighlighter) instance
+    pub fn new() -> Self {
+        Default::default()
+    }
 
-  /// Specifies how text should be broken up in highlight snippets.
-  pub fn fragmenter(mut self, fragmenter: Fragmenter) -> Self {
-    self.fragmenter = Some(fragmenter);
-    self
-  }
+    /// Specifies how text should be broken up in highlight snippets.
+    pub fn fragmenter(mut self, fragmenter: Fragmenter) -> Self {
+        self.fragmenter = Some(fragmenter);
+        self
+    }
 }
 
 impl UnifiedHighlighter {
-  add_highlighter_methods!();
+    add_highlighter_methods!();
 
-  /// Creates a new [UnifiedHighlighter](UnifiedHighlighter) instance
-  pub fn new() -> Self {
-    Default::default()
-  }
+    /// Creates a new [UnifiedHighlighter](UnifiedHighlighter) instance
+    pub fn new() -> Self {
+        Default::default()
+    }
 
-  /// Specifies how to break the highlighted fragments.
-  pub fn boundary_scanner(mut self, boundary_scanner: UnifiedBoundaryScanner) -> Self {
-    self.boundary_scanner = Some(boundary_scanner);
-    self
-  }
+    /// Specifies how to break the highlighted fragments.
+    pub fn boundary_scanner(mut self, boundary_scanner: UnifiedBoundaryScanner) -> Self {
+        self.boundary_scanner = Some(boundary_scanner);
+        self
+    }
 }

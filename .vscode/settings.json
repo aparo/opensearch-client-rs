@@ -1,39 +1,10 @@
 {
-  "cSpell.words": [
-    "actiongroups",
-    "fielddata",
-    "forcemerge",
-    "internalusers",
-    "msearch",
-    "mtermvectors",
-    "Nodeattrs",
-    "nodesdn",
-    "reindex",
-    "reqwest",
-    "Rethrottle",
-    "rolesmapping",
-    "securityconfig",
-    "termvectors",
-    "urlencode"
-  ],
-  "rust-analyzer.cargo.features": "all",
-  "rust-analyzer.linkedProjects": [
-    "./opensearch-client/Cargo.toml"
-  ],
-  "rust-analyzer.showUnlinkedFileNotification": false,
-  "rust-analyzer.runnables.extraEnv": [
-    {
-      // "mask": null, // null mask means that this rule will be applied for all runnables
-      "env": {
-        //  "APP_ID": "1",
-        //  "APP_DATA": "asdf"
-      }
+    "rust-analyzer.cargo.features": [
+        "default"
+    ],
+    "files.watcherExclude": {
+        "**/target": true
     },
-    {
-      "mask": "^test.*",
-      "env": {
-        "RUST_LOG": "all"
-      }
-    }
-  ]
+    "metals.inlayHints.implicitArguments.enable": true,
+    "metals.inlayHints.implicitConversions.enable": true
 }

@@ -7,11 +7,11 @@
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/sort-search-results.html#_missing_values>
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
 pub enum SortMissing {
-  /// Sorts missing fields first
-  #[serde(rename = "_first")]
-  First,
+    /// Sorts missing fields first
+    #[serde(rename = "_first")]
+    First,
 
-  /// Sorts missing field last
-  #[serde(rename = "_last")]
-  Last,
+    /// Sorts missing field last
+    #[serde(rename = "_last")]
+    Last,
 }

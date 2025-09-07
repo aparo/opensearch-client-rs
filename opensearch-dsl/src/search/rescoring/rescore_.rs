@@ -34,141 +34,147 @@ use crate::{util::ShouldSkip, Query, ScoreMode};
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/filter-search-results.html#rescore>
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct Rescore {
-  query: RescoreQuery,
+    query: RescoreQuery,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  window_size: Option<u64>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    window_size: Option<u64>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 struct RescoreQuery {
-  rescore_query: Option<Query>,
+    rescore_query: Option<Query>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  rescore_query_weight: Option<f32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    rescore_query_weight: Option<f32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  query_weight: Option<f32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    query_weight: Option<f32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  score_mode: Option<ScoreMode>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    score_mode: Option<ScoreMode>,
 }
 
 impl Rescore {
-  /// Creates a new instance of [Rescore]
-  ///
-  /// - `query` - Second query which will be execute on top-k results returned
-  ///   by original query.
-  pub fn new<T>(query: T) -> Self
-  where
-    T: Into<Option<Query>>, {
-    Self {
-      query: RescoreQuery {
-        rescore_query: query.into(),
-        rescore_query_weight: None,
-        query_weight: None,
-        score_mode: None,
-      },
-      window_size: None,
+    /// Creates a new instance of [Rescore]
+    ///
+    /// - `query` - Second query which will be execute on top-k results returned
+    ///   by original query.
+    pub fn new<T>(query: T) -> Self
+    where
+        T: Into<Option<Query>>,
+    {
+        Self {
+            query: RescoreQuery {
+                rescore_query: query.into(),
+                rescore_query_weight: None,
+                query_weight: None,
+                score_mode: None,
+            },
+            window_size: None,
+        }
     }
-  }
 
-  /// The number of docs which will be examined on each shard can be controlled
-  /// by the `window_size` parameter, which defaults to 10.
-  pub fn window_size(mut self, window_size: u64) -> Self {
-    self.window_size = Some(window_size);
-    self
-  }
+    /// The number of docs which will be examined on each shard can be controlled
+    /// by the `window_size` parameter, which defaults to 10.
+    pub fn window_size(mut self, window_size: u64) -> Self {
+        self.window_size = Some(window_size);
+        self
+    }
 
-  /// The relative importance of the rescore query can be controlled with the
-  /// `rescore_query_weight` respectively. Both default to 1.
-  pub fn rescore_query_weight<T>(mut self, rescore_query_weight: T) -> Self
-  where
-    T: num_traits::AsPrimitive<f32>, {
-    self.query.rescore_query_weight = Some(rescore_query_weight.as_());
-    self
-  }
+    /// The relative importance of the rescore query can be controlled with the
+    /// `rescore_query_weight` respectively. Both default to 1.
+    pub fn rescore_query_weight<T>(mut self, rescore_query_weight: T) -> Self
+    where
+        T: num_traits::AsPrimitive<f32>,
+    {
+        self.query.rescore_query_weight = Some(rescore_query_weight.as_());
+        self
+    }
 
-  /// The relative importance of the original query can be controlled with the
-  /// `query_weight` respectively. Both default to 1.
-  pub fn query_weight<T>(mut self, query_weight: T) -> Self
-  where
-    T: num_traits::AsPrimitive<f32>, {
-    self.query.query_weight = Some(query_weight.as_());
-    self
-  }
+    /// The relative importance of the original query can be controlled with the
+    /// `query_weight` respectively. Both default to 1.
+    pub fn query_weight<T>(mut self, query_weight: T) -> Self
+    where
+        T: num_traits::AsPrimitive<f32>,
+    {
+        self.query.query_weight = Some(query_weight.as_());
+        self
+    }
 
-  /// The way the scores are combined can be controlled with the
-  pub fn score_mode(mut self, score_mode: ScoreMode) -> Self {
-    self.query.score_mode = Some(score_mode);
-    self
-  }
+    /// The way the scores are combined can be controlled with the
+    pub fn score_mode(mut self, score_mode: ScoreMode) -> Self {
+        self.query.score_mode = Some(score_mode);
+        self
+    }
 }
 
 impl ShouldSkip for Rescore {
-  fn should_skip(&self) -> bool {
-    self.query.rescore_query.as_ref().map_or(true, ShouldSkip::should_skip)
-  }
+    fn should_skip(&self) -> bool {
+        self.query
+            .rescore_query
+            .as_ref()
+            .map_or(true, ShouldSkip::should_skip)
+    }
 }
 
 impl IntoIterator for Rescore {
-  type IntoIter = std::option::IntoIter<Self::Item>;
-  type Item = Self;
+    type IntoIter = std::option::IntoIter<Self::Item>;
+    type Item = Self;
 
-  fn into_iter(self) -> Self::IntoIter {
-    Some(self).into_iter()
-  }
+    fn into_iter(self) -> Self::IntoIter {
+        Some(self).into_iter()
+    }
 }
 
 #[cfg(test)]
 mod tests {
-  use super::*;
-  use crate::util::assert_serialize_rescore;
+    use super::*;
+    use crate::util::assert_serialize_rescore;
 
-  #[test]
-  fn should_skip() {
-    assert!(Rescore::new(Query::range("field")).should_skip());
-    assert!(!Rescore::new(Query::range("field").gte(1)).should_skip());
-  }
+    #[test]
+    fn should_skip() {
+        assert!(Rescore::new(Query::range("field")).should_skip());
+        assert!(!Rescore::new(Query::range("field").gte(1)).should_skip());
+    }
 
-  #[test]
-  fn serialization() {
-    assert_serialize_rescore(
-      Rescore::new(Query::term("title", "test")),
-      json!({
-          "query": {
-              "rescore_query": {
-                  "term": {
-                      "title": {
-                          "value": "test"
-                      }
-                  }
-              }
-          }
-      }),
-    );
+    #[test]
+    fn serialization() {
+        assert_serialize_rescore(
+            Rescore::new(Query::term("title", "test")),
+            json!({
+                "query": {
+                    "rescore_query": {
+                        "term": {
+                            "title": {
+                                "value": "test"
+                            }
+                        }
+                    }
+                }
+            }),
+        );
 
-    assert_serialize_rescore(
-      Rescore::new(Query::term("title", "test"))
-        .rescore_query_weight(0.2)
-        .query_weight(0.5)
-        .window_size(100)
-        .score_mode(ScoreMode::Max),
-      json!({
-          "window_size": 100,
-          "query": {
-              "query_weight": 0.5,
-              "rescore_query_weight": 0.2,
-              "score_mode": "max",
-              "rescore_query": {
-                  "term": {
-                      "title": {
-                          "value": "test"
-                      }
-                  }
-              }
-          }
-      }),
-    );
-  }
+        assert_serialize_rescore(
+            Rescore::new(Query::term("title", "test"))
+                .rescore_query_weight(0.2)
+                .query_weight(0.5)
+                .window_size(100)
+                .score_mode(ScoreMode::Max),
+            json!({
+                "window_size": 100,
+                "query": {
+                    "query_weight": 0.5,
+                    "rescore_query_weight": 0.2,
+                    "score_mode": "max",
+                    "rescore_query": {
+                        "term": {
+                            "title": {
+                                "value": "test"
+                            }
+                        }
+                    }
+                }
+            }),
+        );
+    }
 }

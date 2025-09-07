@@ -4,35 +4,36 @@ use super::Time;
 /// data at that time.
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 pub struct PointInTime {
-  id: String,
-  keep_alive: Time,
+    id: String,
+    keep_alive: Time,
 }
 
 impl PointInTime {
-  /// Creates a new instance of [`PointInTime`].
-  ///
-  /// - The `id` parameter tells OpenSearch to execute the request using
-  ///   contexts from this point in time.
-  /// - The `keep_alive` parameter tells OpenSearch how long it should extend
-  ///   the time to live of the point in time.
-  pub fn new<T>(id: T, keep_alive: Time) -> Self
-  where
-    T: ToString, {
-    Self {
-      id: id.to_string(),
-      keep_alive,
+    /// Creates a new instance of [`PointInTime`].
+    ///
+    /// - The `id` parameter tells OpenSearch to execute the request using
+    ///   contexts from this point in time.
+    /// - The `keep_alive` parameter tells OpenSearch how long it should extend
+    ///   the time to live of the point in time.
+    pub fn new<T>(id: T, keep_alive: Time) -> Self
+    where
+        T: ToString,
+    {
+        Self {
+            id: id.to_string(),
+            keep_alive,
+        }
     }
-  }
 }
 
 #[cfg(test)]
 mod tests {
-  use super::*;
-  use crate::{util::assert_serialize, Search};
+    use super::*;
+    use crate::{util::assert_serialize, Search};
 
-  #[test]
-  fn adds_boolean() {
-    assert_serialize(
+    #[test]
+    fn adds_boolean() {
+        assert_serialize(
             Search::new().pit(PointInTime::new("46ToAwMDaWR5BXV1aWQyKwZub2RlXzMAAAAAAAAAACoBYwADaWR4BXV1aWQxAgZub2RlXzEAAAAAAAAAAAEBYQADaWR5BXV1aWQyKgZub2RlXzIAAAAAAAAAAAwBYgACBXV1aWQyAAAFdXVpZDEAAQltYXRjaF9hbGw_gAAAAA", Time::Minutes(1))),
             json!({
                 "pit": {
@@ -41,5 +42,5 @@ mod tests {
                 }
             }),
         );
-  }
+    }
 }

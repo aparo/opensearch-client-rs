@@ -7,15 +7,15 @@ use crate::{search::*, util::*};
 
 #[doc(hidden)]
 pub trait Origin: Debug + PartialEq + DeserializeOwned + Serialize + Clone {
-  type Pivot: Debug + PartialEq + DeserializeOwned + Serialize + Clone;
+    type Pivot: Debug + PartialEq + DeserializeOwned + Serialize + Clone;
 }
 
 impl Origin for DateTime<Utc> {
-  type Pivot = Time;
+    type Pivot = Time;
 }
 
 impl Origin for GeoLocation {
-  type Pivot = Distance;
+    type Pivot = Distance;
 }
 
 /// Boosts the [relevance score](https://www.elastic.co/guide/en/opensearch/reference/current/query-filter-context.html#relevance-scores)
@@ -100,75 +100,81 @@ impl Origin for GeoLocation {
 #[serde(remote = "Self")]
 pub struct DistanceFeatureQuery<O>
 where
-  O: Origin + DeserializeOwned, {
-  field: String,
+    O: Origin + DeserializeOwned,
+{
+    field: String,
 
-  origin: O,
+    origin: O,
 
-  pivot: <O as Origin>::Pivot,
+    pivot: <O as Origin>::Pivot,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boost: Option<f32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boost: Option<f32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  _name: Option<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    _name: Option<String>,
 }
 
 impl Query {
-  /// Creates an instance of [DistanceFeatureQuery](DistanceFeatureQuery)
-  ///
-  /// - `field` - Name of the field used to calculate distances. This field must
-  ///   meet the following criteria:<br/>
-  ///   - Be a [`date`](https://www.elastic.co/guide/en/opensearch/reference/current/date.html),
-  /// [`date_nanos`](https://www.elastic.co/guide/en/opensearch/reference/current/date_nanos.html) or
-  /// [`geo_point`](https://www.elastic.co/guide/en/opensearch/reference/current/geo-point.html) field
-  ///   - Have an [index](https://www.elastic.co/guide/en/opensearch/reference/current/mapping-index.html)
-  /// mapping parameter value of `true`, which is the default
-  ///   - Have an [`doc_values`](https://www.elastic.co/guide/en/opensearch/reference/current/doc-values.html)
-  /// mapping parameter value of `true`, which is the default
-  /// - `origin` - Date or point of origin used to calculate distances.<br/>
-  /// If the `field` value is a
-  /// [`date`](https://www.elastic.co/guide/en/opensearch/reference/current/date.html) or
-  /// [`date_nanos`](https://www.elastic.co/guide/en/opensearch/reference/current/date_nanos.html)
-  /// field, the `origin` value must be a
-  /// [date](https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-bucket-daterange-aggregation.html#date-format-pattern).
-  /// [Date Math](https://www.elastic.co/guide/en/opensearch/reference/current/common-options.html#date-math),
-  /// such as `now-1h`, is supported.<br/>
-  /// If the `field` value is a
-  /// [`geo_point`](https://www.elastic.co/guide/en/opensearch/reference/current/geo-point.html)
-  /// field, the `origin` value must be a geopoint.
-  /// - `pivot` - Distance from the `origin` at which relevance scores receive
-  ///   half of the boost value.<br/>
-  /// If the field value is a
-  /// [`date`](https://www.elastic.co/guide/en/opensearch/reference/current/date.html) or
-  /// [`date_nanos`](https://www.elastic.co/guide/en/opensearch/reference/current/date_nanos.html)
-  /// field, the `pivot` value must be a
-  /// [`time unit`](https://www.elastic.co/guide/en/opensearch/reference/current/common-options.html#time-units)
-  /// , such as `1h` or `10d`.<br/>
-  /// If the `field` value is a
-  /// [`geo_point`](https://www.elastic.co/guide/en/opensearch/reference/current/geo-point.html)
-  /// field, the `pivot` value must be a
-  /// [distance unit](https://www.elastic.co/guide/en/opensearch/reference/current/common-options.html#distance-units)
-  /// , such as `1km` or `12m`.
-  pub fn distance_feature<T, O>(field: T, origin: O, pivot: <O as Origin>::Pivot) -> DistanceFeatureQuery<O>
-  where
-    T: ToString,
-    O: Origin, {
-    DistanceFeatureQuery {
-      field: field.to_string(),
-      origin,
-      pivot,
-      boost: None,
-      _name: None,
+    /// Creates an instance of [DistanceFeatureQuery](DistanceFeatureQuery)
+    ///
+    /// - `field` - Name of the field used to calculate distances. This field must
+    ///   meet the following criteria:<br/>
+    ///   - Be a [`date`](https://www.elastic.co/guide/en/opensearch/reference/current/date.html),
+    /// [`date_nanos`](https://www.elastic.co/guide/en/opensearch/reference/current/date_nanos.html) or
+    /// [`geo_point`](https://www.elastic.co/guide/en/opensearch/reference/current/geo-point.html) field
+    ///   - Have an [index](https://www.elastic.co/guide/en/opensearch/reference/current/mapping-index.html)
+    /// mapping parameter value of `true`, which is the default
+    ///   - Have an [`doc_values`](https://www.elastic.co/guide/en/opensearch/reference/current/doc-values.html)
+    /// mapping parameter value of `true`, which is the default
+    /// - `origin` - Date or point of origin used to calculate distances.<br/>
+    /// If the `field` value is a
+    /// [`date`](https://www.elastic.co/guide/en/opensearch/reference/current/date.html) or
+    /// [`date_nanos`](https://www.elastic.co/guide/en/opensearch/reference/current/date_nanos.html)
+    /// field, the `origin` value must be a
+    /// [date](https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-bucket-daterange-aggregation.html#date-format-pattern).
+    /// [Date Math](https://www.elastic.co/guide/en/opensearch/reference/current/common-options.html#date-math),
+    /// such as `now-1h`, is supported.<br/>
+    /// If the `field` value is a
+    /// [`geo_point`](https://www.elastic.co/guide/en/opensearch/reference/current/geo-point.html)
+    /// field, the `origin` value must be a geopoint.
+    /// - `pivot` - Distance from the `origin` at which relevance scores receive
+    ///   half of the boost value.<br/>
+    /// If the field value is a
+    /// [`date`](https://www.elastic.co/guide/en/opensearch/reference/current/date.html) or
+    /// [`date_nanos`](https://www.elastic.co/guide/en/opensearch/reference/current/date_nanos.html)
+    /// field, the `pivot` value must be a
+    /// [`time unit`](https://www.elastic.co/guide/en/opensearch/reference/current/common-options.html#time-units)
+    /// , such as `1h` or `10d`.<br/>
+    /// If the `field` value is a
+    /// [`geo_point`](https://www.elastic.co/guide/en/opensearch/reference/current/geo-point.html)
+    /// field, the `pivot` value must be a
+    /// [distance unit](https://www.elastic.co/guide/en/opensearch/reference/current/common-options.html#distance-units)
+    /// , such as `1km` or `12m`.
+    pub fn distance_feature<T, O>(
+        field: T,
+        origin: O,
+        pivot: <O as Origin>::Pivot,
+    ) -> DistanceFeatureQuery<O>
+    where
+        T: ToString,
+        O: Origin,
+    {
+        DistanceFeatureQuery {
+            field: field.to_string(),
+            origin,
+            pivot,
+            boost: None,
+            _name: None,
+        }
     }
-  }
 }
 
 impl<O> DistanceFeatureQuery<O>
 where
-  O: Origin,
+    O: Origin,
 {
-  add_boost_and_name!();
+    add_boost_and_name!();
 }
 
 impl<O> ShouldSkip for DistanceFeatureQuery<O> where O: Origin {}
@@ -180,69 +186,77 @@ deserialize_with_root!("distance_feature": DistanceFeatureQuery<GeoLocation>);
 
 #[cfg(test)]
 mod tests {
-  use chrono::prelude::*;
+    use chrono::prelude::*;
 
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_query(
-      Query::distance_feature(
-        "test",
-        Utc.with_ymd_and_hms(2014, 7, 8, 9, 1, 0).single().unwrap(),
-        Time::Days(7),
-      ),
-      json!({
-          "distance_feature": {
-              "field": "test",
-              "origin": "2014-07-08T09:01:00Z",
-              "pivot": "7d",
-          }
-      }),
-    );
+    #[test]
+    fn serialization() {
+        assert_serialize_query(
+            Query::distance_feature(
+                "test",
+                Utc.with_ymd_and_hms(2014, 7, 8, 9, 1, 0).single().unwrap(),
+                Time::Days(7),
+            ),
+            json!({
+                "distance_feature": {
+                    "field": "test",
+                    "origin": "2014-07-08T09:01:00Z",
+                    "pivot": "7d",
+                }
+            }),
+        );
 
-    assert_serialize_query(
-      Query::distance_feature(
-        "test",
-        Utc.with_ymd_and_hms(2014, 7, 8, 9, 1, 0).single().unwrap(),
-        Time::Days(7),
-      )
-      .boost(1.5)
-      .name("test"),
-      json!({
-          "distance_feature": {
-              "field": "test",
-              "origin": "2014-07-08T09:01:00Z",
-              "pivot": "7d",
-              "boost": 1.5,
-              "_name": "test",
-          }
-      }),
-    );
-    assert_serialize_query(
-      Query::distance_feature("test", GeoLocation::new(12.0, 13.0), Distance::Kilometers(15)),
-      json!({
-          "distance_feature": {
-              "field": "test",
-              "origin": [13.0, 12.0],
-              "pivot": "15km",
-          }
-      }),
-    );
+        assert_serialize_query(
+            Query::distance_feature(
+                "test",
+                Utc.with_ymd_and_hms(2014, 7, 8, 9, 1, 0).single().unwrap(),
+                Time::Days(7),
+            )
+            .boost(1.5)
+            .name("test"),
+            json!({
+                "distance_feature": {
+                    "field": "test",
+                    "origin": "2014-07-08T09:01:00Z",
+                    "pivot": "7d",
+                    "boost": 1.5,
+                    "_name": "test",
+                }
+            }),
+        );
+        assert_serialize_query(
+            Query::distance_feature(
+                "test",
+                GeoLocation::new(12.0, 13.0),
+                Distance::Kilometers(15),
+            ),
+            json!({
+                "distance_feature": {
+                    "field": "test",
+                    "origin": [13.0, 12.0],
+                    "pivot": "15km",
+                }
+            }),
+        );
 
-    assert_serialize_query(
-      Query::distance_feature("test", GeoLocation::new(12.0, 13.0), Distance::Kilometers(15))
-        .boost(2)
-        .name("test"),
-      json!({
-          "distance_feature": {
-              "field": "test",
-              "origin": [13.0, 12.0],
-              "pivot": "15km",
-              "boost": 2.0,
-              "_name": "test",
-          }
-      }),
-    );
-  }
+        assert_serialize_query(
+            Query::distance_feature(
+                "test",
+                GeoLocation::new(12.0, 13.0),
+                Distance::Kilometers(15),
+            )
+            .boost(2)
+            .name("test"),
+            json!({
+                "distance_feature": {
+                    "field": "test",
+                    "origin": [13.0, 12.0],
+                    "pivot": "15km",
+                    "boost": 2.0,
+                    "_name": "test",
+                }
+            }),
+        );
+    }
 }

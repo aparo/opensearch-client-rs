@@ -1,0 +1,74 @@
+[
+    {
+        "documentation": "",
+        "path": "src/models/common/wait_for_active_shards.rs",
+        "name": "WaitForActiveShards",
+        "string_value": "WaitForActiveShardOptionsValue",
+        "number_type": "u64",
+        "number_value": "CountValue"
+    },
+    {
+        "documentation": "",
+        "path": "src/models/common/wait_for_nodes.rs",
+        "name": "WaitForNodes",
+        "string_value": "StringValue",
+        "number_type": "u64",
+        "number_value": "CountValue"
+    },
+    {
+        "documentation": "",
+        "path": "src/models/common/stringified_boolean.rs",
+        "name": "StringifiedBoolean",
+        "string_value": "StringValue",
+        "number_type": "bool",
+        "number_value": "BooleanValue"
+    },
+    {
+        "documentation": "",
+        "path": "src/models/common/stringified_double.rs",
+        "name": "StringifiedDouble",
+        "string_value": "StringValue",
+        "number_type": "f64",
+        "number_value": "NumberValue"
+    },
+    {
+        "documentation": "",
+        "path": "src/models/common/stringified_epoch_time_unit_millis.rs",
+        "name": "StringifiedEpochTimeUnitMillis",
+        "string_value": "StringValue",
+        "number_type": "u64",
+        "number_value": "EpochTimeUnitMillisValue"
+    },
+    {
+        "documentation": "/// Certain APIs may return values, including numbers such as epoch timestamps, as strings. This setting captures\n/// this behavior while keeping the semantics of the field type.\n/// \n/// Depending on the target language, code generators can keep the union or remove it and leniently parse\n/// strings to the target type.",
+        "path": "src/models/common/stringified_epoch_time_unit_seconds.rs",
+        "name": "StringifiedEpochTimeUnitSeconds",
+        "string_value": "StringValue",
+        "number_type": "u64",
+        "number_value": "EpochTimeUnitSecondsValue"
+    },
+    {
+        "documentation": "",
+        "path": "src/models/common/stringified_integer.rs",
+        "name": "StringifiedInteger",
+        "string_value": "StringValue",
+        "number_type": "i32",
+        "number_value": "IntegerValue"
+    },
+    {
+        "documentation": "",
+        "path": "src/models/common/stringified_long.rs",
+        "name": "StringifiedLong",
+        "string_value": "StringValue",
+        "number_type": "i64",
+        "number_value": "IntegerValue"
+    },
+    {
+        "documentation": "",
+        "path": "src/models/common/stringified_long.rs",
+        "name": "StringifiedLong",
+        "string_value": "StringValue",
+        "number_type": "i64",
+        "number_value": "IntegerValue"
+    }
+]

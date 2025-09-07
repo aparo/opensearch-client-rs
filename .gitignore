@@ -1,5 +1,8 @@
-/target
-/tmp
+/target/
+.vscode/
+Cargo.lock
+**/*.rs.bk
 .env
-__pycache__/
-output
+.scala-build/
+.metals/
+.bsp/

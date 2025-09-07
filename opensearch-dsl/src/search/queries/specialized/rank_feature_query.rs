@@ -31,13 +31,13 @@ use crate::{search::*, util::*};
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct RankFeatureQuery {
-  field: String,
+    field: String,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boost: Option<f32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boost: Option<f32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  _name: Option<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    _name: Option<String>,
 }
 
 /// Boosts the relevance score of documents based on the numeric value of a
@@ -69,15 +69,15 @@ pub struct RankFeatureQuery {
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct RankFeatureSaturationQuery {
-  field: String,
+    field: String,
 
-  saturation: Saturation,
+    saturation: Saturation,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boost: Option<f32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boost: Option<f32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  _name: Option<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    _name: Option<String>,
 }
 
 /// Boosts the relevance score of documents based on the numeric value of a
@@ -109,15 +109,15 @@ pub struct RankFeatureSaturationQuery {
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct RankFeatureLogarithmQuery {
-  field: String,
+    field: String,
 
-  log: Logarithm,
+    log: Logarithm,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boost: Option<f32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boost: Option<f32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  _name: Option<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    _name: Option<String>,
 }
 
 /// Boosts the relevance score of documents based on the numeric value of a
@@ -149,15 +149,15 @@ pub struct RankFeatureLogarithmQuery {
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct RankFeatureSigmoidQuery {
-  field: String,
+    field: String,
 
-  sigmoid: Sigmoid,
+    sigmoid: Sigmoid,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boost: Option<f32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boost: Option<f32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  _name: Option<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    _name: Option<String>,
 }
 
 /// Boosts the relevance score of documents based on the numeric value of a
@@ -189,148 +189,150 @@ pub struct RankFeatureSigmoidQuery {
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct RankFeatureLinearQuery {
-  field: String,
+    field: String,
 
-  linear: Linear,
+    linear: Linear,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boost: Option<f32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boost: Option<f32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  _name: Option<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    _name: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 struct Saturation {
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  pivot: Option<f64>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    pivot: Option<f64>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 struct Logarithm {
-  scaling_factor: f64,
+    scaling_factor: f64,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 struct Sigmoid {
-  pivot: f64,
-  exponent: f64,
+    pivot: f64,
+    exponent: f64,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 struct Linear {}
 
 impl Query {
-  /// Creates an instance of [`RankFeatureQuery`]
-  ///
-  /// - `field` - `rank_feature` or `rank_features` field used to boost
-  ///   relevance scores
-  pub fn rank_feature<T>(field: T) -> RankFeatureQuery
-  where
-    T: ToString, {
-    RankFeatureQuery {
-      field: field.to_string(),
-      boost: None,
-      _name: None,
+    /// Creates an instance of [`RankFeatureQuery`]
+    ///
+    /// - `field` - `rank_feature` or `rank_features` field used to boost
+    ///   relevance scores
+    pub fn rank_feature<T>(field: T) -> RankFeatureQuery
+    where
+        T: ToString,
+    {
+        RankFeatureQuery {
+            field: field.to_string(),
+            boost: None,
+            _name: None,
+        }
     }
-  }
 }
 
 impl RankFeatureQuery {
-  add_boost_and_name!();
+    add_boost_and_name!();
 
-  /// The `saturation` function gives a score equal to `S / (S + pivot)`, where
-  /// `S` is the value of the rank feature field and `pivot` is a configurable
-  /// pivot value so that the result will be less than `0.5` if `S` is less
-  /// than pivot and greater than `0.5` otherwise. Scores are always `(0,1)`.
-  ///
-  /// If the rank feature has a negative score impact then the function will be
-  /// computed as `pivot / (S + pivot)`, which decreases when `S` increases.
-  ///
-  /// If a `pivot` value is not provided, OpenSearch computes a default value
-  /// equal to the approximate geometric mean of all rank feature values in
-  /// the index. We recommend using this default value if you haven’t had the
-  /// opportunity to train a good pivot value.
-  pub fn saturation(self) -> RankFeatureSaturationQuery {
-    RankFeatureSaturationQuery {
-      field: self.field,
-      boost: self.boost,
-      _name: self._name,
-      saturation: Saturation { pivot: None },
+    /// The `saturation` function gives a score equal to `S / (S + pivot)`, where
+    /// `S` is the value of the rank feature field and `pivot` is a configurable
+    /// pivot value so that the result will be less than `0.5` if `S` is less
+    /// than pivot and greater than `0.5` otherwise. Scores are always `(0,1)`.
+    ///
+    /// If the rank feature has a negative score impact then the function will be
+    /// computed as `pivot / (S + pivot)`, which decreases when `S` increases.
+    ///
+    /// If a `pivot` value is not provided, OpenSearch computes a default value
+    /// equal to the approximate geometric mean of all rank feature values in
+    /// the index. We recommend using this default value if you haven’t had the
+    /// opportunity to train a good pivot value.
+    pub fn saturation(self) -> RankFeatureSaturationQuery {
+        RankFeatureSaturationQuery {
+            field: self.field,
+            boost: self.boost,
+            _name: self._name,
+            saturation: Saturation { pivot: None },
+        }
     }
-  }
 
-  /// The `log` function gives a score equal to `log(scaling_factor + S)`, where
-  /// `S` is the value of the rank feature field and `scaling_factor` is a
-  /// configurable scaling factor. Scores are unbounded.
-  ///
-  /// This function only supports rank features that have a positive score
-  /// impact.
-  pub fn logarithm(self, scaling_factor: f64) -> RankFeatureLogarithmQuery {
-    RankFeatureLogarithmQuery {
-      field: self.field,
-      boost: self.boost,
-      _name: self._name,
-      log: Logarithm { scaling_factor },
+    /// The `log` function gives a score equal to `log(scaling_factor + S)`, where
+    /// `S` is the value of the rank feature field and `scaling_factor` is a
+    /// configurable scaling factor. Scores are unbounded.
+    ///
+    /// This function only supports rank features that have a positive score
+    /// impact.
+    pub fn logarithm(self, scaling_factor: f64) -> RankFeatureLogarithmQuery {
+        RankFeatureLogarithmQuery {
+            field: self.field,
+            boost: self.boost,
+            _name: self._name,
+            log: Logarithm { scaling_factor },
+        }
     }
-  }
 
-  /// The `sigmoid` function is an extension of `saturation` which adds a
-  /// configurable exponent. Scores are computed as `S^exp^ / (S^exp^ +
-  /// pivot^exp^)`. Like for the `saturation` function, `pivot` is the value
-  /// of `S` that gives a score of `0.5` and scores are `(0,1)`.
-  ///
-  /// The `exponent` must be positive and is typically in `[0.5, 1]`. A good
-  /// value should be computed via training. If you don’t have the opportunity
-  /// to do so, we recommend you use the `saturation` function instead.
-  pub fn sigmoid(self, pivot: f64, exponent: f64) -> RankFeatureSigmoidQuery {
-    RankFeatureSigmoidQuery {
-      field: self.field,
-      boost: self.boost,
-      _name: self._name,
-      sigmoid: Sigmoid { pivot, exponent },
+    /// The `sigmoid` function is an extension of `saturation` which adds a
+    /// configurable exponent. Scores are computed as `S^exp^ / (S^exp^ +
+    /// pivot^exp^)`. Like for the `saturation` function, `pivot` is the value
+    /// of `S` that gives a score of `0.5` and scores are `(0,1)`.
+    ///
+    /// The `exponent` must be positive and is typically in `[0.5, 1]`. A good
+    /// value should be computed via training. If you don’t have the opportunity
+    /// to do so, we recommend you use the `saturation` function instead.
+    pub fn sigmoid(self, pivot: f64, exponent: f64) -> RankFeatureSigmoidQuery {
+        RankFeatureSigmoidQuery {
+            field: self.field,
+            boost: self.boost,
+            _name: self._name,
+            sigmoid: Sigmoid { pivot, exponent },
+        }
     }
-  }
 
-  /// The `linear` function is the simplest function, and gives a score equal to
-  /// the indexed value of `S`, where `S` is the value of the rank feature
-  /// field. If a rank feature field is indexed with `"positive_score_impact":
-  /// true`, its indexed value is equal to `S` and rounded to preserve only 9
-  /// significant bits for the precision. If a rank feature field is indexed
-  /// with `"positive_score_impact": false`, its indexed value is equal to `1/S`
-  /// and rounded to preserve only 9 significant bits for the precision.
-  pub fn linear(self) -> RankFeatureLinearQuery {
-    RankFeatureLinearQuery {
-      field: self.field,
-      boost: self.boost,
-      _name: self._name,
-      linear: Linear {},
+    /// The `linear` function is the simplest function, and gives a score equal to
+    /// the indexed value of `S`, where `S` is the value of the rank feature
+    /// field. If a rank feature field is indexed with `"positive_score_impact":
+    /// true`, its indexed value is equal to `S` and rounded to preserve only 9
+    /// significant bits for the precision. If a rank feature field is indexed
+    /// with `"positive_score_impact": false`, its indexed value is equal to `1/S`
+    /// and rounded to preserve only 9 significant bits for the precision.
+    pub fn linear(self) -> RankFeatureLinearQuery {
+        RankFeatureLinearQuery {
+            field: self.field,
+            boost: self.boost,
+            _name: self._name,
+            linear: Linear {},
+        }
     }
-  }
 }
 
 impl RankFeatureSaturationQuery {
-  add_boost_and_name!();
+    add_boost_and_name!();
 
-  /// Sets pivot value
-  pub fn pivot<T>(mut self, pivot: T) -> Self
-  where
-    T: Into<f64>, {
-    self.saturation.pivot = Some(pivot.into());
-    self
-  }
+    /// Sets pivot value
+    pub fn pivot<T>(mut self, pivot: T) -> Self
+    where
+        T: Into<f64>,
+    {
+        self.saturation.pivot = Some(pivot.into());
+        self
+    }
 }
 
 impl RankFeatureLogarithmQuery {
-  add_boost_and_name!();
+    add_boost_and_name!();
 }
 
 impl RankFeatureSigmoidQuery {
-  add_boost_and_name!();
+    add_boost_and_name!();
 }
 
 impl RankFeatureLinearQuery {
-  add_boost_and_name!();
+    add_boost_and_name!();
 }
 
 impl ShouldSkip for RankFeatureQuery {}
@@ -352,99 +354,108 @@ deserialize_with_root!("rank_feature": RankFeatureLinearQuery);
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_query(
-      Query::rank_feature("test"),
-      json!({
-          "rank_feature": {
-              "field": "test",
-          }
-      }),
-    );
+    #[test]
+    fn serialization() {
+        assert_serialize_query(
+            Query::rank_feature("test"),
+            json!({
+                "rank_feature": {
+                    "field": "test",
+                }
+            }),
+        );
 
-    assert_serialize_query(
-      Query::rank_feature("test").boost(2).name("query"),
-      json!({
-          "rank_feature": {
-              "field": "test",
-              "boost": 2.0,
-              "_name": "query",
-          }
-      }),
-    );
+        assert_serialize_query(
+            Query::rank_feature("test").boost(2).name("query"),
+            json!({
+                "rank_feature": {
+                    "field": "test",
+                    "boost": 2.0,
+                    "_name": "query",
+                }
+            }),
+        );
 
-    assert_serialize_query(
-      Query::rank_feature("test").saturation().boost(2).name("query"),
-      json!({
-          "rank_feature": {
-              "field": "test",
-              "boost": 2.0,
-              "_name": "query",
-              "saturation": {},
-          }
-      }),
-    );
+        assert_serialize_query(
+            Query::rank_feature("test")
+                .saturation()
+                .boost(2)
+                .name("query"),
+            json!({
+                "rank_feature": {
+                    "field": "test",
+                    "boost": 2.0,
+                    "_name": "query",
+                    "saturation": {},
+                }
+            }),
+        );
 
-    assert_serialize_query(
-      Query::rank_feature("test")
-        .saturation()
-        .pivot(2.2)
-        .boost(2)
-        .name("query"),
-      json!({
-          "rank_feature": {
-              "field": "test",
-              "boost": 2.0,
-              "_name": "query",
-              "saturation": {
-                  "pivot": 2.2,
-              },
-          }
-      }),
-    );
+        assert_serialize_query(
+            Query::rank_feature("test")
+                .saturation()
+                .pivot(2.2)
+                .boost(2)
+                .name("query"),
+            json!({
+                "rank_feature": {
+                    "field": "test",
+                    "boost": 2.0,
+                    "_name": "query",
+                    "saturation": {
+                        "pivot": 2.2,
+                    },
+                }
+            }),
+        );
 
-    assert_serialize_query(
-      Query::rank_feature("test").logarithm(2.2).boost(2).name("query"),
-      json!({
-          "rank_feature": {
-              "field": "test",
-              "boost": 2.0,
-              "_name": "query",
-              "log": {
-                  "scaling_factor": 2.2
-              },
-          }
-      }),
-    );
+        assert_serialize_query(
+            Query::rank_feature("test")
+                .logarithm(2.2)
+                .boost(2)
+                .name("query"),
+            json!({
+                "rank_feature": {
+                    "field": "test",
+                    "boost": 2.0,
+                    "_name": "query",
+                    "log": {
+                        "scaling_factor": 2.2
+                    },
+                }
+            }),
+        );
 
-    assert_serialize_query(
-      Query::rank_feature("test").sigmoid(2.2, 3.3).boost(2).name("query"),
-      json!({
-          "rank_feature": {
-              "field": "test",
-              "boost": 2.0,
-              "_name": "query",
-              "sigmoid": {
-                  "pivot": 2.2,
-                  "exponent": 3.3,
-              },
-          }
-      }),
-    );
+        assert_serialize_query(
+            Query::rank_feature("test")
+                .sigmoid(2.2, 3.3)
+                .boost(2)
+                .name("query"),
+            json!({
+                "rank_feature": {
+                    "field": "test",
+                    "boost": 2.0,
+                    "_name": "query",
+                    "sigmoid": {
+                        "pivot": 2.2,
+                        "exponent": 3.3,
+                    },
+                }
+            }),
+        );
 
-    assert_serialize_query(
-      Query::rank_feature("test").linear().boost(2).name("query"),
-      json!({
-          "rank_feature": {
-              "field": "test",
-              "boost": 2.0,
-              "_name": "query",
-              "linear": {},
-          }
-      }),
-    );
-  }
+        assert_serialize_query(
+            Query::rank_feature("test").linear().boost(2).name("query"),
+            json!({
+                "rank_feature": {
+                    "field": "test",
+                    "boost": 2.0,
+                    "_name": "query",
+                    "linear": {},
+                }
+            }),
+        );
+    }
 }

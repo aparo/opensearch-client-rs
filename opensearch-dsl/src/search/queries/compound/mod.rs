@@ -8,4 +8,7 @@ mod constant_score_query;
 mod dis_max_query;
 mod function_score_query;
 
-pub use self::{bool_query::*, boosting_query::*, constant_score_query::*, dis_max_query::*, function_score_query::*};
+pub use self::{
+    bool_query::*, boosting_query::*, constant_score_query::*, dis_max_query::*,
+    function_score_query::*,
+};

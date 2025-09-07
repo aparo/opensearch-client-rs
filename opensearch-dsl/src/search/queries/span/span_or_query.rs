@@ -12,21 +12,22 @@ use crate::{util::*, Query};
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct SpanOrQuery {
-  clauses: Vec<SpanQuery>,
+    clauses: Vec<SpanQuery>,
 }
 
 impl ShouldSkip for SpanOrQuery {}
 
 impl Query {
-  /// Creates an instance of [`SpanOrQuery`]
-  pub fn span_or<T>(clauses: T) -> SpanOrQuery
-  where
-    T: IntoIterator,
-    T::Item: Into<SpanQuery>, {
-    SpanOrQuery {
-      clauses: clauses.into_iter().map(Into::into).collect(),
+    /// Creates an instance of [`SpanOrQuery`]
+    pub fn span_or<T>(clauses: T) -> SpanOrQuery
+    where
+        T: IntoIterator,
+        T::Item: Into<SpanQuery>,
+    {
+        SpanOrQuery {
+            clauses: clauses.into_iter().map(Into::into).collect(),
+        }
     }
-  }
 }
 
 serialize_with_root!("span_or": SpanOrQuery);
@@ -34,42 +35,42 @@ deserialize_with_root!("span_or": SpanOrQuery);
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_query(
-      Query::span_or([Query::span_term("test", 1234)]),
-      json!({
-          "span_or": {
-              "clauses": [
-                  {
-                      "span_term": {
-                          "test": {
-                              "value": 1234
-                          }
-                      }
-                  }
-              ]
-          }
-      }),
-    );
+    #[test]
+    fn serialization() {
+        assert_serialize_query(
+            Query::span_or([Query::span_term("test", 1234)]),
+            json!({
+                "span_or": {
+                    "clauses": [
+                        {
+                            "span_term": {
+                                "test": {
+                                    "value": 1234
+                                }
+                            }
+                        }
+                    ]
+                }
+            }),
+        );
 
-    assert_serialize_query(
-      Query::span_or([Query::span_term("test", 1234)]),
-      json!({
-          "span_or": {
-              "clauses": [
-                  {
-                      "span_term": {
-                          "test": {
-                              "value": 1234
-                          }
-                      }
-                  }
-              ]
-          }
-      }),
-    );
-  }
+        assert_serialize_query(
+            Query::span_or([Query::span_term("test", 1234)]),
+            json!({
+                "span_or": {
+                    "clauses": [
+                        {
+                            "span_term": {
+                                "test": {
+                                    "value": 1234
+                                }
+                            }
+                        }
+                    ]
+                }
+            }),
+        );
+    }
 }

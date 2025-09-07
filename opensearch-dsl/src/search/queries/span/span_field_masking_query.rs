@@ -20,22 +20,23 @@ use crate::{util::*, Query, SpanQuery};
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct SpanFieldMaskingQuery {
-  query: Box<SpanQuery>,
-  field: String,
+    query: Box<SpanQuery>,
+    field: String,
 }
 
 impl Query {
-  /// Creates an instance of [`SpanFieldMaskingQuery`]
-  #[allow(unused)]
-  pub fn span_field_masking<Q, F>(query: Q, field: F) -> SpanFieldMaskingQuery
-  where
-    Q: Into<SpanQuery>,
-    F: ToString, {
-    SpanFieldMaskingQuery {
-      query: Box::new(query.into()),
-      field: field.to_string(),
+    /// Creates an instance of [`SpanFieldMaskingQuery`]
+    #[allow(unused)]
+    pub fn span_field_masking<Q, F>(query: Q, field: F) -> SpanFieldMaskingQuery
+    where
+        Q: Into<SpanQuery>,
+        F: ToString,
+    {
+        SpanFieldMaskingQuery {
+            query: Box::new(query.into()),
+            field: field.to_string(),
+        }
     }
-  }
 }
 
 impl ShouldSkip for SpanFieldMaskingQuery {}
@@ -45,40 +46,40 @@ deserialize_with_root!("span_field_masking": SpanFieldMaskingQuery);
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_query(
-      Query::span_field_masking(Query::span_term("test", 1234), "test"),
-      json!({
-          "span_field_masking": {
-              "query": {
-                  "span_term": {
-                      "test": {
-                          "value": 1234
-                      }
-                  }
-              },
-              "field": "test"
-          }
-      }),
-    );
+    #[test]
+    fn serialization() {
+        assert_serialize_query(
+            Query::span_field_masking(Query::span_term("test", 1234), "test"),
+            json!({
+                "span_field_masking": {
+                    "query": {
+                        "span_term": {
+                            "test": {
+                                "value": 1234
+                            }
+                        }
+                    },
+                    "field": "test"
+                }
+            }),
+        );
 
-    assert_serialize_query(
-      Query::span_field_masking(Query::span_term("test", 1234), "test"),
-      json!({
-          "span_field_masking": {
-              "query": {
-                  "span_term": {
-                      "test": {
-                          "value": 1234
-                      }
-                  }
-              },
-              "field": "test"
-          }
-      }),
-    );
-  }
+        assert_serialize_query(
+            Query::span_field_masking(Query::span_term("test", 1234), "test"),
+            json!({
+                "span_field_masking": {
+                    "query": {
+                        "span_term": {
+                            "test": {
+                                "value": 1234
+                            }
+                        }
+                    },
+                    "field": "test"
+                }
+            }),
+        );
+    }
 }

@@ -1,16 +1,16 @@
 [workspace]
 members = [
-  "opensearch-testcontainer",
-  "opensearch-dsl",
-  "opensearch-client",
-  "opensearch-cli",
-  "xtask",
-  "examples/*",
+    # "opensearch-testcontainer",
+    "opensearch-dsl",
+    "opensearch-client",
+    "opensearch-cli",
+    # "xtask",
+    # "examples/*",
 ]
 resolver = "2"
 
 [workspace.package]
-version = "0.1.1"
+version = "0.3.0"
 edition = "2021"
 authors = ["Alberto Paro"]
 documentation = "https://docs.rs/opensearch-client"

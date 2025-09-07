@@ -3,19 +3,19 @@
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum HasChildScoreMode {
-  /// Do not use the relevance scores of matching child documents. The query
-  /// assigns parent documents a score of 0.
-  None,
+    /// Do not use the relevance scores of matching child documents. The query
+    /// assigns parent documents a score of 0.
+    None,
 
-  /// Use the mean relevance score of all matching child documents.
-  Avg,
+    /// Use the mean relevance score of all matching child documents.
+    Avg,
 
-  /// Uses the highest relevance score of all matching child documents.
-  Max,
+    /// Uses the highest relevance score of all matching child documents.
+    Max,
 
-  /// Uses the lowest relevance score of all matching child documents.
-  Min,
+    /// Uses the lowest relevance score of all matching child documents.
+    Min,
 
-  ///Add together the relevance scores of all matching child documents.
-  Sum,
+    ///Add together the relevance scores of all matching child documents.
+    Sum,
 }

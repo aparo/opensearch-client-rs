@@ -20,59 +20,60 @@ use crate::{search::*, util::*};
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct BoostingQuery {
-  positive: Box<Query>,
+    positive: Box<Query>,
 
-  negative: Box<Query>,
+    negative: Box<Query>,
 
-  negative_boost: NegativeBoost,
+    negative_boost: NegativeBoost,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boost: Option<f32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boost: Option<f32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  _name: Option<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    _name: Option<String>,
 }
 
 impl Query {
-  /// Creates an instance of [`BoostingQuery`]
-  ///
-  /// - `positive` - Query you wish to run. Any returned documents must match
-  ///   this query.
-  /// - `negative` - Query used to decrease the
-  /// [relevance score](https://www.elastic.co/guide/en/opensearch/reference/current/query-filter-context.html#relevance-scores)
-  /// of matching documents.<br/>
-  /// If a returned document matches the `positive` query and this query, the
-  /// `boosting` query calculates the final
-  /// [relevance score](https://www.elastic.co/guide/en/opensearch/reference/current/query-filter-context.html#relevance-scores)
-  /// for the document as follows:
-  ///     1. Take the original relevance score from the `positive` query.
-  ///     2. Multiply the score by the `negative_boost` value.
-  /// - `negative_boost` - Floating point number between `0` and `1.0` used to
-  ///   decrease the
-  /// [relevance scores](https://www.elastic.co/guide/en/opensearch/reference/current/query-filter-context.html#relevance-scores)
-  /// of documents matching the `negative` query.
-  pub fn boosting<Q, B>(positive: Q, negative: Q, negative_boost: B) -> BoostingQuery
-  where
-    Q: Into<Query>,
-    B: Into<NegativeBoost>, {
-    BoostingQuery {
-      positive: Box::new(positive.into()),
-      negative: Box::new(negative.into()),
-      negative_boost: negative_boost.into(),
-      boost: None,
-      _name: None,
+    /// Creates an instance of [`BoostingQuery`]
+    ///
+    /// - `positive` - Query you wish to run. Any returned documents must match
+    ///   this query.
+    /// - `negative` - Query used to decrease the
+    /// [relevance score](https://www.elastic.co/guide/en/opensearch/reference/current/query-filter-context.html#relevance-scores)
+    /// of matching documents.<br/>
+    /// If a returned document matches the `positive` query and this query, the
+    /// `boosting` query calculates the final
+    /// [relevance score](https://www.elastic.co/guide/en/opensearch/reference/current/query-filter-context.html#relevance-scores)
+    /// for the document as follows:
+    ///     1. Take the original relevance score from the `positive` query.
+    ///     2. Multiply the score by the `negative_boost` value.
+    /// - `negative_boost` - Floating point number between `0` and `1.0` used to
+    ///   decrease the
+    /// [relevance scores](https://www.elastic.co/guide/en/opensearch/reference/current/query-filter-context.html#relevance-scores)
+    /// of documents matching the `negative` query.
+    pub fn boosting<Q, B>(positive: Q, negative: Q, negative_boost: B) -> BoostingQuery
+    where
+        Q: Into<Query>,
+        B: Into<NegativeBoost>,
+    {
+        BoostingQuery {
+            positive: Box::new(positive.into()),
+            negative: Box::new(negative.into()),
+            negative_boost: negative_boost.into(),
+            boost: None,
+            _name: None,
+        }
     }
-  }
 }
 
 impl BoostingQuery {
-  add_boost_and_name!();
+    add_boost_and_name!();
 }
 
 impl ShouldSkip for BoostingQuery {
-  fn should_skip(&self) -> bool {
-    self.positive.should_skip() || self.negative.should_skip()
-  }
+    fn should_skip(&self) -> bool {
+        self.positive.should_skip() || self.negative.should_skip()
+    }
 }
 
 serialize_with_root!("boosting": BoostingQuery);
@@ -80,58 +81,58 @@ deserialize_with_root!("boosting": BoostingQuery);
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_query(
-      Query::boosting(Query::term("test1", 123), Query::term("test2", 456), 0.2),
-      json!({
-          "boosting": {
-              "positive": {
-                  "term": {
-                      "test1": {
-                          "value": 123
-                      }
-                  }
-              },
-              "negative": {
-                  "term": {
-                      "test2": {
-                          "value": 456
-                      }
-                  }
-              },
-              "negative_boost": 0.2
-          }
-      }),
-    );
+    #[test]
+    fn serialization() {
+        assert_serialize_query(
+            Query::boosting(Query::term("test1", 123), Query::term("test2", 456), 0.2),
+            json!({
+                "boosting": {
+                    "positive": {
+                        "term": {
+                            "test1": {
+                                "value": 123
+                            }
+                        }
+                    },
+                    "negative": {
+                        "term": {
+                            "test2": {
+                                "value": 456
+                            }
+                        }
+                    },
+                    "negative_boost": 0.2
+                }
+            }),
+        );
 
-    assert_serialize_query(
-      Query::boosting(Query::term("test1", 123), Query::term("test2", 456), 0.2)
-        .boost(3)
-        .name("test"),
-      json!({
-          "boosting": {
-              "positive": {
-                  "term": {
-                      "test1": {
-                          "value": 123
-                      }
-                  }
-              },
-              "negative": {
-                  "term": {
-                      "test2": {
-                          "value": 456
-                      }
-                  }
-              },
-              "negative_boost": 0.2,
-              "boost": 3.0,
-              "_name": "test"
-          }
-      }),
-    );
-  }
+        assert_serialize_query(
+            Query::boosting(Query::term("test1", 123), Query::term("test2", 456), 0.2)
+                .boost(3)
+                .name("test"),
+            json!({
+                "boosting": {
+                    "positive": {
+                        "term": {
+                            "test1": {
+                                "value": 123
+                            }
+                        }
+                    },
+                    "negative": {
+                        "term": {
+                            "test2": {
+                                "value": 456
+                            }
+                        }
+                    },
+                    "negative_boost": 0.2,
+                    "boost": 3.0,
+                    "_name": "test"
+                }
+            }),
+        );
+    }
 }

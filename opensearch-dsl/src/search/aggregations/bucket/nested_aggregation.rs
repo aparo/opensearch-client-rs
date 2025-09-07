@@ -8,58 +8,61 @@ use crate::{search::*, util::*};
 /// <https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-nested-aggregation.html>
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct NestedAggregation {
-  nested: NestedAggregationInner,
+    nested: NestedAggregationInner,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  aggs: Aggregations,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    aggs: Aggregations,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 struct NestedAggregationInner {
-  path: String,
+    path: String,
 }
 
 impl Aggregation {
-  /// Creates an instance of [`NestedAggregation`]
-  ///
-  /// - `path` - The nested path to aggregate.
-  pub fn nested(path: &str) -> NestedAggregation {
-    NestedAggregation {
-      nested: NestedAggregationInner { path: path.to_string() },
-      aggs: Aggregations::new(),
+    /// Creates an instance of [`NestedAggregation`]
+    ///
+    /// - `path` - The nested path to aggregate.
+    pub fn nested(path: &str) -> NestedAggregation {
+        NestedAggregation {
+            nested: NestedAggregationInner {
+                path: path.to_string(),
+            },
+            aggs: Aggregations::new(),
+        }
     }
-  }
 }
 
 impl NestedAggregation {
-  add_aggregate!();
+    add_aggregate!();
 }
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_aggregation(
-      Aggregation::nested("nested_path"),
-      json!({ "nested": { "path": "nested_path" } }),
-    );
+    #[test]
+    fn serialization() {
+        assert_serialize_aggregation(
+            Aggregation::nested("nested_path"),
+            json!({ "nested": { "path": "nested_path" } }),
+        );
 
-    assert_serialize_aggregation(
-      Aggregation::nested("nested_path").aggregate("sub_agg", Aggregation::terms("test_field")),
-      json!({
-          "nested": {
-              "path": "nested_path"
-          },
-          "aggs": {
-              "sub_agg": {
-                  "terms": {
-                      "field": "test_field"
-                  }
-              }
-          }
-      }),
-    );
-  }
+        assert_serialize_aggregation(
+            Aggregation::nested("nested_path")
+                .aggregate("sub_agg", Aggregation::terms("test_field")),
+            json!({
+                "nested": {
+                    "path": "nested_path"
+                },
+                "aggs": {
+                    "sub_agg": {
+                        "terms": {
+                            "field": "test_field"
+                        }
+                    }
+                }
+            }),
+        );
+    }
 }

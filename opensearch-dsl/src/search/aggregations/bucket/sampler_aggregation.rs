@@ -6,26 +6,26 @@ use crate::{search::*, util::*};
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-bucket-sampler-aggregation.html>
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct SamplerAggregation {
-  sampler: SamplerAggregationInner,
+    sampler: SamplerAggregationInner,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  aggs: Aggregations,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    aggs: Aggregations,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 struct SamplerAggregationInner {
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  shard_size: Option<u64>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    shard_size: Option<u64>,
 }
 
 impl Aggregation {
-  /// Creates an instance of [`SamplerAggregation`]
-  pub fn sampler() -> SamplerAggregation {
-    SamplerAggregation {
-      sampler: SamplerAggregationInner { shard_size: None },
-      aggs: Aggregations::new(),
+    /// Creates an instance of [`SamplerAggregation`]
+    pub fn sampler() -> SamplerAggregation {
+        SamplerAggregation {
+            sampler: SamplerAggregationInner { shard_size: None },
+            aggs: Aggregations::new(),
+        }
     }
-  }
 }
 
 impl SamplerAggregation {

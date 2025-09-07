@@ -18,6 +18,7 @@ mod terms_set_query;
 mod wildcard_query;
 
 pub use self::{
-  exists_query::*, fuzzy_query::*, ids_query::*, prefix_query::*, range_query::*, regexp_query::*, term_query::*,
-  terms_lookup_query::*, terms_query::*, terms_set_query::*, wildcard_query::*,
+    exists_query::*, fuzzy_query::*, ids_query::*, prefix_query::*, range_query::*,
+    regexp_query::*, term_query::*, terms_lookup_query::*, terms_query::*, terms_set_query::*,
+    wildcard_query::*,
 };

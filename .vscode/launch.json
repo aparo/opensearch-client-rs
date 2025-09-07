@@ -7,116 +7,6 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Dump Metadata",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=opensearch-cli",
-                    "--package=opensearch-cli"
-                ],
-                "filter": {
-                    "name": "opensearch-cli",
-                    "kind": "bin"
-                }
-            },
-            "args": [
-                "-vv",
-                "dump-metadata"
-            ],
-            "cwd": "${workspaceFolder}",
-            "envFile": "${workspaceFolder}/.env",
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Restore Metadata",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=opensearch-cli",
-                    "--package=opensearch-cli"
-                ],
-                "filter": {
-                    "name": "opensearch-cli",
-                    "kind": "bin"
-                }
-            },
-            "args": [
-                "-vv",
-                "restore-metadata"
-            ],
-            "cwd": "${workspaceFolder}",
-            "envFile": "${workspaceFolder}/.env",
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Remote Copy Index",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=opensearch-cli",
-                    "--package=opensearch-cli"
-                ],
-                "filter": {
-                    "name": "opensearch-cli",
-                    "kind": "bin"
-                }
-            },
-            "args": [
-                "-vv",
-                "copy-index",
-                "--remote",
-                "fileorder-author"
-            ],
-            "cwd": "${workspaceFolder}",
-            "envFile": "${workspaceFolder}/.env",
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Dumper",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=opensearch-cli",
-                    "--package=opensearch-cli"
-                ],
-                "filter": {
-                    "name": "opensearch-cli",
-                    "kind": "bin"
-                }
-            },
-            "args": [
-                "-vv",
-                "dump",
-                "filename"
-            ],
-            "cwd": "${workspaceFolder}",
-            "envFile": "${workspaceFolder}/.env",
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in library 'opensearch_testcontainer'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--lib",
-                    "--package=opensearch-testcontainer"
-                ],
-                "filter": {
-                    "name": "opensearch_testcontainer",
-                    "kind": "lib"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
             "name": "Debug unit tests in library 'opensearch_dsl'",
             "cargo": {
                 "args": [
@@ -150,7 +40,30 @@
                 }
             },
             "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "envFile": "${workspaceFolder}/.env",
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'opensearch_testcontainer'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=opensearch-testcontainer"
+                ],
+                "filter": {
+                    "name": "opensearch_testcontainer",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "RUST_BACKTRACE": "1"
+            }
         },
         {
             "type": "lldb",
@@ -183,228 +96,6 @@
                 ],
                 "filter": {
                     "name": "opensearch-cli",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'xtask'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=xtask",
-                    "--package=xtask"
-                ],
-                "filter": {
-                    "name": "xtask",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'xtask'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=xtask",
-                    "--package=xtask"
-                ],
-                "filter": {
-                    "name": "xtask",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'aggregations'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=aggregations",
-                    "--package=aggregations"
-                ],
-                "filter": {
-                    "name": "aggregations",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'aggregations'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=aggregations",
-                    "--package=aggregations"
-                ],
-                "filter": {
-                    "name": "aggregations",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'boolean-query'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=boolean-query",
-                    "--package=boolean-query"
-                ],
-                "filter": {
-                    "name": "boolean-query",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'boolean-query'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=boolean-query",
-                    "--package=boolean-query"
-                ],
-                "filter": {
-                    "name": "boolean-query",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'completion-suggester'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=completion-suggester",
-                    "--package=completion-suggester"
-                ],
-                "filter": {
-                    "name": "completion-suggester",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'completion-suggester'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=completion-suggester",
-                    "--package=completion-suggester"
-                ],
-                "filter": {
-                    "name": "completion-suggester",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'handle-search-response'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=handle-search-response",
-                    "--package=handle-search-response"
-                ],
-                "filter": {
-                    "name": "handle-search-response",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'handle-search-response'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=handle-search-response",
-                    "--package=handle-search-response"
-                ],
-                "filter": {
-                    "name": "handle-search-response",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'simple-query'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=simple-query",
-                    "--package=simple-query"
-                ],
-                "filter": {
-                    "name": "simple-query",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'simple-query'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=simple-query",
-                    "--package=simple-query"
-                ],
-                "filter": {
-                    "name": "simple-query",
                     "kind": "bin"
                 }
             },

@@ -25,8 +25,8 @@ pub mod metrics;
 pub mod params;
 pub mod pipeline;
 
-use crate::Map;
 pub use self::{bucket::*, metrics::*, params::*, pipeline::*};
+use crate::Map;
 
 macro_rules! aggregation {
     ($($variant:ident($query:ty)),+ $(,)?) => {

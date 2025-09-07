@@ -23,38 +23,39 @@ use crate::{search::*, util::*};
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct ExistsQuery {
-  field: String,
+    field: String,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boost: Option<f32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boost: Option<f32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  _name: Option<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    _name: Option<String>,
 }
 
 impl Query {
-  /// Creates an instance of [`ExistsQuery`]
-  ///
-  /// - `field` - Name of the field you wish to search.
-  /// While a field is deemed non-existent if the JSON value is `null` or `[]`,
-  /// these values will indicate the field does exist:
-  ///   - Empty strings, such as `""` or `"-"`
-  ///   - Arrays containing `null` and another value, such as `[null, "foo"]`
-  ///   - A custom [`null-value`](https://www.elastic.co/guide/en/opensearch/reference/current/null-value.html),
-  ///     defined in field mapping
-  pub fn exists<T>(field: T) -> ExistsQuery
-  where
-    T: ToString, {
-    ExistsQuery {
-      field: field.to_string(),
-      boost: None,
-      _name: None,
+    /// Creates an instance of [`ExistsQuery`]
+    ///
+    /// - `field` - Name of the field you wish to search.
+    /// While a field is deemed non-existent if the JSON value is `null` or `[]`,
+    /// these values will indicate the field does exist:
+    ///   - Empty strings, such as `""` or `"-"`
+    ///   - Arrays containing `null` and another value, such as `[null, "foo"]`
+    ///   - A custom [`null-value`](https://www.elastic.co/guide/en/opensearch/reference/current/null-value.html),
+    ///     defined in field mapping
+    pub fn exists<T>(field: T) -> ExistsQuery
+    where
+        T: ToString,
+    {
+        ExistsQuery {
+            field: field.to_string(),
+            boost: None,
+            _name: None,
+        }
     }
-  }
 }
 
 impl ExistsQuery {
-  add_boost_and_name!();
+    add_boost_and_name!();
 }
 
 impl ShouldSkip for ExistsQuery {}
@@ -64,28 +65,28 @@ deserialize_with_root!("exists": ExistsQuery);
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_query(
-      Query::exists("test"),
-      json!({
-          "exists": {
-              "field": "test"
-          }
-      }),
-    );
+    #[test]
+    fn serialization() {
+        assert_serialize_query(
+            Query::exists("test"),
+            json!({
+                "exists": {
+                    "field": "test"
+                }
+            }),
+        );
 
-    assert_serialize_query(
-      Query::exists("test").boost(2).name("test"),
-      json!({
-          "exists": {
-              "field": "test",
-              "boost": 2.0,
-              "_name": "test"
-          }
-      }),
-    );
-  }
+        assert_serialize_query(
+            Query::exists("test").boost(2).name("test"),
+            json!({
+                "exists": {
+                    "field": "test",
+                    "boost": 2.0,
+                    "_name": "test"
+                }
+            }),
+        );
+    }
 }

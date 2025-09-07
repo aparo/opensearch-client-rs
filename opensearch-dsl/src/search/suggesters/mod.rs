@@ -8,4 +8,6 @@ mod suggest_context_query;
 mod suggest_fuzziness;
 mod suggester;
 
-pub use self::{completion_suggester::*, suggest_context_query::*, suggest_fuzziness::*, suggester::*};
+pub use self::{
+    completion_suggester::*, suggest_context_query::*, suggest_fuzziness::*, suggester::*,
+};

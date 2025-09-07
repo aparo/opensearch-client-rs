@@ -19,41 +19,42 @@ use crate::{search::*, util::*};
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(remote = "Self")]
 pub struct ScriptScoreQuery {
-  query: Box<Query>,
+    query: Box<Query>,
 
-  script: Script,
+    script: Script,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  min_score: Option<f32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    min_score: Option<f32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boost: Option<f32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boost: Option<f32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  _name: Option<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    _name: Option<String>,
 }
 
 impl Query {
-  /// Creates an instance of [`ScriptScoreQuery`]
-  ///
-  /// - `query` - Query used to return documents
-  /// - `script` - Script used to compute the score of documents returned by
-  /// the `query`
-  pub fn script_score<Q>(query: Q, script: Script) -> ScriptScoreQuery
-  where
-    Q: Into<Query>, {
-    ScriptScoreQuery {
-      query: Box::new(query.into()),
-      script,
-      min_score: None,
-      boost: None,
-      _name: None,
+    /// Creates an instance of [`ScriptScoreQuery`]
+    ///
+    /// - `query` - Query used to return documents
+    /// - `script` - Script used to compute the score of documents returned by
+    /// the `query`
+    pub fn script_score<Q>(query: Q, script: Script) -> ScriptScoreQuery
+    where
+        Q: Into<Query>,
+    {
+        ScriptScoreQuery {
+            query: Box::new(query.into()),
+            script,
+            min_score: None,
+            boost: None,
+            _name: None,
+        }
     }
-  }
 }
 
 impl ScriptScoreQuery {
-  add_boost_and_name!();
+    add_boost_and_name!();
 }
 
 impl ShouldSkip for ScriptScoreQuery {}
@@ -63,27 +64,27 @@ deserialize_with_root!("script_score": ScriptScoreQuery);
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_query(
-      Query::script_score(
-        Query::r#match("message", "opensearch"),
-        Script::source("doc['my-int'].value / 10"),
-      )
-      .name("_named_query")
-      .boost(1.1),
-      json!({
-          "script_score": {
-              "_name": "_named_query",
-              "boost": 1.1,
-              "query": { "match": { "message": { "query": "opensearch" } } },
-              "script": {
-                  "source": "doc['my-int'].value / 10"
-              }
-          }
-      }),
-    );
-  }
+    #[test]
+    fn serialization() {
+        assert_serialize_query(
+            Query::script_score(
+                Query::r#match("message", "opensearch"),
+                Script::source("doc['my-int'].value / 10"),
+            )
+            .name("_named_query")
+            .boost(1.1),
+            json!({
+                "script_score": {
+                    "_name": "_named_query",
+                    "boost": 1.1,
+                    "query": { "match": { "message": { "query": "opensearch" } } },
+                    "script": {
+                        "source": "doc['my-int'].value / 10"
+                    }
+                }
+            }),
+        );
+    }
 }

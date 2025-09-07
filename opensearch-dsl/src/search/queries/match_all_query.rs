@@ -15,40 +15,40 @@ use crate::util::*;
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
 #[serde(remote = "Self")]
 pub struct MatchAllQuery {
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  boost: Option<f32>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    boost: Option<f32>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  _name: Option<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    _name: Option<String>,
 }
 
 serialize_with_root!("match_all": MatchAllQuery);
 deserialize_with_root!("match_all": MatchAllQuery);
 
 impl Query {
-  /// Creates an instance of [`MatchAllQuery`]
-  pub fn match_all() -> MatchAllQuery {
-    MatchAllQuery::default()
-  }
+    /// Creates an instance of [`MatchAllQuery`]
+    pub fn match_all() -> MatchAllQuery {
+        MatchAllQuery::default()
+    }
 }
 
 impl MatchAllQuery {
-  add_boost_and_name!();
+    add_boost_and_name!();
 }
 
 impl ShouldSkip for MatchAllQuery {}
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_query(Query::match_all(), json!({ "match_all": {} }));
+    #[test]
+    fn serialization() {
+        assert_serialize_query(Query::match_all(), json!({ "match_all": {} }));
 
-    assert_serialize_query(
-      Query::match_all().boost(2).name("test"),
-      json!({ "match_all": { "boost": 2.0, "_name": "test" } }),
-    );
-  }
+        assert_serialize_query(
+            Query::match_all().boost(2).name("test"),
+            json!({ "match_all": { "boost": 2.0, "_name": "test" } }),
+        );
+    }
 }

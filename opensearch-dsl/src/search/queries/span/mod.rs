@@ -23,8 +23,9 @@ mod span_term_query;
 mod span_within_query;
 
 pub use self::{
-  span_containing_query::*, span_field_masking_query::*, span_first_query::*, span_multi_query::*, span_near_query::*,
-  span_not_query::*, span_or_query::*, span_term_query::*, span_within_query::*,
+    span_containing_query::*, span_field_masking_query::*, span_first_query::*,
+    span_multi_query::*, span_near_query::*, span_not_query::*, span_or_query::*,
+    span_term_query::*, span_within_query::*,
 };
 use crate::{util::*, FuzzyQuery, PrefixQuery, RangeQuery, RegexpQuery, WildcardQuery};
 
@@ -195,21 +196,21 @@ macro_rules! multi_term_query {
 }
 
 span_query!(
-  SpanContaining(SpanContainingQuery),
-  SpanFieldMasking(SpanFieldMaskingQuery),
-  SpanFirst(SpanFirstQuery),
-  SpanMulti(SpanMultiQuery),
-  SpanNear(SpanNearQuery),
-  SpanNot(SpanNotQuery),
-  SpanOr(SpanOrQuery),
-  SpanTerm(SpanTermQuery),
-  SpanWithin(SpanWithinQuery),
+    SpanContaining(SpanContainingQuery),
+    SpanFieldMasking(SpanFieldMaskingQuery),
+    SpanFirst(SpanFirstQuery),
+    SpanMulti(SpanMultiQuery),
+    SpanNear(SpanNearQuery),
+    SpanNot(SpanNotQuery),
+    SpanOr(SpanOrQuery),
+    SpanTerm(SpanTermQuery),
+    SpanWithin(SpanWithinQuery),
 );
 
 multi_term_query!(
-  Prefix(PrefixQuery),
-  Regexp(RegexpQuery),
-  Wildcard(WildcardQuery),
-  Range(RangeQuery),
-  Fuzzy(FuzzyQuery),
+    Prefix(PrefixQuery),
+    Regexp(RegexpQuery),
+    Wildcard(WildcardQuery),
+    Range(RangeQuery),
+    Fuzzy(FuzzyQuery),
 );

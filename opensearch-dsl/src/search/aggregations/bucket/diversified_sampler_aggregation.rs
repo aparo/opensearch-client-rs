@@ -8,55 +8,56 @@ use crate::{search::*, util::*};
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-bucket-diversified-sampler-aggregation.html>
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct DiversifiedSamplerAggregation {
-  diversified_sampler: DiversifiedSamplerAggregationInner,
+    diversified_sampler: DiversifiedSamplerAggregationInner,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  aggs: Aggregations,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    aggs: Aggregations,
 }
 
 /// `execution_hint` field values.
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Copy)]
 #[serde(rename_all = "snake_case")]
 pub enum ExecutionHint {
-  /// Hold field values directly
-  Map,
+    /// Hold field values directly
+    Map,
 
-  /// Hold hashes of the field values - with potential for hash collisions
-  BytesHash,
+    /// Hold hashes of the field values - with potential for hash collisions
+    BytesHash,
 
-  /// Hold ordinals of the field as determined by the Lucene index
-  GlobalOrdinals,
+    /// Hold ordinals of the field as determined by the Lucene index
+    GlobalOrdinals,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 struct DiversifiedSamplerAggregationInner {
-  field: String,
+    field: String,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  shard_size: Option<u64>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    shard_size: Option<u64>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  max_docs_per_value: Option<u64>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    max_docs_per_value: Option<u64>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  execution_hint: Option<ExecutionHint>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    execution_hint: Option<ExecutionHint>,
 }
 
 impl Aggregation {
-  /// Creates an instance of [`DiversifiedSamplerAggregation`]
-  pub fn diversified_sampler<T>(field: T) -> DiversifiedSamplerAggregation
-  where
-    T: ToString, {
-    DiversifiedSamplerAggregation {
-      diversified_sampler: DiversifiedSamplerAggregationInner {
-        field: field.to_string(),
-        shard_size: None,
-        max_docs_per_value: None,
-        execution_hint: None,
-      },
-      aggs: Aggregations::new(),
+    /// Creates an instance of [`DiversifiedSamplerAggregation`]
+    pub fn diversified_sampler<T>(field: T) -> DiversifiedSamplerAggregation
+    where
+        T: ToString,
+    {
+        DiversifiedSamplerAggregation {
+            diversified_sampler: DiversifiedSamplerAggregationInner {
+                field: field.to_string(),
+                shard_size: None,
+                max_docs_per_value: None,
+                execution_hint: None,
+            },
+            aggs: Aggregations::new(),
+        }
     }
-  }
 }
 
 impl DiversifiedSamplerAggregation {
@@ -90,47 +91,47 @@ impl DiversifiedSamplerAggregation {
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_aggregation(
-      Aggregation::diversified_sampler("catalog_id").shard_size(50),
-      json!({
-          "diversified_sampler": {
-              "field": "catalog_id",
-              "shard_size": 50
-          }
-      }),
-    );
+    #[test]
+    fn serialization() {
+        assert_serialize_aggregation(
+            Aggregation::diversified_sampler("catalog_id").shard_size(50),
+            json!({
+                "diversified_sampler": {
+                    "field": "catalog_id",
+                    "shard_size": 50
+                }
+            }),
+        );
 
-    assert_serialize_aggregation(
-      Aggregation::diversified_sampler("catalog_id")
-        .shard_size(50)
-        .max_docs_per_value(2)
-        .execution_hint(ExecutionHint::GlobalOrdinals)
-        .aggregate("catalog", Aggregation::terms("catalog_id"))
-        .aggregate("brand", Aggregation::terms("brand_id")),
-      json!({
-          "diversified_sampler": {
-              "field": "catalog_id",
-              "shard_size": 50,
-              "max_docs_per_value": 2,
-              "execution_hint": "global_ordinals"
-          },
-          "aggs": {
-              "catalog": {
-                  "terms": {
-                      "field": "catalog_id"
-                  }
-              },
-              "brand": {
-                  "terms": {
-                      "field": "brand_id"
-                  }
-              }
-          }
-      }),
-    );
-  }
+        assert_serialize_aggregation(
+            Aggregation::diversified_sampler("catalog_id")
+                .shard_size(50)
+                .max_docs_per_value(2)
+                .execution_hint(ExecutionHint::GlobalOrdinals)
+                .aggregate("catalog", Aggregation::terms("catalog_id"))
+                .aggregate("brand", Aggregation::terms("brand_id")),
+            json!({
+                "diversified_sampler": {
+                    "field": "catalog_id",
+                    "shard_size": 50,
+                    "max_docs_per_value": 2,
+                    "execution_hint": "global_ordinals"
+                },
+                "aggs": {
+                    "catalog": {
+                        "terms": {
+                            "field": "catalog_id"
+                        }
+                    },
+                    "brand": {
+                        "terms": {
+                            "field": "brand_id"
+                        }
+                    }
+                }
+            }),
+        );
+    }
 }

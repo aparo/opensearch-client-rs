@@ -8,40 +8,40 @@
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum TrackTotalHits {
-  /// Whether to accurately track the number of hits that match the query
-  /// accurately
-  Track(bool),
+    /// Whether to accurately track the number of hits that match the query
+    /// accurately
+    Track(bool),
 
-  /// Accurately track the number of hits up to the specified value
-  Count(i64),
+    /// Accurately track the number of hits up to the specified value
+    Count(i64),
 }
 
 impl From<bool> for TrackTotalHits {
-  fn from(value: bool) -> Self {
-    TrackTotalHits::Track(value)
-  }
+    fn from(value: bool) -> Self {
+        TrackTotalHits::Track(value)
+    }
 }
 
 impl From<i64> for TrackTotalHits {
-  fn from(value: i64) -> Self {
-    TrackTotalHits::Count(value)
-  }
+    fn from(value: i64) -> Self {
+        TrackTotalHits::Count(value)
+    }
 }
 
 #[cfg(test)]
 mod tests {
-  use super::*;
-  use crate::util::*;
+    use super::*;
+    use crate::util::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize(
-      [
-        TrackTotalHits::Track(false),
-        TrackTotalHits::Track(true),
-        TrackTotalHits::Count(10),
-      ],
-      json!([false, true, 10,]),
-    )
-  }
+    #[test]
+    fn serialization() {
+        assert_serialize(
+            [
+                TrackTotalHits::Track(false),
+                TrackTotalHits::Track(true),
+                TrackTotalHits::Count(10),
+            ],
+            json!([false, true, 10,]),
+        )
+    }
 }

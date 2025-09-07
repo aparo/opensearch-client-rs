@@ -22,110 +22,115 @@ use crate::{search::*, util::*, Set};
 /// <https://www.elastic.co/guide/en/elasticsearch/reference/current/inner-hits.html>
 #[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 pub struct InnerHits {
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  _source: Option<SourceFilter>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    _source: Option<SourceFilter>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  name: Option<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    name: Option<String>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  from: Option<u64>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    from: Option<u64>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  size: Option<u64>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    size: Option<u64>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  sort: SortCollection,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    sort: SortCollection,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  highlight: Option<Highlight>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    highlight: Option<Highlight>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  docvalue_fields: Set<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    docvalue_fields: Set<String>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  collapse: Option<InnerHitsCollapse>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    collapse: Option<InnerHitsCollapse>,
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 struct InnerHitsCollapse {
-  field: String,
+    field: String,
 }
 
 impl InnerHits {
-  /// Creates a new instance of [InnerHits](InnerHits)
-  pub fn new() -> Self {
-    Default::default()
-  }
+    /// Creates a new instance of [InnerHits](InnerHits)
+    pub fn new() -> Self {
+        Default::default()
+    }
 
-  /// Indicates which source fields are returned for matching documents
-  pub fn source<T>(mut self, source: T) -> Self
-  where
-    T: Into<SourceFilter>, {
-    self._source = Some(source.into());
-    self
-  }
+    /// Indicates which source fields are returned for matching documents
+    pub fn source<T>(mut self, source: T) -> Self
+    where
+        T: Into<SourceFilter>,
+    {
+        self._source = Some(source.into());
+        self
+    }
 
-  /// Inner hit name, useful when multiple `inner_hits` exist in a single search
-  /// request
-  pub fn name<T>(mut self, name: T) -> Self
-  where
-    T: ToString, {
-    self.name = Some(name.to_string());
-    self
-  }
+    /// Inner hit name, useful when multiple `inner_hits` exist in a single search
+    /// request
+    pub fn name<T>(mut self, name: T) -> Self
+    where
+        T: ToString,
+    {
+        self.name = Some(name.to_string());
+        self
+    }
 
-  /// Starting document offset.
-  ///
-  /// Defaults to `0`.
-  pub fn from(mut self, from: u64) -> Self {
-    self.from = Some(from);
-    self
-  }
+    /// Starting document offset.
+    ///
+    /// Defaults to `0`.
+    pub fn from(mut self, from: u64) -> Self {
+        self.from = Some(from);
+        self
+    }
 
-  /// The number of hits to return.
-  ///
-  /// Defaults to `10`.
-  pub fn size(mut self, size: u64) -> Self {
-    self.size = Some(size);
-    self
-  }
+    /// The number of hits to return.
+    ///
+    /// Defaults to `10`.
+    pub fn size(mut self, size: u64) -> Self {
+        self.size = Some(size);
+        self
+    }
 
-  /// A collection of sorting fields
-  pub fn sort<T>(mut self, sort: T) -> Self
-  where
-    T: IntoIterator,
-    T::Item: Into<Sort>, {
-    self.sort.extend(sort);
-    self
-  }
+    /// A collection of sorting fields
+    pub fn sort<T>(mut self, sort: T) -> Self
+    where
+        T: IntoIterator,
+        T::Item: Into<Sort>,
+    {
+        self.sort.extend(sort);
+        self
+    }
 
-  /// Highlight
-  pub fn highlight<T>(mut self, highlight: T) -> Self
-  where
-    T: Into<Highlight>, {
-    self.highlight = Some(highlight.into());
-    self
-  }
+    /// Highlight
+    pub fn highlight<T>(mut self, highlight: T) -> Self
+    where
+        T: Into<Highlight>,
+    {
+        self.highlight = Some(highlight.into());
+        self
+    }
 
-  /// A collection of docvalue fields
-  pub fn docvalue_fields<T>(mut self, docvalue_fields: T) -> Self
-  where
-    T: IntoIterator,
-    T::Item: ToString, {
-    self
-      .docvalue_fields
-      .extend(docvalue_fields.into_iter().map(|x| x.to_string()));
-    self
-  }
+    /// A collection of docvalue fields
+    pub fn docvalue_fields<T>(mut self, docvalue_fields: T) -> Self
+    where
+        T: IntoIterator,
+        T::Item: ToString,
+    {
+        self.docvalue_fields
+            .extend(docvalue_fields.into_iter().map(|x| x.to_string()));
+        self
+    }
 
-  /// A field to collapse by
-  pub fn collapse<T>(mut self, collapse: T) -> Self
-  where
-    T: ToString, {
-    self.collapse = Some(InnerHitsCollapse {
-      field: collapse.to_string(),
-    });
-    self
-  }
+    /// A field to collapse by
+    pub fn collapse<T>(mut self, collapse: T) -> Self
+    where
+        T: ToString,
+    {
+        self.collapse = Some(InnerHitsCollapse {
+            field: collapse.to_string(),
+        });
+        self
+    }
 }

@@ -3,16 +3,16 @@
 pub struct AggregationName(String);
 
 impl std::fmt::Debug for AggregationName {
-  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-    self.0.fmt(f)
-  }
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.0.fmt(f)
+    }
 }
 
 impl<T> From<T> for AggregationName
 where
-  T: ToString,
+    T: ToString,
 {
-  fn from(value: T) -> Self {
-    Self(value.to_string())
-  }
+    fn from(value: T) -> Self {
+        Self(value.to_string())
+    }
 }

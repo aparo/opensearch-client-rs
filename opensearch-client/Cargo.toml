@@ -10,78 +10,96 @@ repository = { workspace = true }
 keywords = { workspace = true }
 readme = { workspace = true }
 
+
 [dependencies]
-opensearch-dsl = { workspace = true, optional = true }
 tokio = { version = "1.45.1", features = ["full"] }
-bon = "3.6"
-bytes = "1.10.1"
-futures-util = "0.3.31"
-futures = "0.3.31"
-percent-encoding = "2.3.1"
-regress = "0.10.3"
-http = "1.3"
-reqwest = { version = "0.12.20", default-features = false, features = [
-    "json",
-    "stream",
-    "gzip",
-    "rustls-tls",
+serde = { version = "^1.0", features = ["derive"] }
+serde_with = { version = "^3.12", default-features = false, features = [
+    "base64",
+    "std",
+    "macros",
 ] }
-serde = { version = "1.0.219", features = ["derive"] }
-serde_json = "1.0.140"
-serde_urlencoded = "0.7.1"
-tracing = "0.1.41"
-thiserror = "2.0.12"
-derive_builder = "0.20.2"
-# client stuff
-base64 = "0.22.1"
-task-local-extensions = "0.1.4"
-reqwest-middleware = { version = "0.4.2", features = ["json"] }
+serde_json = "^1.0"
+serde_repr = "^0.1"
+url = "^2.5"
+async-trait = "^0.1"
+reqwest = { version = "^0.12", features = ["json", "multipart"] }
+reqwest-middleware = { version = "^0.4", features = ["json", "multipart"] }
 reqwest-retry = "0.7.0"
 reqwest-tracing = "0.5.8"
+http = "1.3.1"
+base64 = "0.22.1"
 anyhow = "1.0.98"
-async-trait = "0.1.88"
-url = "2.5.4"
-# miette = "5.10.0"
-walkdir = { version = "2.5.0", optional = true }
+thiserror = "2.0.12"
+tracing = { version = "0.1.41" }
+bon = { version = "3.6.5", optional = true }
 
-[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-http-cache-reqwest = "0.15.1"
+opensearch-dsl = { workspace = true, optional = true }
+# client stuff
+# task-local-extensions = "0.1.4"
+walkdir = { version = "2.5.0", optional = true }
+futures = { version = "0.3.31", optional = true }
 
 [dev-dependencies]
 opensearch-testcontainer = { workspace = true }
 testcontainers = "0.24.0"
 tracing-test = "0.2.5"
 
-
 [features]
-default = []
+default = ["bon", "search", "indices", "ingest", "cluster", "ml"]
+bon = ["dep:bon"]
+
 full = [
-    "search",       # search features
+    "search",              # search features
+    "asynchronous_search", # asynchronous search features
     "cat",
     "cluster",
+    "dangling_indices",
     "indices",
     "ingest",
-    "nodes",
+    "insights",
+    "ism",
+    "knn",
     "ml",
-    "mtermvectors",
-    "remote",
+    "nodes",
+    "notifications",
+    "observability",
+    "ppl",
+    "remote_store",
+    "replication",
+    "rollups",
     "security",
     "snapshot",
+    "sql",
     "tasks",
+    "transforms",
     "tools",
 ]
+
+
 quickwit = []
-search = ["dep:opensearch-dsl"]
+search = ["dep:opensearch-dsl", "dep:futures"]
+asynchronous_search = []
 cat = []
 cluster = []
+dangling_indices = []
 indices = ["search"]
 ingest = []
-nodes = []
-mtermvectors = []
+insights = []
+ism = []
+knn = []
 ml = []
-remote = []
+nodes = []
+notifications = []
+observability = []
+ppl = []
+remote_store = []
+replication = []
+rollups = []
 security = []
 snapshot = []
+sql = []
 tasks = []
+transforms = []
 # custom features
-tools = ["indices", "ingest", "dep:walkdir", "ml"]
+tools = ["indices", "ingest", "dep:walkdir", "ml", "dep:futures"]

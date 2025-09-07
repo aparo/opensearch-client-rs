@@ -213,19 +213,25 @@ query!(
     Knn(KnnQuery),
 );
 
+impl Default for Query {
+    fn default() -> Self {
+        Query::MatchAll(MatchAllQuery::default())
+    }
+}
+
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn partial_eq() {
-    assert_eq!(
-      Query::term("field", "value"),
-      Query::from(Query::term("field", "value"))
-    );
-    assert_eq!(
-      Query::from(Query::term("field", "value")),
-      Query::term("field", "value"),
-    );
-  }
+    #[test]
+    fn partial_eq() {
+        assert_eq!(
+            Query::term("field", "value"),
+            Query::from(Query::term("field", "value"))
+        );
+        assert_eq!(
+            Query::from(Query::term("field", "value")),
+            Query::term("field", "value"),
+        );
+    }
 }

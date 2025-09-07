@@ -7,93 +7,95 @@ use crate::{search::*, util::*};
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-metrics-sum-aggregation.html>
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct SumAggregation {
-  sum: SumAggregationInner,
+    sum: SumAggregationInner,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 struct SumAggregationInner {
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  field: Option<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    field: Option<String>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  script: Option<Script>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    script: Option<Script>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  missing: Option<Number>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    missing: Option<Number>,
 }
 
 impl Aggregation {
-  /// Creates an instance of [`SumAggregation`]
-  ///
-  /// - `field` - field to aggregate
-  pub fn sum<T>(field: T) -> SumAggregation
-  where
-    T: ToString, {
-    SumAggregation {
-      sum: SumAggregationInner {
-        field: field.to_string().into(),
-        script: None,
-        missing: None,
-      },
+    /// Creates an instance of [`SumAggregation`]
+    ///
+    /// - `field` - field to aggregate
+    pub fn sum<T>(field: T) -> SumAggregation
+    where
+        T: ToString,
+    {
+        SumAggregation {
+            sum: SumAggregationInner {
+                field: field.to_string().into(),
+                script: None,
+                missing: None,
+            },
+        }
     }
-  }
 
-  /// Creates an instance of [`SumAggregation`]
-  ///
-  /// - `script` - script to aggregate
-  pub fn sum_script(script: Script) -> SumAggregation {
-    SumAggregation {
-      sum: SumAggregationInner {
-        script: script.into(),
-        field: None,
-        missing: None,
-      },
+    /// Creates an instance of [`SumAggregation`]
+    ///
+    /// - `script` - script to aggregate
+    pub fn sum_script(script: Script) -> SumAggregation {
+        SumAggregation {
+            sum: SumAggregationInner {
+                script: script.into(),
+                field: None,
+                missing: None,
+            },
+        }
     }
-  }
 }
 
 impl SumAggregation {
-  /// The `missing` parameter defines how documents that are missing a value
-  /// should be treated. By default documents missing the value will be
-  /// ignored but it is also possible to treat them as if they had a value.
-  pub fn missing<T>(mut self, missing: T) -> Self
-  where
-    T: Into<Number>, {
-    self.sum.missing = Some(missing.into());
-    self
-  }
+    /// The `missing` parameter defines how documents that are missing a value
+    /// should be treated. By default documents missing the value will be
+    /// ignored but it is also possible to treat them as if they had a value.
+    pub fn missing<T>(mut self, missing: T) -> Self
+    where
+        T: Into<Number>,
+    {
+        self.sum.missing = Some(missing.into());
+        self
+    }
 }
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_aggregation(
-      Aggregation::sum("test_field"),
-      json!({ "sum": { "field": "test_field" } }),
-    );
+    #[test]
+    fn serialization() {
+        assert_serialize_aggregation(
+            Aggregation::sum("test_field"),
+            json!({ "sum": { "field": "test_field" } }),
+        );
 
-    assert_serialize_aggregation(
-      Aggregation::sum("test_field").missing(100.1),
-      json!({
-          "sum": {
-              "field": "test_field",
-              "missing": 100.1
-          }
-      }),
-    );
+        assert_serialize_aggregation(
+            Aggregation::sum("test_field").missing(100.1),
+            json!({
+                "sum": {
+                    "field": "test_field",
+                    "missing": 100.1
+                }
+            }),
+        );
 
-    assert_serialize_aggregation(
-      Aggregation::sum_script(Script::source("_score")),
-      json!({
-          "sum": {
-              "script": {
-                  "source": "_score"
-              }
-          }
-      }),
-    );
-  }
+        assert_serialize_aggregation(
+            Aggregation::sum_script(Script::source("_score")),
+            json!({
+                "sum": {
+                    "script": {
+                        "source": "_score"
+                    }
+                }
+            }),
+        );
+    }
 }

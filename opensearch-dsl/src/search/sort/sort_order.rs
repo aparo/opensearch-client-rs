@@ -5,9 +5,9 @@
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum SortOrder {
-  /// Sort in ascending order
-  Asc,
+    /// Sort in ascending order
+    Asc,
 
-  /// Sort in descending order
-  Desc,
+    /// Sort in descending order
+    Desc,
 }

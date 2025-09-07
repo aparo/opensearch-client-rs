@@ -11,93 +11,95 @@ use crate::{search::*, util::*};
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-metrics-min-aggregation.html>
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct MinAggregation {
-  min: MinAggregationInner,
+    min: MinAggregationInner,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 struct MinAggregationInner {
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  field: Option<String>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    field: Option<String>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  script: Option<Script>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    script: Option<Script>,
 
-  #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
-  missing: Option<Number>,
+    #[serde(default, skip_serializing_if = "ShouldSkip::should_skip")]
+    missing: Option<Number>,
 }
 
 impl Aggregation {
-  /// Creates an instance of [`MinAggregation`]
-  ///
-  /// - `field` - field to aggregate
-  pub fn min<T>(field: T) -> MinAggregation
-  where
-    T: ToString, {
-    MinAggregation {
-      min: MinAggregationInner {
-        field: field.to_string().into(),
-        script: None,
-        missing: None,
-      },
+    /// Creates an instance of [`MinAggregation`]
+    ///
+    /// - `field` - field to aggregate
+    pub fn min<T>(field: T) -> MinAggregation
+    where
+        T: ToString,
+    {
+        MinAggregation {
+            min: MinAggregationInner {
+                field: field.to_string().into(),
+                script: None,
+                missing: None,
+            },
+        }
     }
-  }
 
-  /// Creates an instance of [`MinAggregation`]
-  ///
-  /// - `script` - script to aggregate
-  pub fn min_script(script: Script) -> MinAggregation {
-    MinAggregation {
-      min: MinAggregationInner {
-        script: script.into(),
-        field: None,
-        missing: None,
-      },
+    /// Creates an instance of [`MinAggregation`]
+    ///
+    /// - `script` - script to aggregate
+    pub fn min_script(script: Script) -> MinAggregation {
+        MinAggregation {
+            min: MinAggregationInner {
+                script: script.into(),
+                field: None,
+                missing: None,
+            },
+        }
     }
-  }
 }
 
 impl MinAggregation {
-  /// The `missing` parameter defines how documents that are missing a value
-  /// should be treated. By default they will be ignored but it is also
-  /// possible to treat them as if they had a value.
-  pub fn missing<T>(mut self, missing: T) -> Self
-  where
-    T: Into<Number>, {
-    self.min.missing = Some(missing.into());
-    self
-  }
+    /// The `missing` parameter defines how documents that are missing a value
+    /// should be treated. By default they will be ignored but it is also
+    /// possible to treat them as if they had a value.
+    pub fn missing<T>(mut self, missing: T) -> Self
+    where
+        T: Into<Number>,
+    {
+        self.min.missing = Some(missing.into());
+        self
+    }
 }
 
 #[cfg(test)]
 mod tests {
-  use super::*;
+    use super::*;
 
-  #[test]
-  fn serialization() {
-    assert_serialize_aggregation(
-      Aggregation::min("test_field"),
-      json!({ "min": { "field": "test_field" } }),
-    );
+    #[test]
+    fn serialization() {
+        assert_serialize_aggregation(
+            Aggregation::min("test_field"),
+            json!({ "min": { "field": "test_field" } }),
+        );
 
-    assert_serialize_aggregation(
-      Aggregation::min("test_field").missing(100.1),
-      json!({
-          "min": {
-              "field": "test_field",
-              "missing": 100.1
-          }
-      }),
-    );
+        assert_serialize_aggregation(
+            Aggregation::min("test_field").missing(100.1),
+            json!({
+                "min": {
+                    "field": "test_field",
+                    "missing": 100.1
+                }
+            }),
+        );
 
-    assert_serialize_aggregation(
-      Aggregation::min_script(Script::source("_score")),
-      json!({
-          "min": {
-              "script": {
-                  "source": "_score"
-              }
-          }
-      }),
-    );
-  }
+        assert_serialize_aggregation(
+            Aggregation::min_script(Script::source("_score")),
+            json!({
+                "min": {
+                    "script": {
+                        "source": "_score"
+                    }
+                }
+            }),
+        );
+    }
 }

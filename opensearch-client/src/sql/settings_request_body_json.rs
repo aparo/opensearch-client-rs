@@ -39,8 +39,6 @@ impl Default for settingsRequestBodyJson {
     }
 }
 
-sql::settingsRequestBodyJson
-
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum sql::settingsRequestBodyJson {
 
@@ -50,7 +48,7 @@ impl Default for sql::settingsRequestBodyJson {
     fn default() -> sql::settingsRequestBodyJson {
         
     }
-}sql::settingsRequestBodyJson
+}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum sql::settingsRequestBodyJson {

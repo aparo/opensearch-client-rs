@@ -1,6 +1,7 @@
 {
     "rust-analyzer.cargo.features": [
-        "default"
+        "default",
+        "loco"
     ],
     "files.watcherExclude": {
         "**/target": true

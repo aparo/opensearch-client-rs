@@ -17,10 +17,10 @@ keywords = [
 readme.workspace = true
 
 [dependencies]
-testcontainers = "0.24.0"
+testcontainers = "0.25.0"
 
 [dev-dependencies]
-reqwest = { version = "0.12.20", features = ["blocking"] }
-serde = { version = "1.0.219", features = ["derive"] }
-serde_json = "1.0.140"
+reqwest = { version = "0.12.23", features = ["blocking"] }
+serde = { version = "1.0.221", features = ["derive"] }
+serde_json = "1.0.144"
 tokio = { version = "*", features = ["full"] }

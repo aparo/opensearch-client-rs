@@ -9,6 +9,8 @@ pub struct UpdateActionBody {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub doc: Option<Value>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub upsert: Option<Value>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub doc_as_upsert: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub script: Option<Script>,
@@ -87,6 +89,7 @@ impl UpdateActionBody {
     pub fn new(doc: Value) -> Self {
         Self {
             doc: Some(doc),
+            upsert: None,
             doc_as_upsert: None,
             script: None,
         }
@@ -104,6 +107,7 @@ impl UpdateActionBody {
     pub fn from_script(script: &str) -> Self {
         Self {
             doc: None,
+            upsert: None,
             doc_as_upsert: None,
             script: Some(Script {
                 source: script.to_string(),
@@ -125,6 +129,7 @@ impl UpdateActionBody {
     pub fn from_script_parameters(script: &str, params: serde_json::Value) -> Self {
         Self {
             doc: None,
+            upsert: None,
             doc_as_upsert: None,
             script: Some(Script {
                 source: script.to_string(),
@@ -145,8 +150,27 @@ impl UpdateActionBody {
     pub fn with_script(script: Script) -> Self {
         Self {
             doc: None,
+            upsert: None,
             doc_as_upsert: None,
             script: Some(script),
+        }
+    }
+
+    /// Creates a new update action with a document and upsert option.
+    ///
+    /// # Arguments
+    ///
+    /// * `doc` - The document to be updated.
+    /// * `upsert` - The document to be used for upsert if the document does not exist.
+    /// # Returns
+    ///
+    /// The update action body.
+    pub fn with_doc_upsert(doc: &Value, upsert: &Value) -> Self {
+        Self {
+            doc: Some(doc.clone()),
+            upsert: Some(upsert.clone()),
+            doc_as_upsert: Some(true),
+            script: None,
         }
     }
 }

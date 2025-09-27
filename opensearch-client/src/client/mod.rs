@@ -93,6 +93,25 @@ pub enum Error {
     InternalError(String),
 }
 
+#[cfg(feature = "loco")]
+impl From<Error> for loco_rs::prelude::Error {
+    fn from(err: Error) -> Self {
+        use axum::http::StatusCode;
+        use loco_rs::controller::ErrorDetail;
+        use loco_rs::prelude::Error as LocoError;
+        match err {
+            Error::DocumentAlreadyExistsError(_, _) => LocoError::InternalServerError,
+            Error::DocumentNotFoundError(index, id) => LocoError::CustomError(
+                StatusCode::NOT_FOUND,
+                ErrorDetail::new("Error", &format!("Document not found: ({}, {})", index, id)),
+            ),
+            _ => LocoError::CustomError(
+                StatusCode::INTERNAL_SERVER_ERROR,
+                ErrorDetail::new("OpenSearch Error", &err.to_string()),
+            ),
+        }
+    }
+}
 pub fn urlencode<T: AsRef<str>>(s: T) -> String {
     ::url::form_urlencoded::byte_serialize(s.as_ref().as_bytes()).collect()
 }

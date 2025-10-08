@@ -1,3 +1,35 @@
+//! # OpenSearch CLI Tool
+//!
+//! A powerful command-line interface for managing OpenSearch clusters, indices, and data operations.
+//!
+//! ## Features
+//!
+//! - **Cluster Metadata Management**: Dump, restore, and fix cluster metadata
+//! - **Index Operations**: List, dump, restore, and copy indices
+//! - **Data Migration**: Efficient bulk data operations between clusters
+//! - **Remote Cluster Support**: Copy data between different OpenSearch clusters
+//! - **Configuration Management**: Environment variable and CLI flag support
+//!
+//! ## Usage
+//!
+//! ```bash
+//! # Set up environment
+//! export OPENSEARCH_URL="http://localhost:9200"
+//! export OPENSEARCH_USER="admin"
+//! export OPENSEARCH_PASSWORD="admin"
+//!
+//! # List all indices
+//! opensearch-cli list-indices
+//!
+//! # Dump cluster metadata
+//! opensearch-cli dump-metadata --output ./backup
+//!
+//! # Copy index to remote cluster
+//! opensearch-cli copy-index my_index --remote --target-index backup_index
+//! ```
+//!
+//! For detailed usage instructions, see the README.md file.
+
 use std::{path::PathBuf, sync::Arc};
 
 use clap::{Parser, Subcommand};
@@ -6,7 +38,7 @@ use url::Url;
 mod dumper;
 mod restorer;
 
-/// Simple program to greet a person
+/// OpenSearch CLI - A powerful tool for managing OpenSearch clusters
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
@@ -14,7 +46,7 @@ struct Args {
     #[clap(short, long, action = clap::ArgAction::Count)]
     verbose: u8,
 
-    /// Opensearch server url
+    /// OpenSearch server URL
     #[clap(
         short,
         long,
@@ -23,15 +55,15 @@ struct Args {
     )]
     server: String,
 
-    /// Opensearch user to be used for the connection
+    /// OpenSearch user to be used for the connection
     #[clap(short, long, env = "OPENSEARCH_USER", default_value = "admin")]
     user: String,
 
-    /// Opensearch password to be used for the connection
+    /// OpenSearch password to be used for the connection
     #[clap(short, long, env = "OPENSEARCH_PASSWORD", default_value = "admin")]
     password: String,
 
-    /// Opensearch server url
+    /// Remote OpenSearch server URL for copy operations
     #[clap(
         long,
         env = "OPENSEARCH_REMOTE_URL",
@@ -39,11 +71,11 @@ struct Args {
     )]
     remote_server: String,
 
-    /// Opensearch user to be used for the connection
+    /// Remote OpenSearch user for copy operations
     #[clap(long, env = "OPENSEARCH_REMOTE_USER", default_value = "admin")]
     remote_user: String,
 
-    /// Opensearch password to be used for the connection
+    /// Remote OpenSearch password for copy operations
     #[clap(long, env = "OPENSEARCH_REMOTE_PASSWORD", default_value = "admin")]
     remote_password: String,
 
@@ -120,18 +152,14 @@ pub enum Commands {
     /// Dump index data and mappings
     /// This command will dump the data and mappings of the indices
     Dump {
-        /// Compress the data
-        #[clap(long, default_value = "true")]
-        compress: bool,
-        /// Size of the bulk read
+        /// Size of the bulk read operation
         #[clap(long, default_value = "500")]
         read_bulk: u64,
-        /// Split file after this number of records (0: no split)
-        #[clap(long, default_value = "0")]
-        max_record_for_file: u32,
-        /// Set the index,indices to dump
+
+        /// Set the index,indices to dump (comma-separated or wildcard patterns)
         #[clap(value_name = "indices")]
         indices: String,
+
         /// Sets the output path
         #[clap(value_name = "FILE", default_value = "output")]
         output: PathBuf,
@@ -317,21 +345,18 @@ async fn main() -> anyhow::Result<()> {
             }
         }
         Commands::Dump {
-            compress,
             read_bulk,
-            max_record_for_file,
             indices,
             output,
         } => {
             info!("Dumping index");
             info!("Output: {:?}", output);
+
             let dumper = dumper::Dumper {
                 client,
-                compress: *compress,
                 output: output.clone(),
                 indices: indices.clone(),
                 read_bulk: *read_bulk,
-                max_record_for_file: *max_record_for_file,
             };
 
             dumper.dump().await?;

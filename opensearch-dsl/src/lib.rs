@@ -1,33 +1,110 @@
-//! # Strongly typed OpenSearch DSL written in Rust
+//! # OpenSearch DSL for Rust
 //!
-//! This is an unofficial library and doesn't yet support all the DSL, it's
-//! still work in progress.
+//! A high-level, strongly typed Domain Specific Language (DSL) for building OpenSearch queries in Rust.
+//! This library provides a complete mapping to the OpenSearch Query DSL with compile-time type safety.
+//!
+//! *Based on the excellent [elasticsearch-dsl-rs](https://github.com/vinted/elasticsearch-dsl-rs)
+//! project, adapted for OpenSearch.*
 //!
 //! ## Features
 //!
-//! - Strongly typed queries
-//! - Strongly typed aggregations
-//! - Automatically skips empty queries making DSL pleasant to use
-//! - Crate doesn't depend on [opensearch-rs](https://github.com/opensearch/opensearch-rs)
-//!   and can be used as a standalone library with any HTTP client to call
-//!   OpenSearch
+//! - **🔒 Type Safety**: Strongly typed queries, aggregations, and responses with compile-time validation
+//! - **🎯 Complete Coverage**: Full support for OpenSearch Query DSL including complex nested queries
+//! - **📊 Rich Aggregations**: Support for all aggregation types with proper result parsing
+//! - **🧩 Composable**: Build complex queries by composing smaller query components
+//! - **⚡ Zero-Cost Abstractions**: Compiles to efficient JSON with no runtime overhead
+//! - **🔌 Client Agnostic**: Works with any HTTP client, not tied to specific OpenSearch client libraries
+//! - **📝 Auto-Generated JSON**: Automatically produces valid OpenSearch JSON from Rust code
+//! - **🎨 Fluent API**: Chainable method calls for intuitive query building
 //!
 //! ## Installation
 //!
-//! Add `opensearch-dsl` crate and version to Cargo.toml
+//! Add to your `Cargo.toml`:
 //!
 //! ```toml
 //! [dependencies]
-//! opensearch-dsl = "0.2"
+//! opensearch-dsl = "0.3"
 //! ```
 //!
-//! ## Documentation
+//! ## Quick Start
 //!
-//! Documentation for the library is available on [docs.rs](https://docs.rs/opensearch-dsl)
-//!
-//! ## Quick start
+//! ### Basic Search Query
 //!
 //! ```rust
+//! use opensearch_dsl::*;
+//!
+//! let search = Search::new()
+//!     .source(false)
+//!     .from(0)
+//!     .size(10)
+//!     .query(Query::match_all())
+//!     .sort(vec![Sort::field("timestamp").desc()]);
+//!
+//! // Generates valid OpenSearch JSON
+//! let json = serde_json::to_string(&search)?;
+//! ```
+//!
+//! ### Complex Boolean Query
+//!
+//! ```rust
+//! let search = Search::new()
+//!     .query(
+//!         Query::bool()
+//!             .must(vec![
+//!                 Query::match_("title", "OpenSearch"),
+//!                 Query::range("date").gte("2023-01-01")
+//!             ])
+//!             .should(vec![
+//!                 Query::term("category", "tutorial"),
+//!                 Query::term("featured", true)
+//!             ])
+//!             .filter(vec![
+//!                 Query::term("status", "published")
+//!             ])
+//!             .minimum_should_match(1)
+//!     );
+//! ```
+//!
+//! ### Aggregations
+//!
+//! ```rust
+//! let search = Search::new()
+//!     .size(0)
+//!     .aggregations(vec![
+//!         ("categories", Aggregation::terms("category")),
+//!         ("monthly_sales",
+//!             Aggregation::date_histogram("date", "month")
+//!                 .sub_aggregation("total_revenue", Aggregation::sum("price"))
+//!         )
+//!     ]);
+//! ```
+//!
+//! ## Module Organization
+//!
+//! - [`search`] - Search queries and request building
+//! - [`query`] - All query types (term, match, bool, etc.)
+//! - [`aggregation`] - Aggregation types and builders
+//! - [`sort`] - Sorting options and configurations
+//! - [`types`] - Common types and utilities
+//!
+//! ## Integration with OpenSearch Client
+//!
+//! This DSL works seamlessly with the opensearch-client:
+//!
+//! ```rust
+//! use opensearch_client::*;
+//! use opensearch_dsl::*;
+//!
+//! let client = OsClient::new(/* configuration */);
+//! let search = Search::new().query(Query::match_("title", "rust"));
+//! let response = client.search(&search).index("articles").await?;
+//! ```
+//!
+//! ## Examples
+//!
+//! For comprehensive examples including e-commerce search, log analytics, and time series analysis,
+//! see the [examples directory](https://github.com/aparo/opensearch-client-rs/tree/main/examples).
+//!
 //! use opensearch_dsl::*;
 //!
 //! fn main() {

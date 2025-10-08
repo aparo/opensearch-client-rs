@@ -29,12 +29,13 @@ reqwest-retry = "0.7.0"
 reqwest-tracing = "0.5.8"
 http = "1.3.1"
 base64 = "0.22.1"
-anyhow = "1.0.99"
+anyhow = "1.0.100"
 thiserror = "2.0.16"
 tracing = { version = "0.1.41" }
 bon = { version = "3.7.2", optional = true }
 
 opensearch-dsl = { workspace = true, optional = true }
+#opensearch-macro = { workspace = true }
 # client stuff
 # task-local-extensions = "0.1.4"
 loco-rs = { version = "0.16", optional = true, default-features = false }

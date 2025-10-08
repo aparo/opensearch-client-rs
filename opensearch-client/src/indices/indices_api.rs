@@ -5145,38 +5145,38 @@ impl IndicesApiClient {
     }
 }
 
-/// Struct for typed errors of method [`exists`]
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum ExistsError {
-    DefaultResponse(serde_json::Value),
-    Status404(serde_json::Value),
-    UnknownValue(serde_json::Value),
-}
+// /// Struct for typed errors of method [`exists`]
+// #[derive(Debug, Clone, Serialize, Deserialize)]
+// #[serde(untagged)]
+// pub enum ExistsError {
+//     DefaultResponse(serde_json::Value),
+//     Status404(serde_json::Value),
+//     UnknownValue(serde_json::Value),
+// }
 
-/// Struct for typed errors of method [`get_alias`]
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum GetAliasError {
-    Status404(serde_json::Value),
-    DefaultResponse(crate::indices::GetAliasResponse),
-    UnknownValue(serde_json::Value),
-}
+// /// Struct for typed errors of method [`get_alias`]
+// #[derive(Debug, Clone, Serialize, Deserialize)]
+// #[serde(untagged)]
+// pub enum GetAliasError {
+//     Status404(serde_json::Value),
+//     DefaultResponse(crate::indices::GetAliasResponse),
+//     UnknownValue(serde_json::Value),
+// }
 
-/// Struct for typed errors of method [`delete`]
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum DeleteError {
-    DefaultResponse(crate::common::IndicesResponseBase),
-    Status404(crate::indices::IndexError),
-    UnknownValue(serde_json::Value),
-}
+// /// Struct for typed errors of method [`delete`]
+// #[derive(Debug, Clone, Serialize, Deserialize)]
+// #[serde(untagged)]
+// pub enum DeleteError {
+//     DefaultResponse(crate::common::IndicesResponseBase),
+//     Status404(crate::indices::IndexError),
+//     UnknownValue(serde_json::Value),
+// }
 
-/// Struct for typed errors of method [`exists_alias`]
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum ExistsAliasError {
-    DefaultResponse(serde_json::Value),
-    Status404(serde_json::Value),
-    UnknownValue(serde_json::Value),
-}
+// /// Struct for typed errors of method [`exists_alias`]
+// #[derive(Debug, Clone, Serialize, Deserialize)]
+// #[serde(untagged)]
+// pub enum ExistsAliasError {
+//     DefaultResponse(serde_json::Value),
+//     Status404(serde_json::Value),
+//     UnknownValue(serde_json::Value),
+// }

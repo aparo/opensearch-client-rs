@@ -6599,7 +6599,7 @@ impl OsClient {
     /// * `T` - The type of the document to retrieve. Must implement the
     ///   `DeserializeOwned` and
     /// `std::default::Default` traits.
-    pub async fn get_typed<T: DeserializeOwned + std::default::Default>(
+    pub async fn get_typed<T: DeserializeOwned>(
         &self,
         index: &str,
         id: &str,
@@ -6678,7 +6678,7 @@ impl OsClient {
         BulkerBuilder::new(Arc::new(self.clone()), self.configuration.max_bulk_size)
     }
 
-    pub async fn search_typed<T: DeserializeOwned + std::default::Default>(
+    pub async fn search_typed<T: DeserializeOwned /*+ std::default::Default*/>(
         &self,
         index: &str,
         search: Search,

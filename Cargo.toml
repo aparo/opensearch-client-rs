@@ -3,6 +3,7 @@ members = [
     # "opensearch-testcontainer",
     "opensearch-dsl",
     "opensearch-client",
+    # "opensearch-macro",
     "opensearch-cli",
     # "xtask",
     # "examples/*",
@@ -10,10 +11,11 @@ members = [
 resolver = "2"
 
 [workspace.package]
+description = "OpenSearch Client"
 version = "0.3.0"
 edition = "2021"
 authors = ["Alberto Paro"]
-documentation = "https://docs.rs/opensearch-client"
+documentation = "OpenSearch Client"
 license = "Apache-2.0"
 repository = "https://github.com/aparo/opensearch-client-rs"
 keywords = ["opensearch"]
@@ -22,6 +24,7 @@ readme = "README.md"
 [workspace.dependencies]
 opensearch-client = { path = "./opensearch-client/" }
 opensearch-dsl = { path = "./opensearch-dsl/" }
+# opensearch-macro = { path = "./opensearch-macro/" }
 opensearch-testcontainer = { path = "./opensearch-testcontainer/" }
 
 

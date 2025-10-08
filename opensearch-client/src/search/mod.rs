@@ -39,7 +39,7 @@ pub struct TypedSearchResult<T> {
     pub took: u32,
 }
 
-impl<T: serde::de::DeserializeOwned + std::default::Default> TypedSearchResult<T> {
+impl<T: serde::de::DeserializeOwned /*+ std::default::Default*/> TypedSearchResult<T> {
     pub fn from_response(response: SearchResponse) -> Result<Self, crate::Error> {
         // Implement conversion logic from SearchSuccess to TypedSearchResult<T>
         // Example stub:

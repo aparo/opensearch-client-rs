@@ -104,7 +104,7 @@ pub struct Bulker {
     // Max items for bulk
     bulk_size: u32,
     // Max parallel bulks
-    max_concurrent_connections: u32,
+    // max_concurrent_connections: u32,
     // statistics
     statistics: Arc<Mutex<BulkerStatistic>>,
 }
@@ -122,7 +122,7 @@ impl Bulker {
         let statistics = Arc::new(Mutex::new(BulkerStatistic::default()));
         let service = Bulker {
             bulk_size,
-            max_concurrent_connections,
+            // max_concurrent_connections,
             sender,
             os_client: os_client.clone(),
             queue: Arc::new(Mutex::new(Vec::new())),

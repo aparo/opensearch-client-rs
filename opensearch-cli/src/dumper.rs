@@ -15,11 +15,11 @@ use tokio::{
 
 pub struct Dumper {
     pub client: Arc<OsClient>,
-    pub compress: bool,
+    // pub compress: bool,
     pub output: PathBuf,
     pub indices: String,
     pub read_bulk: u64,
-    pub max_record_for_file: u32,
+    // pub max_record_for_file: u32,
 }
 
 impl Dumper {

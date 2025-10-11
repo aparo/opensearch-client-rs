@@ -159,7 +159,7 @@ pub use client::ResponseContent;
 
 mod document;
 pub use document::*;
-
+pub use opensearch_macro::OpenSearch;
 static OPENSEARCH: OnceLock<OsClient> = OnceLock::new();
 
 pub fn set_opensearch(client: OsClient) -> Result<(), OsClient> {

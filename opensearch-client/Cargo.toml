@@ -35,7 +35,7 @@ tracing = { version = "0.1.41" }
 bon = { version = "3.7.2", optional = true }
 
 opensearch-dsl = { workspace = true, optional = true }
-#opensearch-macro = { workspace = true }
+opensearch-macro = { workspace = true }
 # client stuff
 # task-local-extensions = "0.1.4"
 loco-rs = { version = "0.16", optional = true, default-features = false }

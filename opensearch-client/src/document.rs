@@ -7,12 +7,24 @@ use crate::{
     common, common::DocumentDeleteResponse, get_opensearch, Error, IndexResponse, UpdateActionBody,
 };
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Field {
+    pub name: String,
+    pub field_type: String,
+    pub os_type: String,
+    pub aggregatable: bool,
+    pub searchable: bool,
+    pub sub_fields: Vec<Box<Field>>,
+}
+
 #[async_trait::async_trait]
 pub trait Document: Serialize + DeserializeOwned + Sized + std::clone::Clone {
     /// The Elasticsearch index name where documents of this type live
     fn index_name() -> &'static str;
     /// Return the unique ID of this document
     fn id(&self) -> &str;
+
+    fn columns() -> Vec<Field>;
 
     /// Create or update this document in Elasticsearch
     async fn save(&self) -> Result<IndexResponse, Error> {

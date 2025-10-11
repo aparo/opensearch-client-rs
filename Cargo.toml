@@ -24,7 +24,7 @@ readme = "README.md"
 [workspace.dependencies]
 opensearch-client = { path = "./opensearch-client/" }
 opensearch-dsl = { path = "./opensearch-dsl/" }
-# opensearch-macro = { path = "./opensearch-macro/" }
+opensearch-macro = { path = "./opensearch-macro/" }
 opensearch-testcontainer = { path = "./opensearch-testcontainer/" }
 
 

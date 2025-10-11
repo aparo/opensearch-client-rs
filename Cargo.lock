@@ -2291,6 +2291,7 @@ dependencies = [
  "http",
  "loco-rs",
  "opensearch-dsl",
+ "opensearch-macro",
  "opensearch-testcontainer",
  "reqwest",
  "reqwest-middleware",
@@ -2318,6 +2319,19 @@ dependencies = [
  "pretty_assertions",
  "serde",
  "serde_json",
+]
+
+[[package]]
+name = "opensearch-macro"
+version = "0.3.0"
+dependencies = [
+ "darling 0.21.3",
+ "heck 0.5.0",
+ "opensearch-client",
+ "proc-macro2",
+ "quote",
+ "serde",
+ "syn",
 ]
 
 [[package]]

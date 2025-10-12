@@ -8,8 +8,8 @@ documentation.workspace = true
 license.workspace = true
 repository.workspace = true
 keywords.workspace = true
-readme.workspace = true
-publish = false
+readme = "../README.md"
+publish = true
 
 [lib]
 proc-macro = true

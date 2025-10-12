@@ -14,7 +14,7 @@ keywords = [
     "opensearch",
     "integration-test",
 ]
-readme.workspace = true
+readme = "README.md"
 
 [dependencies]
 testcontainers = "0.25.0"

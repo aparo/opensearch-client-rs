@@ -7,8 +7,8 @@ edition = { workspace = true }
 documentation = { workspace = true }
 license = "MIT OR Apache-2.0"
 repository = { workspace = true }
-keywords = { workspace = true }
-readme = { workspace = true }
+keywords = ["opensearch", "dsl"]
+readme = "README.md"
 
 [dependencies]
 chrono = { version = "0.4.42", default-features = false, features = [

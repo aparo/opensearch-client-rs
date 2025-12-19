@@ -22,7 +22,7 @@ pub trait Document: Serialize + DeserializeOwned + Sized + std::clone::Clone {
     /// The Elasticsearch index name where documents of this type live
     fn index_name() -> &'static str;
     /// Return the unique ID of this document
-    fn id(&self) -> &str;
+    fn id(&self) -> String;
 
     fn columns() -> Vec<Field>;
 
@@ -73,7 +73,7 @@ pub trait Document: Serialize + DeserializeOwned + Sized + std::clone::Clone {
 
     /// Refresh this document instance with the latest data from Elasticsearch
     async fn refresh(&mut self) -> Result<(), Error> {
-        let updated_doc = Self::get(self.id()).await?;
+        let updated_doc = Self::get(&self.id()).await?;
         *self = updated_doc;
         Ok(())
     }

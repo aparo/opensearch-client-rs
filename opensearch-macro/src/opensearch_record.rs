@@ -169,8 +169,8 @@ impl ToTokens for OpenSearchDeriveInput {
         // Generate the id() method implementation
         let id_method = if let Some(id_field) = id_field {
             quote! {
-                fn id(&self) -> &str {
-                    &self.#id_field
+                fn id(&self) -> String {
+                    self.#id_field.to_owned()
                 }
             }
         } else {
@@ -182,15 +182,15 @@ impl ToTokens for OpenSearchDeriveInput {
 
             if let Some(id_field) = id_field_name {
                 quote! {
-                    fn id(&self) -> &str {
-                        &self.#id_field
+                    fn id(&self) -> String {
+                        self.#id_field.to_owned()
                     }
                 }
             } else {
                 // Fallback: return empty string if no ID field found
                 quote! {
-                    fn id(&self) -> &str {
-                        ""
+                    fn id(&self) -> String {
+                        "".to_string()
                     }
                 }
             }
@@ -200,8 +200,8 @@ impl ToTokens for OpenSearchDeriveInput {
             impl #generic_params_wb opensearch_client::Document for #ident
             #where_clause
             {
-                fn index_name() -> &'static str {
-                    #index_name
+                fn index_name() -> String {
+                    #index_name.to_string()
                 }
 
                 #id_method

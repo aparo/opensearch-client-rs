@@ -71,6 +71,36 @@ pub trait Document: Serialize + DeserializeOwned + Sized + std::clone::Clone {
             .await
     }
 
+    async fn upsert_doc(&self) -> Result<IndexResponse, Error> {
+        let index = Self::index_name();
+        let body = serde_json::to_value(self)?;
+        let update_body = UpdateActionBody {
+            doc: Some(body.clone()),
+            doc_as_upsert: Some(true),
+            ..Default::default()
+        };
+        let id = self.id().to_string();
+
+        get_opensearch()
+            .update_document(&index, &id, &update_body)
+            .await
+    }
+
+    async fn upsert_value(&self, partial_doc: &Value) -> Result<IndexResponse, Error> {
+        let index = Self::index_name();
+        let body = partial_doc.clone();
+        let update_body = UpdateActionBody {
+            doc: Some(body),
+            doc_as_upsert: Some(true),
+            ..Default::default()
+        };
+        let id = self.id().to_string();
+
+        get_opensearch()
+            .update_document(&index, &id, &update_body)
+            .await
+    }
+
     /// Refresh this document instance with the latest data from Elasticsearch
     async fn refresh(&mut self) -> Result<(), Error> {
         let updated_doc = Self::get(&self.id()).await?;

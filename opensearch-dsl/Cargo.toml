@@ -11,7 +11,7 @@ keywords = ["opensearch", "dsl"]
 readme = "README.md"
 
 [dependencies]
-chrono = { version = "0.4.42", default-features = false, features = [
+chrono = { version = "0.4.43", default-features = false, features = [
     "std",
     "serde",
 ] }
@@ -20,7 +20,7 @@ serde = { version = "1.0.228", default-features = false, features = [
     "derive",
     "std",
 ] }
-serde_json = { version = "1.0.145", features = ["raw_value"] }
+serde_json = { version = "1.0.149", features = ["raw_value"] }
 
 [dev-dependencies]
 pretty_assertions = "1.4.1"

@@ -839,7 +839,13 @@ impl IndicesApiClient {
         let local_var_status = local_var_resp.status();
         let local_var_content = local_var_resp.text().await?;
 
-        if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        if local_var_status == reqwest::StatusCode::OK {
+            // If the response status is 200 OK, the index exists
+            Ok(true)
+        } else if local_var_status == reqwest::StatusCode::NOT_FOUND {
+            // If the response status is 404 Not Found, the index does not exist
+            Ok(false)
+        } else if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
             if local_var_status.is_success() {
                 // If the response is successful, we return true
                 Ok(true)

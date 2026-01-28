@@ -114,7 +114,7 @@ impl Serialize for Tags {
                 map.serialize_field("tags_schema", "styled")?;
                 map.end()
             }
-            Self::Custom(ref tags) => Serialize::serialize(tags, serializer),
+            Self::Custom(tags) => Serialize::serialize(tags, serializer),
         }
     }
 }

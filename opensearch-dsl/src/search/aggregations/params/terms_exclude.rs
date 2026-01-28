@@ -18,8 +18,8 @@ pub enum TermsExclude {
 impl ShouldSkip for TermsExclude {
     fn should_skip(&self) -> bool {
         match self {
-            Self::Regex(ref s) => s.is_empty(),
-            Self::Exact(ref v) => v.is_empty(),
+            Self::Regex(s) => s.is_empty(),
+            Self::Exact(v) => v.is_empty(),
         }
     }
 }

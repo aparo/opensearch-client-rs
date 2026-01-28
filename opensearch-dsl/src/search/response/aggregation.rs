@@ -21,7 +21,7 @@ use serde_json::Value;
 
 use super::Hit;
 use crate::{
-    search::aggregations::Aggregation as RequestAggregation, search::params::GeoLocation, Map,
+    Map, search::aggregations::Aggregation as RequestAggregation, search::params::GeoLocation,
 };
 
 /// Main aggregation trait equivalent
@@ -104,15 +104,15 @@ impl AggregationTrait for AggregationResponse {
 
     fn set_source_aggregation(&mut self, agg: Option<RequestAggregation>) {
         match self {
-            AggregationResponse::Bucket(ref mut a) => a.source_aggregation = agg,
-            AggregationResponse::MultiBucket(ref mut a) => a.source_aggregation = agg,
-            AggregationResponse::DocCount(ref mut a) => a.source_aggregation = agg,
-            AggregationResponse::GeoBounds(ref mut a) => a.source_aggregation = agg,
-            AggregationResponse::MetricExtendedStats(ref mut a) => a.source_aggregation = agg,
-            AggregationResponse::MetricStats(ref mut a) => a.source_aggregation = agg,
-            AggregationResponse::MetricValue(ref mut a) => a.source_aggregation = agg,
-            AggregationResponse::TopHits(ref mut a) => a.source_aggregation = agg,
-            AggregationResponse::Simple(ref mut a) => a.source_aggregation = agg,
+            AggregationResponse::Bucket(a) => a.source_aggregation = agg,
+            AggregationResponse::MultiBucket(a) => a.source_aggregation = agg,
+            AggregationResponse::DocCount(a) => a.source_aggregation = agg,
+            AggregationResponse::GeoBounds(a) => a.source_aggregation = agg,
+            AggregationResponse::MetricExtendedStats(a) => a.source_aggregation = agg,
+            AggregationResponse::MetricStats(a) => a.source_aggregation = agg,
+            AggregationResponse::MetricValue(a) => a.source_aggregation = agg,
+            AggregationResponse::TopHits(a) => a.source_aggregation = agg,
+            AggregationResponse::Simple(a) => a.source_aggregation = agg,
         }
     }
 

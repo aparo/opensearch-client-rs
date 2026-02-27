@@ -12,6 +12,7 @@ A comprehensive Rust client library for OpenSearch with a strongly typed DSL, CL
 - [Installation & Quick Start](getting-started.md) - Installation, basic setup, and first steps
 - [Client Configuration](configuration.md) - Detailed configuration options and settings
 - [Architecture Overview](architecture.md) - Understanding the project structure and components
+- [Feature Flags](features.md) - Reduce compile time and binary size with selective features
 
 ### Core Features
 - [Document Modeling](documents/README.md) - Complete guide to the Document trait and macro system
@@ -21,12 +22,10 @@ A comprehensive Rust client library for OpenSearch with a strongly typed DSL, CL
 
 ### Advanced Topics
 - [CLI Tools](cli.md) - Command-line interface for cluster management
-- [API Reference](api-reference.md) - Complete API documentation
 - [Testing Guide](testing.md) - Testing strategies and utilities
 
 ### Development
 - [Contributing](contributing.md) - Guidelines for contributors
-- [Development Setup](development.md) - Setting up the development environment
 
 ## 🚀 Features
 
@@ -51,10 +50,11 @@ This workspace contains several crates:
 ## 🔗 Quick Links
 
 - [Installation & Quick Start](getting-started.md)
+- [Feature Flags](features.md)
 - [Document Modeling Guide](documents/README.md)
 - [Query Building Guide](queries/README.md)
+- [Index Management](indices.md)
 - [CLI Tools Documentation](cli.md)
-- [API Reference](api-reference.md)
 - [Contributing Guidelines](contributing.md)
 
 ## 📞 Support

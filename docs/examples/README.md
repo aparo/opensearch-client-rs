@@ -8,8 +8,7 @@ This directory contains practical examples demonstrating various features of the
 - [Document Modeling](document-modeling.md) - Advanced document structures and relationships
 - [Bulk Operations](bulk-operations.md) - Efficient batch processing
 - [Search and Queries](search-queries.md) - Complex search patterns and aggregations
-- [Index Management](index-management.md) - Creating and managing indices
-- [Real-World Applications](real-world.md) - Complete application examples
+- [Real-World Applications](real-world.md) - Complete application examples (blog, log analytics, e-commerce)
 
 ## Quick Examples
 

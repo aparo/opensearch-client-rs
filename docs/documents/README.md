@@ -8,10 +8,9 @@ The `opensearch-client` provides a powerful macro system for creating strongly-t
 - [Working with Documents](#working-with-document-models)
 - [CRUD Operations](crud-operations.md)
 - [Querying and Search](querying.md)
+- [Nested Documents](nested-documents.md)
 - [Field Type Mapping](field-types.md)
 - [Macro Attributes](attributes.md)
-- [Field Introspection](introspection.md)
-- [Nested Documents](nested-documents.md)
 - [Best Practices](best-practices.md)
 - [API Reference](api-reference.md)
 

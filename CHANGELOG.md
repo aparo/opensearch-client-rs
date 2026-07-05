@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- `FunctionScoreQuery` without an explicit `query` (e.g. functions-only) was
+  incorrectly skipped during serialization and dropped from parent queries such
+  as `bool.should` (#257)
+- `FieldValueFactorModifier` variants `Log1P`, `Log2P`, `Ln1P`, and `Ln2P`
+  serialized as `"log1_p"` / `"log2_p"` / `"ln1_p"` / `"ln2_p"` instead of
+  the correct `"log1p"` / `"log2p"` / `"ln1p"` / `"ln2p"` OpenSearch values
+
 ### Changed
 - Upgraded `reqwest` to 0.13 (breaking: new connection/TLS API surface)
 - Upgraded `serde_json` to latest

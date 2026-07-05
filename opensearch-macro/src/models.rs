@@ -20,10 +20,9 @@ pub(crate) struct OpenSearchField {
 
     #[darling(default)]
     pub(crate) id: bool,
+    // #[darling(default)]
+    // pub(crate) skip_sort: bool,
 
-    #[darling(default)]
-    pub(crate) skip_sort: bool,
-
-    #[darling(default)]
-    pub(crate) none_value: Option<String>,
+    // #[darling(default)]
+    // pub(crate) none_value: Option<String>,
 }

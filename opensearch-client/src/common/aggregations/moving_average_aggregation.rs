@@ -11,7 +11,9 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+#[derive(Default)]
 pub enum MovingAverageAggregation {
+    #[default]
     SimpleMovingAverageAggregationValue,
 
     LinearMovingAverageAggregationValue,
@@ -35,8 +37,3 @@ impl std::fmt::Display for MovingAverageAggregation {
     }
 }
 
-impl Default for MovingAverageAggregation {
-    fn default() -> MovingAverageAggregation {
-        Self::SimpleMovingAverageAggregationValue
-    }
-}

@@ -12,7 +12,9 @@ use crate::common;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+#[derive(Default)]
 pub enum Analyzer {
+    #[default]
     StandardAnalyzerValue,
 
     SnowballAnalyzerValue,
@@ -72,8 +74,3 @@ impl std::fmt::Display for Analyzer {
     }
 }
 
-impl Default for Analyzer {
-    fn default() -> Analyzer {
-        Self::StandardAnalyzerValue
-    }
-}

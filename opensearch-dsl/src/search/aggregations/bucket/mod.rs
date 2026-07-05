@@ -16,10 +16,10 @@
 //! process.
 //!
 //! > The maximum number of buckets allowed in a single response is limited by
-//! a dynamic cluster setting named
-//! [`search.max_buckets`](https://www.elastic.co/guide/en/opensearch/reference/current/search-settings.html#search-settings-max-buckets).
-//! It defaults to `65,535`. Requests that try to return more than the limit
-//! will fail with an exception.
+//! > a dynamic cluster setting named
+//! > [`search.max_buckets`](https://www.elastic.co/guide/en/opensearch/reference/current/search-settings.html#search-settings-max-buckets).
+//! > It defaults to `65,535`. Requests that try to return more than the limit
+//! > will fail with an exception.
 //!
 //! <https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-bucket.html>
 

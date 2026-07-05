@@ -270,7 +270,7 @@ impl Bulker {
         });
         self.sender
             .send(Action {
-                action: action,
+                action,
                 document: Some(serde_json::to_string(&body)?),
             })
             .await
@@ -319,7 +319,7 @@ impl Drop for Bulker {
             tokio::runtime::Handle::current().block_on(async {
                 // Clone the records from the queue to process synchronously
                 let records_to_process: Vec<Action> = self.queue.lock().unwrap().clone();
-                if records_to_process.len() > 0 {
+                if !records_to_process.is_empty() {
                     debug!(
                         "Bulker: Processing remaining records: {:?}",
                         records_to_process.len()

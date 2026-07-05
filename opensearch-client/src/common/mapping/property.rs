@@ -12,7 +12,9 @@ use crate::common;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+#[derive(Default)]
 pub enum Property {
+    #[default]
     NestedPropertyValue,
 
     FlatObjectPropertyValue,
@@ -153,8 +155,3 @@ impl std::fmt::Display for Property {
     }
 }
 
-impl Default for Property {
-    fn default() -> Property {
-        Self::NestedPropertyValue
-    }
-}

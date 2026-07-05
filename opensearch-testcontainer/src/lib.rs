@@ -65,7 +65,7 @@ impl Default for OpenSearch {
 
 impl Image for OpenSearch {
     fn name(&self) -> &str {
-        &self.image_name.as_str()
+        self.image_name.as_str()
     }
 
     fn tag(&self) -> &str {

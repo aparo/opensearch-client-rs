@@ -80,7 +80,7 @@ pub struct DefaultHighlighter {
 /// > **Warning**<br/>
 /// > The `fvh` highlighter does not support span queries. If you need support
 /// > for span queries,
-/// try an alternative highlighter, such as the `unified` highlighter.
+/// > try an alternative highlighter, such as the `unified` highlighter.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/highlighting.html#fast-vector-highlighter>
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -149,13 +149,13 @@ pub struct FastVectorHighlighter {
 /// > **Warning**<br/>
 /// > The `plain` highlighter works best for highlighting simple query matches
 /// > in a single field.
-/// To accurately reflect query logic, it creates a tiny in-memory index and
-/// re-runs the original query criteria through Lucene’s query execution planner
-/// to get access to low-level match information for the current document. This
-/// is repeated for every field and every document that needs to be highlighted.
-/// If you want to highlight a lot of fields in a lot of documents with
-/// complex queries, we recommend using the `unified` highlighter on `postings`
-/// or `term_vector` fields.
+/// > To accurately reflect query logic, it creates a tiny in-memory index and
+/// > re-runs the original query criteria through Lucene’s query execution planner
+/// > to get access to low-level match information for the current document. This
+/// > is repeated for every field and every document that needs to be highlighted.
+/// > If you want to highlight a lot of fields in a lot of documents with
+/// > complex queries, we recommend using the `unified` highlighter on `postings`
+/// > or `term_vector` fields.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/highlighting.html#plain-highlighter>
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -430,9 +430,9 @@ macro_rules! add_highlighter_methods {
         /// > **Warning**<br/>
         /// > OpenSearch does not validate that `highlight_query` contains the search
         /// > query in any
-        /// way so it is possible to define it so legitimate query results are not
-        /// highlighted. Generally, you should include the search query as part of the
-        /// `highlight_query`.
+        /// > way so it is possible to define it so legitimate query results are not
+        /// > highlighted. Generally, you should include the search query as part of the
+        /// > `highlight_query`.
         pub fn highlight_query<T>(mut self, highlight_query: T) -> Self
         where
             T: Into<Query>,

@@ -58,11 +58,10 @@ impl Restorer {
                 let file_name = file.file_name().unwrap().to_str().unwrap();
                 if file_name.ends_with(".json") {
                     let index = file_name.replace(".json", "");
-                    if let Some(ref i) = self.index {
-                        if !index.starts_with(i) {
+                    if let Some(ref i) = self.index
+                        && !index.starts_with(i) {
                             continue;
                         }
-                    }
                     // self.restore_mapping(&file, &index).await?;
                 }
             }
@@ -77,11 +76,10 @@ impl Restorer {
                 let file_name = file.file_name().unwrap().to_str().unwrap();
                 if file_name.ends_with("__data.zstd") {
                     let index = file_name.replace("__data.zstd", "");
-                    if let Some(ref i) = self.index {
-                        if !index.starts_with(i) {
+                    if let Some(ref i) = self.index
+                        && !index.starts_with(i) {
                             continue;
                         }
-                    }
                     self.restore_index(file, &index).await?;
                 }
             }
@@ -116,7 +114,7 @@ impl Restorer {
             let data = lines.next_line().await;
             match data {
                 Ok(Some(line)) => {
-                    if total_count % 2 == 0 {
+                    if total_count.is_multiple_of(2) {
                         let base_header = serde_json::from_str::<Header>(&line)?;
                         header = base_header;
                     } else {

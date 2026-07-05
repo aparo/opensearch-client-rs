@@ -12,9 +12,9 @@ use crate::{search::*, util::*};
 /// field is enabled by default.
 ///
 /// > By default, OpenSearch limits the `terms` query to a maximum of
-/// 65,536 terms. This includes terms fetched using terms lookup. You can
-/// change this limit using the
-/// [`index.max_terms_count setting`](https://www.elastic.co/guide/en/opensearch/reference/current/index-modules.html#index-max-terms-count).
+/// > 65,536 terms. This includes terms fetched using terms lookup. You can
+/// > change this limit using the
+/// > [`index.max_terms_count setting`](https://www.elastic.co/guide/en/opensearch/reference/current/index-modules.html#index-max-terms-count).
 ///
 /// To create a terms lookup query:
 /// ```

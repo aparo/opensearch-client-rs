@@ -159,11 +159,11 @@ pub enum ContentType {
 impl From<&str> for ContentType {
     fn from(content_type: &str) -> Self {
         if content_type.starts_with("application") && content_type.contains("json") {
-            return Self::Json;
+            Self::Json
         } else if content_type.starts_with("text/plain") {
-            return Self::Text;
+            Self::Text
         } else {
-            return Self::Unsupported(content_type.to_string());
+            Self::Unsupported(content_type.to_string())
         }
     }
 }
@@ -698,7 +698,7 @@ impl OsClient {
 
         let local_var_client = &local_var_configuration.client;
 
-        let local_var_uri_str = format!("{}", local_var_configuration.base_path);
+        let local_var_uri_str = local_var_configuration.base_path.to_string();
         let mut local_var_req_builder =
             local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
@@ -1670,14 +1670,14 @@ impl OsClient {
             local_var_req_builder = match "multi" {
                 "multi" => local_var_req_builder.query(
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| ("stats".to_owned(), p.to_string()))
                         .collect::<Vec<(std::string::String, std::string::String)>>(),
                 ),
                 _ => local_var_req_builder.query(&[(
                     "stats",
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| p.to_string())
                         .collect::<Vec<String>>()
                         .join(",")
@@ -1697,14 +1697,14 @@ impl OsClient {
             local_var_req_builder = match "multi" {
                 "multi" => local_var_req_builder.query(
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| ("source_includes".to_owned(), p.to_string()))
                         .collect::<Vec<(std::string::String, std::string::String)>>(),
                 ),
                 _ => local_var_req_builder.query(&[(
                     "source_includes",
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| p.to_string())
                         .collect::<Vec<String>>()
                         .join(",")
@@ -1764,14 +1764,14 @@ impl OsClient {
             local_var_req_builder = match "multi" {
                 "multi" => local_var_req_builder.query(
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| ("sort".to_owned(), p.to_string()))
                         .collect::<Vec<(std::string::String, std::string::String)>>(),
                 ),
                 _ => local_var_req_builder.query(&[(
                     "sort",
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| p.to_string())
                         .collect::<Vec<String>>()
                         .join(",")
@@ -1831,14 +1831,14 @@ impl OsClient {
             local_var_req_builder = match "multi" {
                 "multi" => local_var_req_builder.query(
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| ("source_excludes".to_owned(), p.to_string()))
                         .collect::<Vec<(std::string::String, std::string::String)>>(),
                 ),
                 _ => local_var_req_builder.query(&[(
                     "source_excludes",
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| p.to_string())
                         .collect::<Vec<String>>()
                         .join(",")
@@ -2233,7 +2233,7 @@ impl OsClient {
             serde_json::from_str(&local_var_content).map_err(Error::from)
         } else {
             if local_var_status == reqwest::StatusCode::NOT_FOUND {
-                return Err(Error::DocumentNotFoundError(index, id));
+                Err(Error::DocumentNotFoundError(index, id))
             } else {
                 let local_var_error = ResponseContent {
                     status: local_var_status,
@@ -2430,14 +2430,14 @@ impl OsClient {
             local_var_req_builder = match "multi" {
                 "multi" => local_var_req_builder.query(
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| ("ids".to_owned(), p.to_string()))
                         .collect::<Vec<(std::string::String, std::string::String)>>(),
                 ),
                 _ => local_var_req_builder.query(&[(
                     "ids",
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| p.to_string())
                         .collect::<Vec<String>>()
                         .join(",")
@@ -2804,14 +2804,14 @@ impl OsClient {
             local_var_req_builder = match "multi" {
                 "multi" => local_var_req_builder.query(
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| ("stats".to_owned(), p.to_string()))
                         .collect::<Vec<(std::string::String, std::string::String)>>(),
                 ),
                 _ => local_var_req_builder.query(&[(
                     "stats",
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| p.to_string())
                         .collect::<Vec<String>>()
                         .join(",")
@@ -3997,14 +3997,14 @@ impl OsClient {
             local_var_req_builder = match "multi" {
                 "multi" => local_var_req_builder.query(
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| ("stats".to_owned(), p.to_string()))
                         .collect::<Vec<(std::string::String, std::string::String)>>(),
                 ),
                 _ => local_var_req_builder.query(&[(
                     "stats",
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| p.to_string())
                         .collect::<Vec<String>>()
                         .join(",")
@@ -4717,14 +4717,14 @@ impl OsClient {
             local_var_req_builder = match "multi" {
                 "multi" => local_var_req_builder.query(
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| ("source_includes".to_owned(), p.to_string()))
                         .collect::<Vec<(std::string::String, std::string::String)>>(),
                 ),
                 _ => local_var_req_builder.query(&[(
                     "source_includes",
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| p.to_string())
                         .collect::<Vec<String>>()
                         .join(",")
@@ -4768,14 +4768,14 @@ impl OsClient {
             local_var_req_builder = match "multi" {
                 "multi" => local_var_req_builder.query(
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| ("stats".to_owned(), p.to_string()))
                         .collect::<Vec<(std::string::String, std::string::String)>>(),
                 ),
                 _ => local_var_req_builder.query(&[(
                     "stats",
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| p.to_string())
                         .collect::<Vec<String>>()
                         .join(",")
@@ -4807,14 +4807,14 @@ impl OsClient {
             local_var_req_builder = match "multi" {
                 "multi" => local_var_req_builder.query(
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| ("source_excludes".to_owned(), p.to_string()))
                         .collect::<Vec<(std::string::String, std::string::String)>>(),
                 ),
                 _ => local_var_req_builder.query(&[(
                     "source_excludes",
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| p.to_string())
                         .collect::<Vec<String>>()
                         .join(",")
@@ -4874,14 +4874,14 @@ impl OsClient {
             local_var_req_builder = match "multi" {
                 "multi" => local_var_req_builder.query(
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| ("sort".to_owned(), p.to_string()))
                         .collect::<Vec<(std::string::String, std::string::String)>>(),
                 ),
                 _ => local_var_req_builder.query(&[(
                     "sort",
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| p.to_string())
                         .collect::<Vec<String>>()
                         .join(",")
@@ -5049,14 +5049,14 @@ impl OsClient {
             local_var_req_builder = match "multi" {
                 "multi" => local_var_req_builder.query(
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| ("source_includes".to_owned(), p.to_string()))
                         .collect::<Vec<(std::string::String, std::string::String)>>(),
                 ),
                 _ => local_var_req_builder.query(&[(
                     "source_includes",
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| p.to_string())
                         .collect::<Vec<String>>()
                         .join(",")
@@ -5100,14 +5100,14 @@ impl OsClient {
             local_var_req_builder = match "multi" {
                 "multi" => local_var_req_builder.query(
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| ("stats".to_owned(), p.to_string()))
                         .collect::<Vec<(std::string::String, std::string::String)>>(),
                 ),
                 _ => local_var_req_builder.query(&[(
                     "stats",
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| p.to_string())
                         .collect::<Vec<String>>()
                         .join(",")
@@ -5139,14 +5139,14 @@ impl OsClient {
             local_var_req_builder = match "multi" {
                 "multi" => local_var_req_builder.query(
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| ("source_excludes".to_owned(), p.to_string()))
                         .collect::<Vec<(std::string::String, std::string::String)>>(),
                 ),
                 _ => local_var_req_builder.query(&[(
                     "source_excludes",
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| p.to_string())
                         .collect::<Vec<String>>()
                         .join(",")
@@ -5206,14 +5206,14 @@ impl OsClient {
             local_var_req_builder = match "multi" {
                 "multi" => local_var_req_builder.query(
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| ("sort".to_owned(), p.to_string()))
                         .collect::<Vec<(std::string::String, std::string::String)>>(),
                 ),
                 _ => local_var_req_builder.query(&[(
                     "sort",
                     &local_var_str
-                        .into_iter()
+                        .iter()
                         .map(|p| p.to_string())
                         .collect::<Vec<String>>()
                         .join(",")
@@ -5746,7 +5746,7 @@ impl OsClient {
 
         let local_var_client = &local_var_configuration.client;
 
-        let local_var_uri_str = format!("{}", local_var_configuration.base_path);
+        let local_var_uri_str = local_var_configuration.base_path.to_string();
         let mut local_var_req_builder =
             local_var_client.request(reqwest::Method::HEAD, local_var_uri_str.as_str());
 
@@ -6441,11 +6441,10 @@ impl OsClient {
           if result.errors {
             for map in &result.items {
               for (_, value) in map.iter() {
-                if let Some(error) = &value.error {
-                  if !error.kind.eq_ignore_ascii_case("version_conflict_engine_exception") {
+                if let Some(error) = &value.error
+                  && !error.kind.eq_ignore_ascii_case("version_conflict_engine_exception") {
                     tracing::trace!("{:?}", &value);
                   }
-                }
               }
             }
           }
@@ -6650,7 +6649,7 @@ impl OsClient {
         id: &str,
         action: &UpdateActionBody,
     ) -> Result<crate::bulk::IndexResponse, Error> {
-        let body = serde_json::to_value(&action)?;
+        let body = serde_json::to_value(action)?;
 
         let response = self
             .update_raw()

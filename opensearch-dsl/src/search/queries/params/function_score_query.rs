@@ -12,8 +12,10 @@ use crate::{search::*, util::*};
 /// specifies how the computed scores are combined
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
+#[derive(Default)]
 pub enum FunctionScoreMode {
     /// Scores are multiplied (default)
+    #[default]
     Multiply,
 
     /// Scores are summed
@@ -32,18 +34,15 @@ pub enum FunctionScoreMode {
     Min,
 }
 
-impl Default for FunctionScoreMode {
-    fn default() -> Self {
-        Self::Multiply
-    }
-}
 
 /// The newly computed score is combined with the score of the query. The
 /// parameter `boost_mode` defines how.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
+#[derive(Default)]
 pub enum FunctionBoostMode {
     /// Query score and function score is multiplied (default)
+    #[default]
     Multiply,
 
     /// Only function score is used, the query score is ignored
@@ -62,11 +61,6 @@ pub enum FunctionBoostMode {
     Min,
 }
 
-impl Default for FunctionBoostMode {
-    fn default() -> Self {
-        Self::Multiply
-    }
-}
 
 macro_rules! function {
     ($name:ident { $($variant:ident($query:ty)),+ $(,)? }) => {

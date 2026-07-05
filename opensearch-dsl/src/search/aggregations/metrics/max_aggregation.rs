@@ -8,8 +8,8 @@ use crate::{search::*, util::*};
 ///
 /// > The `min` and `max` aggregation operate on the `double` representation of
 /// > the data. As a
-/// consequence, the result may be approximate when running on longs whose
-/// absolute value is greater than `2^53`.
+/// > consequence, the result may be approximate when running on longs whose
+/// > absolute value is greater than `2^53`.
 ///
 /// <https://www.elastic.co/guide/en/opensearch/reference/current/search-aggregations-metrics-max-aggregation.html>
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]

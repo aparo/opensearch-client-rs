@@ -137,11 +137,7 @@ impl<T> From<&TypedHit<T>> for TypedHit<T> {
 impl<T: serde::de::DeserializeOwned> TypedHit<T> {
     pub fn from_hit(hit: opensearch_dsl::Hit) -> TypedHit<T> {
         let parsed: Result<T, serde_json::Error> = hit.source.parse();
-        let source: Option<T> = if let Ok(src) = parsed {
-            Some(src)
-        } else {
-            None
-        };
+        let source: Option<T> = parsed.ok();
         TypedHit {
             explanation: hit.explanation,
             index: hit.index,

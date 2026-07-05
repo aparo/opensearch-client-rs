@@ -11,7 +11,9 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+#[derive(Default)]
 pub enum DistanceUnit {
+    #[default]
     Miles,
 
     Millimeters,
@@ -47,8 +49,3 @@ impl std::fmt::Display for DistanceUnit {
     }
 }
 
-impl Default for DistanceUnit {
-    fn default() -> DistanceUnit {
-        Self::Miles
-    }
-}

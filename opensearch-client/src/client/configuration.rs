@@ -213,11 +213,10 @@ impl ConfigurationBuilder {
 
     #[cfg(not(target_arch = "wasm32"))]
     fn get_no_proxy_domain(&self) -> Option<NoProxy> {
-        if let Some(ref no_proxy_conf) = self.no_proxy_domain {
-            if !no_proxy_conf.is_empty() {
+        if let Some(ref no_proxy_conf) = self.no_proxy_domain
+            && !no_proxy_conf.is_empty() {
                 return NoProxy::from_string(no_proxy_conf);
             }
-        }
 
         NoProxy::from_env().or(None)
     }

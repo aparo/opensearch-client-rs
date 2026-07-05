@@ -39,9 +39,9 @@
 //! > **Warning**<br/>
 //! > Plain highlighting for large texts may require substantial amount of time
 //! > and memory. To
-//! protect against this, the maximum number of text characters that will be
-//! analyzed has been limited to 1000000. This default limit can be changed for
-//! a particular index with the index setting `index.highlight.
+//! > protect against this, the maximum number of text characters that will be
+//! > analyzed has been limited to 1000000. This default limit can be changed for
+//! > a particular index with the index setting `index.highlight.
 //! max_analyzed_offset`.
 //!
 //! <https://www.elastic.co/guide/en/opensearch/reference/current/highlighting.html>

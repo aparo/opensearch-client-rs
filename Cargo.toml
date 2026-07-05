@@ -10,7 +10,7 @@ resolver = "2"
 
 [workspace.package]
 description = "OpenSearch Client"
-version = "0.3.1"
+version = "0.3.2"
 edition = "2024"
 authors = ["Alberto Paro"]
 documentation = "https://docs.rs/opensearch-client/0.3.1/opensearch_client/"
@@ -20,10 +20,10 @@ keywords = ["opensearch"]
 readme = "README.md"
 
 [workspace.dependencies]
-opensearch-client = { path = "./opensearch-client/", version = "0.3.1" }
-opensearch-dsl = { path = "./opensearch-dsl/", version = "0.3.1" }
-opensearch-macro = { path = "./opensearch-macro/", version = "0.3.1" }
-opensearch-testcontainer = { path = "./opensearch-testcontainer/", version = "0.3.1" }
+opensearch-client = { path = "./opensearch-client/", version = "0.3.2" }
+opensearch-dsl = { path = "./opensearch-dsl/", version = "0.3.2" }
+opensearch-macro = { path = "./opensearch-macro/", version = "0.3.2" }
+opensearch-testcontainer = { path = "./opensearch-testcontainer/", version = "0.3.2" }
 
 
 [workspace.metadata.precommit]

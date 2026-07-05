@@ -12,9 +12,9 @@ readme = "../README.md"
 
 
 [dependencies]
-tokio = { version = "1.50.0", features = ["full"] }
+tokio = { version = "1.52.3", features = ["macros", "rt-multi-thread"] }
 serde = { version = "^1.0", features = ["derive", "std"] }
-serde_with = { version = "^3.17", default-features = false, features = [
+serde_with = { version = "^3.21", default-features = false, features = [
     "base64",
     "std",
     "macros",
@@ -23,16 +23,20 @@ serde_json = "^1.0"
 serde_repr = "^0.1"
 url = "^2.5"
 async-trait = "^0.1"
-reqwest = { version = "^0.12", features = ["json", "multipart"] }
-reqwest-middleware = { version = "^0.4", features = ["json", "multipart"] }
-reqwest-retry = "0.7.0"
-reqwest-tracing = "0.5.8"
-http = "1.4.0"
+reqwest = { version = "^0.13", features = ["json", "multipart"] }
+reqwest-middleware = { version = "^0.5", features = [
+    "json",
+    "multipart",
+    "query",
+] }
+reqwest-retry = "0.9.1"
+reqwest-tracing = "0.7.1"
+http = "1.4.2"
 base64 = "0.22.1"
-anyhow = "1.0.102"
+anyhow = "1.0.103"
 thiserror = "2.0.18"
 tracing = { version = "0.1.44" }
-bon = { version = "3.9.0", optional = true }
+bon = { version = "3.9.3", optional = true }
 
 opensearch-dsl = { workspace = true, optional = true }
 opensearch-macro = { workspace = true }
@@ -46,7 +50,7 @@ futures = { version = "0.3.32", optional = true }
 
 [dev-dependencies]
 opensearch-testcontainer = { workspace = true }
-testcontainers = "0.25.2"
+testcontainers = "0.27.3"
 tracing-test = "0.2.6"
 
 [features]

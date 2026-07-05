@@ -4,7 +4,7 @@
         "loco"
     ],
     "files.watcherExclude": {
-        "**/target": true
+        "**/target/**": true
     },
     "metals.inlayHints.implicitArguments.enable": true,
     "metals.inlayHints.implicitConversions.enable": true

@@ -11,9 +11,6 @@
 use crate::snapshot;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Repository {
     #[serde(rename = "type")]
@@ -25,7 +22,6 @@ pub struct Repository {
 }
 
 impl Repository {
-    
     pub fn new(r#type: String, settings: snapshot::RepositorySettings) -> Repository {
         Repository {
             r#type,

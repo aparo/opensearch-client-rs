@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PhraseSuggestCollateQuery {
     #[serde(rename = "id", default, skip_serializing_if = "Option::is_none")]
@@ -22,7 +19,6 @@ pub struct PhraseSuggestCollateQuery {
 }
 
 impl PhraseSuggestCollateQuery {
-    
     pub fn new() -> PhraseSuggestCollateQuery {
         PhraseSuggestCollateQuery {
             id: None,

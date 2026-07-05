@@ -9,8 +9,6 @@
  */
 use serde::{Deserialize, Serialize};
 
-
-
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum StringifiedBoolean {
@@ -26,7 +24,6 @@ impl std::fmt::Display for StringifiedBoolean {
         }
     }
 }
-
 
 impl StringifiedBoolean {
     pub fn as_str(&self) -> String {

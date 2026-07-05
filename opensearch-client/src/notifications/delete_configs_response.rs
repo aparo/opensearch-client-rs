@@ -11,17 +11,17 @@
 use crate::notifications;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DeleteConfigsResponse {
-    #[serde(rename = "delete_response_list", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "delete_response_list",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub delete_response_list: Option<notifications::DeleteResponseList>,
 }
 
 impl DeleteConfigsResponse {
-    
     pub fn new() -> DeleteConfigsResponse {
         DeleteConfigsResponse {
             delete_response_list: None,

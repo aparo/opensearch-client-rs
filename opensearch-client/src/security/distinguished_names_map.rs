@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct DistinguishedNamesMap {
-}
+pub struct DistinguishedNamesMap {}
 
 impl DistinguishedNamesMap {
-    
     pub fn new() -> DistinguishedNamesMap {
-        DistinguishedNamesMap {
-        }
+        DistinguishedNamesMap {}
     }
 }

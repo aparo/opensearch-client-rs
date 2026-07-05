@@ -10,21 +10,25 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct FailedIndex {
-    #[serde(rename = "index_uuid", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "index_uuid",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub index_uuid: Option<String>,
     #[serde(rename = "reason", default, skip_serializing_if = "Option::is_none")]
     pub reason: Option<String>,
-    #[serde(rename = "index_name", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "index_name",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub index_name: Option<String>,
 }
 
 impl FailedIndex {
-    
     pub fn new() -> FailedIndex {
         FailedIndex {
             index_uuid: None,

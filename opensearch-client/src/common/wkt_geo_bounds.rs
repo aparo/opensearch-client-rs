@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct WktGeoBounds {
     #[serde(rename = "wkt")]
@@ -20,10 +17,7 @@ pub struct WktGeoBounds {
 }
 
 impl WktGeoBounds {
-    
     pub fn new(wkt: String) -> WktGeoBounds {
-        WktGeoBounds {
-            wkt,
-        }
+        WktGeoBounds { wkt }
     }
 }

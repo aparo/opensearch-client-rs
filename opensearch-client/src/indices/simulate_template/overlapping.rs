@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Overlapping {
     #[serde(rename = "index_patterns")]
@@ -22,7 +19,6 @@ pub struct Overlapping {
 }
 
 impl Overlapping {
-    
     pub fn new(index_patterns: Vec<String>, name: String) -> Overlapping {
         Overlapping {
             index_patterns,

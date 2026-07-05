@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RoutingField {
     #[serde(rename = "required")]
@@ -20,10 +17,7 @@ pub struct RoutingField {
 }
 
 impl RoutingField {
-    
     pub fn new(required: bool) -> RoutingField {
-        RoutingField {
-            required,
-        }
+        RoutingField { required }
     }
 }

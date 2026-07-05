@@ -10,23 +10,23 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ClusterManagerRecord {  /// hostname
+pub struct ClusterManagerRecord {
+    /// hostname
     #[serde(rename = "host", default, skip_serializing_if = "Option::is_none")]
-    pub host: Option<String>,  /// IP address
+    pub host: Option<String>,
+    /// IP address
     #[serde(rename = "ip", default, skip_serializing_if = "Option::is_none")]
-    pub ip: Option<String>,  /// node id
+    pub ip: Option<String>,
+    /// node id
     #[serde(rename = "id", default, skip_serializing_if = "Option::is_none")]
-    pub id: Option<String>,  /// node name
+    pub id: Option<String>,
+    /// node name
     #[serde(rename = "node", default, skip_serializing_if = "Option::is_none")]
     pub node: Option<String>,
 }
 
 impl ClusterManagerRecord {
-    
     pub fn new() -> ClusterManagerRecord {
         ClusterManagerRecord {
             host: None,

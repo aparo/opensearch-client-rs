@@ -12,23 +12,21 @@ use crate::common;
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct SearchResponse {  /// The time taken to execute the search.
+pub struct SearchResponse {
+    /// The time taken to execute the search.
     #[serde(rename = "took", default, skip_serializing_if = "Option::is_none")]
     pub took: Option<u32>,
     #[serde(rename = "hits")]
     pub hits: ml::SearchHits,
     #[serde(rename = "_shards", default, skip_serializing_if = "Option::is_none")]
-    pub shards: Option<common::ShardStatistics>,  /// Whether the search timed out.
+    pub shards: Option<common::ShardStatistics>,
+    /// Whether the search timed out.
     #[serde(rename = "timed_out", default, skip_serializing_if = "Option::is_none")]
     pub timed_out: Option<bool>,
 }
 
 impl SearchResponse {
-    
     pub fn new(hits: ml::SearchHits) -> SearchResponse {
         SearchResponse {
             took: None,

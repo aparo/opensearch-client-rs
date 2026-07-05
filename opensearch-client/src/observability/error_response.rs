@@ -11,9 +11,6 @@
 use crate::observability;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ErrorResponse {
     #[serde(rename = "type")]
@@ -25,8 +22,11 @@ pub struct ErrorResponse {
 }
 
 impl ErrorResponse {
-    
-    pub fn new(r#type: String, reason: String, root_cause: Vec<observability::RootCause>) -> ErrorResponse {
+    pub fn new(
+        r#type: String,
+        reason: String,
+        root_cause: Vec<observability::RootCause>,
+    ) -> ErrorResponse {
         ErrorResponse {
             r#type,
             reason,

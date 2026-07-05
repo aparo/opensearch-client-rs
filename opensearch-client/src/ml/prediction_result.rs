@@ -11,19 +11,19 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PredictionResult {
-    #[serde(rename = "column_metas", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "column_metas",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub column_metas: Option<Vec<ml::ColumnMeta>>,
     #[serde(rename = "rows", default, skip_serializing_if = "Option::is_none")]
     pub rows: Option<Vec<ml::Rows>>,
 }
 
 impl PredictionResult {
-    
     pub fn new() -> PredictionResult {
         PredictionResult {
             column_metas: None,

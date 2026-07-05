@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct LaplaceSmoothingModel {
     #[serde(rename = "alpha")]
@@ -20,10 +17,7 @@ pub struct LaplaceSmoothingModel {
 }
 
 impl LaplaceSmoothingModel {
-    
     pub fn new(alpha: f64) -> LaplaceSmoothingModel {
-        LaplaceSmoothingModel {
-            alpha,
-        }
+        LaplaceSmoothingModel { alpha }
     }
 }

@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Segment {
     #[serde(rename = "search")]
@@ -34,7 +31,11 @@ pub struct Segment {
     pub size: Option<String>,
     #[serde(rename = "version")]
     pub version: String,
-    #[serde(rename = "memory_in_bytes", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "memory_in_bytes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub memory_in_bytes: Option<u32>,
     #[serde(rename = "attributes")]
     pub attributes: serde_json::Value,
@@ -43,8 +44,17 @@ pub struct Segment {
 }
 
 impl Segment {
-    
-    pub fn new(search: bool, generation: u32, committed: bool, deleted_docs: u32, size_in_bytes: u32, num_docs: u32, version: String, attributes: serde_json::Value, compound: bool) -> Segment {
+    pub fn new(
+        search: bool,
+        generation: u32,
+        committed: bool,
+        deleted_docs: u32,
+        size_in_bytes: u32,
+        num_docs: u32,
+        version: String,
+        attributes: serde_json::Value,
+        compound: bool,
+    ) -> Segment {
         Segment {
             search,
             memory: None,

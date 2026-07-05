@@ -10,19 +10,25 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RegressionInferenceOptions {  /// Specifies the maximum number of feature importance values per document.
-    #[serde(rename = "num_top_feature_importance_values", default, skip_serializing_if = "Option::is_none")]
-    pub num_top_feature_importance_values: Option<u32>,  /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
-    #[serde(rename = "results_field", default, skip_serializing_if = "Option::is_none")]
+pub struct RegressionInferenceOptions {
+    /// Specifies the maximum number of feature importance values per document.
+    #[serde(
+        rename = "num_top_feature_importance_values",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub num_top_feature_importance_values: Option<u32>,
+    /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
+    #[serde(
+        rename = "results_field",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub results_field: Option<String>,
 }
 
 impl RegressionInferenceOptions {
-    
     pub fn new() -> RegressionInferenceOptions {
         RegressionInferenceOptions {
             num_top_feature_importance_values: None,

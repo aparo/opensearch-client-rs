@@ -11,25 +11,23 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ExtendedBoundsFieldDateMath {  /// A date range limit, represented either as a DateMath expression or a number expressed
-  /// according to the target field's precision.
+pub struct ExtendedBoundsFieldDateMath {
+    /// A date range limit, represented either as a DateMath expression or a number expressed
+    /// according to the target field's precision.
     #[serde(rename = "max")]
-    pub max: common::aggregations::FieldDateMath,  /// A date range limit, represented either as a DateMath expression or a number expressed
-  /// according to the target field's precision.
+    pub max: common::aggregations::FieldDateMath,
+    /// A date range limit, represented either as a DateMath expression or a number expressed
+    /// according to the target field's precision.
     #[serde(rename = "min")]
     pub min: common::aggregations::FieldDateMath,
 }
 
 impl ExtendedBoundsFieldDateMath {
-    
-    pub fn new(max: common::aggregations::FieldDateMath, min: common::aggregations::FieldDateMath) -> ExtendedBoundsFieldDateMath {
-        ExtendedBoundsFieldDateMath {
-            max,
-            min,
-        }
+    pub fn new(
+        max: common::aggregations::FieldDateMath,
+        min: common::aggregations::FieldDateMath,
+    ) -> ExtendedBoundsFieldDateMath {
+        ExtendedBoundsFieldDateMath { max, min }
     }
 }

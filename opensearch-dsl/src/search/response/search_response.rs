@@ -2,7 +2,7 @@ use serde::de::DeserializeOwned;
 use serde_json::Value;
 
 use super::{AggregationResponse, ClusterStatistics, HitsMetadata, ShardStatistics, Suggest};
-use crate::{util::ShouldSkip, Map};
+use crate::{Map, util::ShouldSkip};
 
 /// Search response
 #[derive(Debug, Default, Clone, Deserialize, Serialize, PartialEq)]
@@ -77,9 +77,9 @@ impl SearchResponse {
 mod tests {
     use super::*;
     use crate::{
-        search::response::aggregation::{AggregationTrait, BucketAggregation},
         CompletionSuggestOption, Hit, PhraseSuggestOption, Source, SuggestOption,
         TermSuggestOption, TotalHits, TotalHitsRelation,
+        search::response::aggregation::{AggregationTrait, BucketAggregation},
     };
 
     #[test]

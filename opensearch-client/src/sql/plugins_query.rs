@@ -10,20 +10,18 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PluginsQuery {
-    #[serde(rename = "memory_limit", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "memory_limit",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub memory_limit: Option<String>,
 }
 
 impl PluginsQuery {
-    
     pub fn new() -> PluginsQuery {
-        PluginsQuery {
-            memory_limit: None,
-        }
+        PluginsQuery { memory_limit: None }
     }
 }

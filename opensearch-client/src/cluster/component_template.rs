@@ -11,9 +11,6 @@
 use crate::cluster;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ComponentTemplate {
     #[serde(rename = "component_template")]
@@ -23,8 +20,10 @@ pub struct ComponentTemplate {
 }
 
 impl ComponentTemplate {
-    
-    pub fn new(component_template: cluster::ComponentTemplateNode, name: String) -> ComponentTemplate {
+    pub fn new(
+        component_template: cluster::ComponentTemplateNode,
+        name: String,
+    ) -> ComponentTemplate {
         ComponentTemplate {
             component_template,
             name,

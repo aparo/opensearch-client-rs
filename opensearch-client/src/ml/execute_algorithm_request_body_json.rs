@@ -11,37 +11,75 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ExecuteAlgorithmRequestBodyJson {  /// The number of outputs.
-    #[serde(rename = "num_outputs", default, skip_serializing_if = "Option::is_none")]
-    pub num_outputs: Option<u32>,  /// The input data.
-    #[serde(rename = "input_data", default, skip_serializing_if = "Option::is_none")]
-    pub input_data: Option<Vec<f64>>,  /// The calculator operation.
+pub struct ExecuteAlgorithmRequestBodyJson {
+    /// The number of outputs.
+    #[serde(
+        rename = "num_outputs",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub num_outputs: Option<u32>,
+    /// The input data.
+    #[serde(
+        rename = "input_data",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub input_data: Option<Vec<f64>>,
+    /// The calculator operation.
     #[serde(rename = "operation", default, skip_serializing_if = "Option::is_none")]
-    pub operation: Option<String>,  /// The minimum time interval.
-    #[serde(rename = "min_time_interval", default, skip_serializing_if = "Option::is_none")]
-    pub min_time_interval: Option<u32>,  /// The attribute field names
-    #[serde(rename = "attribute_field_names", default, skip_serializing_if = "Option::is_none")]
-    pub attribute_field_names: Option<Vec<String>>,  /// The end time.
+    pub operation: Option<String>,
+    /// The minimum time interval.
+    #[serde(
+        rename = "min_time_interval",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub min_time_interval: Option<u32>,
+    /// The attribute field names
+    #[serde(
+        rename = "attribute_field_names",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub attribute_field_names: Option<Vec<String>>,
+    /// The end time.
     #[serde(rename = "end_time", default, skip_serializing_if = "Option::is_none")]
     pub end_time: Option<u32>,
-    #[serde(rename = "aggregations", default, skip_serializing_if = "Option::is_none")]
-    pub aggregations: Option<Vec<ml::Aggregation>>,  /// The metrics input.
+    #[serde(
+        rename = "aggregations",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub aggregations: Option<Vec<ml::Aggregation>>,
+    /// The metrics input.
     #[serde(rename = "metrics", default, skip_serializing_if = "Option::is_none")]
-    pub metrics: Option<Vec<Vec<f64>>>,  /// The time field name.
-    #[serde(rename = "time_field_name", default, skip_serializing_if = "Option::is_none")]
-    pub time_field_name: Option<String>,  /// The start time.
-    #[serde(rename = "start_time", default, skip_serializing_if = "Option::is_none")]
-    pub start_time: Option<u32>,  /// The index name.
-    #[serde(rename = "index_name", default, skip_serializing_if = "Option::is_none")]
+    pub metrics: Option<Vec<Vec<f64>>>,
+    /// The time field name.
+    #[serde(
+        rename = "time_field_name",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub time_field_name: Option<String>,
+    /// The start time.
+    #[serde(
+        rename = "start_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub start_time: Option<u32>,
+    /// The index name.
+    #[serde(
+        rename = "index_name",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub index_name: Option<String>,
 }
 
 impl ExecuteAlgorithmRequestBodyJson {
-    
     pub fn new() -> ExecuteAlgorithmRequestBodyJson {
         ExecuteAlgorithmRequestBodyJson {
             num_outputs: None,

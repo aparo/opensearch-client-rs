@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct MtermvectorsResponse {
     #[serde(rename = "docs")]
@@ -21,10 +18,7 @@ pub struct MtermvectorsResponse {
 }
 
 impl MtermvectorsResponse {
-    
     pub fn new(docs: Vec<core::mtermvectors::TermVectorsResult>) -> MtermvectorsResponse {
-        MtermvectorsResponse {
-            docs,
-        }
+        MtermvectorsResponse { docs }
     }
 }

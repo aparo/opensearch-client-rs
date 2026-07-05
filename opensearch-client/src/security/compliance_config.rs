@@ -10,33 +10,61 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ComplianceConfig {
-    #[serde(rename = "internal_config", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "internal_config",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub internal_config: Option<bool>,
-    #[serde(rename = "external_config", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "external_config",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub external_config: Option<bool>,
-    #[serde(rename = "write_log_diffs", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "write_log_diffs",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub write_log_diffs: Option<bool>,
     #[serde(rename = "enabled", default, skip_serializing_if = "Option::is_none")]
     pub enabled: Option<bool>,
-    #[serde(rename = "write_watched_indices", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "write_watched_indices",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub write_watched_indices: Option<Vec<String>>,
-    #[serde(rename = "read_metadata_only", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "read_metadata_only",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub read_metadata_only: Option<bool>,
-    #[serde(rename = "write_ignore_users", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "write_ignore_users",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub write_ignore_users: Option<Vec<String>>,
-    #[serde(rename = "read_ignore_users", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "read_ignore_users",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub read_ignore_users: Option<Vec<String>>,
-    #[serde(rename = "write_metadata_only", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "write_metadata_only",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub write_metadata_only: Option<bool>,
 }
 
 impl ComplianceConfig {
-    
     pub fn new() -> ComplianceConfig {
         ComplianceConfig {
             internal_config: None,

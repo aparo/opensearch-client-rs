@@ -11,9 +11,6 @@
 use crate::transforms;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TransformRequest {
     #[serde(rename = "transform")]
@@ -21,10 +18,7 @@ pub struct TransformRequest {
 }
 
 impl TransformRequest {
-    
     pub fn new(transform: transforms::Transform) -> TransformRequest {
-        TransformRequest {
-            transform,
-        }
+        TransformRequest { transform }
     }
 }

@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DeletedModel {
     #[serde(rename = "result")]
@@ -22,11 +19,7 @@ pub struct DeletedModel {
 }
 
 impl DeletedModel {
-    
     pub fn new(result: String, model_id: String) -> DeletedModel {
-        DeletedModel {
-            result,
-            model_id,
-        }
+        DeletedModel { result, model_id }
     }
 }

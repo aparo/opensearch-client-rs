@@ -11,69 +11,155 @@
 use crate::cluster;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AllocationExplainResponse {
     #[serde(rename = "current_state")]
     pub current_state: String,
-    #[serde(rename = "can_rebalance_cluster_decisions", default, skip_serializing_if = "Option::is_none")]
-    pub can_rebalance_cluster_decisions: Option<Vec<cluster::allocation_explain::AllocationDecision>>,
-    #[serde(rename = "can_allocate", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "can_rebalance_cluster_decisions",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub can_rebalance_cluster_decisions:
+        Option<Vec<cluster::allocation_explain::AllocationDecision>>,
+    #[serde(
+        rename = "can_allocate",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub can_allocate: Option<String>,
-    #[serde(rename = "can_remain_decisions", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "can_remain_decisions",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub can_remain_decisions: Option<Vec<cluster::allocation_explain::AllocationDecision>>,
-    #[serde(rename = "move_explanation", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "move_explanation",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub move_explanation: Option<String>,
-    #[serde(rename = "unassigned_info", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "unassigned_info",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub unassigned_info: Option<cluster::allocation_explain::UnassignedInformation>,
-    #[serde(rename = "can_move_to_other_node", default, skip_serializing_if = "Option::is_none")]
-    pub can_move_to_other_node: Option<String>,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "configured_delay", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "can_move_to_other_node",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub can_move_to_other_node: Option<String>,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "configured_delay",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub configured_delay: Option<String>,
-    #[serde(rename = "allocate_explanation", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "allocate_explanation",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub allocate_explanation: Option<String>,
-    #[serde(rename = "can_remain_on_current_node", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "can_remain_on_current_node",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub can_remain_on_current_node: Option<String>,
-    #[serde(rename = "can_rebalance_to_other_node", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "can_rebalance_to_other_node",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub can_rebalance_to_other_node: Option<String>,
-    #[serde(rename = "cluster_info", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "cluster_info",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub cluster_info: Option<cluster::allocation_explain::ClusterInfo>,
-    #[serde(rename = "node_allocation_decisions", default, skip_serializing_if = "Option::is_none")]
-    pub node_allocation_decisions: Option<Vec<cluster::allocation_explain::NodeAllocationExplanation>>,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "allocation_delay", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "node_allocation_decisions",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub node_allocation_decisions:
+        Option<Vec<cluster::allocation_explain::NodeAllocationExplanation>>,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "allocation_delay",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub allocation_delay: Option<String>,
-    #[serde(rename = "allocation_delay_in_millis", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "allocation_delay_in_millis",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub allocation_delay_in_millis: Option<String>,
-    #[serde(rename = "can_rebalance_cluster", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "can_rebalance_cluster",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub can_rebalance_cluster: Option<String>,
     #[serde(rename = "note", default, skip_serializing_if = "Option::is_none")]
     pub note: Option<String>,
     #[serde(rename = "index")]
-    pub index: String,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "remaining_delay", default, skip_serializing_if = "Option::is_none")]
+    pub index: String,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "remaining_delay",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub remaining_delay: Option<String>,
-    #[serde(rename = "configured_delay_in_millis", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "configured_delay_in_millis",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub configured_delay_in_millis: Option<String>,
-    #[serde(rename = "remaining_delay_in_millis", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "remaining_delay_in_millis",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub remaining_delay_in_millis: Option<String>,
     #[serde(rename = "primary")]
     pub primary: bool,
-    #[serde(rename = "rebalance_explanation", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "rebalance_explanation",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub rebalance_explanation: Option<String>,
-    #[serde(rename = "current_node", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "current_node",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub current_node: Option<cluster::allocation_explain::CurrentNode>,
     #[serde(rename = "shard")]
     pub shard: u32,
 }
 
 impl AllocationExplainResponse {
-    
-    pub fn new(current_state: String, index: String, primary: bool, shard: u32) -> AllocationExplainResponse {
+    pub fn new(
+        current_state: String,
+        index: String,
+        primary: bool,
+        shard: u32,
+    ) -> AllocationExplainResponse {
         AllocationExplainResponse {
             current_state,
             can_rebalance_cluster_decisions: None,

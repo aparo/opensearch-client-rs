@@ -14,18 +14,22 @@ use serde::{Deserialize, Serialize};
 /// RemoteStoreTranslogUploadStats
 /// Statistics related to uploads to the remote translog store.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RemoteStoreTranslogUploadStats {  /// The total amount of data uploaded to the remote translog store.
+pub struct RemoteStoreTranslogUploadStats {
+    /// The total amount of data uploaded to the remote translog store.
     #[serde(rename = "total_upload_size")]
-    pub total_upload_size: common::RemoteStoreTranslogUploadTotalUploadSizeStats,  /// The number of syncs to the remote translog store.
+    pub total_upload_size: common::RemoteStoreTranslogUploadTotalUploadSizeStats,
+    /// The number of syncs to the remote translog store.
     #[serde(rename = "total_uploads")]
     pub total_uploads: common::RemoteStoreTranslogUploadTotalUploadsStats,
 }
 
 impl RemoteStoreTranslogUploadStats {
-      /// Statistics related to uploads to the remote translog store.
-    pub fn new(total_upload_size: common::RemoteStoreTranslogUploadTotalUploadSizeStats, total_uploads: common::RemoteStoreTranslogUploadTotalUploadsStats) -> RemoteStoreTranslogUploadStats {
+    /// Statistics related to uploads to the remote translog store.
+    pub fn new(
+        total_upload_size: common::RemoteStoreTranslogUploadTotalUploadSizeStats,
+        total_uploads: common::RemoteStoreTranslogUploadTotalUploadsStats,
+    ) -> RemoteStoreTranslogUploadStats {
         RemoteStoreTranslogUploadStats {
             total_upload_size,
             total_uploads,

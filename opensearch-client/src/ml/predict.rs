@@ -11,25 +11,41 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Predict {  /// The target response.
-    #[serde(rename = "target_response", default, skip_serializing_if = "Option::is_none")]
-    pub target_response: Option<Vec<String>>,  /// The input index.
-    #[serde(rename = "input_index", default, skip_serializing_if = "Option::is_none")]
-    pub input_index: Option<Vec<String>>,  /// Whether to return bytes in model output.
-    #[serde(rename = "return_number", default, skip_serializing_if = "Option::is_none")]
-    pub return_number: Option<bool>,  /// The text documents.
+pub struct Predict {
+    /// The target response.
+    #[serde(
+        rename = "target_response",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub target_response: Option<Vec<String>>,
+    /// The input index.
+    #[serde(
+        rename = "input_index",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub input_index: Option<Vec<String>>,
+    /// Whether to return bytes in model output.
+    #[serde(
+        rename = "return_number",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub return_number: Option<bool>,
+    /// The text documents.
     #[serde(rename = "text_docs", default, skip_serializing_if = "Option::is_none")]
     pub text_docs: Option<Vec<String>>,
-    #[serde(rename = "input_query", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "input_query",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub input_query: Option<ml::InputQuery>,
 }
 
 impl Predict {
-    
     pub fn new() -> Predict {
         Predict {
             target_response: None,

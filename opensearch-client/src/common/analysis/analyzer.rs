@@ -13,39 +13,38 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Analyzer {
-    
     StandardAnalyzerValue,
-    
+
     SnowballAnalyzerValue,
-    
+
     PatternAnalyzerValue,
-    
+
     SimpleAnalyzerValue,
-    
+
     IcuAnalyzerValue,
-    
+
     SmartcnAnalyzerValue,
-    
+
     NoriAnalyzerValue,
-    
+
     WhitespaceAnalyzerValue,
-    
+
     StopAnalyzerValue,
-    
+
     FingerprintAnalyzerValue,
-    
+
     DutchAnalyzerValue,
-    
+
     CjkAnalyzerValue,
-    
+
     PhoneAnalyzerValue,
-    
+
     LanguageAnalyzerValue,
-    
+
     KeywordAnalyzerValue,
-    
+
     KuromojiAnalyzerValue,
-    
+
     CustomAnalyzerValue,
 }
 

@@ -13,7 +13,6 @@ use serde::{Deserialize, Serialize};
 /// RemoteStoreTranslogUploadTotalUploadSizeStats
 /// The total amount of data uploaded to the remote translog store.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RemoteStoreTranslogUploadTotalUploadSizeStats {
     #[serde(rename = "failed_bytes")]
@@ -31,8 +30,12 @@ pub struct RemoteStoreTranslogUploadTotalUploadSizeStats {
 }
 
 impl RemoteStoreTranslogUploadTotalUploadSizeStats {
-      /// The total amount of data uploaded to the remote translog store.
-    pub fn new(failed_bytes: u32, started_bytes: u32, succeeded_bytes: u32) -> RemoteStoreTranslogUploadTotalUploadSizeStats {
+    /// The total amount of data uploaded to the remote translog store.
+    pub fn new(
+        failed_bytes: u32,
+        started_bytes: u32,
+        succeeded_bytes: u32,
+    ) -> RemoteStoreTranslogUploadTotalUploadSizeStats {
         RemoteStoreTranslogUploadTotalUploadSizeStats {
             failed_bytes,
             failed: None,

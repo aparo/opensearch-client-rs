@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct HoltWintersModelSettings {
     #[serde(rename = "period", default, skip_serializing_if = "Option::is_none")]
@@ -31,7 +28,6 @@ pub struct HoltWintersModelSettings {
 }
 
 impl HoltWintersModelSettings {
-    
     pub fn new() -> HoltWintersModelSettings {
         HoltWintersModelSettings {
             period: None,

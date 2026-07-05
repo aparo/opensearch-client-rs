@@ -10,20 +10,18 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Headers {
-    #[serde(rename = "content_type", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "content_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub content_type: Option<String>,
 }
 
 impl Headers {
-    
     pub fn new() -> Headers {
-        Headers {
-            content_type: None,
-        }
+        Headers { content_type: None }
     }
 }

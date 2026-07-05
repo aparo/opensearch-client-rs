@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct IndicesVersions {
     #[serde(rename = "total_primary_bytes")]
@@ -26,8 +23,12 @@ pub struct IndicesVersions {
 }
 
 impl IndicesVersions {
-    
-    pub fn new(total_primary_bytes: u32, index_count: u32, version: String, primary_shard_count: u32) -> IndicesVersions {
+    pub fn new(
+        total_primary_bytes: u32,
+        index_count: u32,
+        version: String,
+        primary_shard_count: u32,
+    ) -> IndicesVersions {
         IndicesVersions {
             total_primary_bytes,
             index_count,

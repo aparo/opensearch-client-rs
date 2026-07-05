@@ -11,14 +11,19 @@
 use crate::security;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AccountDetails {
-    #[serde(rename = "backend_roles", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "backend_roles",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub backend_roles: Option<Vec<String>>,
-    #[serde(rename = "custom_attribute_names", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "custom_attribute_names",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub custom_attribute_names: Option<Vec<String>>,
     #[serde(rename = "tenants", default, skip_serializing_if = "Option::is_none")]
     pub tenants: Option<security::UserTenants>,
@@ -26,16 +31,23 @@ pub struct AccountDetails {
     pub user_name: Option<String>,
     #[serde(rename = "is_hidden", default, skip_serializing_if = "Option::is_none")]
     pub is_hidden: Option<bool>,
-    #[serde(rename = "is_reserved", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "is_reserved",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub is_reserved: Option<bool>,
-    #[serde(rename = "is_internal_user", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "is_internal_user",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub is_internal_user: Option<bool>,
     #[serde(rename = "roles", default, skip_serializing_if = "Option::is_none")]
     pub roles: Option<Vec<String>>,
 }
 
 impl AccountDetails {
-    
     pub fn new() -> AccountDetails {
         AccountDetails {
             backend_roles: None,

@@ -10,19 +10,19 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ArrayPercentilesItem {
     #[serde(rename = "key")]
     pub key: String,
-    #[serde(rename = "value_as_string", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "value_as_string",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub value_as_string: Option<String>,
 }
 
 impl ArrayPercentilesItem {
-    
     pub fn new(key: String) -> ArrayPercentilesItem {
         ArrayPercentilesItem {
             key,

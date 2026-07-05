@@ -11,22 +11,24 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RankEvalResponse {  /// The details section contains one entry for every query in the original requests section, keyed by the search request id
+pub struct RankEvalResponse {
+    /// The details section contains one entry for every query in the original requests section, keyed by the search request id
     #[serde(rename = "details")]
     pub details: serde_json::Value,
     #[serde(rename = "failures")]
-    pub failures: serde_json::Value,  /// The overall evaluation quality calculated by the defined metric
+    pub failures: serde_json::Value,
+    /// The overall evaluation quality calculated by the defined metric
     #[serde(rename = "metric_score")]
     pub metric_score: f64,
 }
 
 impl RankEvalResponse {
-    
-    pub fn new(details: serde_json::Value, failures: serde_json::Value, metric_score: f64) -> RankEvalResponse {
+    pub fn new(
+        details: serde_json::Value,
+        failures: serde_json::Value,
+        metric_score: f64,
+    ) -> RankEvalResponse {
         RankEvalResponse {
             details,
             failures,

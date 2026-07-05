@@ -11,9 +11,6 @@
 use crate::snapshot;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SnapshotShardsStatus {
     #[serde(rename = "node", default, skip_serializing_if = "Option::is_none")]
@@ -27,8 +24,10 @@ pub struct SnapshotShardsStatus {
 }
 
 impl SnapshotShardsStatus {
-    
-    pub fn new(stats: snapshot::SnapshotShardsStatsSummary, stage: snapshot::SnapshotShardsStatsStage) -> SnapshotShardsStatus {
+    pub fn new(
+        stats: snapshot::SnapshotShardsStatsSummary,
+        stage: snapshot::SnapshotShardsStatsStage,
+    ) -> SnapshotShardsStatus {
         SnapshotShardsStatus {
             node: None,
             reason: None,

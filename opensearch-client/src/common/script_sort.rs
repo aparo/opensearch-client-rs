@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ScriptSort {
     #[serde(rename = "mode", default, skip_serializing_if = "Option::is_none")]
@@ -29,7 +26,6 @@ pub struct ScriptSort {
 }
 
 impl ScriptSort {
-    
     pub fn new(script: common::Script) -> ScriptSort {
         ScriptSort {
             mode: None,

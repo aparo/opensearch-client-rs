@@ -10,20 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ChunkModelRequestBodyJson {  /// The model chunk.
+pub struct ChunkModelRequestBodyJson {
+    /// The model chunk.
     #[serde(rename = "chunk")]
     pub chunk: String,
 }
 
 impl ChunkModelRequestBodyJson {
-    
     pub fn new(chunk: String) -> ChunkModelRequestBodyJson {
-        ChunkModelRequestBodyJson {
-            chunk,
-        }
+        ChunkModelRequestBodyJson { chunk }
     }
 }

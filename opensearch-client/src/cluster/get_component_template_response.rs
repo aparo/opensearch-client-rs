@@ -11,9 +11,6 @@
 use crate::cluster;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GetComponentTemplateResponse {
     #[serde(rename = "component_templates")]
@@ -21,8 +18,9 @@ pub struct GetComponentTemplateResponse {
 }
 
 impl GetComponentTemplateResponse {
-    
-    pub fn new(component_templates: Vec<cluster::ComponentTemplate>) -> GetComponentTemplateResponse {
+    pub fn new(
+        component_templates: Vec<cluster::ComponentTemplate>,
+    ) -> GetComponentTemplateResponse {
         GetComponentTemplateResponse {
             component_templates,
         }

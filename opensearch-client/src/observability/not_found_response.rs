@@ -11,9 +11,6 @@
 use crate::observability;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct NotFoundResponse {
     #[serde(rename = "error")]
@@ -23,11 +20,7 @@ pub struct NotFoundResponse {
 }
 
 impl NotFoundResponse {
-    
     pub fn new(error: observability::ErrorResponse, status: u32) -> NotFoundResponse {
-        NotFoundResponse {
-            error,
-            status,
-        }
+        NotFoundResponse { error, status }
     }
 }

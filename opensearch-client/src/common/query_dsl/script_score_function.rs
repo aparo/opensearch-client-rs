@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ScriptScoreFunction {
     #[serde(rename = "script")]
@@ -21,10 +18,7 @@ pub struct ScriptScoreFunction {
 }
 
 impl ScriptScoreFunction {
-    
     pub fn new(script: common::Script) -> ScriptScoreFunction {
-        ScriptScoreFunction {
-            script,
-        }
+        ScriptScoreFunction { script }
     }
 }

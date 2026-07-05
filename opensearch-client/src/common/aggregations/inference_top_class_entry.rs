@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InferenceTopClassEntry {
     #[serde(rename = "class_score")]
@@ -22,7 +19,6 @@ pub struct InferenceTopClassEntry {
 }
 
 impl InferenceTopClassEntry {
-    
     pub fn new(class_score: f64, class_probability: f64) -> InferenceTopClassEntry {
         InferenceTopClassEntry {
             class_score,

@@ -12,7 +12,7 @@ use bon::bon;
 use crate::indices::*;
 use crate::*;
 use reqwest;
-use serde::{de::Error as OtherError, Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de::Error as OtherError};
 use std::{collections::HashMap, sync::Arc};
 
 pub struct IndicesApiClient {

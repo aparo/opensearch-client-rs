@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SmtpAccount {
     #[serde(rename = "host")]
@@ -26,7 +23,6 @@ pub struct SmtpAccount {
 }
 
 impl SmtpAccount {
-    
     pub fn new(host: String, method: String, from_address: String, port: u32) -> SmtpAccount {
         SmtpAccount {
             host,

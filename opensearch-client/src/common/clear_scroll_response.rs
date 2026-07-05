@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClearScrollResponse {
     #[serde(rename = "num_freed")]
@@ -22,7 +19,6 @@ pub struct ClearScrollResponse {
 }
 
 impl ClearScrollResponse {
-    
     pub fn new(num_freed: u32, succeeded: bool) -> ClearScrollResponse {
         ClearScrollResponse {
             num_freed,

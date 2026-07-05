@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PluginStats {
     #[serde(rename = "description")]
@@ -36,8 +33,16 @@ pub struct PluginStats {
 }
 
 impl PluginStats {
-    
-    pub fn new(description: String, opensearch_version: String, name: String, version: String, classname: String, extended_plugins: Vec<String>, has_native_controller: bool, java_version: String) -> PluginStats {
+    pub fn new(
+        description: String,
+        opensearch_version: String,
+        name: String,
+        version: String,
+        classname: String,
+        extended_plugins: Vec<String>,
+        has_native_controller: bool,
+        java_version: String,
+    ) -> PluginStats {
         PluginStats {
             description,
             licensed: None,

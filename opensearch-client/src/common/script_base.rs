@@ -11,21 +11,16 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ScriptBase {  /// Specifies any named parameters that are passed into the script as variables. 
-  /// Use parameters instead of hard-coded values to decrease compilation time.
+pub struct ScriptBase {
+    /// Specifies any named parameters that are passed into the script as variables.
+    /// Use parameters instead of hard-coded values to decrease compilation time.
     #[serde(rename = "params", default, skip_serializing_if = "Option::is_none")]
     pub params: Option<serde_json::Value>,
 }
 
 impl ScriptBase {
-    
     pub fn new() -> ScriptBase {
-        ScriptBase {
-            params: None,
-        }
+        ScriptBase { params: None }
     }
 }

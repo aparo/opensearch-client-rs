@@ -11,14 +11,13 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct MatchOnlyTextPropertyValue {  /// Multi-fields allow the same string value to be indexed in multiple ways for different purposes, such as one
-  /// field for search and a multi-field for sorting and aggregations, or the same string value analyzed by different analyzers.
+pub struct MatchOnlyTextPropertyValue {
+    /// Multi-fields allow the same string value to be indexed in multiple ways for different purposes, such as one
+    /// field for search and a multi-field for sorting and aggregations, or the same string value analyzed by different analyzers.
     #[serde(rename = "fields", default, skip_serializing_if = "Option::is_none")]
-    pub fields: Option<serde_json::Value>,  /// Metadata about the field.
+    pub fields: Option<serde_json::Value>,
+    /// Metadata about the field.
     #[serde(rename = "meta", default, skip_serializing_if = "Option::is_none")]
     pub meta: Option<serde_json::Value>,
     #[serde(rename = "type")]
@@ -28,7 +27,6 @@ pub struct MatchOnlyTextPropertyValue {  /// Multi-fields allow the same string 
 }
 
 impl MatchOnlyTextPropertyValue {
-    
     pub fn new(r#type: String) -> MatchOnlyTextPropertyValue {
         MatchOnlyTextPropertyValue {
             fields: None,

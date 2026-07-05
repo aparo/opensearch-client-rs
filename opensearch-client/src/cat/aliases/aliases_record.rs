@@ -10,27 +10,40 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct AliasesRecord {  /// alias name
+pub struct AliasesRecord {
+    /// alias name
     #[serde(rename = "alias", default, skip_serializing_if = "Option::is_none")]
-    pub alias: Option<String>,  /// filter
+    pub alias: Option<String>,
+    /// filter
     #[serde(rename = "filter", default, skip_serializing_if = "Option::is_none")]
     pub filter: Option<String>,
     #[serde(rename = "index", default, skip_serializing_if = "Option::is_none")]
-    pub index: Option<String>,  /// search routing
-    #[serde(rename = "routing.search", default, skip_serializing_if = "Option::is_none")]
-    pub routing_search: Option<String>,  /// index routing
-    #[serde(rename = "routing.index", default, skip_serializing_if = "Option::is_none")]
-    pub routing_index: Option<String>,  /// write index
-    #[serde(rename = "is_write_index", default, skip_serializing_if = "Option::is_none")]
+    pub index: Option<String>,
+    /// search routing
+    #[serde(
+        rename = "routing.search",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub routing_search: Option<String>,
+    /// index routing
+    #[serde(
+        rename = "routing.index",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub routing_index: Option<String>,
+    /// write index
+    #[serde(
+        rename = "is_write_index",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub is_write_index: Option<String>,
 }
 
 impl AliasesRecord {
-    
     pub fn new() -> AliasesRecord {
         AliasesRecord {
             alias: None,

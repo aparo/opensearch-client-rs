@@ -10,19 +10,17 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct GeoLine {  /// An array of `[lon, lat]` coordinates.
+pub struct GeoLine {
+    /// An array of `[lon, lat]` coordinates.
     #[serde(rename = "coordinates")]
-    pub coordinates: Vec<Vec<f64>>,  /// Always `"LineString"`
+    pub coordinates: Vec<Vec<f64>>,
+    /// Always `"LineString"`
     #[serde(rename = "type")]
     pub r#type: String,
 }
 
 impl GeoLine {
-    
     pub fn new(coordinates: Vec<Vec<f64>>, r#type: String) -> GeoLine {
         GeoLine {
             coordinates,

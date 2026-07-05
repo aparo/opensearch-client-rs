@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SnapshotShardsStatsSummaryItem {
     #[serde(rename = "file_count")]
@@ -22,7 +19,6 @@ pub struct SnapshotShardsStatsSummaryItem {
 }
 
 impl SnapshotShardsStatsSummaryItem {
-    
     pub fn new(file_count: u32, size_in_bytes: u32) -> SnapshotShardsStatsSummaryItem {
         SnapshotShardsStatsSummaryItem {
             file_count,

@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct HistogramOrder {
     #[serde(rename = "_key", default, skip_serializing_if = "Option::is_none")]
@@ -22,7 +19,6 @@ pub struct HistogramOrder {
 }
 
 impl HistogramOrder {
-    
     pub fn new() -> HistogramOrder {
         HistogramOrder {
             key: None,

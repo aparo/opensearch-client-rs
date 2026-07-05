@@ -11,23 +11,25 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RemoveIndexAction {  /// If `true`, the alias must exist to perform the action.
-    #[serde(rename = "must_exist", default, skip_serializing_if = "Option::is_none")]
+pub struct RemoveIndexAction {
+    /// If `true`, the alias must exist to perform the action.
+    #[serde(
+        rename = "must_exist",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub must_exist: Option<bool>,
     #[serde(rename = "index", default, skip_serializing_if = "Option::is_none")]
-    pub index: Option<String>,  /// A comma-separated list of data streams, indexes, and aliases used to limit the request.
-  /// Supports wildcards (`*`).
-  /// To target all data streams and indexes, omit this parameter or use `*` or `_all`.
+    pub index: Option<String>,
+    /// A comma-separated list of data streams, indexes, and aliases used to limit the request.
+    /// Supports wildcards (`*`).
+    /// To target all data streams and indexes, omit this parameter or use `*` or `_all`.
     #[serde(rename = "indices", default, skip_serializing_if = "Option::is_none")]
     pub indices: Option<common::Indices>,
 }
 
 impl RemoveIndexAction {
-    
     pub fn new() -> RemoveIndexAction {
         RemoveIndexAction {
             must_exist: None,

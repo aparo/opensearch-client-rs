@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct QueryProfile {
     #[serde(rename = "breakdown")]
@@ -29,8 +26,12 @@ pub struct QueryProfile {
 }
 
 impl QueryProfile {
-    
-    pub fn new(breakdown: core::search::QueryBreakdown, description: String, time_in_nanos: String, r#type: String) -> QueryProfile {
+    pub fn new(
+        breakdown: core::search::QueryBreakdown,
+        description: String,
+        time_in_nanos: String,
+        r#type: String,
+    ) -> QueryProfile {
         QueryProfile {
             breakdown,
             description,

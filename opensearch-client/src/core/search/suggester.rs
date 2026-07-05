@@ -10,20 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Suggester {  /// The global suggest text, which avoids repetition when the same text is used in several suggesters.
+pub struct Suggester {
+    /// The global suggest text, which avoids repetition when the same text is used in several suggesters.
     #[serde(rename = "text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
 }
 
 impl Suggester {
-    
     pub fn new() -> Suggester {
-        Suggester {
-            text: None,
-        }
+        Suggester { text: None }
     }
 }

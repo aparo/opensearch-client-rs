@@ -14,17 +14,21 @@ use serde::{Deserialize, Serialize};
 /// ScriptsPainlessExecuteRequestBodyJson
 /// The script to execute
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ScriptsPainlessExecuteRequestBodyJson {  /// The context that the script should run in.
+pub struct ScriptsPainlessExecuteRequestBodyJson {
+    /// The context that the script should run in.
     #[serde(rename = "context", default, skip_serializing_if = "Option::is_none")]
     pub context: Option<String>,
-    #[serde(rename = "context_setup", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "context_setup",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub context_setup: Option<core::scripts_painless_execute::PainlessContextSetup>,
 }
 
 impl ScriptsPainlessExecuteRequestBodyJson {
-      /// The script to execute
+    /// The script to execute
     pub fn new() -> ScriptsPainlessExecuteRequestBodyJson {
         ScriptsPainlessExecuteRequestBodyJson {
             context: None,

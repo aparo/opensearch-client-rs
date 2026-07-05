@@ -10,20 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct GeoLineSort {  /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
+pub struct GeoLineSort {
+    /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
     #[serde(rename = "field")]
     pub field: String,
 }
 
 impl GeoLineSort {
-    
     pub fn new(field: String) -> GeoLineSort {
-        GeoLineSort {
-            field,
-        }
+        GeoLineSort { field }
     }
 }

@@ -10,12 +10,12 @@
 use bon::bon;
 use opensearch_dsl::ShardStatistics;
 
+use crate::Error;
 use crate::client::ContentType;
 use crate::client::ResponseContent;
 use crate::common;
-use crate::Error;
 use reqwest;
-use serde::{de::Error as OtherError, Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de::Error as OtherError};
 use std::sync::Arc;
 pub type ExistsSourceSuccess = serde_json::Value;
 pub type ExistsSuccess = serde_json::Value;

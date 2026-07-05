@@ -10,11 +10,9 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ClusterOperatingSystemName {  /// Number of selected nodes using the operating system.
+pub struct ClusterOperatingSystemName {
+    /// Number of selected nodes using the operating system.
     #[serde(rename = "count")]
     pub count: u32,
     #[serde(rename = "name")]
@@ -22,11 +20,7 @@ pub struct ClusterOperatingSystemName {  /// Number of selected nodes using the 
 }
 
 impl ClusterOperatingSystemName {
-    
     pub fn new(count: u32, name: String) -> ClusterOperatingSystemName {
-        ClusterOperatingSystemName {
-            count,
-            name,
-        }
+        ClusterOperatingSystemName { count, name }
     }
 }

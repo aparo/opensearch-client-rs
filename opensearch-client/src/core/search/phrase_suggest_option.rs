@@ -10,23 +10,27 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PhraseSuggestOption {
-    #[serde(rename = "collate_match", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "collate_match",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub collate_match: Option<bool>,
     #[serde(rename = "text")]
     pub text: String,
     #[serde(rename = "score")]
     pub score: f64,
-    #[serde(rename = "highlighted", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "highlighted",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub highlighted: Option<String>,
 }
 
 impl PhraseSuggestOption {
-    
     pub fn new(text: String, score: f64) -> PhraseSuggestOption {
         PhraseSuggestOption {
             collate_match: None,

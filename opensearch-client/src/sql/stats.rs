@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Stats {
     #[serde(rename = "user", default, skip_serializing_if = "Option::is_none")]
@@ -22,18 +19,29 @@ pub struct Stats {
     pub query: Option<serde_json::Value>,
     #[serde(rename = "end_time", default, skip_serializing_if = "Option::is_none")]
     pub end_time: Option<serde_json::Value>,
-    #[serde(rename = "execution_time", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "execution_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub execution_time: Option<serde_json::Value>,
     #[serde(rename = "index", default, skip_serializing_if = "Option::is_none")]
     pub index: Option<serde_json::Value>,
-    #[serde(rename = "cluster_name", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "cluster_name",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub cluster_name: Option<serde_json::Value>,
-    #[serde(rename = "start_time", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "start_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub start_time: Option<String>,
 }
 
 impl Stats {
-    
     pub fn new() -> Stats {
         Stats {
             user: None,

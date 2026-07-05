@@ -13,7 +13,6 @@ use serde::{Deserialize, Serialize};
 /// DocStatus
 /// The item level REST category class codes during indexing.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DocStatus {
     #[serde(rename = "1xx", default, skip_serializing_if = "Option::is_none")]
@@ -29,7 +28,7 @@ pub struct DocStatus {
 }
 
 impl DocStatus {
-      /// The item level REST category class codes during indexing.
+    /// The item level REST category class codes during indexing.
     pub fn new() -> DocStatus {
         DocStatus {
             _1_xx: None,

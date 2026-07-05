@@ -11,37 +11,51 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct FieldCapability {  /// Whether this field can be aggregated on all indexes.
+pub struct FieldCapability {
+    /// Whether this field can be aggregated on all indexes.
     #[serde(rename = "aggregatable")]
-    pub aggregatable: bool,  /// A comma-separated list of data streams, indexes, and aliases used to limit the request.
-  /// Supports wildcards (`*`).
-  /// To target all data streams and indexes, omit this parameter or use `*` or `_all`.
-    #[serde(rename = "non_searchable_indices", default, skip_serializing_if = "Option::is_none")]
-    pub non_searchable_indices: Option<common::Indices>,  /// A comma-separated list of data streams, indexes, and aliases used to limit the request.
-  /// Supports wildcards (`*`).
-  /// To target all data streams and indexes, omit this parameter or use `*` or `_all`.
+    pub aggregatable: bool,
+    /// A comma-separated list of data streams, indexes, and aliases used to limit the request.
+    /// Supports wildcards (`*`).
+    /// To target all data streams and indexes, omit this parameter or use `*` or `_all`.
+    #[serde(
+        rename = "non_searchable_indices",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub non_searchable_indices: Option<common::Indices>,
+    /// A comma-separated list of data streams, indexes, and aliases used to limit the request.
+    /// Supports wildcards (`*`).
+    /// To target all data streams and indexes, omit this parameter or use `*` or `_all`.
     #[serde(rename = "indices", default, skip_serializing_if = "Option::is_none")]
-    pub indices: Option<common::Indices>,  /// Whether this field is indexed for search on all indexes.
+    pub indices: Option<common::Indices>,
+    /// Whether this field is indexed for search on all indexes.
     #[serde(rename = "searchable")]
-    pub searchable: bool,  /// Whether this field is registered as a metadata field.
-    #[serde(rename = "metadata_field", default, skip_serializing_if = "Option::is_none")]
+    pub searchable: bool,
+    /// Whether this field is registered as a metadata field.
+    #[serde(
+        rename = "metadata_field",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub metadata_field: Option<bool>,
     #[serde(rename = "type")]
     pub r#type: String,
     #[serde(rename = "meta", default, skip_serializing_if = "Option::is_none")]
-    pub meta: Option<serde_json::Value>,  /// A comma-separated list of data streams, indexes, and aliases used to limit the request.
-  /// Supports wildcards (`*`).
-  /// To target all data streams and indexes, omit this parameter or use `*` or `_all`.
-    #[serde(rename = "non_aggregatable_indices", default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<serde_json::Value>,
+    /// A comma-separated list of data streams, indexes, and aliases used to limit the request.
+    /// Supports wildcards (`*`).
+    /// To target all data streams and indexes, omit this parameter or use `*` or `_all`.
+    #[serde(
+        rename = "non_aggregatable_indices",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub non_aggregatable_indices: Option<common::Indices>,
 }
 
 impl FieldCapability {
-    
     pub fn new(aggregatable: bool, searchable: bool, r#type: String) -> FieldCapability {
         FieldCapability {
             aggregatable,

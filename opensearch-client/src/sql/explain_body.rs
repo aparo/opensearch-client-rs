@@ -12,21 +12,21 @@ use crate::common;
 use crate::sql;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ExplainBody {
     #[serde(rename = "name", default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     #[serde(rename = "children", default, skip_serializing_if = "Option::is_none")]
     pub children: Option<Vec<sql::ExplainBody>>,
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<serde_json::Value>,
 }
 
 impl ExplainBody {
-    
     pub fn new() -> ExplainBody {
         ExplainBody {
             name: None,

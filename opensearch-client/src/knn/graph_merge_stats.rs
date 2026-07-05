@@ -10,29 +10,45 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GraphMergeStats {
-    #[serde(rename = "current_size_in_bytes", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "current_size_in_bytes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub current_size_in_bytes: Option<u32>,
-    #[serde(rename = "total_time_in_millis", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "total_time_in_millis",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub total_time_in_millis: Option<String>,
     #[serde(rename = "total", default, skip_serializing_if = "Option::is_none")]
     pub total: Option<f64>,
-    #[serde(rename = "total_docs", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "total_docs",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub total_docs: Option<f64>,
     #[serde(rename = "current", default, skip_serializing_if = "Option::is_none")]
     pub current: Option<f64>,
-    #[serde(rename = "current_docs", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "current_docs",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub current_docs: Option<f64>,
-    #[serde(rename = "total_size_in_bytes", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "total_size_in_bytes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub total_size_in_bytes: Option<u32>,
 }
 
 impl GraphMergeStats {
-    
     pub fn new() -> GraphMergeStats {
         GraphMergeStats {
             current_size_in_bytes: None,

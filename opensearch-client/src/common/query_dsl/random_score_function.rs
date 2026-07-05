@@ -10,20 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RandomScoreFunction {  /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
+pub struct RandomScoreFunction {
+    /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
     #[serde(rename = "field", default, skip_serializing_if = "Option::is_none")]
     pub field: Option<String>,
 }
 
 impl RandomScoreFunction {
-    
     pub fn new() -> RandomScoreFunction {
-        RandomScoreFunction {
-            field: None,
-        }
+        RandomScoreFunction { field: None }
     }
 }

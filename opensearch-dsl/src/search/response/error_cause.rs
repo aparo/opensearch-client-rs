@@ -1,6 +1,6 @@
 use serde_json::Value;
 
-use crate::{util::ShouldSkip, Map};
+use crate::{Map, util::ShouldSkip};
 
 /// Error cause
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]

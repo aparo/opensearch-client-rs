@@ -1,6 +1,6 @@
 use serde::de::DeserializeOwned;
 
-use crate::{util::ShouldSkip, Map};
+use crate::{Map, util::ShouldSkip};
 
 /// Suggester response option variants
 #[derive(Clone, PartialEq, Serialize, Deserialize)]

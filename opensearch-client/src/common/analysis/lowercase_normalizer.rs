@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct LowercaseNormalizer {
     #[serde(rename = "type")]
@@ -20,10 +17,7 @@ pub struct LowercaseNormalizer {
 }
 
 impl LowercaseNormalizer {
-    
     pub fn new(r#type: String) -> LowercaseNormalizer {
-        LowercaseNormalizer {
-            r#type,
-        }
+        LowercaseNormalizer { r#type }
     }
 }

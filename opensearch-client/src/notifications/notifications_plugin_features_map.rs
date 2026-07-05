@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct NotificationsPluginFeaturesMap {
-}
+pub struct NotificationsPluginFeaturesMap {}
 
 impl NotificationsPluginFeaturesMap {
-    
     pub fn new() -> NotificationsPluginFeaturesMap {
-        NotificationsPluginFeaturesMap {
-        }
+        NotificationsPluginFeaturesMap {}
     }
 }

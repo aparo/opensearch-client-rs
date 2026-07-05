@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DateRangeQueryParameters {
     #[serde(rename = "lt", default, skip_serializing_if = "Option::is_none")]
@@ -30,7 +27,6 @@ pub struct DateRangeQueryParameters {
 }
 
 impl DateRangeQueryParameters {
-    
     pub fn new() -> DateRangeQueryParameters {
         DateRangeQueryParameters {
             lt: None,

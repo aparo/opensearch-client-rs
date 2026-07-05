@@ -10,23 +10,18 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ExtendedBoundsdouble {  /// Maximum value for the bound.
+pub struct ExtendedBoundsdouble {
+    /// Maximum value for the bound.
     #[serde(rename = "max")]
-    pub max: f64,  /// Minimum value for the bound.
+    pub max: f64,
+    /// Minimum value for the bound.
     #[serde(rename = "min")]
     pub min: f64,
 }
 
 impl ExtendedBoundsdouble {
-    
     pub fn new(max: f64, min: f64) -> ExtendedBoundsdouble {
-        ExtendedBoundsdouble {
-            max,
-            min,
-        }
+        ExtendedBoundsdouble { max, min }
     }
 }

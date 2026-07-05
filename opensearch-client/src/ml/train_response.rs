@@ -10,11 +10,9 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TrainResponse {  /// The status.
+pub struct TrainResponse {
+    /// The status.
     #[serde(rename = "status")]
     pub status: String,
     #[serde(rename = "model_id", default, skip_serializing_if = "Option::is_none")]
@@ -22,7 +20,6 @@ pub struct TrainResponse {  /// The status.
 }
 
 impl TrainResponse {
-    
     pub fn new(status: String) -> TrainResponse {
         TrainResponse {
             status,

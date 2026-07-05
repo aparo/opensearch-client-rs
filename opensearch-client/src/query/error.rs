@@ -11,9 +11,6 @@
 use crate::query;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Error {
     #[serde(rename = "root_cause")]
@@ -25,7 +22,6 @@ pub struct Error {
 }
 
 impl Error {
-    
     pub fn new(root_cause: Vec<query::RootCause>, r#type: String, reason: String) -> Error {
         Error {
             root_cause,

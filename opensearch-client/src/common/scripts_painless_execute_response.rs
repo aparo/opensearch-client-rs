@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ScriptsPainlessExecuteResponse {
-}
+pub struct ScriptsPainlessExecuteResponse {}
 
 impl ScriptsPainlessExecuteResponse {
-    
     pub fn new() -> ScriptsPainlessExecuteResponse {
-        ScriptsPainlessExecuteResponse {
-        }
+        ScriptsPainlessExecuteResponse {}
     }
 }

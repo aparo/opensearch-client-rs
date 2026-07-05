@@ -11,9 +11,6 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Result {
     #[serde(rename = "buckets", default, skip_serializing_if = "Option::is_none")]
@@ -21,10 +18,7 @@ pub struct Result {
 }
 
 impl Result {
-    
     pub fn new() -> Result {
-        Result {
-            buckets: None,
-        }
+        Result { buckets: None }
     }
 }

@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UploadModelResponse {
     #[serde(rename = "task_id")]
@@ -22,11 +19,7 @@ pub struct UploadModelResponse {
 }
 
 impl UploadModelResponse {
-    
     pub fn new(task_id: String, status: String) -> UploadModelResponse {
-        UploadModelResponse {
-            task_id,
-            status,
-        }
+        UploadModelResponse { task_id, status }
     }
 }

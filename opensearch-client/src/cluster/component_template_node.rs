@@ -12,9 +12,6 @@ use crate::cluster;
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ComponentTemplateNode {
     #[serde(rename = "version", default, skip_serializing_if = "Option::is_none")]
@@ -26,7 +23,6 @@ pub struct ComponentTemplateNode {
 }
 
 impl ComponentTemplateNode {
-    
     pub fn new(template: cluster::ComponentTemplateSummary) -> ComponentTemplateNode {
         ComponentTemplateNode {
             version: None,

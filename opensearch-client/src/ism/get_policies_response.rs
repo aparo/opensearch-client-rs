@@ -11,19 +11,19 @@
 use crate::ism;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GetPoliciesResponse {
     #[serde(rename = "policies", default, skip_serializing_if = "Option::is_none")]
     pub policies: Option<Vec<ism::PolicyWithMetadata>>,
-    #[serde(rename = "total_policies", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "total_policies",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub total_policies: Option<f64>,
 }
 
 impl GetPoliciesResponse {
-    
     pub fn new() -> GetPoliciesResponse {
         GetPoliciesResponse {
             policies: None,

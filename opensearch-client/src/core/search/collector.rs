@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Collector {
     #[serde(rename = "children", default, skip_serializing_if = "Option::is_none")]
@@ -27,7 +24,6 @@ pub struct Collector {
 }
 
 impl Collector {
-    
     pub fn new(name: String, reason: String, time_in_nanos: String) -> Collector {
         Collector {
             children: None,

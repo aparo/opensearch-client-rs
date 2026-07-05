@@ -11,25 +11,37 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AggregationProfileDelegateDebug {
     #[serde(rename = "filters", default, skip_serializing_if = "Option::is_none")]
     pub filters: Option<Vec<core::search::AggregationProfileDelegateDebugFilter>>,
-    #[serde(rename = "segments_with_doc_count_field", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "segments_with_doc_count_field",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub segments_with_doc_count_field: Option<u32>,
-    #[serde(rename = "segments_collected", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "segments_collected",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub segments_collected: Option<u32>,
-    #[serde(rename = "segments_with_deleted_docs", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "segments_with_deleted_docs",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub segments_with_deleted_docs: Option<u32>,
-    #[serde(rename = "segments_counted", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "segments_counted",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub segments_counted: Option<u32>,
 }
 
 impl AggregationProfileDelegateDebug {
-    
     pub fn new() -> AggregationProfileDelegateDebug {
         AggregationProfileDelegateDebug {
             filters: None,

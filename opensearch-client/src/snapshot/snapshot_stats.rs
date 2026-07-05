@@ -11,14 +11,12 @@
 use crate::snapshot;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SnapshotStats {
     #[serde(rename = "processed", default, skip_serializing_if = "Option::is_none")]
-    pub processed: Option<snapshot::FileCountSnapshotStats>,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    pub processed: Option<snapshot::FileCountSnapshotStats>,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
     #[serde(rename = "time", default, skip_serializing_if = "Option::is_none")]
     pub time: Option<String>,
     #[serde(rename = "incremental")]
@@ -32,8 +30,12 @@ pub struct SnapshotStats {
 }
 
 impl SnapshotStats {
-    
-    pub fn new(incremental: snapshot::FileCountSnapshotStats, start_time_in_millis: String, time_in_millis: String, total: snapshot::FileCountSnapshotStats) -> SnapshotStats {
+    pub fn new(
+        incremental: snapshot::FileCountSnapshotStats,
+        start_time_in_millis: String,
+        time_in_millis: String,
+        total: snapshot::FileCountSnapshotStats,
+    ) -> SnapshotStats {
         SnapshotStats {
             processed: None,
             time: None,

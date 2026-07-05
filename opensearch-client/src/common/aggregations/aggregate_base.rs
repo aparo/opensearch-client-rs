@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AggregateBase {
     #[serde(rename = "meta", default, skip_serializing_if = "Option::is_none")]
@@ -21,10 +18,7 @@ pub struct AggregateBase {
 }
 
 impl AggregateBase {
-    
     pub fn new() -> AggregateBase {
-        AggregateBase {
-            meta: None,
-        }
+        AggregateBase { meta: None }
     }
 }

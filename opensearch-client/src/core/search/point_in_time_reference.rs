@@ -10,20 +10,21 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct PointInTimeReference {  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "keep_alive", default, skip_serializing_if = "Option::is_none")]
+pub struct PointInTimeReference {
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "keep_alive",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub keep_alive: Option<String>,
     #[serde(rename = "id")]
     pub id: String,
 }
 
 impl PointInTimeReference {
-    
     pub fn new(id: String) -> PointInTimeReference {
         PointInTimeReference {
             keep_alive: None,

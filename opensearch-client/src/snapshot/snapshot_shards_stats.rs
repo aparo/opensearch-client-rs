@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SnapshotShardsStats {
     #[serde(rename = "initializing")]
@@ -30,8 +27,14 @@ pub struct SnapshotShardsStats {
 }
 
 impl SnapshotShardsStats {
-    
-    pub fn new(initializing: u32, finalizing: u32, failed: u32, done: u32, total: u32, started: u32) -> SnapshotShardsStats {
+    pub fn new(
+        initializing: u32,
+        finalizing: u32,
+        failed: u32,
+        done: u32,
+        total: u32,
+        started: u32,
+    ) -> SnapshotShardsStats {
         SnapshotShardsStats {
             initializing,
             finalizing,

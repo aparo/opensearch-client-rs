@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct HttpHeaders {
-}
+pub struct HttpHeaders {}
 
 impl HttpHeaders {
-    
     pub fn new() -> HttpHeaders {
-        HttpHeaders {
-        }
+        HttpHeaders {}
     }
 }

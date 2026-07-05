@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CompletionSuggestOption {
     #[serde(rename = "_source", default, skip_serializing_if = "Option::is_none")]
@@ -30,14 +27,17 @@ pub struct CompletionSuggestOption {
     pub routing: Option<String>,
     #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    #[serde(rename = "collate_match", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "collate_match",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub collate_match: Option<bool>,
     #[serde(rename = "fields", default, skip_serializing_if = "Option::is_none")]
     pub fields: Option<serde_json::Value>,
 }
 
 impl CompletionSuggestOption {
-    
     pub fn new(text: String) -> CompletionSuggestOption {
         CompletionSuggestOption {
             source: None,

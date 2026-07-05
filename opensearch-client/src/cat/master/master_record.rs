@@ -10,23 +10,23 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct MasterRecord {  /// node id
+pub struct MasterRecord {
+    /// node id
     #[serde(rename = "id", default, skip_serializing_if = "Option::is_none")]
-    pub id: Option<String>,  /// node name
+    pub id: Option<String>,
+    /// node name
     #[serde(rename = "node", default, skip_serializing_if = "Option::is_none")]
-    pub node: Option<String>,  /// IP address
+    pub node: Option<String>,
+    /// IP address
     #[serde(rename = "ip", default, skip_serializing_if = "Option::is_none")]
-    pub ip: Option<String>,  /// hostname
+    pub ip: Option<String>,
+    /// hostname
     #[serde(rename = "host", default, skip_serializing_if = "Option::is_none")]
     pub host: Option<String>,
 }
 
 impl MasterRecord {
-    
     pub fn new() -> MasterRecord {
         MasterRecord {
             id: None,

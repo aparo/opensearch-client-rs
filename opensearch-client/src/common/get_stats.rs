@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GetStats {
     #[serde(rename = "current")]
@@ -22,18 +19,29 @@ pub struct GetStats {
     #[serde(rename = "time_in_millis")]
     pub time_in_millis: String,
     #[serde(rename = "total")]
-    pub total: u32,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "exists_time", default, skip_serializing_if = "Option::is_none")]
-    pub exists_time: Option<String>,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "missing_time", default, skip_serializing_if = "Option::is_none")]
+    pub total: u32,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "exists_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub exists_time: Option<String>,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "missing_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub missing_time: Option<String>,
     #[serde(rename = "missing_total")]
     pub missing_total: u32,
     #[serde(rename = "missing_time_in_millis")]
-    pub missing_time_in_millis: String,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    pub missing_time_in_millis: String,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
     #[serde(rename = "getTime", default, skip_serializing_if = "Option::is_none")]
     pub get_time: Option<String>,
     #[serde(rename = "exists_total")]
@@ -41,8 +49,15 @@ pub struct GetStats {
 }
 
 impl GetStats {
-    
-    pub fn new(current: u32, exists_time_in_millis: String, time_in_millis: String, total: u32, missing_total: u32, missing_time_in_millis: String, exists_total: u32) -> GetStats {
+    pub fn new(
+        current: u32,
+        exists_time_in_millis: String,
+        time_in_millis: String,
+        total: u32,
+        missing_total: u32,
+        missing_time_in_millis: String,
+        exists_total: u32,
+    ) -> GetStats {
         GetStats {
             current,
             exists_time_in_millis,

@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct FieldSizeUsage {
     #[serde(rename = "size_in_bytes")]
@@ -22,7 +19,6 @@ pub struct FieldSizeUsage {
 }
 
 impl FieldSizeUsage {
-    
     pub fn new(size_in_bytes: u32) -> FieldSizeUsage {
         FieldSizeUsage {
             size_in_bytes,

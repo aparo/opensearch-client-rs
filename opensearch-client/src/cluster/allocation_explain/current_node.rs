@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CurrentNode {
     #[serde(rename = "transport_address")]
@@ -29,8 +26,13 @@ pub struct CurrentNode {
 }
 
 impl CurrentNode {
-    
-    pub fn new(transport_address: String, attributes: serde_json::Value, name: String, id: String, weight_ranking: u32) -> CurrentNode {
+    pub fn new(
+        transport_address: String,
+        attributes: serde_json::Value,
+        name: String,
+        id: String,
+        weight_ranking: u32,
+    ) -> CurrentNode {
         CurrentNode {
             transport_address,
             attributes,

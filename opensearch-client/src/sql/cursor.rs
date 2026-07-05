@@ -10,20 +10,18 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Cursor {
-    #[serde(rename = "keep_alive", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "keep_alive",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub keep_alive: Option<String>,
 }
 
 impl Cursor {
-    
     pub fn new() -> Cursor {
-        Cursor {
-            keep_alive: None,
-        }
+        Cursor { keep_alive: None }
     }
 }

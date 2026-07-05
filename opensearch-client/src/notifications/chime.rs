@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Chime {
     #[serde(rename = "url")]
@@ -20,10 +17,7 @@ pub struct Chime {
 }
 
 impl Chime {
-    
     pub fn new(url: String) -> Chime {
-        Chime {
-            url,
-        }
+        Chime { url }
     }
 }

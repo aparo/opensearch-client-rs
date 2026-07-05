@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct WhitespaceAnalyzer {
     #[serde(rename = "version", default, skip_serializing_if = "Option::is_none")]
@@ -22,7 +19,6 @@ pub struct WhitespaceAnalyzer {
 }
 
 impl WhitespaceAnalyzer {
-    
     pub fn new(r#type: String) -> WhitespaceAnalyzer {
         WhitespaceAnalyzer {
             version: None,

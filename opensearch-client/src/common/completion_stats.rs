@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CompletionStats {
     #[serde(rename = "size", default, skip_serializing_if = "Option::is_none")]
@@ -25,7 +22,6 @@ pub struct CompletionStats {
 }
 
 impl CompletionStats {
-    
     pub fn new(size_in_bytes: u32) -> CompletionStats {
         CompletionStats {
             size: None,

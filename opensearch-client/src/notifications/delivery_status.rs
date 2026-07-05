@@ -10,19 +10,23 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DeliveryStatus {
-    #[serde(rename = "status_code", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "status_code",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub status_code: Option<String>,
-    #[serde(rename = "status_text", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "status_text",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub status_text: Option<String>,
 }
 
 impl DeliveryStatus {
-    
     pub fn new() -> DeliveryStatus {
         DeliveryStatus {
             status_code: None,

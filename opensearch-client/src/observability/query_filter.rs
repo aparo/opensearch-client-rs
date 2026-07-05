@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct QueryFilter {
     #[serde(rename = "query")]
@@ -22,11 +19,7 @@ pub struct QueryFilter {
 }
 
 impl QueryFilter {
-    
     pub fn new(query: String, language: String) -> QueryFilter {
-        QueryFilter {
-            query,
-            language,
-        }
+        QueryFilter { query, language }
     }
 }

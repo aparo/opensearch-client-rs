@@ -12,21 +12,25 @@ use crate::common;
 use crate::sql;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SqlSettingsResponse {
-    #[serde(rename = "persistent", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "persistent",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub persistent: Option<serde_json::Value>,
-    #[serde(rename = "acknowledged", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "acknowledged",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub acknowledged: Option<bool>,
     #[serde(rename = "transient", default, skip_serializing_if = "Option::is_none")]
     pub transient: Option<sql::Transient>,
 }
 
 impl SqlSettingsResponse {
-    
     pub fn new() -> SqlSettingsResponse {
         SqlSettingsResponse {
             persistent: None,

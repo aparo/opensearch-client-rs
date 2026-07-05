@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct FileDetails {
     #[serde(rename = "recovered")]
@@ -24,7 +21,6 @@ pub struct FileDetails {
 }
 
 impl FileDetails {
-    
     pub fn new(recovered: u32, length: u32, name: String) -> FileDetails {
         FileDetails {
             recovered,

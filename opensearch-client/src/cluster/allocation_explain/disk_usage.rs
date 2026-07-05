@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DiskUsage {
     #[serde(rename = "total_bytes")]
@@ -36,8 +33,14 @@ pub struct DiskUsage {
 }
 
 impl DiskUsage {
-    
-    pub fn new(total_bytes: u32, free_disk_percent: f64, free_bytes: u32, path: String, used_bytes: u32, used_disk_percent: f64) -> DiskUsage {
+    pub fn new(
+        total_bytes: u32,
+        free_disk_percent: f64,
+        free_bytes: u32,
+        path: String,
+        used_bytes: u32,
+        used_disk_percent: f64,
+    ) -> DiskUsage {
         DiskUsage {
             total_bytes,
             free_disk_percent,

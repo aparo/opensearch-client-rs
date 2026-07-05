@@ -10,20 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Ok {  /// The nessage returned as part of an `OK` response.
+pub struct Ok {
+    /// The nessage returned as part of an `OK` response.
     #[serde(rename = "message", default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
 }
 
 impl Ok {
-    
     pub fn new() -> Ok {
-        Ok {
-            message: None,
-        }
+        Ok { message: None }
     }
 }

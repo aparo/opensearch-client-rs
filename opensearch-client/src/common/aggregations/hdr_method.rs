@@ -10,17 +10,18 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct HdrMethod {  /// Specifies the resolution of values for the histogram in number of significant digits.
-    #[serde(rename = "number_of_significant_value_digits", default, skip_serializing_if = "Option::is_none")]
+pub struct HdrMethod {
+    /// Specifies the resolution of values for the histogram in number of significant digits.
+    #[serde(
+        rename = "number_of_significant_value_digits",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub number_of_significant_value_digits: Option<u32>,
 }
 
 impl HdrMethod {
-    
     pub fn new() -> HdrMethod {
         HdrMethod {
             number_of_significant_value_digits: None,

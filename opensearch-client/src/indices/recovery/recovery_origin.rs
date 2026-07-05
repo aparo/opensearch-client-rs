@@ -10,28 +10,45 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RecoveryOrigin {
-    #[serde(rename = "bootstrap_new_history_uuid", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "bootstrap_new_history_uuid",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub bootstrap_new_history_uuid: Option<bool>,
     #[serde(rename = "version", default, skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
     #[serde(rename = "id", default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    #[serde(rename = "isSearchableSnapshot", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "isSearchableSnapshot",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub is_searchable_snapshot: Option<bool>,
     #[serde(rename = "index", default, skip_serializing_if = "Option::is_none")]
     pub index: Option<String>,
-    #[serde(rename = "remoteStoreIndexShallowCopy", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "remoteStoreIndexShallowCopy",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub remote_store_index_shallow_copy: Option<bool>,
     #[serde(rename = "ip", default, skip_serializing_if = "Option::is_none")]
     pub ip: Option<String>,
-    #[serde(rename = "repository", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "repository",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub repository: Option<String>,
-    #[serde(rename = "restoreUUID", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "restoreUUID",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub restore_uuid: Option<String>,
     #[serde(rename = "host", default, skip_serializing_if = "Option::is_none")]
     pub host: Option<String>,
@@ -41,12 +58,15 @@ pub struct RecoveryOrigin {
     pub hostname: Option<String>,
     #[serde(rename = "name", default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
-    #[serde(rename = "transport_address", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "transport_address",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub transport_address: Option<String>,
 }
 
 impl RecoveryOrigin {
-    
     pub fn new() -> RecoveryOrigin {
         RecoveryOrigin {
             bootstrap_new_history_uuid: None,

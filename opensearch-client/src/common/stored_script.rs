@@ -11,13 +11,11 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct StoredScript {
     #[serde(rename = "lang")]
-    pub lang: common::ScriptLanguage,  /// The script source.
+    pub lang: common::ScriptLanguage,
+    /// The script source.
     #[serde(rename = "source")]
     pub source: String,
     #[serde(rename = "options", default, skip_serializing_if = "Option::is_none")]
@@ -25,7 +23,6 @@ pub struct StoredScript {
 }
 
 impl StoredScript {
-    
     pub fn new(lang: common::ScriptLanguage, source: String) -> StoredScript {
         StoredScript {
             lang,

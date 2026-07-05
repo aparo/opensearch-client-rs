@@ -14,18 +14,30 @@ use serde::{Deserialize, Serialize};
 /// Term
 /// Term to match the query.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Term {  /// The function name.
-    #[serde(rename = "function_name", default, skip_serializing_if = "Option::is_none")]
-    pub function_name: Option<String>,  /// The type.
+pub struct Term {
+    /// The function name.
+    #[serde(
+        rename = "function_name",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub function_name: Option<String>,
+    /// The type.
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
-    pub r#type: Option<ml::Type>,  /// The algorithm.
+    pub r#type: Option<ml::Type>,
+    /// The algorithm.
     #[serde(rename = "algorithm", default, skip_serializing_if = "Option::is_none")]
-    pub algorithm: Option<ml::Algorithm>,  /// The owner name keyword.
+    pub algorithm: Option<ml::Algorithm>,
+    /// The owner name keyword.
     #[serde(rename = "name", default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<ml::OwnerNameKeyword>,  /// The owner name keyword.
-    #[serde(rename = "owner.name.keyword", default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<ml::OwnerNameKeyword>,
+    /// The owner name keyword.
+    #[serde(
+        rename = "owner.name.keyword",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub owner_name_keyword: Option<ml::OwnerNameKeyword>,
     #[serde(rename = "model_id", default, skip_serializing_if = "Option::is_none")]
     pub model_id: Option<String>,
@@ -34,7 +46,7 @@ pub struct Term {  /// The function name.
 }
 
 impl Term {
-      /// Term to match the query.
+    /// Term to match the query.
     pub fn new() -> Term {
         Term {
             function_name: None,

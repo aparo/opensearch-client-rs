@@ -11,15 +11,23 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Buckets {  /// The start time.
-    #[serde(rename = "start_time", default, skip_serializing_if = "Option::is_none")]
-    pub start_time: Option<u32>,  /// The overall aggregate value.
-    #[serde(rename = "overall_aggregate_value", default, skip_serializing_if = "Option::is_none")]
-    pub overall_aggregate_value: Option<f64>,  /// The end time.
+pub struct Buckets {
+    /// The start time.
+    #[serde(
+        rename = "start_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub start_time: Option<u32>,
+    /// The overall aggregate value.
+    #[serde(
+        rename = "overall_aggregate_value",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub overall_aggregate_value: Option<f64>,
+    /// The end time.
     #[serde(rename = "end_time", default, skip_serializing_if = "Option::is_none")]
     pub end_time: Option<u32>,
     #[serde(rename = "entities", default, skip_serializing_if = "Option::is_none")]
@@ -27,7 +35,6 @@ pub struct Buckets {  /// The start time.
 }
 
 impl Buckets {
-    
     pub fn new() -> Buckets {
         Buckets {
             start_time: None,

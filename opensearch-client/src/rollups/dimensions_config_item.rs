@@ -11,21 +11,21 @@
 use crate::rollups;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DimensionsConfigItem {
     #[serde(rename = "histogram", default, skip_serializing_if = "Option::is_none")]
     pub histogram: Option<rollups::HistogramDimension>,
-    #[serde(rename = "date_histogram", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "date_histogram",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub date_histogram: Option<rollups::DateHistogramDimension>,
     #[serde(rename = "terms", default, skip_serializing_if = "Option::is_none")]
     pub terms: Option<rollups::TermsDimension>,
 }
 
 impl DimensionsConfigItem {
-    
     pub fn new() -> DimensionsConfigItem {
         DimensionsConfigItem {
             histogram: None,

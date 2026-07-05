@@ -11,12 +11,13 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AlgorithmOperations {
-    #[serde(rename = "train_predict", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "train_predict",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub train_predict: Option<ml::ModelStats>,
     #[serde(rename = "undeploy", default, skip_serializing_if = "Option::is_none")]
     pub undeploy: Option<ml::ModelStats>,
@@ -33,7 +34,6 @@ pub struct AlgorithmOperations {
 }
 
 impl AlgorithmOperations {
-    
     pub fn new() -> AlgorithmOperations {
         AlgorithmOperations {
             train_predict: None,

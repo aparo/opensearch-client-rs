@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClusterIngest {
     #[serde(rename = "processor_stats")]
@@ -23,7 +20,6 @@ pub struct ClusterIngest {
 }
 
 impl ClusterIngest {
-    
     pub fn new(processor_stats: serde_json::Value, number_of_pipelines: u32) -> ClusterIngest {
         ClusterIngest {
             processor_stats,

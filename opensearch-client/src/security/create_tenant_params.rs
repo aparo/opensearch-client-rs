@@ -10,20 +10,18 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CreateTenantParams {
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
 }
 
 impl CreateTenantParams {
-    
     pub fn new() -> CreateTenantParams {
-        CreateTenantParams {
-            description: None,
-        }
+        CreateTenantParams { description: None }
     }
 }

@@ -11,21 +11,27 @@
 use crate::cluster;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ClusterOperatingSystem {  /// Contains statistics about processor architectures (for example, x86_64 or aarch64) used by selected nodes.
-    #[serde(rename = "architectures", default, skip_serializing_if = "Option::is_none")]
-    pub architectures: Option<Vec<cluster::stats::ClusterOperatingSystemArchitecture>>,  /// Contains statistics about operating systems used by selected nodes.
+pub struct ClusterOperatingSystem {
+    /// Contains statistics about processor architectures (for example, x86_64 or aarch64) used by selected nodes.
+    #[serde(
+        rename = "architectures",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub architectures: Option<Vec<cluster::stats::ClusterOperatingSystemArchitecture>>,
+    /// Contains statistics about operating systems used by selected nodes.
     #[serde(rename = "pretty_names")]
-    pub pretty_names: Vec<cluster::stats::ClusterOperatingSystemPrettyName>,  /// Number of processors used to calculate thread pool size across all selected nodes.
-  /// This number can be set with the processors setting of a node and defaults to the number of processors reported by the operating system.
-  /// In both cases, this number will never be larger than 32.
+    pub pretty_names: Vec<cluster::stats::ClusterOperatingSystemPrettyName>,
+    /// Number of processors used to calculate thread pool size across all selected nodes.
+    /// This number can be set with the processors setting of a node and defaults to the number of processors reported by the operating system.
+    /// In both cases, this number will never be larger than 32.
     #[serde(rename = "allocated_processors")]
-    pub allocated_processors: u32,  /// Contains statistics about operating systems used by selected nodes.
+    pub allocated_processors: u32,
+    /// Contains statistics about operating systems used by selected nodes.
     #[serde(rename = "names")]
-    pub names: Vec<cluster::stats::ClusterOperatingSystemName>,  /// Number of processors available to JVM across all selected nodes.
+    pub names: Vec<cluster::stats::ClusterOperatingSystemName>,
+    /// Number of processors available to JVM across all selected nodes.
     #[serde(rename = "available_processors")]
     pub available_processors: u32,
     #[serde(rename = "mem")]
@@ -33,8 +39,13 @@ pub struct ClusterOperatingSystem {  /// Contains statistics about processor arc
 }
 
 impl ClusterOperatingSystem {
-    
-    pub fn new(pretty_names: Vec<cluster::stats::ClusterOperatingSystemPrettyName>, allocated_processors: u32, names: Vec<cluster::stats::ClusterOperatingSystemName>, available_processors: u32, mem: cluster::stats::OperatingSystemMemoryInfo) -> ClusterOperatingSystem {
+    pub fn new(
+        pretty_names: Vec<cluster::stats::ClusterOperatingSystemPrettyName>,
+        allocated_processors: u32,
+        names: Vec<cluster::stats::ClusterOperatingSystemName>,
+        available_processors: u32,
+        mem: cluster::stats::OperatingSystemMemoryInfo,
+    ) -> ClusterOperatingSystem {
         ClusterOperatingSystem {
             architectures: None,
             pretty_names,

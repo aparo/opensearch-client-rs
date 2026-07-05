@@ -11,12 +11,13 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GeoDistanceSort {
-    #[serde(rename = "distance_type", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "distance_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub distance_type: Option<String>,
     #[serde(rename = "unit", default, skip_serializing_if = "Option::is_none")]
     pub unit: Option<common::DistanceUnit>,
@@ -24,12 +25,15 @@ pub struct GeoDistanceSort {
     pub mode: Option<String>,
     #[serde(rename = "order", default, skip_serializing_if = "Option::is_none")]
     pub order: Option<String>,
-    #[serde(rename = "ignore_unmapped", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "ignore_unmapped",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub ignore_unmapped: Option<bool>,
 }
 
 impl GeoDistanceSort {
-    
     pub fn new() -> GeoDistanceSort {
         GeoDistanceSort {
             distance_type: None,

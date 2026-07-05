@@ -11,19 +11,19 @@
 use crate::remote_store;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RestoreResponse {
     #[serde(rename = "accepted", default, skip_serializing_if = "Option::is_none")]
     pub accepted: Option<bool>,
-    #[serde(rename = "remote_store", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "remote_store",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub remote_store: Option<remote_store::RemoteStoreRestoreInfo>,
 }
 
 impl RestoreResponse {
-    
     pub fn new() -> RestoreResponse {
         RestoreResponse {
             accepted: None,

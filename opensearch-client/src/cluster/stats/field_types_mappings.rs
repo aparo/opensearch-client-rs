@@ -11,20 +11,15 @@
 use crate::cluster;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct FieldTypesMappings {  /// Contains statistics about field data types used in selected nodes.
+pub struct FieldTypesMappings {
+    /// Contains statistics about field data types used in selected nodes.
     #[serde(rename = "field_types")]
     pub field_types: Vec<cluster::stats::FieldTypes>,
 }
 
 impl FieldTypesMappings {
-    
     pub fn new(field_types: Vec<cluster::stats::FieldTypes>) -> FieldTypesMappings {
-        FieldTypesMappings {
-            field_types,
-        }
+        FieldTypesMappings { field_types }
     }
 }

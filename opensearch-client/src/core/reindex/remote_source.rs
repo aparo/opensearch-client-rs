@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RemoteSource {
     #[serde(rename = "username", default, skip_serializing_if = "Option::is_none")]
@@ -21,19 +18,29 @@ pub struct RemoteSource {
     #[serde(rename = "password", default, skip_serializing_if = "Option::is_none")]
     pub password: Option<String>,
     #[serde(rename = "host")]
-    pub host: String,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "socket_timeout", default, skip_serializing_if = "Option::is_none")]
-    pub socket_timeout: Option<String>,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "connect_timeout", default, skip_serializing_if = "Option::is_none")]
-    pub connect_timeout: Option<String>,  /// An object containing the headers of the request.
+    pub host: String,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "socket_timeout",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub socket_timeout: Option<String>,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "connect_timeout",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub connect_timeout: Option<String>,
+    /// An object containing the headers of the request.
     #[serde(rename = "headers", default, skip_serializing_if = "Option::is_none")]
     pub headers: Option<serde_json::Value>,
 }
 
 impl RemoteSource {
-    
     pub fn new(host: String) -> RemoteSource {
         RemoteSource {
             username: None,

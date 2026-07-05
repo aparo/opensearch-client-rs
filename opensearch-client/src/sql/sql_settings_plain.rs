@@ -11,9 +11,6 @@
 use crate::sql;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SqlSettingsPlain {
     #[serde(rename = "transient", default, skip_serializing_if = "Option::is_none")]
@@ -21,10 +18,7 @@ pub struct SqlSettingsPlain {
 }
 
 impl SqlSettingsPlain {
-    
     pub fn new() -> SqlSettingsPlain {
-        SqlSettingsPlain {
-            transient: None,
-        }
+        SqlSettingsPlain { transient: None }
     }
 }

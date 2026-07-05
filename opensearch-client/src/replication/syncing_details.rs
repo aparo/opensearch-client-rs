@@ -10,21 +10,25 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SyncingDetails {
-    #[serde(rename = "leader_checkpoint", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "leader_checkpoint",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub leader_checkpoint: Option<u32>,
     #[serde(rename = "seq_no", default, skip_serializing_if = "Option::is_none")]
     pub seq_no: Option<u32>,
-    #[serde(rename = "follower_checkpoint", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "follower_checkpoint",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub follower_checkpoint: Option<u32>,
 }
 
 impl SyncingDetails {
-    
     pub fn new() -> SyncingDetails {
         SyncingDetails {
             leader_checkpoint: None,

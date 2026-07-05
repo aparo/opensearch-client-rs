@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ShardStatistics {
     #[serde(rename = "failed")]
@@ -29,7 +26,6 @@ pub struct ShardStatistics {
 }
 
 impl ShardStatistics {
-    
     pub fn new(failed: u32, total: u32, successful: u32) -> ShardStatistics {
         ShardStatistics {
             failed,

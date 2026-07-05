@@ -10,19 +10,23 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TenantPermission {
-    #[serde(rename = "allowed_actions", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "allowed_actions",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub allowed_actions: Option<Vec<String>>,
-    #[serde(rename = "tenant_patterns", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "tenant_patterns",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub tenant_patterns: Option<Vec<String>>,
 }
 
 impl TenantPermission {
-    
     pub fn new() -> TenantPermission {
         TenantPermission {
             allowed_actions: None,

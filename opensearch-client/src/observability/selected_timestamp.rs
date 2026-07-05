@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SelectedTimestamp {
     #[serde(rename = "name")]
@@ -22,11 +19,7 @@ pub struct SelectedTimestamp {
 }
 
 impl SelectedTimestamp {
-    
     pub fn new(name: String, r#type: String) -> SelectedTimestamp {
-        SelectedTimestamp {
-            name,
-            r#type,
-        }
+        SelectedTimestamp { name, r#type }
     }
 }

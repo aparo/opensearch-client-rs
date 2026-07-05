@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Algorithms {
-}
+pub struct Algorithms {}
 
 impl Algorithms {
-    
     pub fn new() -> Algorithms {
-        Algorithms {
-        }
+        Algorithms {}
     }
 }

@@ -11,29 +11,41 @@
 use crate::security;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CreateRole {
-    #[serde(rename = "index_permissions", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "index_permissions",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub index_permissions: Option<Vec<security::IndexPermission>>,
-    #[serde(rename = "tenant_permissions", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "tenant_permissions",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub tenant_permissions: Option<Vec<security::TenantPermission>>,
     #[serde(rename = "reserved", default, skip_serializing_if = "Option::is_none")]
     pub reserved: Option<bool>,
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
     #[serde(rename = "hidden", default, skip_serializing_if = "Option::is_none")]
     pub hidden: Option<bool>,
-    #[serde(rename = "cluster_permissions", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "cluster_permissions",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub cluster_permissions: Option<Vec<String>>,
     #[serde(rename = "static", default, skip_serializing_if = "Option::is_none")]
     pub r#static: Option<bool>,
 }
 
 impl CreateRole {
-    
     pub fn new() -> CreateRole {
         CreateRole {
             index_permissions: None,

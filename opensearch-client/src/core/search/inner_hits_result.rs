@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InnerHitsResult {
     #[serde(rename = "hits")]
@@ -21,10 +18,7 @@ pub struct InnerHitsResult {
 }
 
 impl InnerHitsResult {
-    
     pub fn new(hits: core::search::HitsMetadata) -> InnerHitsResult {
-        InnerHitsResult {
-            hits,
-        }
+        InnerHitsResult { hits }
     }
 }

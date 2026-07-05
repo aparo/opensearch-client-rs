@@ -11,9 +11,6 @@
 use crate::notifications;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UpdateConfig {
     #[serde(rename = "config")]
@@ -23,7 +20,6 @@ pub struct UpdateConfig {
 }
 
 impl UpdateConfig {
-    
     pub fn new(config: notifications::NotificationsConfigItem) -> UpdateConfig {
         UpdateConfig {
             config,

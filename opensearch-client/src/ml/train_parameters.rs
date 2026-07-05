@@ -10,21 +10,28 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TrainParameters {  /// The distance type.
-    #[serde(rename = "distance_type", default, skip_serializing_if = "Option::is_none")]
-    pub distance_type: Option<String>,  /// The iterations.
-    #[serde(rename = "iterations", default, skip_serializing_if = "Option::is_none")]
-    pub iterations: Option<u32>,  /// The centroids.
+pub struct TrainParameters {
+    /// The distance type.
+    #[serde(
+        rename = "distance_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub distance_type: Option<String>,
+    /// The iterations.
+    #[serde(
+        rename = "iterations",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub iterations: Option<u32>,
+    /// The centroids.
     #[serde(rename = "centroids", default, skip_serializing_if = "Option::is_none")]
     pub centroids: Option<u32>,
 }
 
 impl TrainParameters {
-    
     pub fn new() -> TrainParameters {
         TrainParameters {
             distance_type: None,

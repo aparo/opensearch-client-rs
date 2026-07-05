@@ -11,25 +11,41 @@
 use crate::replication;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AutoFollowStatus {
-    #[serde(rename = "num_success_start_replication", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "num_success_start_replication",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub num_success_start_replication: Option<f64>,
-    #[serde(rename = "autofollow_stats", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "autofollow_stats",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub autofollow_stats: Option<Vec<replication::AutoFollowStats>>,
-    #[serde(rename = "num_failed_leader_calls", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "num_failed_leader_calls",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub num_failed_leader_calls: Option<f64>,
-    #[serde(rename = "failed_indices", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "failed_indices",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub failed_indices: Option<Vec<String>>,
-    #[serde(rename = "num_failed_start_replication", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "num_failed_start_replication",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub num_failed_start_replication: Option<f64>,
 }
 
 impl AutoFollowStatus {
-    
     pub fn new() -> AutoFollowStatus {
         AutoFollowStatus {
             num_success_start_replication: None,

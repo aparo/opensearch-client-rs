@@ -11,21 +11,21 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InferenceFeatureImportance {
     #[serde(rename = "classes", default, skip_serializing_if = "Option::is_none")]
     pub classes: Option<Vec<common::aggregations::InferenceClassImportance>>,
-    #[serde(rename = "importance", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "importance",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub importance: Option<f64>,
     #[serde(rename = "feature_name")]
     pub feature_name: String,
 }
 
 impl InferenceFeatureImportance {
-    
     pub fn new(feature_name: String) -> InferenceFeatureImportance {
         InferenceFeatureImportance {
             classes: None,

@@ -10,19 +10,25 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TaskResourceUsage {  /// The CPU time used in nanoseconds.
-    #[serde(rename = "cpu_time_in_nanos", default, skip_serializing_if = "Option::is_none")]
-    pub cpu_time_in_nanos: Option<u32>,  /// The memory usage in bytes.
-    #[serde(rename = "memory_in_bytes", default, skip_serializing_if = "Option::is_none")]
+pub struct TaskResourceUsage {
+    /// The CPU time used in nanoseconds.
+    #[serde(
+        rename = "cpu_time_in_nanos",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub cpu_time_in_nanos: Option<u32>,
+    /// The memory usage in bytes.
+    #[serde(
+        rename = "memory_in_bytes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub memory_in_bytes: Option<u32>,
 }
 
 impl TaskResourceUsage {
-    
     pub fn new() -> TaskResourceUsage {
         TaskResourceUsage {
             cpu_time_in_nanos: None,

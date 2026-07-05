@@ -10,17 +10,17 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ActionForceMerge {
-    #[serde(rename = "max_num_segments", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "max_num_segments",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub max_num_segments: Option<u32>,
 }
 
 impl ActionForceMerge {
-    
     pub fn new() -> ActionForceMerge {
         ActionForceMerge {
             max_num_segments: None,

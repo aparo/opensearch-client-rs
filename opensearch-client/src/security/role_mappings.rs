@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RoleMappings {
-}
+pub struct RoleMappings {}
 
 impl RoleMappings {
-    
     pub fn new() -> RoleMappings {
-        RoleMappings {
-        }
+        RoleMappings {}
     }
 }

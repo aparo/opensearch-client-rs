@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DistinguishedNames {
     #[serde(rename = "nodes_dn", default, skip_serializing_if = "Option::is_none")]
@@ -20,10 +17,7 @@ pub struct DistinguishedNames {
 }
 
 impl DistinguishedNames {
-    
     pub fn new() -> DistinguishedNames {
-        DistinguishedNames {
-            nodes_dn: None,
-        }
+        DistinguishedNames { nodes_dn: None }
     }
 }

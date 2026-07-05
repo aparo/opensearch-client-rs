@@ -1,5 +1,5 @@
 use super::SpanQuery;
-use crate::{util::*, Query};
+use crate::{Query, util::*};
 
 /// Returns matches which enclose another span query. The span containing query
 /// maps to Lucene `SpanContainingQuery`. <br/>

@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Token {
     #[serde(rename = "name")]
@@ -22,11 +19,7 @@ pub struct Token {
 }
 
 impl Token {
-    
     pub fn new(name: String, r#type: String) -> Token {
-        Token {
-            name,
-            r#type,
-        }
+        Token { name, r#type }
     }
 }

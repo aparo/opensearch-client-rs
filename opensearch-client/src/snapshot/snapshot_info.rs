@@ -12,9 +12,6 @@ use crate::common;
 use crate::snapshot;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SnapshotInfo {
     #[serde(rename = "state", default, skip_serializing_if = "Option::is_none")]
@@ -23,41 +20,76 @@ pub struct SnapshotInfo {
     pub data_streams: Vec<String>,
     #[serde(rename = "failures", default, skip_serializing_if = "Option::is_none")]
     pub failures: Option<Vec<snapshot::SnapshotShardFailure>>,
-    #[serde(rename = "include_global_state", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "include_global_state",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub include_global_state: Option<bool>,
     #[serde(rename = "uuid")]
     pub uuid: String,
     #[serde(rename = "indices", default, skip_serializing_if = "Option::is_none")]
     pub indices: Option<Vec<String>>,
-    #[serde(rename = "start_time_in_millis", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "start_time_in_millis",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub start_time_in_millis: Option<String>,
-    #[serde(rename = "remote_store_index_shallow_copy", default, skip_serializing_if = "Option::is_none")]
-    pub remote_store_index_shallow_copy: Option<bool>,  /// A date and time, either as a string whose format depends on the context (defaulting to ISO_8601) or the
-  /// number of milliseconds since the epoch. OpenSearch accepts both as an input but will generally output a string.
-  /// representation.
+    #[serde(
+        rename = "remote_store_index_shallow_copy",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub remote_store_index_shallow_copy: Option<bool>,
+    /// A date and time, either as a string whose format depends on the context (defaulting to ISO_8601) or the
+    /// number of milliseconds since the epoch. OpenSearch accepts both as an input but will generally output a string.
+    /// representation.
     #[serde(rename = "end_time", default, skip_serializing_if = "Option::is_none")]
     pub end_time: Option<common::DateTime>,
     #[serde(rename = "shards", default, skip_serializing_if = "Option::is_none")]
     pub shards: Option<common::ShardStatistics>,
-    #[serde(rename = "end_time_in_millis", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "end_time_in_millis",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub end_time_in_millis: Option<String>,
-    #[serde(rename = "duration_in_millis", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "duration_in_millis",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub duration_in_millis: Option<String>,
     #[serde(rename = "reason", default, skip_serializing_if = "Option::is_none")]
     pub reason: Option<String>,
-    #[serde(rename = "version_id", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "version_id",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub version_id: Option<u32>,
     #[serde(rename = "snapshot")]
-    pub snapshot: String,  /// A date and time, either as a string whose format depends on the context (defaulting to ISO_8601) or the
-  /// number of milliseconds since the epoch. OpenSearch accepts both as an input but will generally output a string.
-  /// representation.
-    #[serde(rename = "start_time", default, skip_serializing_if = "Option::is_none")]
+    pub snapshot: String,
+    /// A date and time, either as a string whose format depends on the context (defaulting to ISO_8601) or the
+    /// number of milliseconds since the epoch. OpenSearch accepts both as an input but will generally output a string.
+    /// representation.
+    #[serde(
+        rename = "start_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub start_time: Option<common::DateTime>,
     #[serde(rename = "metadata", default, skip_serializing_if = "Option::is_none")]
     pub metadata: Option<common::Metadata>,
-    #[serde(rename = "pinned_timestamp", default, skip_serializing_if = "Option::is_none")]
-    pub pinned_timestamp: Option<String>,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "pinned_timestamp",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub pinned_timestamp: Option<String>,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
     #[serde(rename = "duration", default, skip_serializing_if = "Option::is_none")]
     pub duration: Option<String>,
     #[serde(rename = "version", default, skip_serializing_if = "Option::is_none")]
@@ -65,7 +97,6 @@ pub struct SnapshotInfo {
 }
 
 impl SnapshotInfo {
-    
     pub fn new(data_streams: Vec<String>, uuid: String, snapshot: String) -> SnapshotInfo {
         SnapshotInfo {
             state: None,

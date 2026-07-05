@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct LinearInterpolationSmoothingModel {
     #[serde(rename = "trigram_lambda")]
@@ -24,8 +21,11 @@ pub struct LinearInterpolationSmoothingModel {
 }
 
 impl LinearInterpolationSmoothingModel {
-    
-    pub fn new(trigram_lambda: f64, bigram_lambda: f64, unigram_lambda: f64) -> LinearInterpolationSmoothingModel {
+    pub fn new(
+        trigram_lambda: f64,
+        bigram_lambda: f64,
+        unigram_lambda: f64,
+    ) -> LinearInterpolationSmoothingModel {
         LinearInterpolationSmoothingModel {
             trigram_lambda,
             bigram_lambda,

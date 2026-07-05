@@ -11,21 +11,21 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CountResponse {
     #[serde(rename = "count")]
     pub count: u32,
-    #[serde(rename = "terminated_early", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "terminated_early",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub terminated_early: Option<bool>,
     #[serde(rename = "_shards")]
     pub shards: common::ShardStatistics,
 }
 
 impl CountResponse {
-    
     pub fn new(count: u32, shards: common::ShardStatistics) -> CountResponse {
         CountResponse {
             count,

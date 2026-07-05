@@ -12,16 +12,25 @@ use crate::common;
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SearchTemplateResponse {
-    #[serde(rename = "terminated_early", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "terminated_early",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub terminated_early: Option<bool>,
-    #[serde(rename = "num_reduce_phases", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "num_reduce_phases",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub num_reduce_phases: Option<u32>,
-    #[serde(rename = "_scroll_id", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "_scroll_id",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub scroll_id: Option<String>,
     #[serde(rename = "suggest", default, skip_serializing_if = "Option::is_none")]
     pub suggest: Option<serde_json::Value>,
@@ -35,7 +44,11 @@ pub struct SearchTemplateResponse {
     pub max_score: Option<f64>,
     #[serde(rename = "_shards")]
     pub shards: common::ShardStatistics,
-    #[serde(rename = "aggregations", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "aggregations",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub aggregations: Option<serde_json::Value>,
     #[serde(rename = "pit_id", default, skip_serializing_if = "Option::is_none")]
     pub pit_id: Option<String>,
@@ -50,8 +63,12 @@ pub struct SearchTemplateResponse {
 }
 
 impl SearchTemplateResponse {
-    
-    pub fn new(hits: core::search::HitsMetadata, shards: common::ShardStatistics, timed_out: bool, took: u32) -> SearchTemplateResponse {
+    pub fn new(
+        hits: core::search::HitsMetadata,
+        shards: common::ShardStatistics,
+        timed_out: bool,
+        took: u32,
+    ) -> SearchTemplateResponse {
         SearchTemplateResponse {
             terminated_early: None,
             num_reduce_phases: None,

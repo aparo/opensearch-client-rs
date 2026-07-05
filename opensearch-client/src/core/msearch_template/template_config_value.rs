@@ -11,29 +11,29 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TemplateConfigValue {  /// When `true`, provides a profile for the query execution.
+pub struct TemplateConfigValue {
+    /// When `true`, provides a profile for the query execution.
     #[serde(rename = "profile", default, skip_serializing_if = "Option::is_none")]
-    pub profile: Option<bool>,  /// The key-value pairs used to replace Mustache variables in the template.
-  /// The key is the variable name.
-  /// The value is the variable value.
+    pub profile: Option<bool>,
+    /// The key-value pairs used to replace Mustache variables in the template.
+    /// The key is the variable name.
+    /// The value is the variable value.
     #[serde(rename = "params", default, skip_serializing_if = "Option::is_none")]
     pub params: Option<serde_json::Value>,
     #[serde(rename = "id", default, skip_serializing_if = "Option::is_none")]
-    pub id: Option<String>,  /// When `true`, returns detailed information about score calculation as part of each hit.
+    pub id: Option<String>,
+    /// When `true`, returns detailed information about score calculation as part of each hit.
     #[serde(rename = "explain", default, skip_serializing_if = "Option::is_none")]
-    pub explain: Option<bool>,  /// An inline search template that supports the same parameters as the Search API
-  /// request body and Mustache variables. If no `id` is specified, this
-  /// parameter is required.
+    pub explain: Option<bool>,
+    /// An inline search template that supports the same parameters as the Search API
+    /// request body and Mustache variables. If no `id` is specified, this
+    /// parameter is required.
     #[serde(rename = "source", default, skip_serializing_if = "Option::is_none")]
     pub source: Option<String>,
 }
 
 impl TemplateConfigValue {
-    
     pub fn new() -> TemplateConfigValue {
         TemplateConfigValue {
             profile: None,

@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SuggestFuzziness {
     #[serde(rename = "min_length")]
@@ -28,8 +25,13 @@ pub struct SuggestFuzziness {
 }
 
 impl SuggestFuzziness {
-    
-    pub fn new(min_length: u32, prefix_length: u32, unicode_aware: bool, transpositions: bool, fuzziness: String) -> SuggestFuzziness {
+    pub fn new(
+        min_length: u32,
+        prefix_length: u32,
+        unicode_aware: bool,
+        transpositions: bool,
+        fuzziness: String,
+    ) -> SuggestFuzziness {
         SuggestFuzziness {
             min_length,
             prefix_length,

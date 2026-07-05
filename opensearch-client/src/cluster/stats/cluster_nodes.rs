@@ -12,12 +12,13 @@ use crate::cluster;
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClusterNodes {
-    #[serde(rename = "network_types", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "network_types",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub network_types: Option<cluster::stats::ClusterNetworkTypes>,
     #[serde(rename = "os", default, skip_serializing_if = "Option::is_none")]
     pub os: Option<cluster::stats::ClusterOperatingSystem>,
@@ -25,27 +26,42 @@ pub struct ClusterNodes {
     pub jvm: Option<cluster::stats::ClusterJvm>,
     #[serde(rename = "count", default, skip_serializing_if = "Option::is_none")]
     pub count: Option<cluster::stats::ClusterNodeCount>,
-    #[serde(rename = "indexing_pressure", default, skip_serializing_if = "Option::is_none")]
-    pub indexing_pressure: Option<cluster::stats::IndexingPressure>,  /// Contains statistics about OpenSearch distributions installed on selected nodes.
-    #[serde(rename = "packaging_types", default, skip_serializing_if = "Option::is_none")]
-    pub packaging_types: Option<Vec<cluster::stats::NodePackagingType>>,  /// Array of OpenSearch versions used on selected nodes.
+    #[serde(
+        rename = "indexing_pressure",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub indexing_pressure: Option<cluster::stats::IndexingPressure>,
+    /// Contains statistics about OpenSearch distributions installed on selected nodes.
+    #[serde(
+        rename = "packaging_types",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub packaging_types: Option<Vec<cluster::stats::NodePackagingType>>,
+    /// Array of OpenSearch versions used on selected nodes.
     #[serde(rename = "versions", default, skip_serializing_if = "Option::is_none")]
     pub versions: Option<Vec<String>>,
     #[serde(rename = "fs", default, skip_serializing_if = "Option::is_none")]
-    pub fs: Option<cluster::stats::ClusterFileSystem>,  /// Contains statistics about the discovery types used by selected nodes.
-    #[serde(rename = "discovery_types", default, skip_serializing_if = "Option::is_none")]
+    pub fs: Option<cluster::stats::ClusterFileSystem>,
+    /// Contains statistics about the discovery types used by selected nodes.
+    #[serde(
+        rename = "discovery_types",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub discovery_types: Option<serde_json::Value>,
     #[serde(rename = "ingest", default, skip_serializing_if = "Option::is_none")]
     pub ingest: Option<cluster::stats::ClusterIngest>,
     #[serde(rename = "process", default, skip_serializing_if = "Option::is_none")]
-    pub process: Option<cluster::stats::ClusterProcess>,  /// Contains statistics about installed plugins and modules by selected nodes.
-  /// If no plugins or modules are installed, this array is empty.
+    pub process: Option<cluster::stats::ClusterProcess>,
+    /// Contains statistics about installed plugins and modules by selected nodes.
+    /// If no plugins or modules are installed, this array is empty.
     #[serde(rename = "plugins", default, skip_serializing_if = "Option::is_none")]
     pub plugins: Option<Vec<common::PluginStats>>,
 }
 
 impl ClusterNodes {
-    
     pub fn new() -> ClusterNodes {
         ClusterNodes {
             network_types: None,

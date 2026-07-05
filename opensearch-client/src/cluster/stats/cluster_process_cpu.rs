@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClusterProcessCpu {
     #[serde(rename = "percent")]
@@ -20,10 +17,7 @@ pub struct ClusterProcessCpu {
 }
 
 impl ClusterProcessCpu {
-    
     pub fn new(percent: f64) -> ClusterProcessCpu {
-        ClusterProcessCpu {
-            percent,
-        }
+        ClusterProcessCpu { percent }
     }
 }

@@ -11,9 +11,6 @@
 use crate::sql;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Sql {
     #[serde(rename = "cursor", default, skip_serializing_if = "Option::is_none")]
@@ -21,10 +18,7 @@ pub struct Sql {
 }
 
 impl Sql {
-    
     pub fn new() -> Sql {
-        Sql {
-            cursor: None,
-        }
+        Sql { cursor: None }
     }
 }

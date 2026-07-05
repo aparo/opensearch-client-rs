@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ActionIndexPriority {
     #[serde(rename = "priority", default, skip_serializing_if = "Option::is_none")]
@@ -20,10 +17,7 @@ pub struct ActionIndexPriority {
 }
 
 impl ActionIndexPriority {
-    
     pub fn new() -> ActionIndexPriority {
-        ActionIndexPriority {
-            priority: None,
-        }
+        ActionIndexPriority { priority: None }
     }
 }

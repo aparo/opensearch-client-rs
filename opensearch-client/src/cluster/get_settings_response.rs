@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GetSettingsResponse {
     #[serde(rename = "defaults", default, skip_serializing_if = "Option::is_none")]
@@ -25,7 +22,6 @@ pub struct GetSettingsResponse {
 }
 
 impl GetSettingsResponse {
-    
     pub fn new(persistent: serde_json::Value, transient: serde_json::Value) -> GetSettingsResponse {
         GetSettingsResponse {
             defaults: None,

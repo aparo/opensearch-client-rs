@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineGetDictUserDefined {
     #[serde(rename = "fields", default, skip_serializing_if = "Option::is_none")]
@@ -22,7 +19,11 @@ pub struct InlineGetDictUserDefined {
     pub routing: Option<String>,
     #[serde(rename = "_seq_no", default, skip_serializing_if = "Option::is_none")]
     pub seq_no: Option<u32>,
-    #[serde(rename = "_primary_term", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "_primary_term",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub primary_term: Option<u32>,
     #[serde(rename = "found")]
     pub found: bool,
@@ -31,7 +32,6 @@ pub struct InlineGetDictUserDefined {
 }
 
 impl InlineGetDictUserDefined {
-    
     pub fn new(found: bool) -> InlineGetDictUserDefined {
         InlineGetDictUserDefined {
             fields: None,

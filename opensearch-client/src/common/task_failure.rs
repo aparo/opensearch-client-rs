@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TaskFailure {
     #[serde(rename = "task_id")]
@@ -27,8 +24,12 @@ pub struct TaskFailure {
 }
 
 impl TaskFailure {
-    
-    pub fn new(task_id: u32, status: String, reason: common::ErrorCause, node_id: String) -> TaskFailure {
+    pub fn new(
+        task_id: u32,
+        status: String,
+        reason: common::ErrorCause,
+        node_id: String,
+    ) -> TaskFailure {
         TaskFailure {
             task_id,
             status,

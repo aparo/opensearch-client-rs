@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RerouteParameters {
     #[serde(rename = "shard")]
@@ -30,7 +27,6 @@ pub struct RerouteParameters {
 }
 
 impl RerouteParameters {
-    
     pub fn new(shard: u32, index: String, node: String, allow_primary: bool) -> RerouteParameters {
         RerouteParameters {
             shard,

@@ -10,19 +10,25 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct MutualInformationHeuristic {  /// Set to `false` if you defined a custom background filter that represents a different set of documents that you want to compare to.
-    #[serde(rename = "background_is_superset", default, skip_serializing_if = "Option::is_none")]
-    pub background_is_superset: Option<bool>,  /// Set to `false` to filter out the terms that appear less often in the subset than in documents outside the subset.
-    #[serde(rename = "include_negatives", default, skip_serializing_if = "Option::is_none")]
+pub struct MutualInformationHeuristic {
+    /// Set to `false` if you defined a custom background filter that represents a different set of documents that you want to compare to.
+    #[serde(
+        rename = "background_is_superset",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub background_is_superset: Option<bool>,
+    /// Set to `false` to filter out the terms that appear less often in the subset than in documents outside the subset.
+    #[serde(
+        rename = "include_negatives",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub include_negatives: Option<bool>,
 }
 
 impl MutualInformationHeuristic {
-    
     pub fn new() -> MutualInformationHeuristic {
         MutualInformationHeuristic {
             background_is_superset: None,

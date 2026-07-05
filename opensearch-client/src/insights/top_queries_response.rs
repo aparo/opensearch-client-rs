@@ -11,9 +11,6 @@
 use crate::insights;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TopQueriesResponse {
     #[serde(rename = "top_queries")]
@@ -21,10 +18,7 @@ pub struct TopQueriesResponse {
 }
 
 impl TopQueriesResponse {
-    
     pub fn new(top_queries: Vec<insights::TopQuery>) -> TopQueriesResponse {
-        TopQueriesResponse {
-            top_queries,
-        }
+        TopQueriesResponse { top_queries }
     }
 }

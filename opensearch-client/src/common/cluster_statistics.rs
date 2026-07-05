@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClusterStatistics {
     #[serde(rename = "partial")]
@@ -33,8 +30,14 @@ pub struct ClusterStatistics {
 }
 
 impl ClusterStatistics {
-    
-    pub fn new(partial: u32, failed: u32, running: u32, skipped: u32, total: u32, successful: u32) -> ClusterStatistics {
+    pub fn new(
+        partial: u32,
+        failed: u32,
+        running: u32,
+        skipped: u32,
+        total: u32,
+        successful: u32,
+    ) -> ClusterStatistics {
         ClusterStatistics {
             partial,
             details: None,

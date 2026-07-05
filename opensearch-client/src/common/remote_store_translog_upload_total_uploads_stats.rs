@@ -13,20 +13,26 @@ use serde::{Deserialize, Serialize};
 /// RemoteStoreTranslogUploadTotalUploadsStats
 /// The number of syncs to the remote translog store.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RemoteStoreTranslogUploadTotalUploadsStats {  /// The number of successful upload syncs to the remote translog store.
+pub struct RemoteStoreTranslogUploadTotalUploadsStats {
+    /// The number of successful upload syncs to the remote translog store.
     #[serde(rename = "succeeded")]
-    pub succeeded: u32,  /// The number of failed upload syncs to the remote translog store.
+    pub succeeded: u32,
+    /// The number of failed upload syncs to the remote translog store.
     #[serde(rename = "failed")]
-    pub failed: u32,  /// The number of upload syncs to the remote translog store that have started.
+    pub failed: u32,
+    /// The number of upload syncs to the remote translog store that have started.
     #[serde(rename = "started")]
     pub started: u32,
 }
 
 impl RemoteStoreTranslogUploadTotalUploadsStats {
-      /// The number of syncs to the remote translog store.
-    pub fn new(succeeded: u32, failed: u32, started: u32) -> RemoteStoreTranslogUploadTotalUploadsStats {
+    /// The number of syncs to the remote translog store.
+    pub fn new(
+        succeeded: u32,
+        failed: u32,
+        started: u32,
+    ) -> RemoteStoreTranslogUploadTotalUploadsStats {
         RemoteStoreTranslogUploadTotalUploadsStats {
             succeeded,
             failed,

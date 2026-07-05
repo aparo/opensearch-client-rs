@@ -11,9 +11,6 @@
 use crate::sql;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ExplainResponse {
     #[serde(rename = "root", default, skip_serializing_if = "Option::is_none")]
@@ -21,10 +18,7 @@ pub struct ExplainResponse {
 }
 
 impl ExplainResponse {
-    
     pub fn new() -> ExplainResponse {
-        ExplainResponse {
-            root: None,
-        }
+        ExplainResponse { root: None }
     }
 }

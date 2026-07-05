@@ -11,9 +11,6 @@
 use crate::indices;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RecoveryFiles {
     #[serde(rename = "recovered")]
@@ -29,7 +26,6 @@ pub struct RecoveryFiles {
 }
 
 impl RecoveryFiles {
-    
     pub fn new(recovered: u32, reused: u32, total: u32, percent: String) -> RecoveryFiles {
         RecoveryFiles {
             recovered,

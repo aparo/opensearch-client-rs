@@ -1,4 +1,4 @@
-use quote::{quote, ToTokens};
+use quote::{ToTokens, quote};
 use syn::__private::TokenStream2;
 
 use crate::models::OpenSearchDeriveInput;

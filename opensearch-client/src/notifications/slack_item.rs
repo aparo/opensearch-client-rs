@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SlackItem {
     #[serde(rename = "url")]
@@ -20,10 +17,7 @@ pub struct SlackItem {
 }
 
 impl SlackItem {
-    
     pub fn new(url: String) -> SlackItem {
-        SlackItem {
-            url,
-        }
+        SlackItem { url }
     }
 }

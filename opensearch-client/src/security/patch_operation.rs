@@ -10,23 +10,18 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct PatchOperation {  /// The operation to perform, such as `remove`, `add`, `replace`, `move`, `copy`, or `test`.
+pub struct PatchOperation {
+    /// The operation to perform, such as `remove`, `add`, `replace`, `move`, `copy`, or `test`.
     #[serde(rename = "op")]
-    pub op: String,  /// The path to the resource.
+    pub op: String,
+    /// The path to the resource.
     #[serde(rename = "path")]
     pub path: String,
 }
 
 impl PatchOperation {
-    
     pub fn new(op: String, path: String) -> PatchOperation {
-        PatchOperation {
-            op,
-            path,
-        }
+        PatchOperation { op, path }
     }
 }

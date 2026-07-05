@@ -11,9 +11,6 @@
 use crate::remote_store;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RemoteStoreRestoreInfo {
     #[serde(rename = "snapshot", default, skip_serializing_if = "Option::is_none")]
@@ -25,7 +22,6 @@ pub struct RemoteStoreRestoreInfo {
 }
 
 impl RemoteStoreRestoreInfo {
-    
     pub fn new() -> RemoteStoreRestoreInfo {
         RemoteStoreRestoreInfo {
             snapshot: None,

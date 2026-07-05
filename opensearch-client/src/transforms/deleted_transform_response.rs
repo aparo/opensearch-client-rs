@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DeletedTransformResponse {
     #[serde(rename = "_seq_no")]
@@ -37,8 +34,17 @@ pub struct DeletedTransformResponse {
 }
 
 impl DeletedTransformResponse {
-    
-    pub fn new(seq_no: u32, shards: common::ShardStatistics, index: String, id: String, primary_term: u32, version: u32, forced_refresh: bool, result: String, status: f64) -> DeletedTransformResponse {
+    pub fn new(
+        seq_no: u32,
+        shards: common::ShardStatistics,
+        index: String,
+        id: String,
+        primary_term: u32,
+        version: u32,
+        forced_refresh: bool,
+        result: String,
+        status: f64,
+    ) -> DeletedTransformResponse {
         DeletedTransformResponse {
             seq_no,
             shards,

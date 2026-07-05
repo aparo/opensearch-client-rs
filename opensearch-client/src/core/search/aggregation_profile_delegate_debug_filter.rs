@@ -10,23 +10,31 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AggregationProfileDelegateDebugFilter {
-    #[serde(rename = "specialized_for", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "specialized_for",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub specialized_for: Option<String>,
-    #[serde(rename = "results_from_metadata", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "results_from_metadata",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub results_from_metadata: Option<u32>,
     #[serde(rename = "query", default, skip_serializing_if = "Option::is_none")]
     pub query: Option<String>,
-    #[serde(rename = "segments_counted_in_constant_time", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "segments_counted_in_constant_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub segments_counted_in_constant_time: Option<u32>,
 }
 
 impl AggregationProfileDelegateDebugFilter {
-    
     pub fn new() -> AggregationProfileDelegateDebugFilter {
         AggregationProfileDelegateDebugFilter {
             specialized_for: None,

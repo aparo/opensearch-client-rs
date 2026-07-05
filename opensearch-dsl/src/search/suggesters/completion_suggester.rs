@@ -1,5 +1,5 @@
 use super::{SuggestContextQuery, SuggestFuzziness, Suggester};
-use crate::{util::ShouldSkip, Map};
+use crate::{Map, util::ShouldSkip};
 
 /// The `completion` suggester provides auto-complete/search-as-you-type
 /// functionality. This is a navigational feature to guide users to relevant
@@ -105,7 +105,7 @@ impl CompletionSuggester {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{util::assert_serialize, Fuzziness};
+    use crate::{Fuzziness, util::assert_serialize};
 
     #[test]
     fn serializes() {

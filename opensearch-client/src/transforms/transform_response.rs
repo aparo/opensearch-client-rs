@@ -11,9 +11,6 @@
 use crate::transforms;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TransformResponse {
     #[serde(rename = "transform", default, skip_serializing_if = "Option::is_none")]
@@ -22,14 +19,17 @@ pub struct TransformResponse {
     pub id: Option<String>,
     #[serde(rename = "_seq_no", default, skip_serializing_if = "Option::is_none")]
     pub seq_no: Option<u32>,
-    #[serde(rename = "_primary_term", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "_primary_term",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub primary_term: Option<u32>,
     #[serde(rename = "_version", default, skip_serializing_if = "Option::is_none")]
     pub version: Option<u32>,
 }
 
 impl TransformResponse {
-    
     pub fn new() -> TransformResponse {
         TransformResponse {
             transform: None,

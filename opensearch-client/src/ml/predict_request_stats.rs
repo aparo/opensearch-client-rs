@@ -10,29 +10,32 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct PredictRequestStats {  /// The maximum latency in milliseconds.
+pub struct PredictRequestStats {
+    /// The maximum latency in milliseconds.
     #[serde(rename = "max", default, skip_serializing_if = "Option::is_none")]
-    pub max: Option<f64>,  /// The total predict requests on this node.
+    pub max: Option<f64>,
+    /// The total predict requests on this node.
     #[serde(rename = "count", default, skip_serializing_if = "Option::is_none")]
-    pub count: Option<u32>,  /// The 99th percentile latency in milliseconds.
+    pub count: Option<u32>,
+    /// The 99th percentile latency in milliseconds.
     #[serde(rename = "p99", default, skip_serializing_if = "Option::is_none")]
-    pub p_99: Option<f64>,  /// The 50th percentile latency in milliseconds.
+    pub p_99: Option<f64>,
+    /// The 50th percentile latency in milliseconds.
     #[serde(rename = "p50", default, skip_serializing_if = "Option::is_none")]
-    pub p_50: Option<f64>,  /// The average latency in milliseconds.
+    pub p_50: Option<f64>,
+    /// The average latency in milliseconds.
     #[serde(rename = "average", default, skip_serializing_if = "Option::is_none")]
-    pub average: Option<f64>,  /// The minimum latency in milliseconds.
+    pub average: Option<f64>,
+    /// The minimum latency in milliseconds.
     #[serde(rename = "min", default, skip_serializing_if = "Option::is_none")]
-    pub min: Option<f64>,  /// The 90th percentile latency in milliseconds.
+    pub min: Option<f64>,
+    /// The 90th percentile latency in milliseconds.
     #[serde(rename = "p90", default, skip_serializing_if = "Option::is_none")]
     pub p_90: Option<f64>,
 }
 
 impl PredictRequestStats {
-    
     pub fn new() -> PredictRequestStats {
         PredictRequestStats {
             max: None,

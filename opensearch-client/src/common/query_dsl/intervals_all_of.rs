@@ -11,16 +11,16 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct IntervalsAllOf {  /// Maximum number of positions between the matching terms.
-  /// Intervals produced by the rules further apart than this are not considered matches.
+pub struct IntervalsAllOf {
+    /// Maximum number of positions between the matching terms.
+    /// Intervals produced by the rules further apart than this are not considered matches.
     #[serde(rename = "max_gaps", default, skip_serializing_if = "Option::is_none")]
-    pub max_gaps: Option<u32>,  /// An array of rules to combine. All rules must produce a match in a document for the overall source to match.
+    pub max_gaps: Option<u32>,
+    /// An array of rules to combine. All rules must produce a match in a document for the overall source to match.
     #[serde(rename = "intervals")]
-    pub intervals: Vec<common::query_dsl::IntervalsContainer>,  /// If `true`, intervals produced by the rules should appear in the order in which they are specified.
+    pub intervals: Vec<common::query_dsl::IntervalsContainer>,
+    /// If `true`, intervals produced by the rules should appear in the order in which they are specified.
     #[serde(rename = "ordered", default, skip_serializing_if = "Option::is_none")]
     pub ordered: Option<bool>,
     #[serde(rename = "filter", default, skip_serializing_if = "Option::is_none")]
@@ -28,7 +28,6 @@ pub struct IntervalsAllOf {  /// Maximum number of positions between the matchin
 }
 
 impl IntervalsAllOf {
-    
     pub fn new(intervals: Vec<common::query_dsl::IntervalsContainer>) -> IntervalsAllOf {
         IntervalsAllOf {
             max_gaps: None,

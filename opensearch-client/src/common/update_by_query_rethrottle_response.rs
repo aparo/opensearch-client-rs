@@ -11,19 +11,19 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UpdateByQueryRethrottleResponse {
     #[serde(rename = "nodes")]
     pub nodes: serde_json::Value,
-    #[serde(rename = "node_failures", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "node_failures",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub node_failures: Option<Vec<common::ErrorCause>>,
 }
 
 impl UpdateByQueryRethrottleResponse {
-    
     pub fn new(nodes: serde_json::Value) -> UpdateByQueryRethrottleResponse {
         UpdateByQueryRethrottleResponse {
             nodes,

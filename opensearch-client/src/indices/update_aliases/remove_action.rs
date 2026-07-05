@@ -11,15 +11,18 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RemoveAction {  /// If `true`, the alias must exist to perform the action.
-    #[serde(rename = "must_exist", default, skip_serializing_if = "Option::is_none")]
-    pub must_exist: Option<bool>,  /// A comma-separated list of data streams, indexes, and aliases used to limit the request.
-  /// Supports wildcards (`*`).
-  /// To target all data streams and indexes, omit this parameter or use `*` or `_all`.
+pub struct RemoveAction {
+    /// If `true`, the alias must exist to perform the action.
+    #[serde(
+        rename = "must_exist",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub must_exist: Option<bool>,
+    /// A comma-separated list of data streams, indexes, and aliases used to limit the request.
+    /// Supports wildcards (`*`).
+    /// To target all data streams and indexes, omit this parameter or use `*` or `_all`.
     #[serde(rename = "indices", default, skip_serializing_if = "Option::is_none")]
     pub indices: Option<common::Indices>,
     #[serde(rename = "alias", default, skip_serializing_if = "Option::is_none")]
@@ -29,7 +32,6 @@ pub struct RemoveAction {  /// If `true`, the alias must exist to perform the ac
 }
 
 impl RemoveAction {
-    
     pub fn new() -> RemoveAction {
         RemoveAction {
             must_exist: None,

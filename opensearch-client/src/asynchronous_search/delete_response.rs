@@ -10,20 +10,18 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DeleteResponse {
-    #[serde(rename = "acknowledged", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "acknowledged",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub acknowledged: Option<bool>,
 }
 
 impl DeleteResponse {
-    
     pub fn new() -> DeleteResponse {
-        DeleteResponse {
-            acknowledged: None,
-        }
+        DeleteResponse { acknowledged: None }
     }
 }

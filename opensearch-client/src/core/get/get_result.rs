@@ -9,7 +9,7 @@
  */
 
 use crate::{common, core::get::GetTypedResult};
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GetResult {

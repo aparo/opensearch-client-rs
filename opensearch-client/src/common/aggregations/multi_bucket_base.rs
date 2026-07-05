@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct MultiBucketBase {
     #[serde(rename = "doc_count")]
@@ -20,10 +17,7 @@ pub struct MultiBucketBase {
 }
 
 impl MultiBucketBase {
-    
     pub fn new(doc_count: f64) -> MultiBucketBase {
-        MultiBucketBase {
-            doc_count,
-        }
+        MultiBucketBase { doc_count }
     }
 }

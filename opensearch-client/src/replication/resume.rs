@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Resume {
-}
+pub struct Resume {}
 
 impl Resume {
-    
     pub fn new() -> Resume {
-        Resume {
-        }
+        Resume {}
     }
 }

@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct HoltLinearModelSettings {
     #[serde(rename = "beta", default, skip_serializing_if = "Option::is_none")]
@@ -22,7 +19,6 @@ pub struct HoltLinearModelSettings {
 }
 
 impl HoltLinearModelSettings {
-    
     pub fn new() -> HoltLinearModelSettings {
         HoltLinearModelSettings {
             beta: None,

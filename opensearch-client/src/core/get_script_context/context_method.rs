@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ContextMethod {
     #[serde(rename = "return_type")]
@@ -25,8 +22,11 @@ pub struct ContextMethod {
 }
 
 impl ContextMethod {
-    
-    pub fn new(return_type: String, name: String, params: Vec<core::get_script_context::ContextMethodParam>) -> ContextMethod {
+    pub fn new(
+        return_type: String,
+        name: String,
+        params: Vec<core::get_script_context::ContextMethodParam>,
+    ) -> ContextMethod {
         ContextMethod {
             return_type,
             name,

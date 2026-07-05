@@ -13,18 +13,16 @@ use serde::{Deserialize, Serialize};
 /// OwnerNameKeyword
 /// The owner name keyword.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct OwnerNameKeyword {  /// Adjust the relevance score of a match.
+pub struct OwnerNameKeyword {
+    /// Adjust the relevance score of a match.
     #[serde(rename = "boost", default, skip_serializing_if = "Option::is_none")]
     pub boost: Option<f64>,
 }
 
 impl OwnerNameKeyword {
-      /// The owner name keyword.
+    /// The owner name keyword.
     pub fn new() -> OwnerNameKeyword {
-        OwnerNameKeyword {
-            boost: None,
-        }
+        OwnerNameKeyword { boost: None }
     }
 }

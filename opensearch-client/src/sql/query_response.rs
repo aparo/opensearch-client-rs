@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct QueryResponse {
     #[serde(rename = "cursor", default, skip_serializing_if = "Option::is_none")]
@@ -29,7 +26,6 @@ pub struct QueryResponse {
 }
 
 impl QueryResponse {
-    
     pub fn new() -> QueryResponse {
         QueryResponse {
             cursor: None,

@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GetScriptLanguagesResponse {
     #[serde(rename = "language_contexts")]
@@ -23,8 +20,10 @@ pub struct GetScriptLanguagesResponse {
 }
 
 impl GetScriptLanguagesResponse {
-    
-    pub fn new(language_contexts: Vec<core::get_script_languages::LanguageContext>, types_allowed: Vec<String>) -> GetScriptLanguagesResponse {
+    pub fn new(
+        language_contexts: Vec<core::get_script_languages::LanguageContext>,
+        types_allowed: Vec<String>,
+    ) -> GetScriptLanguagesResponse {
         GetScriptLanguagesResponse {
             language_contexts,
             types_allowed,

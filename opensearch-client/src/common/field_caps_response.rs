@@ -11,13 +11,11 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct FieldCapsResponse {  /// A comma-separated list of data streams, indexes, and aliases used to limit the request.
-  /// Supports wildcards (`*`).
-  /// To target all data streams and indexes, omit this parameter or use `*` or `_all`.
+pub struct FieldCapsResponse {
+    /// A comma-separated list of data streams, indexes, and aliases used to limit the request.
+    /// Supports wildcards (`*`).
+    /// To target all data streams and indexes, omit this parameter or use `*` or `_all`.
     #[serde(rename = "indices")]
     pub indices: common::Indices,
     #[serde(rename = "fields")]
@@ -25,11 +23,7 @@ pub struct FieldCapsResponse {  /// A comma-separated list of data streams, inde
 }
 
 impl FieldCapsResponse {
-    
     pub fn new(indices: common::Indices, fields: serde_json::Value) -> FieldCapsResponse {
-        FieldCapsResponse {
-            indices,
-            fields,
-        }
+        FieldCapsResponse { indices, fields }
     }
 }

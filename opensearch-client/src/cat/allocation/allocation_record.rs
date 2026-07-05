@@ -10,19 +10,17 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct AllocationRecord {  /// Number of primary and replica shards assigned to the node.
+pub struct AllocationRecord {
+    /// Number of primary and replica shards assigned to the node.
     #[serde(rename = "shards", default, skip_serializing_if = "Option::is_none")]
-    pub shards: Option<String>,  /// Name for the node. Set using the `node.name` setting.
+    pub shards: Option<String>,
+    /// Name for the node. Set using the `node.name` setting.
     #[serde(rename = "node", default, skip_serializing_if = "Option::is_none")]
     pub node: Option<String>,
 }
 
 impl AllocationRecord {
-    
     pub fn new() -> AllocationRecord {
         AllocationRecord {
             shards: None,

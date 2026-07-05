@@ -13,15 +13,12 @@ use serde::{Deserialize, Serialize};
 /// IndexRequestBodyJson
 /// The document
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct IndexRequestBodyJson {
-}
+pub struct IndexRequestBodyJson {}
 
 impl IndexRequestBodyJson {
-      /// The document
+    /// The document
     pub fn new() -> IndexRequestBodyJson {
-        IndexRequestBodyJson {
-        }
+        IndexRequestBodyJson {}
     }
 }

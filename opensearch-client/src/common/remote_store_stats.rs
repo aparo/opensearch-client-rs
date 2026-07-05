@@ -14,21 +14,22 @@ use serde::{Deserialize, Serialize};
 /// RemoteStoreStats
 /// Statistics related to remote segment store operations.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RemoteStoreStats {  /// Statistics related to uploads to the remote segment store.
+pub struct RemoteStoreStats {
+    /// Statistics related to uploads to the remote segment store.
     #[serde(rename = "upload")]
-    pub upload: common::RemoteStoreUploadStats,  /// Statistics related to downloads to the remote segment store.
+    pub upload: common::RemoteStoreUploadStats,
+    /// Statistics related to downloads to the remote segment store.
     #[serde(rename = "download")]
     pub download: common::RemoteStoreDownloadStats,
 }
 
 impl RemoteStoreStats {
-      /// Statistics related to remote segment store operations.
-    pub fn new(upload: common::RemoteStoreUploadStats, download: common::RemoteStoreDownloadStats) -> RemoteStoreStats {
-        RemoteStoreStats {
-            upload,
-            download,
-        }
+    /// Statistics related to remote segment store operations.
+    pub fn new(
+        upload: common::RemoteStoreUploadStats,
+        download: common::RemoteStoreDownloadStats,
+    ) -> RemoteStoreStats {
+        RemoteStoreStats { upload, download }
     }
 }

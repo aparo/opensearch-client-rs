@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RankEvalHit {
     #[serde(rename = "_index")]
@@ -24,12 +21,7 @@ pub struct RankEvalHit {
 }
 
 impl RankEvalHit {
-    
     pub fn new(index: String, id: String, score: f64) -> RankEvalHit {
-        RankEvalHit {
-            index,
-            id,
-            score,
-        }
+        RankEvalHit { index, id, score }
     }
 }

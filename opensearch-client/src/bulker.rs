@@ -4,13 +4,13 @@ use serde::{Deserialize, Serialize};
 use tokio::{
     sync::mpsc,
     task::JoinHandle,
-    time::{sleep, Duration},
+    time::{Duration, sleep},
 };
 use tracing::{debug, error};
 
 use crate::{
-    bulk::{BulkAction, CreateAction, DeleteAction, IndexAction, UpdateAction, UpdateActionBody},
     Error, OsClient,
+    bulk::{BulkAction, CreateAction, DeleteAction, IndexAction, UpdateAction, UpdateActionBody},
 };
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -284,7 +284,7 @@ impl Bulker {
         loop {
             self.refresh_queue_size();
             let statistics = self.statistics.lock().unwrap();
-            let status=format!(
+            let status = format!(
                 "Bulker: Finished reqwest calls: {}, Total reqwest calls: {}, Queue size: {}, Running reqwest calls: {}, Error reqwest calls: {}, Success actions: {}, Error actions: {}, Error create actions: {}",
                 statistics.finished_reqwest_calls,
                 statistics.total_reqwest_calls,

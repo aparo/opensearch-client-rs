@@ -14,7 +14,6 @@ use serde::{Deserialize, Serialize};
 /// ExplainRequestBodyJson
 /// The query definition using the Query DSL
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ExplainRequestBodyJson {
     #[serde(rename = "query", default, skip_serializing_if = "Option::is_none")]
@@ -22,10 +21,8 @@ pub struct ExplainRequestBodyJson {
 }
 
 impl ExplainRequestBodyJson {
-      /// The query definition using the Query DSL
+    /// The query definition using the Query DSL
     pub fn new() -> ExplainRequestBodyJson {
-        ExplainRequestBodyJson {
-            query: None,
-        }
+        ExplainRequestBodyJson { query: None }
     }
 }

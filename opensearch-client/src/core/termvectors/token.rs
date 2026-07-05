@@ -10,23 +10,27 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Token {
     #[serde(rename = "payload", default, skip_serializing_if = "Option::is_none")]
     pub payload: Option<String>,
     #[serde(rename = "position")]
     pub position: u32,
-    #[serde(rename = "start_offset", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "start_offset",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub start_offset: Option<u32>,
-    #[serde(rename = "end_offset", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "end_offset",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub end_offset: Option<u32>,
 }
 
 impl Token {
-    
     pub fn new(position: u32) -> Token {
         Token {
             payload: None,

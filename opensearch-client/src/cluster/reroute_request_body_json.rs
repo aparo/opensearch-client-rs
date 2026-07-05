@@ -14,18 +14,16 @@ use serde::{Deserialize, Serialize};
 /// RerouteRequestBodyJson
 /// The definition of `commands` to perform (`move`, `cancel`, `allocate`)
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RerouteRequestBodyJson {  /// Defines the reroute commands to perform, either `move`, `cancel`, or `allocate`.
+pub struct RerouteRequestBodyJson {
+    /// Defines the reroute commands to perform, either `move`, `cancel`, or `allocate`.
     #[serde(rename = "commands", default, skip_serializing_if = "Option::is_none")]
     pub commands: Option<Vec<cluster::reroute::Command>>,
 }
 
 impl RerouteRequestBodyJson {
-      /// The definition of `commands` to perform (`move`, `cancel`, `allocate`)
+    /// The definition of `commands` to perform (`move`, `cancel`, `allocate`)
     pub fn new() -> RerouteRequestBodyJson {
-        RerouteRequestBodyJson {
-            commands: None,
-        }
+        RerouteRequestBodyJson { commands: None }
     }
 }

@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClearScrollNotFoundJson {
     #[serde(rename = "num_freed")]
@@ -22,7 +19,6 @@ pub struct ClearScrollNotFoundJson {
 }
 
 impl ClearScrollNotFoundJson {
-    
     pub fn new(num_freed: u32, succeeded: bool) -> ClearScrollNotFoundJson {
         ClearScrollNotFoundJson {
             num_freed,

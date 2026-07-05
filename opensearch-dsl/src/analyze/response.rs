@@ -1,4 +1,4 @@
-use serde::{de, Deserialize, Serialize, Serializer};
+use serde::{Deserialize, Serialize, Serializer, de};
 
 /// OpenSearch analyze API response
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

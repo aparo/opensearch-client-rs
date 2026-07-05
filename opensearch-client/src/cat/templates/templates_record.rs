@@ -10,23 +10,30 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TemplatesRecord {  /// The template index patterns.
-    #[serde(rename = "index_patterns", default, skip_serializing_if = "Option::is_none")]
-    pub index_patterns: Option<String>,  /// The template application order or priority number.
+pub struct TemplatesRecord {
+    /// The template index patterns.
+    #[serde(
+        rename = "index_patterns",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub index_patterns: Option<String>,
+    /// The template application order or priority number.
     #[serde(rename = "order", default, skip_serializing_if = "Option::is_none")]
-    pub order: Option<String>,  /// The component templates that comprise the index template.
-    #[serde(rename = "composed_of", default, skip_serializing_if = "Option::is_none")]
+    pub order: Option<String>,
+    /// The component templates that comprise the index template.
+    #[serde(
+        rename = "composed_of",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub composed_of: Option<String>,
     #[serde(rename = "name", default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
 }
 
 impl TemplatesRecord {
-    
     pub fn new() -> TemplatesRecord {
         TemplatesRecord {
             index_patterns: None,

@@ -1,10 +1,10 @@
 use opensearch_dsl::Query;
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use serde_json::Value;
 use std::collections::HashMap;
 
 use crate::{
-    common, common::DocumentDeleteResponse, get_opensearch, Error, IndexResponse, UpdateActionBody,
+    Error, IndexResponse, UpdateActionBody, common, common::DocumentDeleteResponse, get_opensearch,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -45,7 +45,7 @@ pub trait Document: Serialize + DeserializeOwned + Sized + std::clone::Clone {
                 return Err(Error::DocumentNotFoundError(
                     index.to_owned(),
                     id.to_owned(),
-                ))
+                ));
             }
             Some(value) => Ok(value),
         }

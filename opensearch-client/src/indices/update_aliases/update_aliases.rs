@@ -14,18 +14,16 @@ use serde::{Deserialize, Serialize};
 /// UpdateAliases
 /// The definition of `actions` to perform
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct UpdateAliases {  /// Actions to perform.
+pub struct UpdateAliases {
+    /// Actions to perform.
     #[serde(rename = "actions", default, skip_serializing_if = "Option::is_none")]
     pub actions: Option<Vec<indices::update_aliases::Action>>,
 }
 
 impl UpdateAliases {
-      /// The definition of `actions` to perform
+    /// The definition of `actions` to perform
     pub fn new() -> UpdateAliases {
-        UpdateAliases {
-            actions: None,
-        }
+        UpdateAliases { actions: None }
     }
 }

@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ShardsOperationResponseBase {
     #[serde(rename = "_shards")]
@@ -21,10 +18,7 @@ pub struct ShardsOperationResponseBase {
 }
 
 impl ShardsOperationResponseBase {
-    
     pub fn new(shards: common::ShardStatistics) -> ShardsOperationResponseBase {
-        ShardsOperationResponseBase {
-            shards,
-        }
+        ShardsOperationResponseBase { shards }
     }
 }

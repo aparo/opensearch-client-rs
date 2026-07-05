@@ -10,19 +10,21 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Values {  /// The value.
+pub struct Values {
+    /// The value.
     #[serde(rename = "value", default, skip_serializing_if = "Option::is_none")]
-    pub value: Option<f64>,  /// The column type.
-    #[serde(rename = "column_type", default, skip_serializing_if = "Option::is_none")]
+    pub value: Option<f64>,
+    /// The column type.
+    #[serde(
+        rename = "column_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub column_type: Option<String>,
 }
 
 impl Values {
-    
     pub fn new() -> Values {
         Values {
             value: None,

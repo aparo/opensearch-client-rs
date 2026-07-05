@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SelectedDateRange {
     #[serde(rename = "text")]
@@ -24,12 +21,7 @@ pub struct SelectedDateRange {
 }
 
 impl SelectedDateRange {
-    
     pub fn new(text: String, start: String, end: String) -> SelectedDateRange {
-        SelectedDateRange {
-            text,
-            start,
-            end,
-        }
+        SelectedDateRange { text, start, end }
     }
 }

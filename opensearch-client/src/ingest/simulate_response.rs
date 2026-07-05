@@ -11,9 +11,6 @@
 use crate::ingest;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SimulateResponse {
     #[serde(rename = "docs")]
@@ -21,10 +18,7 @@ pub struct SimulateResponse {
 }
 
 impl SimulateResponse {
-    
     pub fn new(docs: Vec<ingest::simulate::PipelineSimulation>) -> SimulateResponse {
-        SimulateResponse {
-            docs,
-        }
+        SimulateResponse { docs }
     }
 }

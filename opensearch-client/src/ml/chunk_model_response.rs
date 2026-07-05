@@ -10,20 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ChunkModelResponse {  /// The status of the chunk upload operation.
+pub struct ChunkModelResponse {
+    /// The status of the chunk upload operation.
     #[serde(rename = "status")]
     pub status: String,
 }
 
 impl ChunkModelResponse {
-    
     pub fn new(status: String) -> ChunkModelResponse {
-        ChunkModelResponse {
-            status,
-        }
+        ChunkModelResponse { status }
     }
 }

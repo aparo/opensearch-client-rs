@@ -10,19 +10,19 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DeleteReplicationRule {
-    #[serde(rename = "leader_alias", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "leader_alias",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub leader_alias: Option<String>,
     #[serde(rename = "name", default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
 }
 
 impl DeleteReplicationRule {
-    
     pub fn new() -> DeleteReplicationRule {
         DeleteReplicationRule {
             leader_alias: None,

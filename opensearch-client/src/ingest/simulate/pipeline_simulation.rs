@@ -11,25 +11,29 @@
 use crate::ingest;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PipelineSimulation {
     #[serde(rename = "tag", default, skip_serializing_if = "Option::is_none")]
     pub tag: Option<String>,
     #[serde(rename = "doc", default, skip_serializing_if = "Option::is_none")]
     pub doc: Option<ingest::simulate::DocumentSimulation>,
-    #[serde(rename = "processor_type", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "processor_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub processor_type: Option<String>,
     #[serde(rename = "status", default, skip_serializing_if = "Option::is_none")]
     pub status: Option<String>,
-    #[serde(rename = "processor_results", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "processor_results",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub processor_results: Option<Vec<ingest::simulate::PipelineSimulation>>,
 }
 
 impl PipelineSimulation {
-    
     pub fn new() -> PipelineSimulation {
         PipelineSimulation {
             tag: None,

@@ -10,20 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct InternalServerError {  /// Error message during request execution.
+pub struct InternalServerError {
+    /// Error message during request execution.
     #[serde(rename = "error", default, skip_serializing_if = "Option::is_none")]
     pub error: Option<String>,
 }
 
 impl InternalServerError {
-    
     pub fn new() -> InternalServerError {
-        InternalServerError {
-            error: None,
-        }
+        InternalServerError { error: None }
     }
 }

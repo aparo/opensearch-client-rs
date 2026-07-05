@@ -10,47 +10,79 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TasksRecord {  /// The bound transport port for the node.
+pub struct TasksRecord {
+    /// The bound transport port for the node.
     #[serde(rename = "port", default, skip_serializing_if = "Option::is_none")]
-    pub port: Option<String>,  /// The X-Opaque-ID header.
-    #[serde(rename = "x_opaque_id", default, skip_serializing_if = "Option::is_none")]
-    pub x_opaque_id: Option<String>,  /// The node name.
+    pub port: Option<String>,
+    /// The X-Opaque-ID header.
+    #[serde(
+        rename = "x_opaque_id",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub x_opaque_id: Option<String>,
+    /// The node name.
     #[serde(rename = "node", default, skip_serializing_if = "Option::is_none")]
-    pub node: Option<String>,  /// The task action.
+    pub node: Option<String>,
+    /// The task action.
     #[serde(rename = "action", default, skip_serializing_if = "Option::is_none")]
-    pub action: Option<String>,  /// The IP address for the node.
+    pub action: Option<String>,
+    /// The IP address for the node.
     #[serde(rename = "ip", default, skip_serializing_if = "Option::is_none")]
     pub ip: Option<String>,
     #[serde(rename = "version", default, skip_serializing_if = "Option::is_none")]
-    pub version: Option<String>,  /// The start time in milliseconds.
-    #[serde(rename = "start_time", default, skip_serializing_if = "Option::is_none")]
+    pub version: Option<String>,
+    /// The start time in milliseconds.
+    #[serde(
+        rename = "start_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub start_time: Option<String>,
     #[serde(rename = "node_id", default, skip_serializing_if = "Option::is_none")]
-    pub node_id: Option<String>,  /// The running time.
-    #[serde(rename = "running_time", default, skip_serializing_if = "Option::is_none")]
-    pub running_time: Option<String>,  /// The running time in nanoseconds.
-    #[serde(rename = "running_time_ns", default, skip_serializing_if = "Option::is_none")]
+    pub node_id: Option<String>,
+    /// The running time.
+    #[serde(
+        rename = "running_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub running_time: Option<String>,
+    /// The running time in nanoseconds.
+    #[serde(
+        rename = "running_time_ns",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub running_time_ns: Option<String>,
     #[serde(rename = "task_id", default, skip_serializing_if = "Option::is_none")]
-    pub task_id: Option<String>,  /// The task type.
+    pub task_id: Option<String>,
+    /// The task type.
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
-    pub r#type: Option<String>,  /// The parent task identifier.
-    #[serde(rename = "parent_task_id", default, skip_serializing_if = "Option::is_none")]
-    pub parent_task_id: Option<String>,  /// The start time in `HH:MM:SS` format.
+    pub r#type: Option<String>,
+    /// The parent task identifier.
+    #[serde(
+        rename = "parent_task_id",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub parent_task_id: Option<String>,
+    /// The start time in `HH:MM:SS` format.
     #[serde(rename = "timestamp", default, skip_serializing_if = "Option::is_none")]
-    pub timestamp: Option<String>,  /// The task action description.
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    pub timestamp: Option<String>,
+    /// The task action description.
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
     #[serde(rename = "id", default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
 }
 
 impl TasksRecord {
-    
     pub fn new() -> TasksRecord {
         TasksRecord {
             port: None,

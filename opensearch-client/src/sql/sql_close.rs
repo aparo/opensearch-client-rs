@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SqlClose {
     #[serde(rename = "cursor", default, skip_serializing_if = "Option::is_none")]
@@ -20,10 +17,7 @@ pub struct SqlClose {
 }
 
 impl SqlClose {
-    
     pub fn new() -> SqlClose {
-        SqlClose {
-            cursor: None,
-        }
+        SqlClose { cursor: None }
     }
 }

@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct DeleteResponseList {
-}
+pub struct DeleteResponseList {}
 
 impl DeleteResponseList {
-    
     pub fn new() -> DeleteResponseList {
-        DeleteResponseList {
-        }
+        DeleteResponseList {}
     }
 }

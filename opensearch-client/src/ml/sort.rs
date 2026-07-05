@@ -14,57 +14,142 @@ use serde::{Deserialize, Serialize};
 /// Sort
 /// Sort query.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Sort {  /// The order of the sort.
+pub struct Sort {
+    /// The order of the sort.
     #[serde(rename = "_score", default, skip_serializing_if = "Option::is_none")]
-    pub score: Option<ml::SortOrder>,  /// The order of the sort.
-    #[serde(rename = "planning_worker_nodes", default, skip_serializing_if = "Option::is_none")]
-    pub planning_worker_nodes: Option<ml::SortOrder>,  /// The order of the sort.
+    pub score: Option<ml::SortOrder>,
+    /// The order of the sort.
+    #[serde(
+        rename = "planning_worker_nodes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub planning_worker_nodes: Option<ml::SortOrder>,
+    /// The order of the sort.
     #[serde(rename = "algorithm", default, skip_serializing_if = "Option::is_none")]
-    pub algorithm: Option<ml::SortOrder>,  /// The order of the sort.
+    pub algorithm: Option<ml::SortOrder>,
+    /// The order of the sort.
     #[serde(rename = "_index", default, skip_serializing_if = "Option::is_none")]
-    pub index: Option<ml::SortOrder>,  /// The order of the sort.
-    #[serde(rename = "last_registered_time", default, skip_serializing_if = "Option::is_none")]
-    pub last_registered_time: Option<ml::SortOrder>,  /// The order of the sort.
-    #[serde(rename = "auto_redeploy_retry_times", default, skip_serializing_if = "Option::is_none")]
-    pub auto_redeploy_retry_times: Option<ml::SortOrder>,  /// The order of the sort.
+    pub index: Option<ml::SortOrder>,
+    /// The order of the sort.
+    #[serde(
+        rename = "last_registered_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub last_registered_time: Option<ml::SortOrder>,
+    /// The order of the sort.
+    #[serde(
+        rename = "auto_redeploy_retry_times",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub auto_redeploy_retry_times: Option<ml::SortOrder>,
+    /// The order of the sort.
     #[serde(rename = "_seq_no", default, skip_serializing_if = "Option::is_none")]
-    pub seq_no: Option<ml::SortOrder>,  /// The order of the sort.
-    #[serde(rename = "model_version", default, skip_serializing_if = "Option::is_none")]
-    pub model_version: Option<ml::SortOrder>,  /// The order of the sort.
+    pub seq_no: Option<ml::SortOrder>,
+    /// The order of the sort.
+    #[serde(
+        rename = "model_version",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub model_version: Option<ml::SortOrder>,
+    /// The order of the sort.
     #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
-    pub id: Option<ml::SortOrder>,  /// The order of the sort.
-    #[serde(rename = "chunk_number", default, skip_serializing_if = "Option::is_none")]
-    pub chunk_number: Option<ml::SortOrder>,  /// The order of the sort.
-    #[serde(rename = "model_content_size_in_bytes", default, skip_serializing_if = "Option::is_none")]
-    pub model_content_size_in_bytes: Option<ml::SortOrder>,  /// The order of the sort.
-    #[serde(rename = "planning_worker_node_count", default, skip_serializing_if = "Option::is_none")]
-    pub planning_worker_node_count: Option<ml::SortOrder>,  /// The order of the sort.
-    #[serde(rename = "model_state", default, skip_serializing_if = "Option::is_none")]
-    pub model_state: Option<ml::SortOrder>,  /// The order of the sort.
-    #[serde(rename = "created_time", default, skip_serializing_if = "Option::is_none")]
-    pub created_time: Option<ml::SortOrder>,  /// The order of the sort.
-    #[serde(rename = "total_chunks", default, skip_serializing_if = "Option::is_none")]
-    pub total_chunks: Option<ml::SortOrder>,  /// The order of the sort.
-    #[serde(rename = "model_format", default, skip_serializing_if = "Option::is_none")]
-    pub model_format: Option<ml::SortOrder>,  /// The order of the sort.
-    #[serde(rename = "model_group_id", default, skip_serializing_if = "Option::is_none")]
-    pub model_group_id: Option<ml::SortOrder>,  /// The order of the sort.
-    #[serde(rename = "last_updated_time", default, skip_serializing_if = "Option::is_none")]
-    pub last_updated_time: Option<ml::SortOrder>,  /// The order of the sort.
-    #[serde(rename = "deploy_to_all_nodes", default, skip_serializing_if = "Option::is_none")]
-    pub deploy_to_all_nodes: Option<ml::SortOrder>,  /// The order of the sort.
+    pub id: Option<ml::SortOrder>,
+    /// The order of the sort.
+    #[serde(
+        rename = "chunk_number",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub chunk_number: Option<ml::SortOrder>,
+    /// The order of the sort.
+    #[serde(
+        rename = "model_content_size_in_bytes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub model_content_size_in_bytes: Option<ml::SortOrder>,
+    /// The order of the sort.
+    #[serde(
+        rename = "planning_worker_node_count",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub planning_worker_node_count: Option<ml::SortOrder>,
+    /// The order of the sort.
+    #[serde(
+        rename = "model_state",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub model_state: Option<ml::SortOrder>,
+    /// The order of the sort.
+    #[serde(
+        rename = "created_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub created_time: Option<ml::SortOrder>,
+    /// The order of the sort.
+    #[serde(
+        rename = "total_chunks",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_chunks: Option<ml::SortOrder>,
+    /// The order of the sort.
+    #[serde(
+        rename = "model_format",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub model_format: Option<ml::SortOrder>,
+    /// The order of the sort.
+    #[serde(
+        rename = "model_group_id",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub model_group_id: Option<ml::SortOrder>,
+    /// The order of the sort.
+    #[serde(
+        rename = "last_updated_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub last_updated_time: Option<ml::SortOrder>,
+    /// The order of the sort.
+    #[serde(
+        rename = "deploy_to_all_nodes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub deploy_to_all_nodes: Option<ml::SortOrder>,
+    /// The order of the sort.
     #[serde(rename = "is_hidden", default, skip_serializing_if = "Option::is_none")]
-    pub is_hidden: Option<ml::SortOrder>,  /// The order of the sort.
-    #[serde(rename = "model_content_hash_value", default, skip_serializing_if = "Option::is_none")]
-    pub model_content_hash_value: Option<ml::SortOrder>,  /// The order of the sort.
-    #[serde(rename = "current_worker_node_count", default, skip_serializing_if = "Option::is_none")]
+    pub is_hidden: Option<ml::SortOrder>,
+    /// The order of the sort.
+    #[serde(
+        rename = "model_content_hash_value",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub model_content_hash_value: Option<ml::SortOrder>,
+    /// The order of the sort.
+    #[serde(
+        rename = "current_worker_node_count",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub current_worker_node_count: Option<ml::SortOrder>,
 }
 
 impl Sort {
-      /// Sort query.
+    /// Sort query.
     pub fn new() -> Sort {
         Sort {
             score: None,

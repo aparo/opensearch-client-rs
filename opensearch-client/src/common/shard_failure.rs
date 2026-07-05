@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ShardFailure {
     #[serde(rename = "reason")]
@@ -29,7 +26,6 @@ pub struct ShardFailure {
 }
 
 impl ShardFailure {
-    
     pub fn new(reason: common::ErrorCause, shard: u32) -> ShardFailure {
         ShardFailure {
             reason,

@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct NodesResponseBase {
     #[serde(rename = "_nodes", default, skip_serializing_if = "Option::is_none")]
@@ -21,10 +18,7 @@ pub struct NodesResponseBase {
 }
 
 impl NodesResponseBase {
-    
     pub fn new() -> NodesResponseBase {
-        NodesResponseBase {
-            nodes: None,
-        }
+        NodesResponseBase { nodes: None }
     }
 }

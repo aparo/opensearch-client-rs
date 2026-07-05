@@ -10,25 +10,37 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GetConfigs {
-    #[serde(rename = "config_id_list", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "config_id_list",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub config_id_list: Option<Vec<String>>,
-    #[serde(rename = "from_index", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "from_index",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub from_index: Option<u32>,
     #[serde(rename = "max_items", default, skip_serializing_if = "Option::is_none")]
     pub max_items: Option<u32>,
-    #[serde(rename = "sort_field", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "sort_field",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub sort_field: Option<String>,
-    #[serde(rename = "sort_order", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "sort_order",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub sort_order: Option<String>,
 }
 
 impl GetConfigs {
-    
     pub fn new() -> GetConfigs {
         GetConfigs {
             config_id_list: None,

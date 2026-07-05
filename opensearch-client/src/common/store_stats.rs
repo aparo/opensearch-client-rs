@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct StoreStats {
     #[serde(rename = "size_in_bytes")]
@@ -26,7 +23,6 @@ pub struct StoreStats {
 }
 
 impl StoreStats {
-    
     pub fn new(size_in_bytes: u32, reserved_in_bytes: u32) -> StoreStats {
         StoreStats {
             size_in_bytes,

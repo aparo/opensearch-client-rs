@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct OperationContainer {
     #[serde(rename = "index", default, skip_serializing_if = "Option::is_none")]
@@ -27,7 +24,6 @@ pub struct OperationContainer {
 }
 
 impl OperationContainer {
-    
     pub fn new() -> OperationContainer {
         OperationContainer {
             index: None,

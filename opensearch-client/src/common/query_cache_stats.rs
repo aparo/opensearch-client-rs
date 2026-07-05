@@ -10,24 +10,31 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct QueryCacheStats {  /// The total number of hits and misses stored in the query cache across all shards assigned to the selected nodes.
+pub struct QueryCacheStats {
+    /// The total number of hits and misses stored in the query cache across all shards assigned to the selected nodes.
     #[serde(rename = "total_count")]
-    pub total_count: u32,  /// The total number of entries currently stored in the query cache across all shards assigned to the selected nodes.
+    pub total_count: u32,
+    /// The total number of entries currently stored in the query cache across all shards assigned to the selected nodes.
     #[serde(rename = "cache_size")]
     pub cache_size: u32,
-    #[serde(rename = "memory_size", default, skip_serializing_if = "Option::is_none")]
-    pub memory_size: Option<String>,  /// The total number of query cache hits across all shards assigned to the selected nodes.
+    #[serde(
+        rename = "memory_size",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub memory_size: Option<String>,
+    /// The total number of query cache hits across all shards assigned to the selected nodes.
     #[serde(rename = "hit_count")]
-    pub hit_count: u32,  /// The total number of entries added to the query cache across all shards assigned to the selected nodes.
-  /// This number includes all current and evicted entries.
+    pub hit_count: u32,
+    /// The total number of entries added to the query cache across all shards assigned to the selected nodes.
+    /// This number includes all current and evicted entries.
     #[serde(rename = "cache_count")]
-    pub cache_count: u32,  /// The total number of query cache misses across all shards assigned to the selected nodes.
+    pub cache_count: u32,
+    /// The total number of query cache misses across all shards assigned to the selected nodes.
     #[serde(rename = "miss_count")]
-    pub miss_count: u32,  /// The total number of query cache evictions across all shards assigned to the selected nodes.
+    pub miss_count: u32,
+    /// The total number of query cache evictions across all shards assigned to the selected nodes.
     #[serde(rename = "evictions")]
     pub evictions: u32,
     #[serde(rename = "memory_size_in_bytes")]
@@ -35,8 +42,15 @@ pub struct QueryCacheStats {  /// The total number of hits and misses stored in 
 }
 
 impl QueryCacheStats {
-    
-    pub fn new(total_count: u32, cache_size: u32, hit_count: u32, cache_count: u32, miss_count: u32, evictions: u32, memory_size_in_bytes: u32) -> QueryCacheStats {
+    pub fn new(
+        total_count: u32,
+        cache_size: u32,
+        hit_count: u32,
+        cache_count: u32,
+        miss_count: u32,
+        evictions: u32,
+        memory_size_in_bytes: u32,
+    ) -> QueryCacheStats {
         QueryCacheStats {
             total_count,
             cache_size,

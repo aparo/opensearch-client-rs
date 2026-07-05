@@ -10,19 +10,20 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ColumnMeta {
     #[serde(rename = "name", default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,  /// The column type.
-    #[serde(rename = "column_type", default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    /// The column type.
+    #[serde(
+        rename = "column_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub column_type: Option<String>,
 }
 
 impl ColumnMeta {
-    
     pub fn new() -> ColumnMeta {
         ColumnMeta {
             name: None,

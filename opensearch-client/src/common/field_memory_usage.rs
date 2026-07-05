@@ -10,19 +10,19 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct FieldMemoryUsage {
-    #[serde(rename = "memory_size", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "memory_size",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub memory_size: Option<String>,
     #[serde(rename = "memory_size_in_bytes")]
     pub memory_size_in_bytes: u32,
 }
 
 impl FieldMemoryUsage {
-    
     pub fn new(memory_size_in_bytes: u32) -> FieldMemoryUsage {
         FieldMemoryUsage {
             memory_size: None,

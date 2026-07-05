@@ -153,7 +153,7 @@ impl<const M: usize, const N: usize> From<([Cow<'_, str>; M], [Cow<'_, str>; N])
 
 #[cfg(test)]
 mod tests {
-    use crate::{util::assert_serialize, Search};
+    use crate::{Search, util::assert_serialize};
 
     #[test]
     fn adds_boolean() {

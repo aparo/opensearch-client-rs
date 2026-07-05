@@ -11,18 +11,23 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TypeMapping {
-    #[serde(rename = "numeric_detection", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "numeric_detection",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub numeric_detection: Option<bool>,
     #[serde(rename = "all_field", default, skip_serializing_if = "Option::is_none")]
     pub all_field: Option<common::mapping::AllField>,
     #[serde(rename = "enabled", default, skip_serializing_if = "Option::is_none")]
     pub enabled: Option<bool>,
-    #[serde(rename = "_data_stream_timestamp", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "_data_stream_timestamp",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub data_stream_timestamp: Option<common::mapping::DataStreamTimestamp>,
     #[serde(rename = "dynamic", default, skip_serializing_if = "Option::is_none")]
     pub dynamic: Option<String>,
@@ -32,24 +37,47 @@ pub struct TypeMapping {
     pub source: Option<common::mapping::SourceField>,
     #[serde(rename = "_size", default, skip_serializing_if = "Option::is_none")]
     pub size: Option<common::mapping::SizeField>,
-    #[serde(rename = "properties", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "properties",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub properties: Option<serde_json::Value>,
-    #[serde(rename = "index_field", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "index_field",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub index_field: Option<common::mapping::IndexField>,
     #[serde(rename = "_meta", default, skip_serializing_if = "Option::is_none")]
     pub meta: Option<common::Metadata>,
-    #[serde(rename = "_field_names", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "_field_names",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub field_names: Option<common::mapping::FieldNamesField>,
-    #[serde(rename = "date_detection", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "date_detection",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub date_detection: Option<bool>,
-    #[serde(rename = "dynamic_date_formats", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "dynamic_date_formats",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub dynamic_date_formats: Option<Vec<String>>,
-    #[serde(rename = "dynamic_templates", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "dynamic_templates",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub dynamic_templates: Option<Vec<serde_json::Value>>,
 }
 
 impl TypeMapping {
-    
     pub fn new() -> TypeMapping {
         TypeMapping {
             numeric_detection: None,

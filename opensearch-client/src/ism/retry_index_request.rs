@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RetryIndexRequest {
     #[serde(rename = "state")]
@@ -20,10 +17,7 @@ pub struct RetryIndexRequest {
 }
 
 impl RetryIndexRequest {
-    
     pub fn new(state: String) -> RetryIndexRequest {
-        RetryIndexRequest {
-            state,
-        }
+        RetryIndexRequest { state }
     }
 }

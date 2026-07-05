@@ -11,9 +11,6 @@
 use crate::replication;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SettingsBody {
     #[serde(rename = "index", default, skip_serializing_if = "Option::is_none")]
@@ -21,10 +18,7 @@ pub struct SettingsBody {
 }
 
 impl SettingsBody {
-    
     pub fn new() -> SettingsBody {
-        SettingsBody {
-            index: None,
-        }
+        SettingsBody { index: None }
     }
 }

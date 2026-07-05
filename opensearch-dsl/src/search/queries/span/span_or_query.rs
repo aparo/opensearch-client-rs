@@ -1,7 +1,7 @@
 use serde::Serialize;
 
 use super::SpanQuery;
-use crate::{util::*, Query};
+use crate::{Query, util::*};
 
 /// Matches the union of its span clauses. The span or query maps to Lucene
 /// `SpanOrQuery`.

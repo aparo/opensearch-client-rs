@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClusterRemoteProxyInfoValue {
     #[serde(rename = "num_proxy_sockets_connected")]
@@ -22,8 +19,9 @@ pub struct ClusterRemoteProxyInfoValue {
     #[serde(rename = "connected")]
     pub connected: bool,
     #[serde(rename = "mode")]
-    pub mode: String,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    pub mode: String,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
     #[serde(rename = "initial_connect_timeout")]
     pub initial_connect_timeout: String,
     #[serde(rename = "proxy_address")]
@@ -35,8 +33,16 @@ pub struct ClusterRemoteProxyInfoValue {
 }
 
 impl ClusterRemoteProxyInfoValue {
-    
-    pub fn new(num_proxy_sockets_connected: u32, server_name: String, connected: bool, mode: String, initial_connect_timeout: String, proxy_address: String, max_proxy_socket_connections: u32, skip_unavailable: bool) -> ClusterRemoteProxyInfoValue {
+    pub fn new(
+        num_proxy_sockets_connected: u32,
+        server_name: String,
+        connected: bool,
+        mode: String,
+        initial_connect_timeout: String,
+        proxy_address: String,
+        max_proxy_socket_connections: u32,
+        skip_unavailable: bool,
+    ) -> ClusterRemoteProxyInfoValue {
         ClusterRemoteProxyInfoValue {
             num_proxy_sockets_connected,
             server_name,

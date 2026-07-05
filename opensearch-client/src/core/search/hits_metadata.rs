@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct HitsMetadata {
     #[serde(rename = "hits")]
@@ -21,10 +18,7 @@ pub struct HitsMetadata {
 }
 
 impl HitsMetadata {
-    
     pub fn new(hits: Vec<core::search::Hit>) -> HitsMetadata {
-        HitsMetadata {
-            hits,
-        }
+        HitsMetadata { hits }
     }
 }

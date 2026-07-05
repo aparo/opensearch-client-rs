@@ -11,12 +11,13 @@
 use crate::rollups;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Put {
-    #[serde(rename = "_primary_term", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "_primary_term",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub primary_term: Option<u32>,
     #[serde(rename = "rollup", default, skip_serializing_if = "Option::is_none")]
     pub rollup: Option<rollups::Rollup>,
@@ -29,7 +30,6 @@ pub struct Put {
 }
 
 impl Put {
-    
     pub fn new() -> Put {
         Put {
             primary_term: None,

@@ -10,19 +10,19 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Cron {
-    #[serde(rename = "expression", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "expression",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub expression: Option<String>,
     #[serde(rename = "timezone", default, skip_serializing_if = "Option::is_none")]
     pub timezone: Option<String>,
 }
 
 impl Cron {
-    
     pub fn new() -> Cron {
         Cron {
             expression: None,

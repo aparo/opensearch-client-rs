@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Visualization {
     #[serde(rename = "x")]
@@ -30,8 +27,14 @@ pub struct Visualization {
 }
 
 impl Visualization {
-    
-    pub fn new(x: u32, w: u32, id: String, saved_visualization_id: String, y: u32, h: u32) -> Visualization {
+    pub fn new(
+        x: u32,
+        w: u32,
+        id: String,
+        saved_visualization_id: String,
+        y: u32,
+        h: u32,
+    ) -> Visualization {
         Visualization {
             x,
             w,

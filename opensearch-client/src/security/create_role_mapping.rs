@@ -10,16 +10,25 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CreateRoleMapping {
-    #[serde(rename = "and_backend_roles", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "and_backend_roles",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub and_backend_roles: Option<Vec<String>>,
-    #[serde(rename = "backend_roles", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "backend_roles",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub backend_roles: Option<Vec<String>>,
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
     #[serde(rename = "hosts", default, skip_serializing_if = "Option::is_none")]
     pub hosts: Option<Vec<String>>,
@@ -32,7 +41,6 @@ pub struct CreateRoleMapping {
 }
 
 impl CreateRoleMapping {
-    
     pub fn new() -> CreateRoleMapping {
         CreateRoleMapping {
             and_backend_roles: None,

@@ -10,11 +10,9 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TermsLookup {  /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
+pub struct TermsLookup {
+    /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
     #[serde(rename = "path", default, skip_serializing_if = "Option::is_none")]
     pub path: Option<String>,
     #[serde(rename = "routing", default, skip_serializing_if = "Option::is_none")]
@@ -26,7 +24,6 @@ pub struct TermsLookup {  /// The path to a field or an array of paths. Some API
 }
 
 impl TermsLookup {
-    
     pub fn new() -> TermsLookup {
         TermsLookup {
             path: None,

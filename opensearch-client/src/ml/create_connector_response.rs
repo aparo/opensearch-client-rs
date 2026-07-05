@@ -10,20 +10,18 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CreateConnectorResponse {
-    #[serde(rename = "connector_id", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "connector_id",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub connector_id: Option<String>,
 }
 
 impl CreateConnectorResponse {
-    
     pub fn new() -> CreateConnectorResponse {
-        CreateConnectorResponse {
-            connector_id: None,
-        }
+        CreateConnectorResponse { connector_id: None }
     }
 }

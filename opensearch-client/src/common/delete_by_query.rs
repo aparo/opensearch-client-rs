@@ -14,9 +14,9 @@ use serde::{Deserialize, Serialize};
 /// DeleteByQuery
 /// The search definition using the Query DSL
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct DeleteByQuery {  /// The maximum number of documents to delete.
+pub struct DeleteByQuery {
+    /// The maximum number of documents to delete.
     #[serde(rename = "max_docs", default, skip_serializing_if = "Option::is_none")]
     pub max_docs: Option<u32>,
     #[serde(rename = "query", default, skip_serializing_if = "Option::is_none")]
@@ -26,7 +26,7 @@ pub struct DeleteByQuery {  /// The maximum number of documents to delete.
 }
 
 impl DeleteByQuery {
-      /// The search definition using the Query DSL
+    /// The search definition using the Query DSL
     pub fn new() -> DeleteByQuery {
         DeleteByQuery {
             max_docs: None,

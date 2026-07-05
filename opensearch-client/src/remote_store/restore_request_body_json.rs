@@ -13,7 +13,6 @@ use serde::{Deserialize, Serialize};
 /// RestoreRequestBodyJson
 /// Comma-separated list of index IDs
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RestoreRequestBodyJson {
     #[serde(rename = "indices")]
@@ -21,10 +20,8 @@ pub struct RestoreRequestBodyJson {
 }
 
 impl RestoreRequestBodyJson {
-      /// Comma-separated list of index IDs
+    /// Comma-separated list of index IDs
     pub fn new(indices: Vec<String>) -> RestoreRequestBodyJson {
-        RestoreRequestBodyJson {
-            indices,
-        }
+        RestoreRequestBodyJson { indices }
     }
 }

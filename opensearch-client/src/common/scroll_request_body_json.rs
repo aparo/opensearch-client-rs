@@ -10,20 +10,17 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ScrollRequestBodyJson {
     #[serde(rename = "scroll_id", default, skip_serializing_if = "Option::is_none")]
-    pub scroll_id: Option<String>,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    pub scroll_id: Option<String>,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
     #[serde(rename = "scroll", default, skip_serializing_if = "Option::is_none")]
     pub scroll: Option<String>,
 }
 
 impl ScrollRequestBodyJson {
-    
     pub fn new() -> ScrollRequestBodyJson {
         ScrollRequestBodyJson {
             scroll_id: None,

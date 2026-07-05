@@ -1,6 +1,6 @@
 //! Allows you to execute a search query and get back search hits that match the
 //! query.
-use crate::{search::*, util::*, Map, Set};
+use crate::{Map, Set, search::*, util::*};
 
 /// Returns search hits that match the query defined in the request.
 ///

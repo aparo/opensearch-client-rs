@@ -10,21 +10,19 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct FieldTypes {  /// The number of occurrences of the field type in selected nodes.
+pub struct FieldTypes {
+    /// The number of occurrences of the field type in selected nodes.
     #[serde(rename = "count")]
     pub count: u32,
     #[serde(rename = "name")]
-    pub name: String,  /// The number of indexes containing the field type in selected nodes.
+    pub name: String,
+    /// The number of indexes containing the field type in selected nodes.
     #[serde(rename = "index_count")]
     pub index_count: u32,
 }
 
 impl FieldTypes {
-    
     pub fn new(count: u32, name: String, index_count: u32) -> FieldTypes {
         FieldTypes {
             count,

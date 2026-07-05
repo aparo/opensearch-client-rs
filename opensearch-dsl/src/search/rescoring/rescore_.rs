@@ -1,4 +1,4 @@
-use crate::{util::ShouldSkip, Query, ScoreMode};
+use crate::{Query, ScoreMode, util::ShouldSkip};
 
 /// Rescoring can help to improve precision by reordering just the top (eg 100 -
 /// 500) documents returned by the [query](https://www.elastic.co/guide/en/opensearch/reference/current/search-search.html#request-body-search-query)

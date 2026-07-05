@@ -1,4 +1,4 @@
-use crate::{search::*, util::*, Set};
+use crate::{Set, search::*, util::*};
 
 /// The [parent-join](https://www.elastic.co/guide/en/elasticsearch/reference/current/parent-join.html)
 /// and [nested](https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html)

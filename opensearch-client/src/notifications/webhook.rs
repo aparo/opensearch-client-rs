@@ -11,21 +11,21 @@
 use crate::notifications;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Webhook {
     #[serde(rename = "method", default, skip_serializing_if = "Option::is_none")]
     pub method: Option<String>,
-    #[serde(rename = "header_params", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "header_params",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub header_params: Option<notifications::HeaderParamsMap>,
     #[serde(rename = "url")]
     pub url: String,
 }
 
 impl Webhook {
-    
     pub fn new(url: String) -> Webhook {
         Webhook {
             method: None,

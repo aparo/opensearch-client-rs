@@ -11,32 +11,45 @@
 use crate::cluster;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct CharFilterTypes {  /// Contains statistics about tokenizer types used in selected nodes.
+pub struct CharFilterTypes {
+    /// Contains statistics about tokenizer types used in selected nodes.
     #[serde(rename = "tokenizer_types")]
-    pub tokenizer_types: Vec<cluster::stats::FieldTypes>,  /// Contains statistics about character filter types used in selected nodes.
+    pub tokenizer_types: Vec<cluster::stats::FieldTypes>,
+    /// Contains statistics about character filter types used in selected nodes.
     #[serde(rename = "char_filter_types")]
-    pub char_filter_types: Vec<cluster::stats::FieldTypes>,  /// Contains statistics about built-in analyzers used in selected nodes.
+    pub char_filter_types: Vec<cluster::stats::FieldTypes>,
+    /// Contains statistics about built-in analyzers used in selected nodes.
     #[serde(rename = "built_in_analyzers")]
-    pub built_in_analyzers: Vec<cluster::stats::FieldTypes>,  /// Contains statistics about built-in token filters used in selected nodes.
+    pub built_in_analyzers: Vec<cluster::stats::FieldTypes>,
+    /// Contains statistics about built-in token filters used in selected nodes.
     #[serde(rename = "built_in_filters")]
-    pub built_in_filters: Vec<cluster::stats::FieldTypes>,  /// Contains statistics about built-in tokenizers used in selected nodes.
+    pub built_in_filters: Vec<cluster::stats::FieldTypes>,
+    /// Contains statistics about built-in tokenizers used in selected nodes.
     #[serde(rename = "built_in_tokenizers")]
-    pub built_in_tokenizers: Vec<cluster::stats::FieldTypes>,  /// Contains statistics about built-in character filters used in selected nodes.
+    pub built_in_tokenizers: Vec<cluster::stats::FieldTypes>,
+    /// Contains statistics about built-in character filters used in selected nodes.
     #[serde(rename = "built_in_char_filters")]
-    pub built_in_char_filters: Vec<cluster::stats::FieldTypes>,  /// Contains statistics about analyzer types used in selected nodes.
+    pub built_in_char_filters: Vec<cluster::stats::FieldTypes>,
+    /// Contains statistics about analyzer types used in selected nodes.
     #[serde(rename = "analyzer_types")]
-    pub analyzer_types: Vec<cluster::stats::FieldTypes>,  /// Contains statistics about token filter types used in selected nodes.
+    pub analyzer_types: Vec<cluster::stats::FieldTypes>,
+    /// Contains statistics about token filter types used in selected nodes.
     #[serde(rename = "filter_types")]
     pub filter_types: Vec<cluster::stats::FieldTypes>,
 }
 
 impl CharFilterTypes {
-    
-    pub fn new(tokenizer_types: Vec<cluster::stats::FieldTypes>, char_filter_types: Vec<cluster::stats::FieldTypes>, built_in_analyzers: Vec<cluster::stats::FieldTypes>, built_in_filters: Vec<cluster::stats::FieldTypes>, built_in_tokenizers: Vec<cluster::stats::FieldTypes>, built_in_char_filters: Vec<cluster::stats::FieldTypes>, analyzer_types: Vec<cluster::stats::FieldTypes>, filter_types: Vec<cluster::stats::FieldTypes>) -> CharFilterTypes {
+    pub fn new(
+        tokenizer_types: Vec<cluster::stats::FieldTypes>,
+        char_filter_types: Vec<cluster::stats::FieldTypes>,
+        built_in_analyzers: Vec<cluster::stats::FieldTypes>,
+        built_in_filters: Vec<cluster::stats::FieldTypes>,
+        built_in_tokenizers: Vec<cluster::stats::FieldTypes>,
+        built_in_char_filters: Vec<cluster::stats::FieldTypes>,
+        analyzer_types: Vec<cluster::stats::FieldTypes>,
+        filter_types: Vec<cluster::stats::FieldTypes>,
+    ) -> CharFilterTypes {
         CharFilterTypes {
             tokenizer_types,
             char_filter_types,

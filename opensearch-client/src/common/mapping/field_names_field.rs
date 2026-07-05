@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct FieldNamesField {
     #[serde(rename = "enabled")]
@@ -20,10 +17,7 @@ pub struct FieldNamesField {
 }
 
 impl FieldNamesField {
-    
     pub fn new(enabled: bool) -> FieldNamesField {
-        FieldNamesField {
-            enabled,
-        }
+        FieldNamesField { enabled }
     }
 }

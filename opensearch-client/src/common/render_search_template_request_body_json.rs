@@ -14,24 +14,25 @@ use serde::{Deserialize, Serialize};
 /// RenderSearchTemplateRequestBodyJson
 /// The search definition template and its parameters.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RenderSearchTemplateRequestBodyJson {  /// An inline search template.
-  /// Supports the same parameters as the search API request body.
-  /// These parameters also support Mustache variables.
-  /// If no `id` or `<templated-id>` is specified, this parameter is required.
+pub struct RenderSearchTemplateRequestBodyJson {
+    /// An inline search template.
+    /// Supports the same parameters as the search API request body.
+    /// These parameters also support Mustache variables.
+    /// If no `id` or `<templated-id>` is specified, this parameter is required.
     #[serde(rename = "source", default, skip_serializing_if = "Option::is_none")]
     pub source: Option<String>,
     #[serde(rename = "id", default, skip_serializing_if = "Option::is_none")]
-    pub id: Option<String>,  /// Key-value pairs used to replace Mustache variables in the template.
-  /// The key is the variable name.
-  /// The value is the variable value.
+    pub id: Option<String>,
+    /// Key-value pairs used to replace Mustache variables in the template.
+    /// The key is the variable name.
+    /// The value is the variable value.
     #[serde(rename = "params", default, skip_serializing_if = "Option::is_none")]
     pub params: Option<serde_json::Value>,
 }
 
 impl RenderSearchTemplateRequestBodyJson {
-      /// The search definition template and its parameters.
+    /// The search definition template and its parameters.
     pub fn new() -> RenderSearchTemplateRequestBodyJson {
         RenderSearchTemplateRequestBodyJson {
             source: None,

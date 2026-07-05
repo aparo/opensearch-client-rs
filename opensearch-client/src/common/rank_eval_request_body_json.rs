@@ -14,9 +14,9 @@ use serde::{Deserialize, Serialize};
 /// RankEvalRequestBodyJson
 /// The ranking evaluation search definition, including search requests, document ratings and ranking metric definition.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RankEvalRequestBodyJson {  /// A set of typical search requests, together with their provided ratings.
+pub struct RankEvalRequestBodyJson {
+    /// A set of typical search requests, together with their provided ratings.
     #[serde(rename = "requests")]
     pub requests: Vec<core::rank_eval::RankEvalRequestItem>,
     #[serde(rename = "metric", default, skip_serializing_if = "Option::is_none")]
@@ -24,7 +24,7 @@ pub struct RankEvalRequestBodyJson {  /// A set of typical search requests, toge
 }
 
 impl RankEvalRequestBodyJson {
-      /// The ranking evaluation search definition, including search requests, document ratings and ranking metric definition.
+    /// The ranking evaluation search definition, including search requests, document ratings and ranking metric definition.
     pub fn new(requests: Vec<core::rank_eval::RankEvalRequestItem>) -> RankEvalRequestBodyJson {
         RankEvalRequestBodyJson {
             requests,

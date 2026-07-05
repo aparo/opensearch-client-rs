@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ErrorNotificationChime {
     #[serde(rename = "url", default, skip_serializing_if = "Option::is_none")]
@@ -20,10 +17,7 @@ pub struct ErrorNotificationChime {
 }
 
 impl ErrorNotificationChime {
-    
     pub fn new() -> ErrorNotificationChime {
-        ErrorNotificationChime {
-            url: None,
-        }
+        ErrorNotificationChime { url: None }
     }
 }

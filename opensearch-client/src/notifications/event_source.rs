@@ -10,14 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct EventSource {
     #[serde(rename = "tags", default, skip_serializing_if = "Option::is_none")]
     pub tags: Option<Vec<String>>,
-    #[serde(rename = "reference_id", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "reference_id",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub reference_id: Option<String>,
     #[serde(rename = "title", default, skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
@@ -26,7 +27,6 @@ pub struct EventSource {
 }
 
 impl EventSource {
-    
     pub fn new() -> EventSource {
         EventSource {
             tags: None,

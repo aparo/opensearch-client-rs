@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct StupidBackoffSmoothingModel {
     #[serde(rename = "discount")]
@@ -20,10 +17,7 @@ pub struct StupidBackoffSmoothingModel {
 }
 
 impl StupidBackoffSmoothingModel {
-    
     pub fn new(discount: f64) -> StupidBackoffSmoothingModel {
-        StupidBackoffSmoothingModel {
-            discount,
-        }
+        StupidBackoffSmoothingModel { discount }
     }
 }

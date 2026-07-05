@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AddPolicy {
     #[serde(rename = "policy_id")]
@@ -20,10 +17,7 @@ pub struct AddPolicy {
 }
 
 impl AddPolicy {
-    
     pub fn new(policy_id: String) -> AddPolicy {
-        AddPolicy {
-            policy_id,
-        }
+        AddPolicy { policy_id }
     }
 }

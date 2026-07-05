@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CloseShardResult {
     #[serde(rename = "failures")]
@@ -21,10 +18,7 @@ pub struct CloseShardResult {
 }
 
 impl CloseShardResult {
-    
     pub fn new(failures: Vec<common::ShardFailure>) -> CloseShardResult {
-        CloseShardResult {
-            failures,
-        }
+        CloseShardResult { failures }
     }
 }

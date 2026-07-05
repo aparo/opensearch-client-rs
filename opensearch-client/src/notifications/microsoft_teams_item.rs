@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct MicrosoftTeamsItem {
     #[serde(rename = "url")]
@@ -20,10 +17,7 @@ pub struct MicrosoftTeamsItem {
 }
 
 impl MicrosoftTeamsItem {
-    
     pub fn new(url: String) -> MicrosoftTeamsItem {
-        MicrosoftTeamsItem {
-            url,
-        }
+        MicrosoftTeamsItem { url }
     }
 }

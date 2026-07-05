@@ -14,9 +14,9 @@ use serde::{Deserialize, Serialize};
 /// Simulate
 /// The simulate definition
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Simulate {  /// Sample documents to test in the pipeline.
+pub struct Simulate {
+    /// Sample documents to test in the pipeline.
     #[serde(rename = "docs", default, skip_serializing_if = "Option::is_none")]
     pub docs: Option<Vec<ingest::simulate::Document>>,
     #[serde(rename = "pipeline", default, skip_serializing_if = "Option::is_none")]
@@ -24,7 +24,7 @@ pub struct Simulate {  /// Sample documents to test in the pipeline.
 }
 
 impl Simulate {
-      /// The simulate definition
+    /// The simulate definition
     pub fn new() -> Simulate {
         Simulate {
             docs: None,

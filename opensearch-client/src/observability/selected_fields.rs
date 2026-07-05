@@ -11,9 +11,6 @@
 use crate::observability;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SelectedFields {
     #[serde(rename = "text")]
@@ -23,11 +20,7 @@ pub struct SelectedFields {
 }
 
 impl SelectedFields {
-    
     pub fn new(text: String, tokens: Vec<observability::Token>) -> SelectedFields {
-        SelectedFields {
-            text,
-            tokens,
-        }
+        SelectedFields { text, tokens }
     }
 }

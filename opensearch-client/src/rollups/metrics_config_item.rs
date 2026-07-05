@@ -11,21 +11,25 @@
 use crate::rollups;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct MetricsConfigItem {
-    #[serde(rename = "target_field", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "target_field",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub target_field: Option<String>,
     #[serde(rename = "metrics", default, skip_serializing_if = "Option::is_none")]
     pub metrics: Option<Vec<rollups::MetricsConfigMetrics>>,
-    #[serde(rename = "source_field", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "source_field",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub source_field: Option<String>,
 }
 
 impl MetricsConfigItem {
-    
     pub fn new() -> MetricsConfigItem {
         MetricsConfigItem {
             target_field: None,

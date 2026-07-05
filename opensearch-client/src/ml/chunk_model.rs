@@ -10,20 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ChunkModel {  /// The model chunk.
+pub struct ChunkModel {
+    /// The model chunk.
     #[serde(rename = "chunk")]
     pub chunk: String,
 }
 
 impl ChunkModel {
-    
     pub fn new(chunk: String) -> ChunkModel {
-        ChunkModel {
-            chunk,
-        }
+        ChunkModel { chunk }
     }
 }

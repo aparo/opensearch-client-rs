@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SizeField {
     #[serde(rename = "enabled")]
@@ -20,10 +17,7 @@ pub struct SizeField {
 }
 
 impl SizeField {
-    
     pub fn new(enabled: bool) -> SizeField {
-        SizeField {
-            enabled,
-        }
+        SizeField { enabled }
     }
 }

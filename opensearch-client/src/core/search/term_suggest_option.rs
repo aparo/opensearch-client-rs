@@ -10,16 +10,21 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TermSuggestOption {
-    #[serde(rename = "highlighted", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "highlighted",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub highlighted: Option<String>,
     #[serde(rename = "score")]
     pub score: f64,
-    #[serde(rename = "collate_match", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "collate_match",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub collate_match: Option<bool>,
     #[serde(rename = "freq", default, skip_serializing_if = "Option::is_none")]
     pub freq: Option<u32>,
@@ -28,7 +33,6 @@ pub struct TermSuggestOption {
 }
 
 impl TermSuggestOption {
-    
     pub fn new(score: f64, text: String) -> TermSuggestOption {
         TermSuggestOption {
             highlighted: None,

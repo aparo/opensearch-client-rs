@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct IndexField {
     #[serde(rename = "enabled")]
@@ -20,10 +17,7 @@ pub struct IndexField {
 }
 
 impl IndexField {
-    
     pub fn new(enabled: bool) -> IndexField {
-        IndexField {
-            enabled,
-        }
+        IndexField { enabled }
     }
 }

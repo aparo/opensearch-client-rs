@@ -10,19 +10,17 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ModelGroupRegistration {  /// The status.
+pub struct ModelGroupRegistration {
+    /// The status.
     #[serde(rename = "status")]
-    pub status: String,  /// The model group ID.
+    pub status: String,
+    /// The model group ID.
     #[serde(rename = "model_group_id")]
     pub model_group_id: String,
 }
 
 impl ModelGroupRegistration {
-    
     pub fn new(status: String, model_group_id: String) -> ModelGroupRegistration {
         ModelGroupRegistration {
             status,

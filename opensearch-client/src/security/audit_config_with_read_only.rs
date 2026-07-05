@@ -11,9 +11,6 @@
 use crate::security;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AuditConfigWithReadOnly {
     #[serde(rename = "_readonly", default, skip_serializing_if = "Option::is_none")]
@@ -23,7 +20,6 @@ pub struct AuditConfigWithReadOnly {
 }
 
 impl AuditConfigWithReadOnly {
-    
     pub fn new() -> AuditConfigWithReadOnly {
         AuditConfigWithReadOnly {
             readonly: None,

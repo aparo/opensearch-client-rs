@@ -10,14 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ResolveIndexItem {
     #[serde(rename = "name")]
     pub name: String,
-    #[serde(rename = "data_stream", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "data_stream",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub data_stream: Option<String>,
     #[serde(rename = "aliases", default, skip_serializing_if = "Option::is_none")]
     pub aliases: Option<Vec<String>>,
@@ -26,7 +27,6 @@ pub struct ResolveIndexItem {
 }
 
 impl ResolveIndexItem {
-    
     pub fn new(name: String, attributes: Vec<String>) -> ResolveIndexItem {
         ResolveIndexItem {
             name,

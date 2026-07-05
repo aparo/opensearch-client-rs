@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct GetModelResponse {
-}
+pub struct GetModelResponse {}
 
 impl GetModelResponse {
-    
     pub fn new() -> GetModelResponse {
-        GetModelResponse {
-        }
+        GetModelResponse {}
     }
 }

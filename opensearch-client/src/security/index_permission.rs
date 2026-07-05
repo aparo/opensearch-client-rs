@@ -10,25 +10,33 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct IndexPermission {
     #[serde(rename = "dls", default, skip_serializing_if = "Option::is_none")]
     pub dls: Option<String>,
     #[serde(rename = "fls", default, skip_serializing_if = "Option::is_none")]
     pub fls: Option<Vec<String>>,
-    #[serde(rename = "allowed_actions", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "allowed_actions",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub allowed_actions: Option<Vec<String>>,
-    #[serde(rename = "masked_fields", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "masked_fields",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub masked_fields: Option<Vec<String>>,
-    #[serde(rename = "index_patterns", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "index_patterns",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub index_patterns: Option<Vec<String>>,
 }
 
 impl IndexPermission {
-    
     pub fn new() -> IndexPermission {
         IndexPermission {
             dls: None,

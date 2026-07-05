@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UpdateConfigResponse {
     #[serde(rename = "config_id", default, skip_serializing_if = "Option::is_none")]
@@ -20,10 +17,7 @@ pub struct UpdateConfigResponse {
 }
 
 impl UpdateConfigResponse {
-    
     pub fn new() -> UpdateConfigResponse {
-        UpdateConfigResponse {
-            config_id: None,
-        }
+        UpdateConfigResponse { config_id: None }
     }
 }

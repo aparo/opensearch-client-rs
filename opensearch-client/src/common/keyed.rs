@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Keyed {
-}
+pub struct Keyed {}
 
 impl Keyed {
-    
     pub fn new() -> Keyed {
-        Keyed {
-        }
+        Keyed {}
     }
 }

@@ -10,19 +10,17 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TermsPartitionValue {  /// The number of partitions.
+pub struct TermsPartitionValue {
+    /// The number of partitions.
     #[serde(rename = "num_partitions")]
-    pub num_partitions: u32,  /// The partition number for this request.
+    pub num_partitions: u32,
+    /// The partition number for this request.
     #[serde(rename = "partition")]
     pub partition: u32,
 }
 
 impl TermsPartitionValue {
-    
     pub fn new(num_partitions: u32, partition: u32) -> TermsPartitionValue {
         TermsPartitionValue {
             num_partitions,

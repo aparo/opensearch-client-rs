@@ -1,8 +1,8 @@
 use std::{fmt, ops::Range};
 
 use serde::{
-    de::{Error, Visitor},
     Deserialize, Deserializer, Serialize, Serializer,
+    de::{Error, Visitor},
 };
 /// Some queries and APIs support parameters to allow inexact _fuzzy_ matching,
 /// using the `fuzziness` parameter.

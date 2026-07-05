@@ -15,13 +15,13 @@ use serde::{Deserialize, Serialize};
 /// Reindex
 /// The search definition using the Query DSL and the prototype for the index request.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Reindex {
     #[serde(rename = "dest")]
     pub dest: core::reindex::Destination,
     #[serde(rename = "conflicts", default, skip_serializing_if = "Option::is_none")]
-    pub conflicts: Option<String>,  /// The maximum number of documents to reindex.
+    pub conflicts: Option<String>,
+    /// The maximum number of documents to reindex.
     #[serde(rename = "max_docs", default, skip_serializing_if = "Option::is_none")]
     pub max_docs: Option<u32>,
     #[serde(rename = "script", default, skip_serializing_if = "Option::is_none")]
@@ -33,7 +33,7 @@ pub struct Reindex {
 }
 
 impl Reindex {
-      /// The search definition using the Query DSL and the prototype for the index request.
+    /// The search definition using the Query DSL and the prototype for the index request.
     pub fn new(dest: core::reindex::Destination, source: core::reindex::Source) -> Reindex {
         Reindex {
             dest,

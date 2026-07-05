@@ -10,25 +10,42 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RegisterModelGroupRequestBodyJson {  /// The model group access mode.
-    #[serde(rename = "access_mode", default, skip_serializing_if = "Option::is_none")]
-    pub access_mode: Option<String>,  /// The model group name.
+pub struct RegisterModelGroupRequestBodyJson {
+    /// The model group access mode.
+    #[serde(
+        rename = "access_mode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub access_mode: Option<String>,
+    /// The model group name.
     #[serde(rename = "name")]
-    pub name: String,  /// The backend roles.
-    #[serde(rename = "backend_roles", default, skip_serializing_if = "Option::is_none")]
-    pub backend_roles: Option<Vec<String>>,  /// The add all backend roles.
-    #[serde(rename = "add_all_backend_roles", default, skip_serializing_if = "Option::is_none")]
-    pub add_all_backend_roles: Option<bool>,  /// The model group description.
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    pub name: String,
+    /// The backend roles.
+    #[serde(
+        rename = "backend_roles",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub backend_roles: Option<Vec<String>>,
+    /// The add all backend roles.
+    #[serde(
+        rename = "add_all_backend_roles",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub add_all_backend_roles: Option<bool>,
+    /// The model group description.
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
 }
 
 impl RegisterModelGroupRequestBodyJson {
-    
     pub fn new(name: String) -> RegisterModelGroupRequestBodyJson {
         RegisterModelGroupRequestBodyJson {
             access_mode: None,

@@ -11,19 +11,19 @@
 use crate::ism;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ErrorNotificationSlack {
     #[serde(rename = "url", default, skip_serializing_if = "Option::is_none")]
     pub url: Option<String>,
-    #[serde(rename = "custom_webhook", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "custom_webhook",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub custom_webhook: Option<ism::SlackCustomWebhook>,
 }
 
 impl ErrorNotificationSlack {
-    
     pub fn new() -> ErrorNotificationSlack {
         ErrorNotificationSlack {
             url: None,

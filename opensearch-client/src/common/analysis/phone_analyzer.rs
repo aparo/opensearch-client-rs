@@ -10,19 +10,20 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct PhoneAnalyzer {  /// Optional ISO 3166 country code, defaults to "ZZ" (unknown region).
-    #[serde(rename = "phone-region", default, skip_serializing_if = "Option::is_none")]
+pub struct PhoneAnalyzer {
+    /// Optional ISO 3166 country code, defaults to "ZZ" (unknown region).
+    #[serde(
+        rename = "phone-region",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub phone_region: Option<String>,
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
     pub r#type: Option<String>,
 }
 
 impl PhoneAnalyzer {
-    
     pub fn new() -> PhoneAnalyzer {
         PhoneAnalyzer {
             phone_region: None,

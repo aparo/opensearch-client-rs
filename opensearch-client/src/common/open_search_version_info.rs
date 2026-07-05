@@ -11,17 +11,15 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct OpenSearchVersionInfo {
     #[serde(rename = "lucene_version")]
     pub lucene_version: String,
     #[serde(rename = "minimum_index_compatibility_version")]
-    pub minimum_index_compatibility_version: String,  /// A date and time, either as a string whose format depends on the context (defaulting to ISO_8601) or the
-  /// number of milliseconds since the epoch. OpenSearch accepts both as an input but will generally output a string.
-  /// representation.
+    pub minimum_index_compatibility_version: String,
+    /// A date and time, either as a string whose format depends on the context (defaulting to ISO_8601) or the
+    /// number of milliseconds since the epoch. OpenSearch accepts both as an input but will generally output a string.
+    /// representation.
     #[serde(rename = "build_date")]
     pub build_date: common::DateTime,
     #[serde(rename = "build_snapshot")]
@@ -32,7 +30,11 @@ pub struct OpenSearchVersionInfo {
     pub distribution: String,
     #[serde(rename = "build_hash")]
     pub build_hash: String,
-    #[serde(rename = "build_flavor", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "build_flavor",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub build_flavor: Option<String>,
     #[serde(rename = "minimum_wire_compatibility_version")]
     pub minimum_wire_compatibility_version: String,
@@ -41,8 +43,17 @@ pub struct OpenSearchVersionInfo {
 }
 
 impl OpenSearchVersionInfo {
-    
-    pub fn new(lucene_version: String, minimum_index_compatibility_version: String, build_date: common::DateTime, build_snapshot: bool, build_type: String, distribution: String, build_hash: String, minimum_wire_compatibility_version: String, number: String) -> OpenSearchVersionInfo {
+    pub fn new(
+        lucene_version: String,
+        minimum_index_compatibility_version: String,
+        build_date: common::DateTime,
+        build_snapshot: bool,
+        build_type: String,
+        distribution: String,
+        build_hash: String,
+        minimum_wire_compatibility_version: String,
+        number: String,
+    ) -> OpenSearchVersionInfo {
         OpenSearchVersionInfo {
             lucene_version,
             minimum_index_compatibility_version,

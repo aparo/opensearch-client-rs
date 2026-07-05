@@ -1,4 +1,4 @@
-use crate::{search::*, util::*, Set};
+use crate::{Set, search::*, util::*};
 
 /// Returns documents based on their IDs. This query uses document IDs stored in
 /// the [`_id`](https://www.elastic.co/guide/en/opensearch/reference/current/mapping-id-field.html)

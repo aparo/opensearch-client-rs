@@ -11,7 +11,7 @@ use bon::bon;
 
 use crate::*;
 use reqwest;
-use serde::{de::Error as OtherError, Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de::Error as OtherError};
 use std::sync::Arc;
 
 pub struct ClusterApiClient {
@@ -1125,7 +1125,12 @@ impl ClusterApiClient {
 
         let local_var_client = &local_var_configuration.client;
 
-        let local_var_uri_str = format!("{}_cluster/decommission/awareness/{awareness_attribute_name}/{awareness_attribute_value}", local_var_configuration.base_path, awareness_attribute_name=awareness_attribute_name, awareness_attribute_value=awareness_attribute_value);
+        let local_var_uri_str = format!(
+            "{}_cluster/decommission/awareness/{awareness_attribute_name}/{awareness_attribute_value}",
+            local_var_configuration.base_path,
+            awareness_attribute_name = awareness_attribute_name,
+            awareness_attribute_value = awareness_attribute_value
+        );
         let mut local_var_req_builder =
             local_var_client.request(reqwest::Method::PUT, local_var_uri_str.as_str());
 

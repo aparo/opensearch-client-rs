@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DutchAnalyzer {
     #[serde(rename = "stopwords", default, skip_serializing_if = "Option::is_none")]
@@ -23,7 +20,6 @@ pub struct DutchAnalyzer {
 }
 
 impl DutchAnalyzer {
-    
     pub fn new(r#type: String) -> DutchAnalyzer {
         DutchAnalyzer {
             stopwords: None,

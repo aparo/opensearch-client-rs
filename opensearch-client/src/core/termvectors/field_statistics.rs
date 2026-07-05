@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct FieldStatistics {
     #[serde(rename = "sum_ttf")]
@@ -24,7 +21,6 @@ pub struct FieldStatistics {
 }
 
 impl FieldStatistics {
-    
     pub fn new(sum_ttf: u32, sum_doc_freq: u32, doc_count: u32) -> FieldStatistics {
         FieldStatistics {
             sum_ttf,

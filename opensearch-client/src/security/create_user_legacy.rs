@@ -11,33 +11,45 @@
 use crate::security;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CreateUserLegacy {
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
     #[serde(rename = "hash", default, skip_serializing_if = "Option::is_none")]
     pub hash: Option<String>,
     #[serde(rename = "static", default, skip_serializing_if = "Option::is_none")]
     pub r#static: Option<bool>,
-    #[serde(rename = "opendistro_security_roles", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "opendistro_security_roles",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub opendistro_security_roles: Option<Vec<String>>,
-    #[serde(rename = "attributes", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "attributes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub attributes: Option<security::UserAttributes>,
     #[serde(rename = "hidden", default, skip_serializing_if = "Option::is_none")]
     pub hidden: Option<bool>,
     #[serde(rename = "password", default, skip_serializing_if = "Option::is_none")]
     pub password: Option<String>,
-    #[serde(rename = "backend_roles", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "backend_roles",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub backend_roles: Option<Vec<String>>,
     #[serde(rename = "reserved", default, skip_serializing_if = "Option::is_none")]
     pub reserved: Option<bool>,
 }
 
 impl CreateUserLegacy {
-    
     pub fn new() -> CreateUserLegacy {
         CreateUserLegacy {
             description: None,

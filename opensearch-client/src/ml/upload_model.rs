@@ -10,25 +10,35 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UploadModel {
-    #[serde(rename = "model_group_id", default, skip_serializing_if = "Option::is_none")]
-    pub model_group_id: Option<String>,  /// The model description.
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "model_group_id",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub model_group_id: Option<String>,
+    /// The model description.
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
     #[serde(rename = "version")]
     pub version: String,
-    #[serde(rename = "model_format", default, skip_serializing_if = "Option::is_none")]
-    pub model_format: Option<String>,  /// The model name.
+    #[serde(
+        rename = "model_format",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub model_format: Option<String>,
+    /// The model name.
     #[serde(rename = "name")]
     pub name: String,
 }
 
 impl UploadModel {
-    
     pub fn new(version: String, name: String) -> UploadModel {
         UploadModel {
             model_group_id: None,

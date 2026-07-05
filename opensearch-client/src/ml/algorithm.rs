@@ -13,18 +13,16 @@ use serde::{Deserialize, Serialize};
 /// Algorithm
 /// The algorithm.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Algorithm {  /// The function name.
+pub struct Algorithm {
+    /// The function name.
     #[serde(rename = "value", default, skip_serializing_if = "Option::is_none")]
     pub value: Option<String>,
 }
 
 impl Algorithm {
-      /// The algorithm.
+    /// The algorithm.
     pub fn new() -> Algorithm {
-        Algorithm {
-            value: None,
-        }
+        Algorithm { value: None }
     }
 }

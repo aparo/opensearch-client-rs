@@ -10,19 +10,19 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct WhoAmI {
-    #[serde(rename = "is_node_certificate_request", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "is_node_certificate_request",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub is_node_certificate_request: Option<bool>,
     #[serde(rename = "is_admin", default, skip_serializing_if = "Option::is_none")]
     pub is_admin: Option<bool>,
 }
 
 impl WhoAmI {
-    
     pub fn new() -> WhoAmI {
         WhoAmI {
             is_node_certificate_request: None,

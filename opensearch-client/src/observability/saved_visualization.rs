@@ -11,9 +11,6 @@
 use crate::observability;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SavedVisualization {
     #[serde(rename = "description")]
@@ -33,8 +30,15 @@ pub struct SavedVisualization {
 }
 
 impl SavedVisualization {
-    
-    pub fn new(description: String, selected_date_range: observability::SelectedDateRange, name: String, query: String, selected_fields: observability::SelectedFields, selected_timestamp: observability::SelectedTimestamp, r#type: String) -> SavedVisualization {
+    pub fn new(
+        description: String,
+        selected_date_range: observability::SelectedDateRange,
+        name: String,
+        query: String,
+        selected_fields: observability::SelectedFields,
+        selected_timestamp: observability::SelectedTimestamp,
+        r#type: String,
+    ) -> SavedVisualization {
         SavedVisualization {
             description,
             selected_date_range,

@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ActionAllocation {
     #[serde(rename = "require", default, skip_serializing_if = "Option::is_none")]
@@ -27,7 +24,6 @@ pub struct ActionAllocation {
 }
 
 impl ActionAllocation {
-    
     pub fn new() -> ActionAllocation {
         ActionAllocation {
             require: None,

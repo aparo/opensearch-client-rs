@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct NumericDecayPlacement {
     #[serde(rename = "scale", default, skip_serializing_if = "Option::is_none")]
@@ -26,7 +23,6 @@ pub struct NumericDecayPlacement {
 }
 
 impl NumericDecayPlacement {
-    
     pub fn new() -> NumericDecayPlacement {
         NumericDecayPlacement {
             scale: None,

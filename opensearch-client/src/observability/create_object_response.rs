@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CreateObjectResponse {
     #[serde(rename = "objectId", default, skip_serializing_if = "Option::is_none")]
@@ -20,10 +17,7 @@ pub struct CreateObjectResponse {
 }
 
 impl CreateObjectResponse {
-    
     pub fn new() -> CreateObjectResponse {
-        CreateObjectResponse {
-            object_id: None,
-        }
+        CreateObjectResponse { object_id: None }
     }
 }

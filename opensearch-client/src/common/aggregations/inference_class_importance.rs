@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InferenceClassImportance {
     #[serde(rename = "class_name")]
@@ -22,7 +19,6 @@ pub struct InferenceClassImportance {
 }
 
 impl InferenceClassImportance {
-    
     pub fn new(class_name: String, importance: f64) -> InferenceClassImportance {
         InferenceClassImportance {
             class_name,

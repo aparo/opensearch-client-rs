@@ -14,7 +14,6 @@ use serde::{Deserialize, Serialize};
 /// PutScript
 /// The document
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PutScript {
     #[serde(rename = "script")]
@@ -22,10 +21,8 @@ pub struct PutScript {
 }
 
 impl PutScript {
-      /// The document
+    /// The document
     pub fn new(script: common::StoredScript) -> PutScript {
-        PutScript {
-            script,
-        }
+        PutScript { script }
     }
 }

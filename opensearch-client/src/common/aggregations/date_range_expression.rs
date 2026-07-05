@@ -11,23 +11,22 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct DateRangeExpression {  /// A date range limit, represented either as a DateMath expression or a number expressed
-  /// according to the target field's precision.
+pub struct DateRangeExpression {
+    /// A date range limit, represented either as a DateMath expression or a number expressed
+    /// according to the target field's precision.
     #[serde(rename = "from", default, skip_serializing_if = "Option::is_none")]
-    pub from: Option<common::aggregations::FieldDateMath>,  /// Custom key to return the range with.
+    pub from: Option<common::aggregations::FieldDateMath>,
+    /// Custom key to return the range with.
     #[serde(rename = "key", default, skip_serializing_if = "Option::is_none")]
-    pub key: Option<String>,  /// A date range limit, represented either as a DateMath expression or a number expressed
-  /// according to the target field's precision.
+    pub key: Option<String>,
+    /// A date range limit, represented either as a DateMath expression or a number expressed
+    /// according to the target field's precision.
     #[serde(rename = "to", default, skip_serializing_if = "Option::is_none")]
     pub to: Option<common::aggregations::FieldDateMath>,
 }
 
 impl DateRangeExpression {
-    
     pub fn new() -> DateRangeExpression {
         DateRangeExpression {
             from: None,

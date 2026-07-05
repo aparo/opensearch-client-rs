@@ -14,17 +14,24 @@ use serde::{Deserialize, Serialize};
 /// Transition
 /// A transition into a new state.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Transition {
-    #[serde(rename = "conditions", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "conditions",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub conditions: Option<serde_json::Value>,
-    #[serde(rename = "state_name", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "state_name",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub state_name: Option<String>,
 }
 
 impl Transition {
-      /// A transition into a new state.
+    /// A transition into a new state.
     pub fn new() -> Transition {
         Transition {
             conditions: None,

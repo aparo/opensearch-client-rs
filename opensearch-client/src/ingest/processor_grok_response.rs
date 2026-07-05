@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ProcessorGrokResponse {
     #[serde(rename = "patterns")]
@@ -21,10 +18,7 @@ pub struct ProcessorGrokResponse {
 }
 
 impl ProcessorGrokResponse {
-    
     pub fn new(patterns: serde_json::Value) -> ProcessorGrokResponse {
-        ProcessorGrokResponse {
-            patterns,
-        }
+        ProcessorGrokResponse { patterns }
     }
 }

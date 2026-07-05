@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use super::SortOrder;
-use crate::{util::ShouldSkip, Script, ScriptSortType};
+use crate::{Script, ScriptSortType, util::ShouldSkip};
 
 /// Sorts search hits by script result
 ///

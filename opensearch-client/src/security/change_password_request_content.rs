@@ -10,19 +10,17 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ChangePasswordRequestContent {  /// The new password to set.
+pub struct ChangePasswordRequestContent {
+    /// The new password to set.
     #[serde(rename = "password")]
-    pub password: String,  /// The current password.
+    pub password: String,
+    /// The current password.
     #[serde(rename = "current_password")]
     pub current_password: String,
 }
 
 impl ChangePasswordRequestContent {
-    
     pub fn new(password: String, current_password: String) -> ChangePasswordRequestContent {
         ChangePasswordRequestContent {
             password,

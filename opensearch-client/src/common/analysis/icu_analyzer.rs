@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct IcuAnalyzer {
     #[serde(rename = "method")]
@@ -24,7 +21,6 @@ pub struct IcuAnalyzer {
 }
 
 impl IcuAnalyzer {
-    
     pub fn new(method: String, mode: String, r#type: String) -> IcuAnalyzer {
         IcuAnalyzer {
             method,

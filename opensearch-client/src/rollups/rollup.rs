@@ -11,34 +11,68 @@
 use crate::rollups;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Rollup {
-    #[serde(rename = "target_index", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "target_index",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub target_index: Option<String>,
-    #[serde(rename = "source_index", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "source_index",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub source_index: Option<String>,
-    #[serde(rename = "enabled_time", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "enabled_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub enabled_time: Option<f64>,
-    #[serde(rename = "last_updated_time", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "last_updated_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub last_updated_time: Option<f64>,
     #[serde(rename = "page_size", default, skip_serializing_if = "Option::is_none")]
     pub page_size: Option<f64>,
     #[serde(rename = "delay", default, skip_serializing_if = "Option::is_none")]
     pub delay: Option<f64>,
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
     #[serde(rename = "metrics", default, skip_serializing_if = "Option::is_none")]
-    pub metrics: Option<Vec<rollups::MetricsConfigItem>>,  /// Set up a Mustache message template for error notifications. For example, if an index rollup job fails, the system sends a message to a Slack channel.
-    #[serde(rename = "error_notification", default, skip_serializing_if = "Option::is_none")]
+    pub metrics: Option<Vec<rollups::MetricsConfigItem>>,
+    /// Set up a Mustache message template for error notifications. For example, if an index rollup job fails, the system sends a message to a Slack channel.
+    #[serde(
+        rename = "error_notification",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub error_notification: Option<String>,
-    #[serde(rename = "schema_version", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "schema_version",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub schema_version: Option<f64>,
-    #[serde(rename = "dimensions", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "dimensions",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub dimensions: Option<Vec<rollups::DimensionsConfigItem>>,
-    #[serde(rename = "continuous", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "continuous",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub continuous: Option<bool>,
     #[serde(rename = "enabled", default, skip_serializing_if = "Option::is_none")]
     pub enabled: Option<bool>,
@@ -49,7 +83,6 @@ pub struct Rollup {
 }
 
 impl Rollup {
-    
     pub fn new() -> Rollup {
         Rollup {
             target_index: None,

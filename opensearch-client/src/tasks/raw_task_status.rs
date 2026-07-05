@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RawTaskStatus {
-}
+pub struct RawTaskStatus {}
 
 impl RawTaskStatus {
-    
     pub fn new() -> RawTaskStatus {
-        RawTaskStatus {
-        }
+        RawTaskStatus {}
     }
 }

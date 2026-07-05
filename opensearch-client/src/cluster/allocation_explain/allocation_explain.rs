@@ -13,21 +13,27 @@ use serde::{Deserialize, Serialize};
 /// AllocationExplain
 /// The index, shard, and primary flag for which to generate an explanation. Leave this empty to generate an explanation for the first unassigned shard.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AllocationExplain {
     #[serde(rename = "index", default, skip_serializing_if = "Option::is_none")]
-    pub index: Option<String>,  /// When `true`, returns a routing explanation for the primary shard based on the node ID.
+    pub index: Option<String>,
+    /// When `true`, returns a routing explanation for the primary shard based on the node ID.
     #[serde(rename = "primary", default, skip_serializing_if = "Option::is_none")]
-    pub primary: Option<bool>,  /// Specifies the node ID or the name of the node to only explain a shard that is currently located on the specified node.
-    #[serde(rename = "current_node", default, skip_serializing_if = "Option::is_none")]
-    pub current_node: Option<String>,  /// Specifies the ID of the shard that you would like an explanation for.
+    pub primary: Option<bool>,
+    /// Specifies the node ID or the name of the node to only explain a shard that is currently located on the specified node.
+    #[serde(
+        rename = "current_node",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub current_node: Option<String>,
+    /// Specifies the ID of the shard that you would like an explanation for.
     #[serde(rename = "shard", default, skip_serializing_if = "Option::is_none")]
     pub shard: Option<u32>,
 }
 
 impl AllocationExplain {
-      /// The index, shard, and primary flag for which to generate an explanation. Leave this empty to generate an explanation for the first unassigned shard.
+    /// The index, shard, and primary flag for which to generate an explanation. Leave this empty to generate an explanation for the first unassigned shard.
     pub fn new() -> AllocationExplain {
         AllocationExplain {
             index: None,

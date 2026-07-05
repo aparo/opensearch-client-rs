@@ -10,27 +10,47 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TransientPlain {
-    #[serde(rename = "plugins.sql.cursor.keep_alive", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "plugins.sql.cursor.keep_alive",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub plugins_sql_cursor_keep_alive: Option<String>,
-    #[serde(rename = "plugins.ppl.enabled", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "plugins.ppl.enabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub plugins_ppl_enabled: Option<bool>,
-    #[serde(rename = "plugins.query.memory_limit", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "plugins.query.memory_limit",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub plugins_query_memory_limit: Option<String>,
-    #[serde(rename = "plugins.query.size_limit", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "plugins.query.size_limit",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub plugins_query_size_limit: Option<u32>,
-    #[serde(rename = "plugins.sql.enabled", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "plugins.sql.enabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub plugins_sql_enabled: Option<bool>,
-    #[serde(rename = "plugins.sql.slowlog", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "plugins.sql.slowlog",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub plugins_sql_slowlog: Option<u32>,
 }
 
 impl TransientPlain {
-    
     pub fn new() -> TransientPlain {
         TransientPlain {
             plugins_sql_cursor_keep_alive: None,

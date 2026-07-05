@@ -11,23 +11,35 @@
 use crate::notifications;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ListChannelsResponse {
-    #[serde(rename = "total_hit_relation", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "total_hit_relation",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub total_hit_relation: Option<String>,
-    #[serde(rename = "start_index", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "start_index",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub start_index: Option<u32>,
-    #[serde(rename = "total_hits", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "total_hits",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub total_hits: Option<u32>,
-    #[serde(rename = "channel_list", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "channel_list",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub channel_list: Option<Vec<notifications::NotificationChannel>>,
 }
 
 impl ListChannelsResponse {
-    
     pub fn new() -> ListChannelsResponse {
         ListChannelsResponse {
             total_hit_relation: None,

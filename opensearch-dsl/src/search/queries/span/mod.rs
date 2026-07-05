@@ -27,7 +27,7 @@ pub use self::{
     span_multi_query::*, span_near_query::*, span_not_query::*, span_or_query::*,
     span_term_query::*, span_within_query::*,
 };
-use crate::{util::*, FuzzyQuery, PrefixQuery, RangeQuery, RegexpQuery, WildcardQuery};
+use crate::{FuzzyQuery, PrefixQuery, RangeQuery, RegexpQuery, WildcardQuery, util::*};
 
 macro_rules! span_query {
     ($($variant:ident($query:ty)),+ $(,)?) => {

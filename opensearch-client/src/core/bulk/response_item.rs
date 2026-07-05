@@ -11,25 +11,34 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ResponseItem {  /// Result of the operation.
-  /// Successful values are `created`, `deleted`, and `updated`.
+pub struct ResponseItem {
+    /// Result of the operation.
+    /// Successful values are `created`, `deleted`, and `updated`.
     #[serde(rename = "result", default, skip_serializing_if = "Option::is_none")]
-    pub result: Option<String>,  /// HTTP status code returned for the operation.
+    pub result: Option<String>,
+    /// HTTP status code returned for the operation.
     #[serde(rename = "status")]
     pub status: u32,
-    #[serde(rename = "forced_refresh", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "forced_refresh",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub forced_refresh: Option<bool>,
     #[serde(rename = "_shards", default, skip_serializing_if = "Option::is_none")]
     pub shards: Option<common::ShardStatistics>,
     #[serde(rename = "get", default, skip_serializing_if = "Option::is_none")]
-    pub get: Option<common::InlineGetDictUserDefined>,  /// The primary term assigned to the document for the operation.
-    #[serde(rename = "_primary_term", default, skip_serializing_if = "Option::is_none")]
-    pub primary_term: Option<u32>,  /// The name of the index associated with the operation.
-  /// If the operation targets a data stream, this is the backing index into which the document was written.
+    pub get: Option<common::InlineGetDictUserDefined>,
+    /// The primary term assigned to the document for the operation.
+    #[serde(
+        rename = "_primary_term",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub primary_term: Option<u32>,
+    /// The name of the index associated with the operation.
+    /// If the operation targets a data stream, this is the backing index into which the document was written.
     #[serde(rename = "_index")]
     pub index: String,
     #[serde(rename = "_seq_no", default, skip_serializing_if = "Option::is_none")]
@@ -41,7 +50,6 @@ pub struct ResponseItem {  /// Result of the operation.
 }
 
 impl ResponseItem {
-    
     pub fn new(status: u32, index: String) -> ResponseItem {
         ResponseItem {
             result: None,

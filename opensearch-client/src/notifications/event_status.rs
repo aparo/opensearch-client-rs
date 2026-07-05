@@ -11,25 +11,38 @@
 use crate::notifications;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct EventStatus {
-    #[serde(rename = "delivery_status", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "delivery_status",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub delivery_status: Option<notifications::DeliveryStatus>,
-    #[serde(rename = "email_recipient_status", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "email_recipient_status",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub email_recipient_status: Option<Vec<notifications::EmailRecipientStatus>>,
     #[serde(rename = "config_id", default, skip_serializing_if = "Option::is_none")]
-    pub config_id: Option<String>,  /// Type of notification configuration.
-    #[serde(rename = "config_type", default, skip_serializing_if = "Option::is_none")]
+    pub config_id: Option<String>,
+    /// Type of notification configuration.
+    #[serde(
+        rename = "config_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub config_type: Option<String>,
-    #[serde(rename = "config_name", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "config_name",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub config_name: Option<String>,
 }
 
 impl EventStatus {
-    
     pub fn new() -> EventStatus {
         EventStatus {
             delivery_status: None,

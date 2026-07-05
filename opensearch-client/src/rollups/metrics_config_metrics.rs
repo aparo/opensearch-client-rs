@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct MetricsConfigMetrics {
     #[serde(rename = "sum", default, skip_serializing_if = "Option::is_none")]
@@ -24,12 +21,15 @@ pub struct MetricsConfigMetrics {
     pub min: Option<serde_json::Value>,
     #[serde(rename = "max", default, skip_serializing_if = "Option::is_none")]
     pub max: Option<serde_json::Value>,
-    #[serde(rename = "value_count", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "value_count",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub value_count: Option<serde_json::Value>,
 }
 
 impl MetricsConfigMetrics {
-    
     pub fn new() -> MetricsConfigMetrics {
         MetricsConfigMetrics {
             sum: None,

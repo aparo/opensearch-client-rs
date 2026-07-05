@@ -1,9 +1,9 @@
 use std::fmt;
 
 use serde::{
+    Deserialize, Deserializer,
     de::{Error, Unexpected, Visitor},
     ser::{Serialize, Serializer},
-    Deserialize, Deserializer,
 };
 /// Method used to rewrite the query.
 ///

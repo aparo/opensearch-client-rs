@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PersistentTaskStatus {
     #[serde(rename = "state")]
@@ -20,10 +17,7 @@ pub struct PersistentTaskStatus {
 }
 
 impl PersistentTaskStatus {
-    
     pub fn new(state: String) -> PersistentTaskStatus {
-        PersistentTaskStatus {
-            state,
-        }
+        PersistentTaskStatus { state }
     }
 }

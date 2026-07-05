@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RankFeatureFunction {
-}
+pub struct RankFeatureFunction {}
 
 impl RankFeatureFunction {
-    
     pub fn new() -> RankFeatureFunction {
-        RankFeatureFunction {
-        }
+        RankFeatureFunction {}
     }
 }

@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PutSettingsResponse {
     #[serde(rename = "persistent")]
@@ -25,8 +22,11 @@ pub struct PutSettingsResponse {
 }
 
 impl PutSettingsResponse {
-    
-    pub fn new(persistent: serde_json::Value, acknowledged: bool, transient: serde_json::Value) -> PutSettingsResponse {
+    pub fn new(
+        persistent: serde_json::Value,
+        acknowledged: bool,
+        transient: serde_json::Value,
+    ) -> PutSettingsResponse {
         PutSettingsResponse {
             persistent,
             acknowledged,

@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ScrollableHitSourceSearchFailure {
     #[serde(rename = "node", default, skip_serializing_if = "Option::is_none")]
@@ -29,7 +26,6 @@ pub struct ScrollableHitSourceSearchFailure {
 }
 
 impl ScrollableHitSourceSearchFailure {
-    
     pub fn new(reason: common::ErrorCause, status: u32) -> ScrollableHitSourceSearchFailure {
         ScrollableHitSourceSearchFailure {
             node: None,

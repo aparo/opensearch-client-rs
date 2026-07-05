@@ -13,18 +13,16 @@ use serde::{Deserialize, Serialize};
 /// Type
 /// The type.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Type {  /// The agent type.
+pub struct Type {
+    /// The agent type.
     #[serde(rename = "value", default, skip_serializing_if = "Option::is_none")]
     pub value: Option<String>,
 }
 
 impl Type {
-      /// The type.
+    /// The type.
     pub fn new() -> Type {
-        Type {
-            value: None,
-        }
+        Type { value: None }
     }
 }

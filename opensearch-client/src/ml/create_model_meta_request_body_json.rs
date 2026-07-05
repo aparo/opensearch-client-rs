@@ -11,34 +11,50 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CreateModelMetaRequestBodyJson {
     #[serde(rename = "version")]
-    pub version: String,  /// The model name.
+    pub version: String,
+    /// The model name.
     #[serde(rename = "name")]
-    pub name: String,  /// Number of chunks the model is split into.
+    pub name: String,
+    /// Number of chunks the model is split into.
     #[serde(rename = "total_chunks")]
     pub total_chunks: u32,
     #[serde(rename = "model_config")]
     pub model_config: ml::ModelConfig,
-    #[serde(rename = "model_group_id", default, skip_serializing_if = "Option::is_none")]
-    pub model_group_id: Option<String>,  /// The model URL.
+    #[serde(
+        rename = "model_group_id",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub model_group_id: Option<String>,
+    /// The model URL.
     #[serde(rename = "url", default, skip_serializing_if = "Option::is_none")]
-    pub url: Option<String>,  /// The model description.
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    pub url: Option<String>,
+    /// The model description.
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
     #[serde(rename = "model_format")]
-    pub model_format: String,  /// The model content hash value.
+    pub model_format: String,
+    /// The model content hash value.
     #[serde(rename = "model_content_hash_value")]
     pub model_content_hash_value: String,
 }
 
 impl CreateModelMetaRequestBodyJson {
-    
-    pub fn new(version: String, name: String, total_chunks: u32, model_config: ml::ModelConfig, model_format: String, model_content_hash_value: String) -> CreateModelMetaRequestBodyJson {
+    pub fn new(
+        version: String,
+        name: String,
+        total_chunks: u32,
+        model_config: ml::ModelConfig,
+        model_format: String,
+        model_content_hash_value: String,
+    ) -> CreateModelMetaRequestBodyJson {
         CreateModelMetaRequestBodyJson {
             version,
             name,

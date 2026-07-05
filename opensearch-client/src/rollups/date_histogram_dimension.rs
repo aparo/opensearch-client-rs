@@ -10,25 +10,37 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DateHistogramDimension {
-    #[serde(rename = "source_field", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "source_field",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub source_field: Option<String>,
     #[serde(rename = "timezone", default, skip_serializing_if = "Option::is_none")]
     pub timezone: Option<String>,
-    #[serde(rename = "calendar_interval", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "calendar_interval",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub calendar_interval: Option<String>,
-    #[serde(rename = "target_field", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "target_field",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub target_field: Option<String>,
-    #[serde(rename = "fixed_interval", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "fixed_interval",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub fixed_interval: Option<String>,
 }
 
 impl DateHistogramDimension {
-    
     pub fn new() -> DateHistogramDimension {
         DateHistogramDimension {
             source_field: None,

@@ -10,19 +10,17 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ChiSquareHeuristic {  /// Set to `false` to filter out the terms that appear less often in the subset than in documents outside the subset.
+pub struct ChiSquareHeuristic {
+    /// Set to `false` to filter out the terms that appear less often in the subset than in documents outside the subset.
     #[serde(rename = "include_negatives")]
-    pub include_negatives: bool,  /// Set to `false` if you defined a custom background filter that represents a different set of documents that you want to compare to.
+    pub include_negatives: bool,
+    /// Set to `false` if you defined a custom background filter that represents a different set of documents that you want to compare to.
     #[serde(rename = "background_is_superset")]
     pub background_is_superset: bool,
 }
 
 impl ChiSquareHeuristic {
-    
     pub fn new(include_negatives: bool, background_is_superset: bool) -> ChiSquareHeuristic {
         ChiSquareHeuristic {
             include_negatives,

@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct IncludeState {
     #[serde(rename = "state", default, skip_serializing_if = "Option::is_none")]
@@ -20,10 +17,7 @@ pub struct IncludeState {
 }
 
 impl IncludeState {
-    
     pub fn new() -> IncludeState {
-        IncludeState {
-            state: None,
-        }
+        IncludeState { state: None }
     }
 }

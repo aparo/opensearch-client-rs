@@ -14,17 +14,20 @@ use serde::{Deserialize, Serialize};
 /// PutSettingsRequestBodyJson
 /// The cluster settings to update.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PutSettingsRequestBodyJson {
-    #[serde(rename = "persistent", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "persistent",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub persistent: Option<serde_json::Value>,
     #[serde(rename = "transient", default, skip_serializing_if = "Option::is_none")]
     pub transient: Option<serde_json::Value>,
 }
 
 impl PutSettingsRequestBodyJson {
-      /// The cluster settings to update.
+    /// The cluster settings to update.
     pub fn new() -> PutSettingsRequestBodyJson {
         PutSettingsRequestBodyJson {
             persistent: None,

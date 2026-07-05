@@ -10,18 +10,23 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TrainedModel {
     #[serde(rename = "mode", default, skip_serializing_if = "Option::is_none")]
     pub mode: Option<String>,
-    #[serde(rename = "compression_level", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "compression_level",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub compression_level: Option<String>,
     #[serde(rename = "dimension")]
     pub dimension: u32,
-    #[serde(rename = "max_training_vector_count", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "max_training_vector_count",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub max_training_vector_count: Option<u32>,
     #[serde(rename = "method", default, skip_serializing_if = "Option::is_none")]
     pub method: Option<String>,
@@ -29,16 +34,23 @@ pub struct TrainedModel {
     pub space_type: Option<String>,
     #[serde(rename = "training_index")]
     pub training_index: String,
-    #[serde(rename = "search_size", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "search_size",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub search_size: Option<u32>,
     #[serde(rename = "training_field")]
     pub training_field: String,
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
 }
 
 impl TrainedModel {
-    
     pub fn new(dimension: u32, training_index: String, training_field: String) -> TrainedModel {
         TrainedModel {
             mode: None,

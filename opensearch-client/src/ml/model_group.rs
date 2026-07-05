@@ -11,21 +11,30 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ModelGroup {  /// The model group description.
+pub struct ModelGroup {
+    /// The model group description.
     #[serde(rename = "description")]
-    pub description: String,  /// The model group name.
+    pub description: String,
+    /// The model group name.
     #[serde(rename = "name")]
     pub name: String,
-    #[serde(rename = "created_time", default, skip_serializing_if = "Option::is_none")]
-    pub created_time: Option<u32>,  /// The latest version.
+    #[serde(
+        rename = "created_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub created_time: Option<u32>,
+    /// The latest version.
     #[serde(rename = "latest_version")]
     pub latest_version: u32,
-    #[serde(rename = "last_updated_time", default, skip_serializing_if = "Option::is_none")]
-    pub last_updated_time: Option<u32>,  /// The model group access.
+    #[serde(
+        rename = "last_updated_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub last_updated_time: Option<u32>,
+    /// The model group access.
     #[serde(rename = "access")]
     pub access: String,
     #[serde(rename = "owner", default, skip_serializing_if = "Option::is_none")]
@@ -33,8 +42,12 @@ pub struct ModelGroup {  /// The model group description.
 }
 
 impl ModelGroup {
-    
-    pub fn new(description: String, name: String, latest_version: u32, access: String) -> ModelGroup {
+    pub fn new(
+        description: String,
+        name: String,
+        latest_version: u32,
+        access: String,
+    ) -> ModelGroup {
         ModelGroup {
             description,
             name,

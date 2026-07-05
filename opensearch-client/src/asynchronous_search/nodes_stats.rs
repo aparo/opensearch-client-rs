@@ -11,17 +11,17 @@
 use crate::asynchronous_search;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct NodesStats {
-    #[serde(rename = "asynchronous_search_stats", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "asynchronous_search_stats",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub asynchronous_search_stats: Option<asynchronous_search::AsynchronousSearchStats>,
 }
 
 impl NodesStats {
-    
     pub fn new() -> NodesStats {
         NodesStats {
             asynchronous_search_stats: None,

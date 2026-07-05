@@ -11,61 +11,145 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AggregationProfileDebug {
-    #[serde(rename = "built_buckets", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "built_buckets",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub built_buckets: Option<u32>,
-    #[serde(rename = "collect_analyzed_ns", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "collect_analyzed_ns",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub collect_analyzed_ns: Option<u32>,
-    #[serde(rename = "numeric_collectors_used", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "numeric_collectors_used",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub numeric_collectors_used: Option<u32>,
-    #[serde(rename = "delegate_debug", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "delegate_debug",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub delegate_debug: Option<core::search::AggregationProfileDelegateDebug>,
-    #[serde(rename = "segments_with_single_valued_ords", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "segments_with_single_valued_ords",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub segments_with_single_valued_ords: Option<u32>,
-    #[serde(rename = "segments_with_multi_valued_ords", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "segments_with_multi_valued_ords",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub segments_with_multi_valued_ords: Option<u32>,
-    #[serde(rename = "total_buckets", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "total_buckets",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub total_buckets: Option<u32>,
-    #[serde(rename = "deferred_aggregators", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "deferred_aggregators",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub deferred_aggregators: Option<Vec<String>>,
-    #[serde(rename = "ordinals_collectors_overhead_too_high", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "ordinals_collectors_overhead_too_high",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub ordinals_collectors_overhead_too_high: Option<u32>,
     #[serde(rename = "delegate", default, skip_serializing_if = "Option::is_none")]
     pub delegate: Option<String>,
-    #[serde(rename = "ordinals_collectors_used", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "ordinals_collectors_used",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub ordinals_collectors_used: Option<u32>,
-    #[serde(rename = "collect_analyzed_count", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "collect_analyzed_count",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub collect_analyzed_count: Option<u32>,
-    #[serde(rename = "map_reducer", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "map_reducer",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub map_reducer: Option<String>,
-    #[serde(rename = "extract_count", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "extract_count",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub extract_count: Option<u32>,
-    #[serde(rename = "result_strategy", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "result_strategy",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub result_strategy: Option<String>,
-    #[serde(rename = "extract_ns", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "extract_ns",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub extract_ns: Option<u32>,
-    #[serde(rename = "string_hashing_collectors_used", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "string_hashing_collectors_used",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub string_hashing_collectors_used: Option<u32>,
-    #[serde(rename = "surviving_buckets", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "surviving_buckets",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub surviving_buckets: Option<u32>,
-    #[serde(rename = "has_filter", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "has_filter",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub has_filter: Option<bool>,
-    #[serde(rename = "chars_fetched", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "chars_fetched",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub chars_fetched: Option<u32>,
-    #[serde(rename = "empty_collectors_used", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "empty_collectors_used",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub empty_collectors_used: Option<u32>,
-    #[serde(rename = "values_fetched", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "values_fetched",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub values_fetched: Option<u32>,
-    #[serde(rename = "collection_strategy", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "collection_strategy",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub collection_strategy: Option<String>,
 }
 
 impl AggregationProfileDebug {
-    
     pub fn new() -> AggregationProfileDebug {
         AggregationProfileDebug {
             built_buckets: None,

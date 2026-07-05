@@ -11,9 +11,6 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CreateConnectorRequestBodyJson {
     #[serde(rename = "version")]
@@ -24,7 +21,11 @@ pub struct CreateConnectorRequestBodyJson {
     pub protocol: String,
     #[serde(rename = "credential")]
     pub credential: ml::Credential,
-    #[serde(rename = "client_config", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "client_config",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub client_config: Option<ml::ClientConfig>,
     #[serde(rename = "actions")]
     pub actions: Vec<ml::Action>,
@@ -35,8 +36,15 @@ pub struct CreateConnectorRequestBodyJson {
 }
 
 impl CreateConnectorRequestBodyJson {
-    
-    pub fn new(version: u32, parameters: ml::Parameters, protocol: String, credential: ml::Credential, actions: Vec<ml::Action>, name: String, description: String) -> CreateConnectorRequestBodyJson {
+    pub fn new(
+        version: u32,
+        parameters: ml::Parameters,
+        protocol: String,
+        credential: ml::Credential,
+        actions: Vec<ml::Action>,
+        name: String,
+        description: String,
+    ) -> CreateConnectorRequestBodyJson {
         CreateConnectorRequestBodyJson {
             version,
             parameters,

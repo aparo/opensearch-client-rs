@@ -11,7 +11,7 @@ use bon::bon;
 
 use crate::*;
 use reqwest;
-use serde::{de::Error as OtherError, Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de::Error as OtherError};
 use std::sync::Arc;
 
 pub struct MlApiClient {

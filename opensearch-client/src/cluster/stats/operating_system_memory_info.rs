@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct OperatingSystemMemoryInfo {
     #[serde(rename = "used_in_bytes")]
@@ -31,13 +28,22 @@ pub struct OperatingSystemMemoryInfo {
     pub free: Option<String>,
     #[serde(rename = "total", default, skip_serializing_if = "Option::is_none")]
     pub total: Option<String>,
-    #[serde(rename = "adjusted_total_in_bytes", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "adjusted_total_in_bytes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub adjusted_total_in_bytes: Option<u32>,
 }
 
 impl OperatingSystemMemoryInfo {
-    
-    pub fn new(used_in_bytes: u32, used_percent: f64, free_in_bytes: u32, total_in_bytes: u32, free_percent: f64) -> OperatingSystemMemoryInfo {
+    pub fn new(
+        used_in_bytes: u32,
+        used_percent: f64,
+        free_in_bytes: u32,
+        total_in_bytes: u32,
+        free_percent: f64,
+    ) -> OperatingSystemMemoryInfo {
         OperatingSystemMemoryInfo {
             used_in_bytes,
             used_percent,

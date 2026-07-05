@@ -11,14 +11,15 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ResponseBody {
     #[serde(rename = "took", default, skip_serializing_if = "Option::is_none")]
     pub took: Option<f64>,
-    #[serde(rename = "expiration_time_in_millis", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "expiration_time_in_millis",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub expiration_time_in_millis: Option<f64>,
     #[serde(rename = "response", default, skip_serializing_if = "Option::is_none")]
     pub response: Option<core::search::ResponseBody>,
@@ -26,12 +27,15 @@ pub struct ResponseBody {
     pub id: Option<String>,
     #[serde(rename = "state", default, skip_serializing_if = "Option::is_none")]
     pub state: Option<String>,
-    #[serde(rename = "start_time_in_millis", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "start_time_in_millis",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub start_time_in_millis: Option<f64>,
 }
 
 impl ResponseBody {
-    
     pub fn new() -> ResponseBody {
         ResponseBody {
             took: None,

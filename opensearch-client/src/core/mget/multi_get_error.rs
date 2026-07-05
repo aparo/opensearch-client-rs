@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct MultiGetError {
     #[serde(rename = "_index")]
@@ -25,12 +22,7 @@ pub struct MultiGetError {
 }
 
 impl MultiGetError {
-    
     pub fn new(index: String, id: String, error: common::ErrorCause) -> MultiGetError {
-        MultiGetError {
-            index,
-            id,
-            error,
-        }
+        MultiGetError { index, id, error }
     }
 }

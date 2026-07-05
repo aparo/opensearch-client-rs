@@ -10,26 +10,21 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ClusterShardMetrics {  /// Maximum number of shards in an index, counting only shards assigned to selected nodes.
+pub struct ClusterShardMetrics {
+    /// Maximum number of shards in an index, counting only shards assigned to selected nodes.
     #[serde(rename = "max")]
-    pub max: f64,  /// Mean number of shards in an index, counting only shards assigned to selected nodes.
+    pub max: f64,
+    /// Mean number of shards in an index, counting only shards assigned to selected nodes.
     #[serde(rename = "avg")]
-    pub avg: f64,  /// Minimum number of shards in an index, counting only shards assigned to selected nodes.
+    pub avg: f64,
+    /// Minimum number of shards in an index, counting only shards assigned to selected nodes.
     #[serde(rename = "min")]
     pub min: f64,
 }
 
 impl ClusterShardMetrics {
-    
     pub fn new(max: f64, avg: f64, min: f64) -> ClusterShardMetrics {
-        ClusterShardMetrics {
-            max,
-            avg,
-            min,
-        }
+        ClusterShardMetrics { max, avg, min }
     }
 }

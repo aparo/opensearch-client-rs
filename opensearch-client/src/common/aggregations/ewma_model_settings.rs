@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct EwmaModelSettings {
     #[serde(rename = "alpha", default, skip_serializing_if = "Option::is_none")]
@@ -20,10 +17,7 @@ pub struct EwmaModelSettings {
 }
 
 impl EwmaModelSettings {
-    
     pub fn new() -> EwmaModelSettings {
-        EwmaModelSettings {
-            alpha: None,
-        }
+        EwmaModelSettings { alpha: None }
     }
 }

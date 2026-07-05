@@ -10,25 +10,34 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct NotificationChannel {
     #[serde(rename = "name", default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
-    #[serde(rename = "is_enabled", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "is_enabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub is_enabled: Option<bool>,
     #[serde(rename = "config_id", default, skip_serializing_if = "Option::is_none")]
-    pub config_id: Option<String>,  /// Type of notification configuration.
-    #[serde(rename = "config_type", default, skip_serializing_if = "Option::is_none")]
+    pub config_id: Option<String>,
+    /// Type of notification configuration.
+    #[serde(
+        rename = "config_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub config_type: Option<String>,
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
 }
 
 impl NotificationChannel {
-    
     pub fn new() -> NotificationChannel {
         NotificationChannel {
             name: None,

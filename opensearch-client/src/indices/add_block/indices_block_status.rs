@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct IndicesBlockStatus {
     #[serde(rename = "name")]
@@ -22,11 +19,7 @@ pub struct IndicesBlockStatus {
 }
 
 impl IndicesBlockStatus {
-    
     pub fn new(name: String, blocked: bool) -> IndicesBlockStatus {
-        IndicesBlockStatus {
-            name,
-            blocked,
-        }
+        IndicesBlockStatus { name, blocked }
     }
 }

@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ObjectValue {
-}
+pub struct ObjectValue {}
 
 impl ObjectValue {
-    
     pub fn new() -> ObjectValue {
-        ObjectValue {
-        }
+        ObjectValue {}
     }
 }

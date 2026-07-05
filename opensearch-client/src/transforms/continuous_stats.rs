@@ -11,19 +11,23 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ContinuousStats {
-    #[serde(rename = "documents_behind", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "documents_behind",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub documents_behind: Option<serde_json::Value>,
-    #[serde(rename = "last_timestamp", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "last_timestamp",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub last_timestamp: Option<f64>,
 }
 
 impl ContinuousStats {
-    
     pub fn new() -> ContinuousStats {
         ContinuousStats {
             documents_behind: None,

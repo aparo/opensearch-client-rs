@@ -11,21 +11,20 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct SearchModelsRequestBodyJson {  /// The query.
+pub struct SearchModelsRequestBodyJson {
+    /// The query.
     #[serde(rename = "query", default, skip_serializing_if = "Option::is_none")]
-    pub query: Option<ml::Query>,  /// The number of models to return.
+    pub query: Option<ml::Query>,
+    /// The number of models to return.
     #[serde(rename = "size", default, skip_serializing_if = "Option::is_none")]
-    pub size: Option<u32>,  /// The sort order.
+    pub size: Option<u32>,
+    /// The sort order.
     #[serde(rename = "sort", default, skip_serializing_if = "Option::is_none")]
     pub sort: Option<Vec<ml::Sort>>,
 }
 
 impl SearchModelsRequestBodyJson {
-    
     pub fn new() -> SearchModelsRequestBodyJson {
         SearchModelsRequestBodyJson {
             query: None,

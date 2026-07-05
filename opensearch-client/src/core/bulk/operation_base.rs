@@ -10,14 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct OperationBase {
     #[serde(rename = "routing", default, skip_serializing_if = "Option::is_none")]
     pub routing: Option<String>,
-    #[serde(rename = "if_primary_term", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "if_primary_term",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub if_primary_term: Option<u32>,
     #[serde(rename = "_index", default, skip_serializing_if = "Option::is_none")]
     pub index: Option<String>,
@@ -27,12 +28,15 @@ pub struct OperationBase {
     pub id: Option<String>,
     #[serde(rename = "version", default, skip_serializing_if = "Option::is_none")]
     pub version: Option<u32>,
-    #[serde(rename = "version_type", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "version_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub version_type: Option<String>,
 }
 
 impl OperationBase {
-    
     pub fn new() -> OperationBase {
         OperationBase {
             routing: None,

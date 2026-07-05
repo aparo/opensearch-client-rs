@@ -10,37 +10,65 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DirectGenerator {
     #[serde(rename = "max_edits", default, skip_serializing_if = "Option::is_none")]
     pub max_edits: Option<u32>,
-    #[serde(rename = "prefix_length", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "prefix_length",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub prefix_length: Option<u32>,
     #[serde(rename = "field")]
     pub field: String,
     #[serde(rename = "size", default, skip_serializing_if = "Option::is_none")]
     pub size: Option<u32>,
-    #[serde(rename = "max_term_freq", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "max_term_freq",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub max_term_freq: Option<f64>,
-    #[serde(rename = "max_inspections", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "max_inspections",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub max_inspections: Option<f64>,
-    #[serde(rename = "min_doc_freq", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "min_doc_freq",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub min_doc_freq: Option<f64>,
-    #[serde(rename = "min_word_length", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "min_word_length",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub min_word_length: Option<u32>,
-    #[serde(rename = "suggest_mode", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "suggest_mode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub suggest_mode: Option<String>,
-    #[serde(rename = "pre_filter", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "pre_filter",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub pre_filter: Option<String>,
-    #[serde(rename = "post_filter", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "post_filter",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub post_filter: Option<String>,
 }
 
 impl DirectGenerator {
-    
     pub fn new(field: String) -> DirectGenerator {
         DirectGenerator {
             max_edits: None,

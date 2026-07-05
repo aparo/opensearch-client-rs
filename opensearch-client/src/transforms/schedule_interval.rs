@@ -10,21 +10,21 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ScheduleInterval {
     #[serde(rename = "unit", default, skip_serializing_if = "Option::is_none")]
     pub unit: Option<String>,
     #[serde(rename = "period", default, skip_serializing_if = "Option::is_none")]
     pub period: Option<f64>,
-    #[serde(rename = "start_time", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "start_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub start_time: Option<f64>,
 }
 
 impl ScheduleInterval {
-    
     pub fn new() -> ScheduleInterval {
         ScheduleInterval {
             unit: None,

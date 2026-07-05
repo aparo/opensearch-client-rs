@@ -12,26 +12,23 @@ use serde::{Deserialize, Serialize};
 
 /// Void
 /// The absence of any type. This is commonly used in APIs that don't return a body.
-/// 
+///
 /// Although "void" is generally used for a unit type that has only one value, this is interpreted as
 /// the bottom type, which has no value. Most languages have a unit type, but few have a bottom type.
-/// 
+///
 /// See https://en.m.wikipedia.org/wiki/Unit_type and https://en.m.wikipedia.org/wiki/Bottom_type.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Void {
-}
+pub struct Void {}
 
 impl Void {
-      /// The absence of any type. This is commonly used in APIs that don't return a body.
-  /// 
-  /// Although "void" is generally used for a unit type that has only one value, this is interpreted as
-  /// the bottom type, which has no value. Most languages have a unit type, but few have a bottom type.
-  /// 
-  /// See https://en.m.wikipedia.org/wiki/Unit_type and https://en.m.wikipedia.org/wiki/Bottom_type.
+    /// The absence of any type. This is commonly used in APIs that don't return a body.
+    ///
+    /// Although "void" is generally used for a unit type that has only one value, this is interpreted as
+    /// the bottom type, which has no value. Most languages have a unit type, but few have a bottom type.
+    ///
+    /// See https://en.m.wikipedia.org/wiki/Unit_type and https://en.m.wikipedia.org/wiki/Bottom_type.
     pub fn new() -> Void {
-        Void {
-        }
+        Void {}
     }
 }

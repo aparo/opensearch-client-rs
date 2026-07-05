@@ -11,20 +11,15 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RemoteStoreTranslogStats {  /// Statistics related to uploads to the remote translog store.
+pub struct RemoteStoreTranslogStats {
+    /// Statistics related to uploads to the remote translog store.
     #[serde(rename = "upload")]
     pub upload: common::RemoteStoreTranslogUploadStats,
 }
 
 impl RemoteStoreTranslogStats {
-    
     pub fn new(upload: common::RemoteStoreTranslogUploadStats) -> RemoteStoreTranslogStats {
-        RemoteStoreTranslogStats {
-            upload,
-        }
+        RemoteStoreTranslogStats { upload }
     }
 }

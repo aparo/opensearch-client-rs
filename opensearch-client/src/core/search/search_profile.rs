@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SearchProfile {
     #[serde(rename = "query")]
@@ -25,8 +22,11 @@ pub struct SearchProfile {
 }
 
 impl SearchProfile {
-    
-    pub fn new(query: Vec<core::search::QueryProfile>, rewrite_time: u32, collector: Vec<core::search::Collector>) -> SearchProfile {
+    pub fn new(
+        query: Vec<core::search::QueryProfile>,
+        rewrite_time: u32,
+        collector: Vec<core::search::Collector>,
+    ) -> SearchProfile {
         SearchProfile {
             query,
             rewrite_time,

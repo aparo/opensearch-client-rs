@@ -10,19 +10,23 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UseRoles {
-    #[serde(rename = "follower_cluster_role", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "follower_cluster_role",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub follower_cluster_role: Option<String>,
-    #[serde(rename = "leader_cluster_role", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "leader_cluster_role",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub leader_cluster_role: Option<String>,
 }
 
 impl UseRoles {
-    
     pub fn new() -> UseRoles {
         UseRoles {
             follower_cluster_role: None,

@@ -11,19 +11,29 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct IntervalsFuzzy {  /// Analyzer used to normalize the term.
+pub struct IntervalsFuzzy {
+    /// Analyzer used to normalize the term.
     #[serde(rename = "analyzer", default, skip_serializing_if = "Option::is_none")]
-    pub analyzer: Option<String>,  /// Indicates whether edits include transpositions of two adjacent characters (for example, `ab` to `ba`).
-    #[serde(rename = "transpositions", default, skip_serializing_if = "Option::is_none")]
-    pub transpositions: Option<bool>,  /// The term to match.
+    pub analyzer: Option<String>,
+    /// Indicates whether edits include transpositions of two adjacent characters (for example, `ab` to `ba`).
+    #[serde(
+        rename = "transpositions",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub transpositions: Option<bool>,
+    /// The term to match.
     #[serde(rename = "term")]
-    pub term: String,  /// Number of beginning characters left unchanged when creating expansions.
-    #[serde(rename = "prefix_length", default, skip_serializing_if = "Option::is_none")]
-    pub prefix_length: Option<u32>,  /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
+    pub term: String,
+    /// Number of beginning characters left unchanged when creating expansions.
+    #[serde(
+        rename = "prefix_length",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub prefix_length: Option<u32>,
+    /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
     #[serde(rename = "use_field", default, skip_serializing_if = "Option::is_none")]
     pub use_field: Option<String>,
     #[serde(rename = "fuzziness", default, skip_serializing_if = "Option::is_none")]
@@ -31,7 +41,6 @@ pub struct IntervalsFuzzy {  /// Analyzer used to normalize the term.
 }
 
 impl IntervalsFuzzy {
-    
     pub fn new(term: String) -> IntervalsFuzzy {
         IntervalsFuzzy {
             analyzer: None,

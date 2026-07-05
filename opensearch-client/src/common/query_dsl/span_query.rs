@@ -11,27 +11,46 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SpanQuery {
     #[serde(rename = "span_or", default, skip_serializing_if = "Option::is_none")]
     pub span_or: Option<String>,
-    #[serde(rename = "span_within", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "span_within",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub span_within: Option<String>,
     #[serde(rename = "span_not", default, skip_serializing_if = "Option::is_none")]
     pub span_not: Option<String>,
-    #[serde(rename = "span_multi", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "span_multi",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub span_multi: Option<String>,
-    #[serde(rename = "span_first", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "span_first",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub span_first: Option<String>,
-    #[serde(rename = "field_masking_span", default, skip_serializing_if = "Option::is_none")]
-    pub field_masking_span: Option<String>,  /// Can only be used as a clause in a `span_near` query.
+    #[serde(
+        rename = "field_masking_span",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub field_masking_span: Option<String>,
+    /// Can only be used as a clause in a `span_near` query.
     #[serde(rename = "span_gap", default, skip_serializing_if = "Option::is_none")]
     pub span_gap: Option<common::query_dsl::SpanGapQuery>,
-    #[serde(rename = "span_containing", default, skip_serializing_if = "Option::is_none")]
-    pub span_containing: Option<String>,  /// The equivalent of the `term` query but for use with other span queries.
+    #[serde(
+        rename = "span_containing",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub span_containing: Option<String>,
+    /// The equivalent of the `term` query but for use with other span queries.
     #[serde(rename = "span_term", default, skip_serializing_if = "Option::is_none")]
     pub span_term: Option<serde_json::Value>,
     #[serde(rename = "span_near", default, skip_serializing_if = "Option::is_none")]
@@ -39,7 +58,6 @@ pub struct SpanQuery {
 }
 
 impl SpanQuery {
-    
     pub fn new() -> SpanQuery {
         SpanQuery {
             span_or: None,

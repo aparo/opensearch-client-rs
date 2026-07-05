@@ -11,9 +11,6 @@
 use crate::insights;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Measurements {
     #[serde(rename = "cpu", default, skip_serializing_if = "Option::is_none")]
@@ -25,7 +22,6 @@ pub struct Measurements {
 }
 
 impl Measurements {
-    
     pub fn new() -> Measurements {
         Measurements {
             cpu: None,

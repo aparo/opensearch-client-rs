@@ -11,17 +11,20 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct SearchHitsHit {  /// The primary term.
-    #[serde(rename = "_primary_term", default, skip_serializing_if = "Option::is_none")]
+pub struct SearchHitsHit {
+    /// The primary term.
+    #[serde(
+        rename = "_primary_term",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub primary_term: Option<u32>,
     #[serde(rename = "model_id", default, skip_serializing_if = "Option::is_none")]
     pub model_id: Option<String>,
     #[serde(rename = "_source", default, skip_serializing_if = "Option::is_none")]
-    pub source: Option<ml::Source>,  /// The sort values.
+    pub source: Option<ml::Source>,
+    /// The sort values.
     #[serde(rename = "sort", default, skip_serializing_if = "Option::is_none")]
     pub sort: Option<Vec<f64>>,
     #[serde(rename = "_index", default, skip_serializing_if = "Option::is_none")]
@@ -35,7 +38,6 @@ pub struct SearchHitsHit {  /// The primary term.
 }
 
 impl SearchHitsHit {
-    
     pub fn new() -> SearchHitsHit {
         SearchHitsHit {
             primary_term: None,

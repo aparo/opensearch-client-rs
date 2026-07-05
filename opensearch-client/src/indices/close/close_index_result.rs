@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CloseIndexResult {
     #[serde(rename = "shards", default, skip_serializing_if = "Option::is_none")]
@@ -23,7 +20,6 @@ pub struct CloseIndexResult {
 }
 
 impl CloseIndexResult {
-    
     pub fn new(closed: bool) -> CloseIndexResult {
         CloseIndexResult {
             shards: None,

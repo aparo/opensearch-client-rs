@@ -10,25 +10,29 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct NoriAnalyzer {
     #[serde(rename = "version", default, skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
     #[serde(rename = "stoptags", default, skip_serializing_if = "Option::is_none")]
     pub stoptags: Option<Vec<String>>,
-    #[serde(rename = "decompound_mode", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "decompound_mode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub decompound_mode: Option<String>,
     #[serde(rename = "type")]
     pub r#type: String,
-    #[serde(rename = "user_dictionary", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "user_dictionary",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub user_dictionary: Option<String>,
 }
 
 impl NoriAnalyzer {
-    
     pub fn new(r#type: String) -> NoriAnalyzer {
         NoriAnalyzer {
             version: None,

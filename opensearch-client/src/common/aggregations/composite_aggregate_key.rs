@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct CompositeAggregateKey {
-}
+pub struct CompositeAggregateKey {}
 
 impl CompositeAggregateKey {
-    
     pub fn new() -> CompositeAggregateKey {
-        CompositeAggregateKey {
-        }
+        CompositeAggregateKey {}
     }
 }

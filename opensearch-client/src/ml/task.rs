@@ -11,11 +11,9 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Task {  /// Task type.
+pub struct Task {
+    /// Task type.
     #[serde(rename = "task_type", default, skip_serializing_if = "Option::is_none")]
     pub task_type: Option<String>,
     #[serde(rename = "model_id", default, skip_serializing_if = "Option::is_none")]
@@ -24,22 +22,38 @@ pub struct Task {  /// Task type.
     pub error: Option<String>,
     #[serde(rename = "state")]
     pub state: String,
-    #[serde(rename = "last_update_time", default, skip_serializing_if = "Option::is_none")]
-    pub last_update_time: Option<u32>,  /// The function name.
-    #[serde(rename = "function_name", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "last_update_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub last_update_time: Option<u32>,
+    /// The function name.
+    #[serde(
+        rename = "function_name",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub function_name: Option<String>,
     #[serde(rename = "is_async", default, skip_serializing_if = "Option::is_none")]
     pub is_async: Option<bool>,
-    #[serde(rename = "worker_node", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "worker_node",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub worker_node: Option<Vec<common::NodeIds>>,
     #[serde(rename = "task_id", default, skip_serializing_if = "Option::is_none")]
     pub task_id: Option<String>,
-    #[serde(rename = "create_time", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "create_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub create_time: Option<u32>,
 }
 
 impl Task {
-    
     pub fn new(state: String) -> Task {
         Task {
             task_type: None,

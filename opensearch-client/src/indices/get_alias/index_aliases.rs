@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct IndexAliases {
     #[serde(rename = "aliases")]
@@ -21,10 +18,7 @@ pub struct IndexAliases {
 }
 
 impl IndexAliases {
-    
     pub fn new(aliases: serde_json::Value) -> IndexAliases {
-        IndexAliases {
-            aliases,
-        }
+        IndexAliases { aliases }
     }
 }

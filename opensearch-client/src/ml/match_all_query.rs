@@ -13,15 +13,12 @@ use serde::{Deserialize, Serialize};
 /// MatchAllQuery
 /// The match all query.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct MatchAllQuery {
-}
+pub struct MatchAllQuery {}
 
 impl MatchAllQuery {
-      /// The match all query.
+    /// The match all query.
     pub fn new() -> MatchAllQuery {
-        MatchAllQuery {
-        }
+        MatchAllQuery {}
     }
 }

@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SnapshotShardFailure {
     #[serde(rename = "status")]
@@ -28,8 +25,12 @@ pub struct SnapshotShardFailure {
 }
 
 impl SnapshotShardFailure {
-    
-    pub fn new(status: String, reason: String, shard_id: String, index: String) -> SnapshotShardFailure {
+    pub fn new(
+        status: String,
+        reason: String,
+        shard_id: String,
+        index: String,
+    ) -> SnapshotShardFailure {
         SnapshotShardFailure {
             status,
             reason,

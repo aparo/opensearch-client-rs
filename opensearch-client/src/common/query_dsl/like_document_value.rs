@@ -11,12 +11,13 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct LikeDocumentValue {
-    #[serde(rename = "per_field_analyzer", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "per_field_analyzer",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub per_field_analyzer: Option<serde_json::Value>,
     #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
@@ -24,7 +25,11 @@ pub struct LikeDocumentValue {
     pub routing: Option<String>,
     #[serde(rename = "version", default, skip_serializing_if = "Option::is_none")]
     pub version: Option<u32>,
-    #[serde(rename = "version_type", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "version_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub version_type: Option<String>,
     #[serde(rename = "fields", default, skip_serializing_if = "Option::is_none")]
     pub fields: Option<Vec<String>>,
@@ -33,7 +38,6 @@ pub struct LikeDocumentValue {
 }
 
 impl LikeDocumentValue {
-    
     pub fn new() -> LikeDocumentValue {
         LikeDocumentValue {
             per_field_analyzer: None,

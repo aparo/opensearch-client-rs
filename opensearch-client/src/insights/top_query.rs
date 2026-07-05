@@ -12,37 +12,64 @@ use crate::common;
 use crate::insights;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TopQuery {  /// The indexes involved in the query.
+pub struct TopQuery {
+    /// The indexes involved in the query.
     #[serde(rename = "indices", default, skip_serializing_if = "Option::is_none")]
-    pub indices: Option<Vec<String>>,  /// Additional labels for the query.
+    pub indices: Option<Vec<String>>,
+    /// Additional labels for the query.
     #[serde(rename = "labels", default, skip_serializing_if = "Option::is_none")]
-    pub labels: Option<serde_json::Value>,  /// The node ID associated with the query.
+    pub labels: Option<serde_json::Value>,
+    /// The node ID associated with the query.
     #[serde(rename = "node_id", default, skip_serializing_if = "Option::is_none")]
-    pub node_id: Option<String>,  /// The timestamp of the query execution.
+    pub node_id: Option<String>,
+    /// The timestamp of the query execution.
     #[serde(rename = "timestamp", default, skip_serializing_if = "Option::is_none")]
     pub timestamp: Option<u32>,
-    #[serde(rename = "measurements", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "measurements",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub measurements: Option<insights::Measurements>,
-    #[serde(rename = "phase_latency_map", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "phase_latency_map",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub phase_latency_map: Option<serde_json::Value>,
-    #[serde(rename = "task_resource_usages", default, skip_serializing_if = "Option::is_none")]
-    pub task_resource_usages: Option<Vec<insights::TaskResourceUsages>>,  /// The total number of shards involved in the query.
-    #[serde(rename = "total_shards", default, skip_serializing_if = "Option::is_none")]
-    pub total_shards: Option<u32>,  /// The search query type (for example, `query_then_fetch`).
-    #[serde(rename = "search_type", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "task_resource_usages",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub task_resource_usages: Option<Vec<insights::TaskResourceUsages>>,
+    /// The total number of shards involved in the query.
+    #[serde(
+        rename = "total_shards",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_shards: Option<u32>,
+    /// The search query type (for example, `query_then_fetch`).
+    #[serde(
+        rename = "search_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub search_type: Option<String>,
     #[serde(rename = "source", default, skip_serializing_if = "Option::is_none")]
-    pub source: Option<insights::Source>,  /// The hash code of the query.
-    #[serde(rename = "query_hashcode", default, skip_serializing_if = "Option::is_none")]
+    pub source: Option<insights::Source>,
+    /// The hash code of the query.
+    #[serde(
+        rename = "query_hashcode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub query_hashcode: Option<String>,
 }
 
 impl TopQuery {
-    
     pub fn new() -> TopQuery {
         TopQuery {
             indices: None,

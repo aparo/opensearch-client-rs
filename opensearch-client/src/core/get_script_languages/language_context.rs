@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct LanguageContext {
     #[serde(rename = "contexts")]
@@ -23,11 +20,7 @@ pub struct LanguageContext {
 }
 
 impl LanguageContext {
-    
     pub fn new(contexts: Vec<String>, language: common::ScriptLanguage) -> LanguageContext {
-        LanguageContext {
-            contexts,
-            language,
-        }
+        LanguageContext { contexts, language }
     }
 }

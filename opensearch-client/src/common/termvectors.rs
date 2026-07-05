@@ -15,19 +15,24 @@ use serde::{Deserialize, Serialize};
 /// Termvectors
 /// Define parameters and or supply a document to get termvectors for. See documentation.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Termvectors {  /// An artificial document (a document not present in the index) for which you want to retrieve term vectors.
+pub struct Termvectors {
+    /// An artificial document (a document not present in the index) for which you want to retrieve term vectors.
     #[serde(rename = "doc", default, skip_serializing_if = "Option::is_none")]
     pub doc: Option<serde_json::Value>,
     #[serde(rename = "filter", default, skip_serializing_if = "Option::is_none")]
-    pub filter: Option<core::termvectors::Filter>,  /// Overrides the default per-field analyzer.
-    #[serde(rename = "per_field_analyzer", default, skip_serializing_if = "Option::is_none")]
+    pub filter: Option<core::termvectors::Filter>,
+    /// Overrides the default per-field analyzer.
+    #[serde(
+        rename = "per_field_analyzer",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub per_field_analyzer: Option<serde_json::Value>,
 }
 
 impl Termvectors {
-      /// Define parameters and or supply a document to get termvectors for. See documentation.
+    /// Define parameters and or supply a document to get termvectors for. See documentation.
     pub fn new() -> Termvectors {
         Termvectors {
             doc: None,

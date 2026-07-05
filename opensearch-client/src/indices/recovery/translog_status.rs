@@ -10,17 +10,19 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TranslogStatus {
     #[serde(rename = "total_on_start")]
     pub total_on_start: u32,
     #[serde(rename = "total_time_in_millis")]
-    pub total_time_in_millis: String,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "total_time", default, skip_serializing_if = "Option::is_none")]
+    pub total_time_in_millis: String,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "total_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub total_time: Option<String>,
     #[serde(rename = "recovered")]
     pub recovered: u32,
@@ -31,8 +33,13 @@ pub struct TranslogStatus {
 }
 
 impl TranslogStatus {
-    
-    pub fn new(total_on_start: u32, total_time_in_millis: String, recovered: u32, total: u32, percent: String) -> TranslogStatus {
+    pub fn new(
+        total_on_start: u32,
+        total_time_in_millis: String,
+        recovered: u32,
+        total: u32,
+        percent: String,
+    ) -> TranslogStatus {
         TranslogStatus {
             total_on_start,
             total_time_in_millis,

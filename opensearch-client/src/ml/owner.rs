@@ -10,23 +10,30 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Owner {
     #[serde(rename = "name")]
-    pub name: String,  /// The custom attribute names.
-    #[serde(rename = "custom_attribute_names", default, skip_serializing_if = "Option::is_none")]
-    pub custom_attribute_names: Option<Vec<String>>,  /// The backend roles.
-    #[serde(rename = "backend_roles", default, skip_serializing_if = "Option::is_none")]
-    pub backend_roles: Option<Vec<String>>,  /// The roles.
+    pub name: String,
+    /// The custom attribute names.
+    #[serde(
+        rename = "custom_attribute_names",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub custom_attribute_names: Option<Vec<String>>,
+    /// The backend roles.
+    #[serde(
+        rename = "backend_roles",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub backend_roles: Option<Vec<String>>,
+    /// The roles.
     #[serde(rename = "roles", default, skip_serializing_if = "Option::is_none")]
     pub roles: Option<Vec<String>>,
 }
 
 impl Owner {
-    
     pub fn new(name: String) -> Owner {
         Owner {
             name,

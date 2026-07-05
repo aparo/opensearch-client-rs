@@ -9,8 +9,6 @@
  */
 use serde::{Deserialize, Serialize};
 
-
-
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum WaitForNodes {
@@ -26,7 +24,6 @@ impl std::fmt::Display for WaitForNodes {
         }
     }
 }
-
 
 impl WaitForNodes {
     pub fn as_str(&self) -> String {

@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClusterFileSystem {
     #[serde(rename = "available_in_bytes")]
@@ -30,8 +27,11 @@ pub struct ClusterFileSystem {
 }
 
 impl ClusterFileSystem {
-    
-    pub fn new(available_in_bytes: u32, total_in_bytes: u32, free_in_bytes: u32) -> ClusterFileSystem {
+    pub fn new(
+        available_in_bytes: u32,
+        total_in_bytes: u32,
+        free_in_bytes: u32,
+    ) -> ClusterFileSystem {
         ClusterFileSystem {
             available_in_bytes,
             total: None,

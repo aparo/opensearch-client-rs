@@ -11,9 +11,6 @@
 use crate::cluster;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PendingTasksResponse {
     #[serde(rename = "tasks")]
@@ -21,10 +18,7 @@ pub struct PendingTasksResponse {
 }
 
 impl PendingTasksResponse {
-    
     pub fn new(tasks: Vec<cluster::pending_tasks::PendingTask>) -> PendingTasksResponse {
-        PendingTasksResponse {
-            tasks,
-        }
+        PendingTasksResponse { tasks }
     }
 }

@@ -13,7 +13,6 @@ use serde::{Deserialize, Serialize};
 /// Restore
 /// Comma-separated list of index IDs
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Restore {
     #[serde(rename = "indices")]
@@ -21,10 +20,8 @@ pub struct Restore {
 }
 
 impl Restore {
-      /// Comma-separated list of index IDs
+    /// Comma-separated list of index IDs
     pub fn new(indices: Vec<String>) -> Restore {
-        Restore {
-            indices,
-        }
+        Restore { indices }
     }
 }

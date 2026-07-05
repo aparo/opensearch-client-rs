@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use crate::{util::*, Query, SpanQuery};
+use crate::{Query, SpanQuery, util::*};
 
 /// Removes matches which overlap with another span query or which are within x
 /// tokens before (controlled by the parameter `pre`) or y tokens after

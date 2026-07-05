@@ -11,9 +11,6 @@
 use crate::observability;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct OperationalPanel {
     #[serde(rename = "applicationId")]
@@ -29,8 +26,13 @@ pub struct OperationalPanel {
 }
 
 impl OperationalPanel {
-    
-    pub fn new(application_id: String, name: String, query_filter: observability::QueryFilter, time_range: observability::TimeRange, visualizations: Vec<observability::Visualization>) -> OperationalPanel {
+    pub fn new(
+        application_id: String,
+        name: String,
+        query_filter: observability::QueryFilter,
+        time_range: observability::TimeRange,
+        visualizations: Vec<observability::Visualization>,
+    ) -> OperationalPanel {
         OperationalPanel {
             application_id,
             name,

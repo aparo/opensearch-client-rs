@@ -11,9 +11,6 @@
 use crate::sql;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Transient {
     #[serde(rename = "plugins", default, skip_serializing_if = "Option::is_none")]
@@ -21,10 +18,7 @@ pub struct Transient {
 }
 
 impl Transient {
-    
     pub fn new() -> Transient {
-        Transient {
-            plugins: None,
-        }
+        Transient { plugins: None }
     }
 }

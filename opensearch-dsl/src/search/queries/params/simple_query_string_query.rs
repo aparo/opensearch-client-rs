@@ -1,9 +1,9 @@
 use std::fmt;
 
 use serde::{
+    Deserialize, Deserializer,
     de::{Error, Unexpected, Visitor},
     ser::{Serialize, Serializer},
-    Deserialize, Deserializer,
 };
 /// You can use the flags parameter to enable more optional operators for
 /// Lucene’s regular expression engine.

@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SuggestBase {
     #[serde(rename = "offset")]
@@ -24,7 +21,6 @@ pub struct SuggestBase {
 }
 
 impl SuggestBase {
-    
     pub fn new(offset: u32, length: u32, text: String) -> SuggestBase {
         SuggestBase {
             offset,

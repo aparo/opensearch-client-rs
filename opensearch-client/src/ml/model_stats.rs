@@ -10,21 +10,32 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ModelStats {  /// The executing task count.
-    #[serde(rename = "ml_executing_task_count", default, skip_serializing_if = "Option::is_none")]
-    pub ml_executing_task_count: Option<u32>,  /// The request count.
-    #[serde(rename = "ml_action_request_count", default, skip_serializing_if = "Option::is_none")]
-    pub ml_action_request_count: Option<u32>,  /// The failure count.
-    #[serde(rename = "ml_action_failure_count", default, skip_serializing_if = "Option::is_none")]
+pub struct ModelStats {
+    /// The executing task count.
+    #[serde(
+        rename = "ml_executing_task_count",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub ml_executing_task_count: Option<u32>,
+    /// The request count.
+    #[serde(
+        rename = "ml_action_request_count",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub ml_action_request_count: Option<u32>,
+    /// The failure count.
+    #[serde(
+        rename = "ml_action_failure_count",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub ml_action_failure_count: Option<u32>,
 }
 
 impl ModelStats {
-    
     pub fn new() -> ModelStats {
         ModelStats {
             ml_executing_task_count: None,

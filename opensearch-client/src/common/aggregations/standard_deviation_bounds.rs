@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct StandardDeviationBounds {
-}
+pub struct StandardDeviationBounds {}
 
 impl StandardDeviationBounds {
-    
     pub fn new() -> StandardDeviationBounds {
-        StandardDeviationBounds {
-        }
+        StandardDeviationBounds {}
     }
 }

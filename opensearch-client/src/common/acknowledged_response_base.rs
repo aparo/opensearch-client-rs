@@ -10,20 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct AcknowledgedResponseBase {  /// For a successful response, this value is always true. On failure, an exception is returned instead.
+pub struct AcknowledgedResponseBase {
+    /// For a successful response, this value is always true. On failure, an exception is returned instead.
     #[serde(rename = "acknowledged")]
     pub acknowledged: bool,
 }
 
 impl AcknowledgedResponseBase {
-    
     pub fn new(acknowledged: bool) -> AcknowledgedResponseBase {
-        AcknowledgedResponseBase {
-            acknowledged,
-        }
+        AcknowledgedResponseBase { acknowledged }
     }
 }

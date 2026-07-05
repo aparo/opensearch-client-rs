@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GeoPolygonPoints {
     #[serde(rename = "points")]
@@ -21,10 +18,7 @@ pub struct GeoPolygonPoints {
 }
 
 impl GeoPolygonPoints {
-    
     pub fn new(points: Vec<common::GeoLocation>) -> GeoPolygonPoints {
-        GeoPolygonPoints {
-            points,
-        }
+        GeoPolygonPoints { points }
     }
 }

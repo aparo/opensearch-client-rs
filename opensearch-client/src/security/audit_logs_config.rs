@@ -10,39 +10,83 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AuditLogsConfig {
-    #[serde(rename = "disabled_transport_categories", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "disabled_transport_categories",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub disabled_transport_categories: Option<Vec<String>>,
-    #[serde(rename = "ignore_requests", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "ignore_requests",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub ignore_requests: Option<Vec<String>>,
-    #[serde(rename = "enable_rest", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "enable_rest",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub enable_rest: Option<bool>,
-    #[serde(rename = "ignore_headers", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "ignore_headers",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub ignore_headers: Option<Vec<String>>,
-    #[serde(rename = "ignore_url_params", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "ignore_url_params",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub ignore_url_params: Option<Vec<String>>,
-    #[serde(rename = "ignore_users", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "ignore_users",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub ignore_users: Option<Vec<String>>,
-    #[serde(rename = "resolve_bulk_requests", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "resolve_bulk_requests",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub resolve_bulk_requests: Option<bool>,
-    #[serde(rename = "disabled_rest_categories", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "disabled_rest_categories",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub disabled_rest_categories: Option<Vec<String>>,
-    #[serde(rename = "enable_transport", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "enable_transport",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub enable_transport: Option<bool>,
-    #[serde(rename = "log_request_body", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "log_request_body",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub log_request_body: Option<bool>,
-    #[serde(rename = "exclude_sensitive_headers", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "exclude_sensitive_headers",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub exclude_sensitive_headers: Option<bool>,
-    #[serde(rename = "resolve_indices", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "resolve_indices",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub resolve_indices: Option<bool>,
 }
 
 impl AuditLogsConfig {
-    
     pub fn new() -> AuditLogsConfig {
         AuditLogsConfig {
             disabled_transport_categories: None,

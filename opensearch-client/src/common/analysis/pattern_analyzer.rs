@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PatternAnalyzer {
     #[serde(rename = "stopwords", default, skip_serializing_if = "Option::is_none")]
@@ -31,7 +28,6 @@ pub struct PatternAnalyzer {
 }
 
 impl PatternAnalyzer {
-    
     pub fn new(r#type: String, pattern: String) -> PatternAnalyzer {
         PatternAnalyzer {
             stopwords: None,

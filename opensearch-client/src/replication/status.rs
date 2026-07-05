@@ -11,27 +11,39 @@
 use crate::replication;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Status {
     #[serde(rename = "status", default, skip_serializing_if = "Option::is_none")]
     pub status: Option<String>,
     #[serde(rename = "reason", default, skip_serializing_if = "Option::is_none")]
     pub reason: Option<String>,
-    #[serde(rename = "leader_alias", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "leader_alias",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub leader_alias: Option<String>,
-    #[serde(rename = "leader_index", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "leader_index",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub leader_index: Option<String>,
-    #[serde(rename = "follower_index", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "follower_index",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub follower_index: Option<String>,
-    #[serde(rename = "syncing_details", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "syncing_details",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub syncing_details: Option<replication::SyncingDetails>,
 }
 
 impl Status {
-    
     pub fn new() -> Status {
         Status {
             status: None,

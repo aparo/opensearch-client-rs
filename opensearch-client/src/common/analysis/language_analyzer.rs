@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct LanguageAnalyzer {
     #[serde(rename = "stem_exclusion")]
@@ -26,12 +23,15 @@ pub struct LanguageAnalyzer {
     pub stopwords: Option<common::analysis::StopWords>,
     #[serde(rename = "language")]
     pub language: String,
-    #[serde(rename = "stopwords_path", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "stopwords_path",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub stopwords_path: Option<String>,
 }
 
 impl LanguageAnalyzer {
-    
     pub fn new(stem_exclusion: Vec<String>, r#type: String, language: String) -> LanguageAnalyzer {
         LanguageAnalyzer {
             stem_exclusion,

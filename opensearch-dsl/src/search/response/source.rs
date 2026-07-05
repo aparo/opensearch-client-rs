@@ -1,5 +1,5 @@
 use serde::de::DeserializeOwned;
-use serde_json::{value::RawValue, Value};
+use serde_json::{Value, value::RawValue};
 
 use crate::util::ShouldSkip;
 

@@ -1,6 +1,6 @@
 use std::{borrow::Cow, collections::HashMap};
 
-use testcontainers::{core::*, Image};
+use testcontainers::{Image, core::*};
 
 const NAME: &str = "opensearchproject/opensearch";
 const TAG: &str = "3.1.0";

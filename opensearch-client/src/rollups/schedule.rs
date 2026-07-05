@@ -11,9 +11,6 @@
 use crate::rollups;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Schedule {
     #[serde(rename = "interval", default, skip_serializing_if = "Option::is_none")]
@@ -21,10 +18,7 @@ pub struct Schedule {
 }
 
 impl Schedule {
-    
     pub fn new() -> Schedule {
-        Schedule {
-            interval: None,
-        }
+        Schedule { interval: None }
     }
 }

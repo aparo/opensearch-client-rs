@@ -11,9 +11,6 @@
 use crate::cluster;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct IndexingPressure {
     #[serde(rename = "memory")]
@@ -21,10 +18,7 @@ pub struct IndexingPressure {
 }
 
 impl IndexingPressure {
-    
     pub fn new(memory: cluster::stats::IndexingPressureMemory) -> IndexingPressure {
-        IndexingPressure {
-            memory,
-        }
+        IndexingPressure { memory }
     }
 }

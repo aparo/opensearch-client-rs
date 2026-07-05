@@ -14,9 +14,9 @@ use serde::{Deserialize, Serialize};
 /// SimulateRequestBodyJson
 /// The simulate definition
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct SimulateRequestBodyJson {  /// Sample documents to test in the pipeline.
+pub struct SimulateRequestBodyJson {
+    /// Sample documents to test in the pipeline.
     #[serde(rename = "docs", default, skip_serializing_if = "Option::is_none")]
     pub docs: Option<Vec<ingest::simulate::Document>>,
     #[serde(rename = "pipeline", default, skip_serializing_if = "Option::is_none")]
@@ -24,7 +24,7 @@ pub struct SimulateRequestBodyJson {  /// Sample documents to test in the pipeli
 }
 
 impl SimulateRequestBodyJson {
-      /// The simulate definition
+    /// The simulate definition
     pub fn new() -> SimulateRequestBodyJson {
         SimulateRequestBodyJson {
             docs: None,

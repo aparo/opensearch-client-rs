@@ -10,19 +10,19 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GraphRefreshStats {
     #[serde(rename = "total", default, skip_serializing_if = "Option::is_none")]
     pub total: Option<f64>,
-    #[serde(rename = "total_time_in_millis", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "total_time_in_millis",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub total_time_in_millis: Option<String>,
 }
 
 impl GraphRefreshStats {
-    
     pub fn new() -> GraphRefreshStats {
         GraphRefreshStats {
             total: None,

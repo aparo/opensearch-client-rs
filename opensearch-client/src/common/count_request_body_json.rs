@@ -14,7 +14,6 @@ use serde::{Deserialize, Serialize};
 /// CountRequestBodyJson
 /// Query to restrict the results specified with the Query DSL (optional)
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CountRequestBodyJson {
     #[serde(rename = "query", default, skip_serializing_if = "Option::is_none")]
@@ -22,10 +21,8 @@ pub struct CountRequestBodyJson {
 }
 
 impl CountRequestBodyJson {
-      /// Query to restrict the results specified with the Query DSL (optional)
+    /// Query to restrict the results specified with the Query DSL (optional)
     pub fn new() -> CountRequestBodyJson {
-        CountRequestBodyJson {
-            query: None,
-        }
+        CountRequestBodyJson { query: None }
     }
 }

@@ -13,18 +13,16 @@ use serde::{Deserialize, Serialize};
 /// RemoteStoreUploadPressureStats
 /// Statistics related to segment store upload backpressure.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RemoteStoreUploadPressureStats {  /// The total number of requests rejected due to segment store upload backpressure.
+pub struct RemoteStoreUploadPressureStats {
+    /// The total number of requests rejected due to segment store upload backpressure.
     #[serde(rename = "total_rejections")]
     pub total_rejections: u32,
 }
 
 impl RemoteStoreUploadPressureStats {
-      /// Statistics related to segment store upload backpressure.
+    /// Statistics related to segment store upload backpressure.
     pub fn new(total_rejections: u32) -> RemoteStoreUploadPressureStats {
-        RemoteStoreUploadPressureStats {
-            total_rejections,
-        }
+        RemoteStoreUploadPressureStats { total_rejections }
     }
 }

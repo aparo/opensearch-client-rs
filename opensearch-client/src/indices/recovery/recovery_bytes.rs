@@ -10,18 +10,23 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RecoveryBytes {
     #[serde(rename = "total", default, skip_serializing_if = "Option::is_none")]
     pub total: Option<String>,
     #[serde(rename = "reused", default, skip_serializing_if = "Option::is_none")]
     pub reused: Option<String>,
-    #[serde(rename = "recovered_from_snapshot", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "recovered_from_snapshot",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub recovered_from_snapshot: Option<String>,
-    #[serde(rename = "recovered_from_snapshot_in_bytes", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "recovered_from_snapshot_in_bytes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub recovered_from_snapshot_in_bytes: Option<u32>,
     #[serde(rename = "reused_in_bytes")]
     pub reused_in_bytes: u32,
@@ -36,8 +41,12 @@ pub struct RecoveryBytes {
 }
 
 impl RecoveryBytes {
-    
-    pub fn new(reused_in_bytes: u32, total_in_bytes: u32, recovered_in_bytes: u32, percent: String) -> RecoveryBytes {
+    pub fn new(
+        reused_in_bytes: u32,
+        total_in_bytes: u32,
+        recovered_in_bytes: u32,
+        percent: String,
+    ) -> RecoveryBytes {
         RecoveryBytes {
             total: None,
             reused: None,

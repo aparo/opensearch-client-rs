@@ -11,9 +11,6 @@
 use crate::knn;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GraphStats {
     #[serde(rename = "merge", default, skip_serializing_if = "Option::is_none")]
@@ -23,7 +20,6 @@ pub struct GraphStats {
 }
 
 impl GraphStats {
-    
     pub fn new() -> GraphStats {
         GraphStats {
             merge: None,

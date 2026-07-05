@@ -14,16 +14,27 @@ use serde::{Deserialize, Serialize};
 /// Action
 /// An action to perform.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Action {
     #[serde(rename = "custom", default, skip_serializing_if = "Option::is_none")]
     pub custom: Option<ism::ActionCustom>,
-    #[serde(rename = "replica_count", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "replica_count",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub replica_count: Option<ism::ActionReplicaCount>,
-    #[serde(rename = "index_priority", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "index_priority",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub index_priority: Option<ism::ActionIndexPriority>,
-    #[serde(rename = "read_write", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "read_write",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub read_write: Option<ism::ActionReadWrite>,
     #[serde(rename = "read_only", default, skip_serializing_if = "Option::is_none")]
     pub read_only: Option<ism::ActionReadOnly>,
@@ -35,7 +46,11 @@ pub struct Action {
     pub rollup: Option<ism::ActionRollup>,
     #[serde(rename = "shrink", default, skip_serializing_if = "Option::is_none")]
     pub shrink: Option<ism::ActionShrink>,
-    #[serde(rename = "allocation", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "allocation",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub allocation: Option<ism::ActionAllocation>,
     #[serde(rename = "close", default, skip_serializing_if = "Option::is_none")]
     pub close: Option<ism::ActionClose>,
@@ -51,14 +66,22 @@ pub struct Action {
     pub open: Option<ism::ActionOpen>,
     #[serde(rename = "timeout", default, skip_serializing_if = "Option::is_none")]
     pub timeout: Option<ism::ActionTimeout>,
-    #[serde(rename = "force_merge", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "force_merge",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub force_merge: Option<ism::ActionForceMerge>,
-    #[serde(rename = "notification", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "notification",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub notification: Option<ism::ActionNotification>,
 }
 
 impl Action {
-      /// An action to perform.
+    /// An action to perform.
     pub fn new() -> Action {
         Action {
             custom: None,

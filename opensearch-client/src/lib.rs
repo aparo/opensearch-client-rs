@@ -151,11 +151,11 @@ mod client;
 #[cfg(feature = "tools")]
 pub mod tools;
 
-pub use client::configuration::Configuration;
-pub use client::configuration::ConfigurationBuilder;
 pub use client::Error;
 pub use client::OsClient;
 pub use client::ResponseContent;
+pub use client::configuration::Configuration;
+pub use client::configuration::ConfigurationBuilder;
 
 mod document;
 pub use document::*;

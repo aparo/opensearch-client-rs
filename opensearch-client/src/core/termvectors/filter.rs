@@ -10,35 +10,66 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Filter {  /// The maximum number of terms that should be returned per field.
-    #[serde(rename = "max_num_terms", default, skip_serializing_if = "Option::is_none")]
-    pub max_num_terms: Option<u32>,  /// The minimum word length.
-  /// Words shorter than this value will be ignored.
-  /// Default is 0.
-    #[serde(rename = "min_word_length", default, skip_serializing_if = "Option::is_none")]
-    pub min_word_length: Option<u32>,  /// Ignore words with more than this frequency in the source doc.
-  /// Default is `unbounded`.
-    #[serde(rename = "max_term_freq", default, skip_serializing_if = "Option::is_none")]
-    pub max_term_freq: Option<u32>,  /// Ignores words that appear in more than the specified number of documents.
-  /// Default is `unbounded`.
-    #[serde(rename = "max_doc_freq", default, skip_serializing_if = "Option::is_none")]
-    pub max_doc_freq: Option<u32>,  /// The maximum word length.
-  /// Words longer than this value will be ignored.
-  /// Default is `unbounded`.
-    #[serde(rename = "max_word_length", default, skip_serializing_if = "Option::is_none")]
-    pub max_word_length: Option<u32>,  /// Ignore terms which do not occur in at least this many docs.
-    #[serde(rename = "min_doc_freq", default, skip_serializing_if = "Option::is_none")]
-    pub min_doc_freq: Option<u32>,  /// Ignore words with less than this frequency in the source doc.
-    #[serde(rename = "min_term_freq", default, skip_serializing_if = "Option::is_none")]
+pub struct Filter {
+    /// The maximum number of terms that should be returned per field.
+    #[serde(
+        rename = "max_num_terms",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_num_terms: Option<u32>,
+    /// The minimum word length.
+    /// Words shorter than this value will be ignored.
+    /// Default is 0.
+    #[serde(
+        rename = "min_word_length",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub min_word_length: Option<u32>,
+    /// Ignore words with more than this frequency in the source doc.
+    /// Default is `unbounded`.
+    #[serde(
+        rename = "max_term_freq",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_term_freq: Option<u32>,
+    /// Ignores words that appear in more than the specified number of documents.
+    /// Default is `unbounded`.
+    #[serde(
+        rename = "max_doc_freq",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_doc_freq: Option<u32>,
+    /// The maximum word length.
+    /// Words longer than this value will be ignored.
+    /// Default is `unbounded`.
+    #[serde(
+        rename = "max_word_length",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_word_length: Option<u32>,
+    /// Ignore terms which do not occur in at least this many docs.
+    #[serde(
+        rename = "min_doc_freq",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub min_doc_freq: Option<u32>,
+    /// Ignore words with less than this frequency in the source doc.
+    #[serde(
+        rename = "min_term_freq",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub min_term_freq: Option<u32>,
 }
 
 impl Filter {
-    
     pub fn new() -> Filter {
         Filter {
             max_num_terms: None,

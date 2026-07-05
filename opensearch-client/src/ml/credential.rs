@@ -10,21 +10,29 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Credential {
-    #[serde(rename = "session_token", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "session_token",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub session_token: Option<String>,
-    #[serde(rename = "access_key", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "access_key",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub access_key: Option<String>,
-    #[serde(rename = "secret_key", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "secret_key",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub secret_key: Option<String>,
 }
 
 impl Credential {
-    
     pub fn new() -> Credential {
         Credential {
             session_token: None,

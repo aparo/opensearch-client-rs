@@ -10,15 +10,13 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CommandAllocatePrimaryAction {
     #[serde(rename = "index")]
     pub index: String,
     #[serde(rename = "node")]
-    pub node: String,  /// If a node which has a copy of the data rejoins the cluster later on, that data will be deleted. To ensure that these implications are well-understood, this command requires the flag `accept_data_loss` to be explicitly set to `true`.
+    pub node: String,
+    /// If a node which has a copy of the data rejoins the cluster later on, that data will be deleted. To ensure that these implications are well-understood, this command requires the flag `accept_data_loss` to be explicitly set to `true`.
     #[serde(rename = "accept_data_loss")]
     pub accept_data_loss: bool,
     #[serde(rename = "shard")]
@@ -26,8 +24,12 @@ pub struct CommandAllocatePrimaryAction {
 }
 
 impl CommandAllocatePrimaryAction {
-    
-    pub fn new(index: String, node: String, accept_data_loss: bool, shard: u32) -> CommandAllocatePrimaryAction {
+    pub fn new(
+        index: String,
+        node: String,
+        accept_data_loss: bool,
+        shard: u32,
+    ) -> CommandAllocatePrimaryAction {
         CommandAllocatePrimaryAction {
             index,
             node,

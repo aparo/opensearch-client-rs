@@ -10,28 +10,28 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ShardsRecord {  /// The shard name.
+pub struct ShardsRecord {
+    /// The shard name.
     #[serde(rename = "shard", default, skip_serializing_if = "Option::is_none")]
-    pub shard: Option<String>,  /// The shard state.
-  /// Returned values include:
-  /// `INITIALIZING`: The shard is recovering from a peer shard or gateway.
-  /// `RELOCATING`: The shard is relocating.
-  /// `STARTED`: The shard has started.
-  /// `UNASSIGNED`: The shard is not assigned to any node.
+    pub shard: Option<String>,
+    /// The shard state.
+    /// Returned values include:
+    /// `INITIALIZING`: The shard is recovering from a peer shard or gateway.
+    /// `RELOCATING`: The shard is relocating.
+    /// `STARTED`: The shard has started.
+    /// `UNASSIGNED`: The shard is not assigned to any node.
     #[serde(rename = "state", default, skip_serializing_if = "Option::is_none")]
-    pub state: Option<String>,  /// The index name.
+    pub state: Option<String>,
+    /// The index name.
     #[serde(rename = "index", default, skip_serializing_if = "Option::is_none")]
-    pub index: Option<String>,  /// The shard type: `primary` or `replica`.
+    pub index: Option<String>,
+    /// The shard type: `primary` or `replica`.
     #[serde(rename = "prirep", default, skip_serializing_if = "Option::is_none")]
     pub prirep: Option<String>,
 }
 
 impl ShardsRecord {
-    
     pub fn new() -> ShardsRecord {
         ShardsRecord {
             shard: None,

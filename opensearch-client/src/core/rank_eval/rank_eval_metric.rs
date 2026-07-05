@@ -10,25 +10,29 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RankEvalMetric {
-    #[serde(rename = "mean_reciprocal_rank", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "mean_reciprocal_rank",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub mean_reciprocal_rank: Option<String>,
     #[serde(rename = "precision", default, skip_serializing_if = "Option::is_none")]
     pub precision: Option<String>,
     #[serde(rename = "recall", default, skip_serializing_if = "Option::is_none")]
     pub recall: Option<String>,
-    #[serde(rename = "expected_reciprocal_rank", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "expected_reciprocal_rank",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub expected_reciprocal_rank: Option<String>,
     #[serde(rename = "dcg", default, skip_serializing_if = "Option::is_none")]
     pub dcg: Option<String>,
 }
 
 impl RankEvalMetric {
-    
     pub fn new() -> RankEvalMetric {
         RankEvalMetric {
             mean_reciprocal_rank: None,

@@ -11,18 +11,25 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GeoLineAggregation {
     #[serde(rename = "sort")]
     pub sort: common::aggregations::GeoLineSort,
-    #[serde(rename = "sort_order", default, skip_serializing_if = "Option::is_none")]
-    pub sort_order: Option<String>,  /// When `true`, returns an additional array of the sort values in the feature properties.
-    #[serde(rename = "include_sort", default, skip_serializing_if = "Option::is_none")]
-    pub include_sort: Option<bool>,  /// The maximum length of the line represented in the aggregation.
-  /// Valid sizes are between 1 and 10000.
+    #[serde(
+        rename = "sort_order",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub sort_order: Option<String>,
+    /// When `true`, returns an additional array of the sort values in the feature properties.
+    #[serde(
+        rename = "include_sort",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub include_sort: Option<bool>,
+    /// The maximum length of the line represented in the aggregation.
+    /// Valid sizes are between 1 and 10000.
     #[serde(rename = "size", default, skip_serializing_if = "Option::is_none")]
     pub size: Option<u32>,
     #[serde(rename = "point")]
@@ -30,8 +37,10 @@ pub struct GeoLineAggregation {
 }
 
 impl GeoLineAggregation {
-    
-    pub fn new(sort: common::aggregations::GeoLineSort, point: common::aggregations::GeoLinePoint) -> GeoLineAggregation {
+    pub fn new(
+        sort: common::aggregations::GeoLineSort,
+        point: common::aggregations::GeoLinePoint,
+    ) -> GeoLineAggregation {
         GeoLineAggregation {
             sort,
             sort_order: None,

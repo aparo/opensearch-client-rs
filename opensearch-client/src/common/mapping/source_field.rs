@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SourceField {
     #[serde(rename = "excludes", default, skip_serializing_if = "Option::is_none")]
@@ -23,12 +20,15 @@ pub struct SourceField {
     pub compress: Option<bool>,
     #[serde(rename = "enabled", default, skip_serializing_if = "Option::is_none")]
     pub enabled: Option<bool>,
-    #[serde(rename = "compress_threshold", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "compress_threshold",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub compress_threshold: Option<String>,
 }
 
 impl SourceField {
-    
     pub fn new() -> SourceField {
         SourceField {
             excludes: None,

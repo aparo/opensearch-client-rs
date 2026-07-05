@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ActionTimeout {
     #[serde(rename = "timeout", default, skip_serializing_if = "Option::is_none")]
@@ -21,10 +18,7 @@ pub struct ActionTimeout {
 }
 
 impl ActionTimeout {
-    
     pub fn new() -> ActionTimeout {
-        ActionTimeout {
-            timeout: None,
-        }
+        ActionTimeout { timeout: None }
     }
 }

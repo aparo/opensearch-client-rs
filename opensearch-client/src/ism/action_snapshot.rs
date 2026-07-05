@@ -10,21 +10,25 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ActionSnapshot {
-    #[serde(rename = "include_global_state", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "include_global_state",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub include_global_state: Option<bool>,
-    #[serde(rename = "repository", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "repository",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub repository: Option<String>,
     #[serde(rename = "snapshot", default, skip_serializing_if = "Option::is_none")]
     pub snapshot: Option<String>,
 }
 
 impl ActionSnapshot {
-    
     pub fn new() -> ActionSnapshot {
         ActionSnapshot {
             include_global_state: None,

@@ -10,20 +10,19 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TDigest {  /// Limits the maximum number of nodes used by the underlying TDigest algorithm to `20 * compression`, enabling control of memory usage and approximation error.
-    #[serde(rename = "compression", default, skip_serializing_if = "Option::is_none")]
+pub struct TDigest {
+    /// Limits the maximum number of nodes used by the underlying TDigest algorithm to `20 * compression`, enabling control of memory usage and approximation error.
+    #[serde(
+        rename = "compression",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub compression: Option<u32>,
 }
 
 impl TDigest {
-    
     pub fn new() -> TDigest {
-        TDigest {
-            compression: None,
-        }
+        TDigest { compression: None }
     }
 }

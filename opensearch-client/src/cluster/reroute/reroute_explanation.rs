@@ -11,9 +11,6 @@
 use crate::cluster;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RerouteExplanation {
     #[serde(rename = "parameters")]
@@ -25,8 +22,11 @@ pub struct RerouteExplanation {
 }
 
 impl RerouteExplanation {
-    
-    pub fn new(parameters: cluster::reroute::RerouteParameters, decisions: Vec<cluster::reroute::RerouteDecision>, command: String) -> RerouteExplanation {
+    pub fn new(
+        parameters: cluster::reroute::RerouteParameters,
+        decisions: Vec<cluster::reroute::RerouteDecision>,
+        command: String,
+    ) -> RerouteExplanation {
         RerouteExplanation {
             parameters,
             decisions,

@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Profile {
     #[serde(rename = "shards")]
@@ -21,10 +18,7 @@ pub struct Profile {
 }
 
 impl Profile {
-    
     pub fn new(shards: Vec<core::search::ShardProfile>) -> Profile {
-        Profile {
-            shards,
-        }
+        Profile { shards }
     }
 }

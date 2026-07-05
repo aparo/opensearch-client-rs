@@ -10,19 +10,19 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RefreshSearchAnalyzersResponseDetails {
-    #[serde(rename = "refreshed_analyzers", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "refreshed_analyzers",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub refreshed_analyzers: Option<Vec<String>>,
     #[serde(rename = "index", default, skip_serializing_if = "Option::is_none")]
     pub index: Option<String>,
 }
 
 impl RefreshSearchAnalyzersResponseDetails {
-    
     pub fn new() -> RefreshSearchAnalyzersResponseDetails {
         RefreshSearchAnalyzersResponseDetails {
             refreshed_analyzers: None,

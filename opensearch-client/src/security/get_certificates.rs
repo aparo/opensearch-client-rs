@@ -11,19 +11,23 @@
 use crate::security;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GetCertificates {
-    #[serde(rename = "http_certificates_list", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "http_certificates_list",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub http_certificates_list: Option<Vec<security::CertificatesDetail>>,
-    #[serde(rename = "transport_certificates_list", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "transport_certificates_list",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub transport_certificates_list: Option<Vec<security::CertificatesDetail>>,
 }
 
 impl GetCertificates {
-    
     pub fn new() -> GetCertificates {
         GetCertificates {
             http_certificates_list: None,

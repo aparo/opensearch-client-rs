@@ -11,44 +11,66 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ReindexStatus {  /// The number of version conflicts that reindex hits.
+pub struct ReindexStatus {
+    /// The number of version conflicts that reindex hits.
     #[serde(rename = "version_conflicts")]
-    pub version_conflicts: u32,  /// The number of documents that were ignored because the script used for the reindex operation returned a `noop` value for `ctx.op`.
+    pub version_conflicts: u32,
+    /// The number of documents that were ignored because the script used for the reindex operation returned a `noop` value for `ctx.op`.
     #[serde(rename = "noops")]
     pub noops: u32,
     #[serde(rename = "throttled_until_millis")]
-    pub throttled_until_millis: String,  /// The number of scroll responses shown by the reindex.
+    pub throttled_until_millis: String,
+    /// The number of scroll responses shown by the reindex.
     #[serde(rename = "batches")]
-    pub batches: u32,  /// The number of documents that were successfully created.
+    pub batches: u32,
+    /// The number of documents that were successfully created.
     #[serde(rename = "created")]
-    pub created: u32,  /// The number of successful requests per second during the reindex operation.
+    pub created: u32,
+    /// The number of successful requests per second during the reindex operation.
     #[serde(rename = "requests_per_second")]
     pub requests_per_second: f64,
     #[serde(rename = "retries")]
-    pub retries: common::Retries,  /// The number of documents that were successfully processed.
+    pub retries: common::Retries,
+    /// The number of documents that were successfully processed.
     #[serde(rename = "total")]
-    pub total: u32,  /// The number of documents that were successfully deleted.
+    pub total: u32,
+    /// The number of documents that were successfully deleted.
     #[serde(rename = "deleted")]
     pub deleted: u32,
     #[serde(rename = "throttled_millis")]
-    pub throttled_millis: String,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "throttled_until", default, skip_serializing_if = "Option::is_none")]
-    pub throttled_until: Option<String>,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    pub throttled_millis: String,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "throttled_until",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub throttled_until: Option<String>,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
     #[serde(rename = "throttled", default, skip_serializing_if = "Option::is_none")]
-    pub throttled: Option<String>,  /// The number of documents that were successfully updated.
+    pub throttled: Option<String>,
+    /// The number of documents that were successfully updated.
     #[serde(rename = "updated")]
     pub updated: u32,
 }
 
 impl ReindexStatus {
-    
-    pub fn new(version_conflicts: u32, noops: u32, throttled_until_millis: String, batches: u32, created: u32, requests_per_second: f64, retries: common::Retries, total: u32, deleted: u32, throttled_millis: String, updated: u32) -> ReindexStatus {
+    pub fn new(
+        version_conflicts: u32,
+        noops: u32,
+        throttled_until_millis: String,
+        batches: u32,
+        created: u32,
+        requests_per_second: f64,
+        retries: common::Retries,
+        total: u32,
+        deleted: u32,
+        throttled_millis: String,
+        updated: u32,
+    ) -> ReindexStatus {
         ReindexStatus {
             version_conflicts,
             noops,

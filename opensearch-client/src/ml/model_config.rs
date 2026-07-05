@@ -10,23 +10,39 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ModelConfig {  /// The embedding dimension.
-    #[serde(rename = "embedding_dimension", default, skip_serializing_if = "Option::is_none")]
-    pub embedding_dimension: Option<u32>,  /// The all config.
-    #[serde(rename = "all_config", default, skip_serializing_if = "Option::is_none")]
-    pub all_config: Option<String>,  /// The model type.
-    #[serde(rename = "model_type", default, skip_serializing_if = "Option::is_none")]
-    pub model_type: Option<String>,  /// The framework type.
-    #[serde(rename = "framework_type", default, skip_serializing_if = "Option::is_none")]
+pub struct ModelConfig {
+    /// The embedding dimension.
+    #[serde(
+        rename = "embedding_dimension",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub embedding_dimension: Option<u32>,
+    /// The all config.
+    #[serde(
+        rename = "all_config",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub all_config: Option<String>,
+    /// The model type.
+    #[serde(
+        rename = "model_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub model_type: Option<String>,
+    /// The framework type.
+    #[serde(
+        rename = "framework_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub framework_type: Option<String>,
 }
 
 impl ModelConfig {
-    
     pub fn new() -> ModelConfig {
         ModelConfig {
             embedding_dimension: None,

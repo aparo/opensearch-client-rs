@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GetScriptContextResponse {
     #[serde(rename = "contexts")]
@@ -21,10 +18,7 @@ pub struct GetScriptContextResponse {
 }
 
 impl GetScriptContextResponse {
-    
     pub fn new(contexts: Vec<core::get_script_context::Context>) -> GetScriptContextResponse {
-        GetScriptContextResponse {
-            contexts,
-        }
+        GetScriptContextResponse { contexts }
     }
 }

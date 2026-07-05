@@ -10,20 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ExecuteLocalSampleCalculatorResponse {  /// The result.
+pub struct ExecuteLocalSampleCalculatorResponse {
+    /// The result.
     #[serde(rename = "result", default, skip_serializing_if = "Option::is_none")]
     pub result: Option<f64>,
 }
 
 impl ExecuteLocalSampleCalculatorResponse {
-    
     pub fn new() -> ExecuteLocalSampleCalculatorResponse {
-        ExecuteLocalSampleCalculatorResponse {
-            result: None,
-        }
+        ExecuteLocalSampleCalculatorResponse { result: None }
     }
 }

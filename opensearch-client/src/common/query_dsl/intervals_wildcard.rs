@@ -10,22 +10,21 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct IntervalsWildcard {  /// Wildcard pattern used to find matching terms.
+pub struct IntervalsWildcard {
+    /// Wildcard pattern used to find matching terms.
     #[serde(rename = "pattern")]
-    pub pattern: String,  /// Analyzer used to analyze the `pattern`.
-  /// Defaults to the top-level field's analyzer.
+    pub pattern: String,
+    /// Analyzer used to analyze the `pattern`.
+    /// Defaults to the top-level field's analyzer.
     #[serde(rename = "analyzer", default, skip_serializing_if = "Option::is_none")]
-    pub analyzer: Option<String>,  /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
+    pub analyzer: Option<String>,
+    /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
     #[serde(rename = "use_field", default, skip_serializing_if = "Option::is_none")]
     pub use_field: Option<String>,
 }
 
 impl IntervalsWildcard {
-    
     pub fn new(pattern: String) -> IntervalsWildcard {
         IntervalsWildcard {
             pattern,

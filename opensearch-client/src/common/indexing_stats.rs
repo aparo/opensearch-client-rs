@@ -11,13 +11,15 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct IndexingStats {  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "throttle_time", default, skip_serializing_if = "Option::is_none")]
+pub struct IndexingStats {
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "throttle_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub throttle_time: Option<String>,
     #[serde(rename = "delete_time_in_millis")]
     pub delete_time_in_millis: String,
@@ -26,20 +28,35 @@ pub struct IndexingStats {  /// A duration. Units can be `nanos`, `micros`, `ms`
     #[serde(rename = "throttle_time_in_millis")]
     pub throttle_time_in_millis: String,
     #[serde(rename = "index_time_in_millis")]
-    pub index_time_in_millis: String,  /// The item level REST category class codes during indexing.
-    #[serde(rename = "doc_status", default, skip_serializing_if = "Option::is_none")]
+    pub index_time_in_millis: String,
+    /// The item level REST category class codes during indexing.
+    #[serde(
+        rename = "doc_status",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub doc_status: Option<common::DocStatus>,
     #[serde(rename = "index_total")]
     pub index_total: u32,
     #[serde(rename = "delete_total")]
     pub delete_total: u32,
     #[serde(rename = "index_current")]
-    pub index_current: u32,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "delete_time", default, skip_serializing_if = "Option::is_none")]
-    pub delete_time: Option<String>,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "index_time", default, skip_serializing_if = "Option::is_none")]
+    pub index_current: u32,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "delete_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub delete_time: Option<String>,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "index_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub index_time: Option<String>,
     #[serde(rename = "index_failed")]
     pub index_failed: u32,
@@ -50,8 +67,18 @@ pub struct IndexingStats {  /// A duration. Units can be `nanos`, `micros`, `ms`
 }
 
 impl IndexingStats {
-    
-    pub fn new(delete_time_in_millis: String, is_throttled: bool, throttle_time_in_millis: String, index_time_in_millis: String, index_total: u32, delete_total: u32, index_current: u32, index_failed: u32, delete_current: u32, noop_update_total: u32) -> IndexingStats {
+    pub fn new(
+        delete_time_in_millis: String,
+        is_throttled: bool,
+        throttle_time_in_millis: String,
+        index_time_in_millis: String,
+        index_total: u32,
+        delete_total: u32,
+        index_current: u32,
+        index_failed: u32,
+        delete_current: u32,
+        noop_update_total: u32,
+    ) -> IndexingStats {
         IndexingStats {
             throttle_time: None,
             delete_time_in_millis,

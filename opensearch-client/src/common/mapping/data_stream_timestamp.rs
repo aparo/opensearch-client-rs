@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DataStreamTimestamp {
     #[serde(rename = "enabled")]
@@ -20,10 +17,7 @@ pub struct DataStreamTimestamp {
 }
 
 impl DataStreamTimestamp {
-    
     pub fn new(enabled: bool) -> DataStreamTimestamp {
-        DataStreamTimestamp {
-            enabled,
-        }
+        DataStreamTimestamp { enabled }
     }
 }

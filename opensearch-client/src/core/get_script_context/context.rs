@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Context {
     #[serde(rename = "name")]
@@ -23,11 +20,7 @@ pub struct Context {
 }
 
 impl Context {
-    
     pub fn new(name: String, methods: Vec<core::get_script_context::ContextMethod>) -> Context {
-        Context {
-            name,
-            methods,
-        }
+        Context { name, methods }
     }
 }

@@ -10,23 +10,30 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Entity {  /// The new value.
+pub struct Entity {
+    /// The new value.
     #[serde(rename = "new_value", default, skip_serializing_if = "Option::is_none")]
-    pub new_value: Option<f64>,  /// The base value.
-    #[serde(rename = "base_value", default, skip_serializing_if = "Option::is_none")]
+    pub new_value: Option<f64>,
+    /// The base value.
+    #[serde(
+        rename = "base_value",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub base_value: Option<f64>,
     #[serde(rename = "key", default, skip_serializing_if = "Option::is_none")]
-    pub key: Option<Vec<String>>,  /// The contribution value.
-    #[serde(rename = "contribution_value", default, skip_serializing_if = "Option::is_none")]
+    pub key: Option<Vec<String>>,
+    /// The contribution value.
+    #[serde(
+        rename = "contribution_value",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub contribution_value: Option<f64>,
 }
 
 impl Entity {
-    
     pub fn new() -> Entity {
         Entity {
             new_value: None,

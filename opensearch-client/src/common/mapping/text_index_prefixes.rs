@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TextIndexPrefixes {
     #[serde(rename = "min_chars")]
@@ -22,7 +19,6 @@ pub struct TextIndexPrefixes {
 }
 
 impl TextIndexPrefixes {
-    
     pub fn new(min_chars: u32, max_chars: u32) -> TextIndexPrefixes {
         TextIndexPrefixes {
             min_chars,

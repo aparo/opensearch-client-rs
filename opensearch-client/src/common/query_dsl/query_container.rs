@@ -11,19 +11,26 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct QueryContainer {
     #[serde(rename = "nested", default, skip_serializing_if = "Option::is_none")]
     pub nested: Option<String>,
     #[serde(rename = "parent_id", default, skip_serializing_if = "Option::is_none")]
     pub parent_id: Option<String>,
-    #[serde(rename = "field_masking_span", default, skip_serializing_if = "Option::is_none")]
-    pub field_masking_span: Option<String>,  /// Analyzes the text and creates a phrase query out of the analyzed text.
-    #[serde(rename = "match_phrase", default, skip_serializing_if = "Option::is_none")]
-    pub match_phrase: Option<serde_json::Value>,  /// Returns documents based on the order and proximity of matching terms.
+    #[serde(
+        rename = "field_masking_span",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub field_masking_span: Option<String>,
+    /// Analyzes the text and creates a phrase query out of the analyzed text.
+    #[serde(
+        rename = "match_phrase",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub match_phrase: Option<serde_json::Value>,
+    /// Returns documents based on the order and proximity of matching terms.
     #[serde(rename = "intervals", default, skip_serializing_if = "Option::is_none")]
     pub intervals: Option<serde_json::Value>,
     #[serde(rename = "boosting", default, skip_serializing_if = "Option::is_none")]
@@ -34,102 +41,197 @@ pub struct QueryContainer {
     pub span_near: Option<String>,
     #[serde(rename = "span_not", default, skip_serializing_if = "Option::is_none")]
     pub span_not: Option<String>,
-    #[serde(rename = "geo_bounding_box", default, skip_serializing_if = "Option::is_none")]
-    pub geo_bounding_box: Option<String>,  /// Analyzes its input and constructs a `bool` query from the terms.
-  /// Each term except the last is used in a `term` query.
-  /// The last term is used in a prefix query.
-    #[serde(rename = "match_bool_prefix", default, skip_serializing_if = "Option::is_none")]
-    pub match_bool_prefix: Option<serde_json::Value>,  /// Returns documents that contain a specific prefix in a provided field.
+    #[serde(
+        rename = "geo_bounding_box",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub geo_bounding_box: Option<String>,
+    /// Analyzes its input and constructs a `bool` query from the terms.
+    /// Each term except the last is used in a `term` query.
+    /// The last term is used in a prefix query.
+    #[serde(
+        rename = "match_bool_prefix",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub match_bool_prefix: Option<serde_json::Value>,
+    /// Returns documents that contain a specific prefix in a provided field.
     #[serde(rename = "prefix", default, skip_serializing_if = "Option::is_none")]
     pub prefix: Option<serde_json::Value>,
-    #[serde(rename = "more_like_this", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "more_like_this",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub more_like_this: Option<String>,
-    #[serde(rename = "span_multi", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "span_multi",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub span_multi: Option<String>,
     #[serde(rename = "common", default, skip_serializing_if = "Option::is_none")]
     pub common: Option<serde_json::Value>,
-    #[serde(rename = "span_within", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "span_within",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub span_within: Option<String>,
     #[serde(rename = "ids", default, skip_serializing_if = "Option::is_none")]
     pub ids: Option<String>,
-    #[serde(rename = "distance_feature", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "distance_feature",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub distance_feature: Option<String>,
-    #[serde(rename = "geo_polygon", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "geo_polygon",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub geo_polygon: Option<String>,
     #[serde(rename = "match_all", default, skip_serializing_if = "Option::is_none")]
-    pub match_all: Option<String>,  /// Returns documents that contain terms within a provided range.
+    pub match_all: Option<String>,
+    /// Returns documents that contain terms within a provided range.
     #[serde(rename = "range", default, skip_serializing_if = "Option::is_none")]
     pub range: Option<serde_json::Value>,
-    #[serde(rename = "combined_fields", default, skip_serializing_if = "Option::is_none")]
-    pub combined_fields: Option<String>,  /// Returns documents that contain terms similar to the search term, as measured by a Levenshtein edit distance.
+    #[serde(
+        rename = "combined_fields",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub combined_fields: Option<String>,
+    /// Returns documents that contain terms similar to the search term, as measured by a Levenshtein edit distance.
     #[serde(rename = "fuzzy", default, skip_serializing_if = "Option::is_none")]
-    pub fuzzy: Option<serde_json::Value>,  /// Returns documents that contain the words of a provided text, in the same order as provided.
-  /// The last term of the provided text is treated as a prefix, matching any words that begin with that term.
-    #[serde(rename = "match_phrase_prefix", default, skip_serializing_if = "Option::is_none")]
+    pub fuzzy: Option<serde_json::Value>,
+    /// Returns documents that contain the words of a provided text, in the same order as provided.
+    /// The last term of the provided text is treated as a prefix, matching any words that begin with that term.
+    #[serde(
+        rename = "match_phrase_prefix",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub match_phrase_prefix: Option<serde_json::Value>,
-    #[serde(rename = "function_score", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "function_score",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub function_score: Option<String>,
     #[serde(rename = "geo_shape", default, skip_serializing_if = "Option::is_none")]
     pub geo_shape: Option<String>,
-    #[serde(rename = "constant_score", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "constant_score",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub constant_score: Option<String>,
     #[serde(rename = "hybrid", default, skip_serializing_if = "Option::is_none")]
     pub hybrid: Option<String>,
-    #[serde(rename = "multi_match", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "multi_match",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub multi_match: Option<String>,
     #[serde(rename = "pinned", default, skip_serializing_if = "Option::is_none")]
     pub pinned: Option<String>,
-    #[serde(rename = "rank_feature", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "rank_feature",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub rank_feature: Option<String>,
     #[serde(rename = "neural", default, skip_serializing_if = "Option::is_none")]
     pub neural: Option<serde_json::Value>,
     #[serde(rename = "script", default, skip_serializing_if = "Option::is_none")]
     pub script: Option<String>,
-    #[serde(rename = "script_score", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "script_score",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub script_score: Option<String>,
-    #[serde(rename = "has_parent", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "has_parent",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub has_parent: Option<String>,
-    #[serde(rename = "geo_distance", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "geo_distance",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub geo_distance: Option<String>,
-    #[serde(rename = "span_containing", default, skip_serializing_if = "Option::is_none")]
-    pub span_containing: Option<String>,  /// Returns documents that contain terms matching a regular expression.
+    #[serde(
+        rename = "span_containing",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub span_containing: Option<String>,
+    /// Returns documents that contain terms matching a regular expression.
     #[serde(rename = "regexp", default, skip_serializing_if = "Option::is_none")]
-    pub regexp: Option<serde_json::Value>,  /// Matches spans containing a term.
+    pub regexp: Option<serde_json::Value>,
+    /// Matches spans containing a term.
     #[serde(rename = "span_term", default, skip_serializing_if = "Option::is_none")]
     pub span_term: Option<serde_json::Value>,
     #[serde(rename = "terms", default, skip_serializing_if = "Option::is_none")]
-    pub terms: Option<String>,  /// Returns documents that contain terms matching a wildcard pattern.
+    pub terms: Option<String>,
+    /// Returns documents that contain terms matching a wildcard pattern.
     #[serde(rename = "wildcard", default, skip_serializing_if = "Option::is_none")]
     pub wildcard: Option<serde_json::Value>,
     #[serde(rename = "wrapper", default, skip_serializing_if = "Option::is_none")]
     pub wrapper: Option<String>,
     #[serde(rename = "exists", default, skip_serializing_if = "Option::is_none")]
     pub exists: Option<String>,
-    #[serde(rename = "simple_query_string", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "simple_query_string",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub simple_query_string: Option<String>,
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
-    pub r#type: Option<String>,  /// Returns documents that contain an exact term in a provided field.
-  /// To return a document, the query term must exactly match the queried field's value, including white space and capitalization.
+    pub r#type: Option<String>,
+    /// Returns documents that contain an exact term in a provided field.
+    /// To return a document, the query term must exactly match the queried field's value, including white space and capitalization.
     #[serde(rename = "term", default, skip_serializing_if = "Option::is_none")]
     pub term: Option<serde_json::Value>,
-    #[serde(rename = "match_none", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "match_none",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub match_none: Option<String>,
-    #[serde(rename = "query_string", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "query_string",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub query_string: Option<String>,
     #[serde(rename = "dis_max", default, skip_serializing_if = "Option::is_none")]
     pub dis_max: Option<String>,
-    #[serde(rename = "span_first", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "span_first",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub span_first: Option<String>,
     #[serde(rename = "span_or", default, skip_serializing_if = "Option::is_none")]
     pub span_or: Option<String>,
     #[serde(rename = "has_child", default, skip_serializing_if = "Option::is_none")]
-    pub has_child: Option<String>,  /// Returns documents that contain a minimum number of exact terms in a provided field.
-  /// To return a document, a required number of terms must exactly match the field values, including white space and capitalization.
+    pub has_child: Option<String>,
+    /// Returns documents that contain a minimum number of exact terms in a provided field.
+    /// To return a document, a required number of terms must exactly match the field values, including white space and capitalization.
     #[serde(rename = "terms_set", default, skip_serializing_if = "Option::is_none")]
     pub terms_set: Option<serde_json::Value>,
     #[serde(rename = "knn", default, skip_serializing_if = "Option::is_none")]
-    pub knn: Option<serde_json::Value>,  /// Returns documents that match a provided text, number, date or Boolean value.
-  /// The provided text is analyzed before matching.
+    pub knn: Option<serde_json::Value>,
+    /// Returns documents that match a provided text, number, date or Boolean value.
+    /// The provided text is analyzed before matching.
     #[serde(rename = "match", default, skip_serializing_if = "Option::is_none")]
     pub r#match: Option<serde_json::Value>,
     #[serde(rename = "bool", default, skip_serializing_if = "Option::is_none")]
@@ -137,7 +239,6 @@ pub struct QueryContainer {
 }
 
 impl QueryContainer {
-    
     pub fn new() -> QueryContainer {
         QueryContainer {
             nested: None,
@@ -194,7 +295,7 @@ impl QueryContainer {
             has_child: None,
             terms_set: None,
             knn: None,
-           r#match: None,
+            r#match: None,
             bool: None,
         }
     }

@@ -11,9 +11,6 @@
 use crate::cluster;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct NodeDiskUsage {
     #[serde(rename = "least_available")]
@@ -25,8 +22,11 @@ pub struct NodeDiskUsage {
 }
 
 impl NodeDiskUsage {
-    
-    pub fn new(least_available: cluster::allocation_explain::DiskUsage, node_name: String, most_available: cluster::allocation_explain::DiskUsage) -> NodeDiskUsage {
+    pub fn new(
+        least_available: cluster::allocation_explain::DiskUsage,
+        node_name: String,
+        most_available: cluster::allocation_explain::DiskUsage,
+    ) -> NodeDiskUsage {
         NodeDiskUsage {
             least_available,
             node_name,

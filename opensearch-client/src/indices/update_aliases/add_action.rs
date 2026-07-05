@@ -11,37 +11,53 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AddAction {
     #[serde(rename = "alias", default, skip_serializing_if = "Option::is_none")]
-    pub alias: Option<String>,  /// A comma-separated list of data streams, indexes, and aliases used to limit the request.
-  /// Supports wildcards (`*`).
-  /// To target all data streams and indexes, omit this parameter or use `*` or `_all`.
+    pub alias: Option<String>,
+    /// A comma-separated list of data streams, indexes, and aliases used to limit the request.
+    /// Supports wildcards (`*`).
+    /// To target all data streams and indexes, omit this parameter or use `*` or `_all`.
     #[serde(rename = "indices", default, skip_serializing_if = "Option::is_none")]
     pub indices: Option<common::Indices>,
     #[serde(rename = "index", default, skip_serializing_if = "Option::is_none")]
-    pub index: Option<String>,  /// If `true`, sets the write index or data stream for the alias.
-    #[serde(rename = "is_write_index", default, skip_serializing_if = "Option::is_none")]
+    pub index: Option<String>,
+    /// If `true`, sets the write index or data stream for the alias.
+    #[serde(
+        rename = "is_write_index",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub is_write_index: Option<bool>,
     #[serde(rename = "routing", default, skip_serializing_if = "Option::is_none")]
-    pub routing: Option<String>,  /// If `true`, the alias must exist to perform the action.
-    #[serde(rename = "must_exist", default, skip_serializing_if = "Option::is_none")]
-    pub must_exist: Option<bool>,  /// If `true`, the alias is hidden.
+    pub routing: Option<String>,
+    /// If `true`, the alias must exist to perform the action.
+    #[serde(
+        rename = "must_exist",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub must_exist: Option<bool>,
+    /// If `true`, the alias is hidden.
     #[serde(rename = "is_hidden", default, skip_serializing_if = "Option::is_none")]
     pub is_hidden: Option<bool>,
-    #[serde(rename = "search_routing", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "search_routing",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub search_routing: Option<String>,
     #[serde(rename = "filter", default, skip_serializing_if = "Option::is_none")]
     pub filter: Option<crate::dsl::Query>,
-    #[serde(rename = "index_routing", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "index_routing",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub index_routing: Option<String>,
 }
 
 impl AddAction {
-    
     pub fn new() -> AddAction {
         AddAction {
             alias: None,

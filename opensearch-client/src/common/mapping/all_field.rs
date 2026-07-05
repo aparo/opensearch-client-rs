@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AllField {
     #[serde(rename = "enabled")]
@@ -38,8 +35,18 @@ pub struct AllField {
 }
 
 impl AllField {
-    
-    pub fn new(enabled: bool, analyzer: String, similarity: String, store_term_vector_payloads: bool, store_term_vectors: bool, search_analyzer: String, omit_norms: bool, store_term_vector_positions: bool, store_term_vector_offsets: bool, store: bool) -> AllField {
+    pub fn new(
+        enabled: bool,
+        analyzer: String,
+        similarity: String,
+        store_term_vector_payloads: bool,
+        store_term_vectors: bool,
+        search_analyzer: String,
+        omit_norms: bool,
+        store_term_vector_positions: bool,
+        store_term_vector_offsets: bool,
+        store: bool,
+    ) -> AllField {
         AllField {
             enabled,
             analyzer,

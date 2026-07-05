@@ -10,17 +10,17 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DecayFunctionBase {
-    #[serde(rename = "multi_value_mode", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "multi_value_mode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub multi_value_mode: Option<String>,
 }
 
 impl DecayFunctionBase {
-    
     pub fn new() -> DecayFunctionBase {
         DecayFunctionBase {
             multi_value_mode: None,

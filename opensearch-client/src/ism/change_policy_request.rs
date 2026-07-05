@@ -11,9 +11,6 @@
 use crate::ism;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ChangePolicyRequest {
     #[serde(rename = "state", default, skip_serializing_if = "Option::is_none")]
@@ -25,7 +22,6 @@ pub struct ChangePolicyRequest {
 }
 
 impl ChangePolicyRequest {
-    
     pub fn new(policy_id: String) -> ChangePolicyRequest {
         ChangePolicyRequest {
             state: None,

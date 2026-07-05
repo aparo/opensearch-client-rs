@@ -10,14 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Metadata {
     #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    #[serde(rename = "_primary_term", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "_primary_term",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub primary_term: Option<f64>,
     #[serde(rename = "_version", default, skip_serializing_if = "Option::is_none")]
     pub version: Option<u32>,
@@ -26,7 +27,6 @@ pub struct Metadata {
 }
 
 impl Metadata {
-    
     pub fn new() -> Metadata {
         Metadata {
             id: None,

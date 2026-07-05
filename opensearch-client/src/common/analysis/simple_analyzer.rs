@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SimpleAnalyzer {
     #[serde(rename = "type")]
@@ -22,7 +19,6 @@ pub struct SimpleAnalyzer {
 }
 
 impl SimpleAnalyzer {
-    
     pub fn new(r#type: String) -> SimpleAnalyzer {
         SimpleAnalyzer {
             r#type,

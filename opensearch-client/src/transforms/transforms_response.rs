@@ -11,19 +11,23 @@
 use crate::transforms;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TransformsResponse {
-    #[serde(rename = "total_transforms", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "total_transforms",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub total_transforms: Option<f64>,
-    #[serde(rename = "transforms", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "transforms",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub transforms: Option<Vec<transforms::TransformResponse>>,
 }
 
 impl TransformsResponse {
-    
     pub fn new() -> TransformsResponse {
         TransformsResponse {
             total_transforms: None,

@@ -12,9 +12,6 @@ use crate::common;
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SearchTemplateWithIndexResponse {
     #[serde(rename = "status", default, skip_serializing_if = "Option::is_none")]
@@ -23,13 +20,21 @@ pub struct SearchTemplateWithIndexResponse {
     pub took: u32,
     #[serde(rename = "suggest", default, skip_serializing_if = "Option::is_none")]
     pub suggest: Option<serde_json::Value>,
-    #[serde(rename = "_scroll_id", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "_scroll_id",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub scroll_id: Option<String>,
     #[serde(rename = "fields", default, skip_serializing_if = "Option::is_none")]
     pub fields: Option<serde_json::Value>,
     #[serde(rename = "timed_out")]
     pub timed_out: bool,
-    #[serde(rename = "aggregations", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "aggregations",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub aggregations: Option<serde_json::Value>,
     #[serde(rename = "profile", default, skip_serializing_if = "Option::is_none")]
     pub profile: Option<core::search::Profile>,
@@ -39,19 +44,31 @@ pub struct SearchTemplateWithIndexResponse {
     pub clusters: Option<common::ClusterStatistics>,
     #[serde(rename = "_shards")]
     pub shards: common::ShardStatistics,
-    #[serde(rename = "num_reduce_phases", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "num_reduce_phases",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub num_reduce_phases: Option<u32>,
     #[serde(rename = "hits")]
     pub hits: core::search::HitsMetadata,
-    #[serde(rename = "terminated_early", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "terminated_early",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub terminated_early: Option<bool>,
     #[serde(rename = "pit_id", default, skip_serializing_if = "Option::is_none")]
     pub pit_id: Option<String>,
 }
 
 impl SearchTemplateWithIndexResponse {
-    
-    pub fn new(took: u32, timed_out: bool, shards: common::ShardStatistics, hits: core::search::HitsMetadata) -> SearchTemplateWithIndexResponse {
+    pub fn new(
+        took: u32,
+        timed_out: bool,
+        shards: common::ShardStatistics,
+        hits: core::search::HitsMetadata,
+    ) -> SearchTemplateWithIndexResponse {
         SearchTemplateWithIndexResponse {
             status: None,
             took,

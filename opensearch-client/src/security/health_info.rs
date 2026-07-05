@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct HealthInfo {
     #[serde(rename = "mode", default, skip_serializing_if = "Option::is_none")]
@@ -22,7 +19,6 @@ pub struct HealthInfo {
 }
 
 impl HealthInfo {
-    
     pub fn new() -> HealthInfo {
         HealthInfo {
             mode: None,

@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DeletePolicyResponse {
     #[serde(rename = "_primary_term")]
@@ -26,7 +23,11 @@ pub struct DeletePolicyResponse {
     pub shards: common::ShardStatistics,
     #[serde(rename = "_version")]
     pub version: u32,
-    #[serde(rename = "forced_refresh", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "forced_refresh",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub forced_refresh: Option<bool>,
     #[serde(rename = "_seq_no")]
     pub seq_no: u32,
@@ -35,8 +36,15 @@ pub struct DeletePolicyResponse {
 }
 
 impl DeletePolicyResponse {
-    
-    pub fn new(primary_term: u32, index: String, id: String, shards: common::ShardStatistics, version: u32, seq_no: u32, result: String) -> DeletePolicyResponse {
+    pub fn new(
+        primary_term: u32,
+        index: String,
+        id: String,
+        shards: common::ShardStatistics,
+        version: u32,
+        seq_no: u32,
+        result: String,
+    ) -> DeletePolicyResponse {
         DeletePolicyResponse {
             primary_term,
             index,

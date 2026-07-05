@@ -11,9 +11,6 @@
 use crate::ism;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ChangePolicy {
     #[serde(rename = "policy_id")]
@@ -25,7 +22,6 @@ pub struct ChangePolicy {
 }
 
 impl ChangePolicy {
-    
     pub fn new(policy_id: String) -> ChangePolicy {
         ChangePolicy {
             policy_id,

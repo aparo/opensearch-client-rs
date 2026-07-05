@@ -13,7 +13,6 @@ use serde::{Deserialize, Serialize};
 /// RemoteStoreUploadDownloadStats
 /// The amount of data, in bytes, uploaded or downloaded to/from the remote segment store.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RemoteStoreUploadDownloadStats {
     #[serde(rename = "failed", default, skip_serializing_if = "Option::is_none")]
@@ -31,8 +30,12 @@ pub struct RemoteStoreUploadDownloadStats {
 }
 
 impl RemoteStoreUploadDownloadStats {
-      /// The amount of data, in bytes, uploaded or downloaded to/from the remote segment store.
-    pub fn new(failed_bytes: u32, started_bytes: u32, succeeded_bytes: u32) -> RemoteStoreUploadDownloadStats {
+    /// The amount of data, in bytes, uploaded or downloaded to/from the remote segment store.
+    pub fn new(
+        failed_bytes: u32,
+        started_bytes: u32,
+        succeeded_bytes: u32,
+    ) -> RemoteStoreUploadDownloadStats {
         RemoteStoreUploadDownloadStats {
             failed: None,
             started: None,

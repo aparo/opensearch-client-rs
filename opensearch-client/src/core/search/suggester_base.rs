@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SuggesterBase {
     #[serde(rename = "field")]
@@ -24,7 +21,6 @@ pub struct SuggesterBase {
 }
 
 impl SuggesterBase {
-    
     pub fn new(field: String) -> SuggesterBase {
         SuggesterBase {
             field,

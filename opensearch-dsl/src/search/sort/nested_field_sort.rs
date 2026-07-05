@@ -1,4 +1,4 @@
-use crate::{util::ShouldSkip, Query};
+use crate::{Query, util::ShouldSkip};
 
 /// Sorts search hits by fields that are inside one or more nested objects.
 ///
@@ -56,7 +56,7 @@ impl NestedFieldSort {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{util::assert_serialize, Query};
+    use crate::{Query, util::assert_serialize};
 
     #[test]
     fn serialization() {

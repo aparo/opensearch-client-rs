@@ -1,4 +1,4 @@
-use crate::{util::*, Query, SpanQuery};
+use crate::{Query, SpanQuery, util::*};
 
 /// Wrapper to allow span queries to participate in composite single-field span
 /// queries by _lying_ about their search field. The span field masking query

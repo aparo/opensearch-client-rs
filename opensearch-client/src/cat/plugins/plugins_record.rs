@@ -10,19 +10,23 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct PluginsRecord {  /// The plugin details.
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+pub struct PluginsRecord {
+    /// The plugin details.
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
     #[serde(rename = "name", default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,  /// The component name.
+    pub name: Option<String>,
+    /// The component name.
     #[serde(rename = "component", default, skip_serializing_if = "Option::is_none")]
     pub component: Option<String>,
     #[serde(rename = "id", default, skip_serializing_if = "Option::is_none")]
-    pub id: Option<String>,  /// The plugin type.
+    pub id: Option<String>,
+    /// The plugin type.
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
     pub r#type: Option<String>,
     #[serde(rename = "version", default, skip_serializing_if = "Option::is_none")]
@@ -30,7 +34,6 @@ pub struct PluginsRecord {  /// The plugin details.
 }
 
 impl PluginsRecord {
-    
     pub fn new() -> PluginsRecord {
         PluginsRecord {
             description: None,

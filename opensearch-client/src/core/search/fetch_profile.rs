@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct FetchProfile {
     #[serde(rename = "description")]
@@ -31,8 +28,12 @@ pub struct FetchProfile {
 }
 
 impl FetchProfile {
-    
-    pub fn new(description: String, breakdown: core::search::FetchProfileBreakdown, time_in_nanos: String, r#type: String) -> FetchProfile {
+    pub fn new(
+        description: String,
+        breakdown: core::search::FetchProfileBreakdown,
+        time_in_nanos: String,
+        r#type: String,
+    ) -> FetchProfile {
         FetchProfile {
             description,
             breakdown,

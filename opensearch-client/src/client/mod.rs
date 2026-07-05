@@ -24,8 +24,8 @@ use bon::bon;
 use futures::Stream;
 use opensearch_dsl::Query;
 use opensearch_dsl::SortCollection;
-use serde::de::DeserializeOwned;
 use serde::Serialize;
+use serde::de::DeserializeOwned;
 use thiserror::Error;
 use url::Url;
 

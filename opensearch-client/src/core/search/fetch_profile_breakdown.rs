@@ -10,31 +10,55 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct FetchProfileBreakdown {
-    #[serde(rename = "next_reader", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "next_reader",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub next_reader: Option<u32>,
     #[serde(rename = "process", default, skip_serializing_if = "Option::is_none")]
     pub process: Option<u32>,
-    #[serde(rename = "load_stored_fields_count", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "load_stored_fields_count",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub load_stored_fields_count: Option<u32>,
-    #[serde(rename = "load_stored_fields", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "load_stored_fields",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub load_stored_fields: Option<u32>,
-    #[serde(rename = "next_reader_count", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "next_reader_count",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub next_reader_count: Option<u32>,
-    #[serde(rename = "load_source_count", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "load_source_count",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub load_source_count: Option<u32>,
-    #[serde(rename = "load_source", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "load_source",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub load_source: Option<u32>,
-    #[serde(rename = "process_count", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "process_count",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub process_count: Option<u32>,
 }
 
 impl FetchProfileBreakdown {
-    
     pub fn new() -> FetchProfileBreakdown {
         FetchProfileBreakdown {
             next_reader: None,

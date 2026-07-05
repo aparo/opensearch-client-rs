@@ -11,17 +11,27 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CompositeValuesSource {
-    #[serde(rename = "value_type", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "value_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub value_type: Option<String>,
-    #[serde(rename = "missing_order", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "missing_order",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub missing_order: Option<String>,
-    #[serde(rename = "missing_bucket", default, skip_serializing_if = "Option::is_none")]
-    pub missing_bucket: Option<bool>,  /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
+    #[serde(
+        rename = "missing_bucket",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub missing_bucket: Option<bool>,
+    /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
     #[serde(rename = "field", default, skip_serializing_if = "Option::is_none")]
     pub field: Option<String>,
     #[serde(rename = "script", default, skip_serializing_if = "Option::is_none")]
@@ -31,7 +41,6 @@ pub struct CompositeValuesSource {
 }
 
 impl CompositeValuesSource {
-    
     pub fn new() -> CompositeValuesSource {
         CompositeValuesSource {
             value_type: None,

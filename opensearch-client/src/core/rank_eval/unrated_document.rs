@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UnratedDocument {
     #[serde(rename = "_id")]
@@ -22,11 +19,7 @@ pub struct UnratedDocument {
 }
 
 impl UnratedDocument {
-    
     pub fn new(id: String, index: String) -> UnratedDocument {
-        UnratedDocument {
-            id,
-            index,
-        }
+        UnratedDocument { id, index }
     }
 }

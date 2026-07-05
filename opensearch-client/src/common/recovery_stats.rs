@@ -10,13 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RecoveryStats {  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "throttle_time", default, skip_serializing_if = "Option::is_none")]
+pub struct RecoveryStats {
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "throttle_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub throttle_time: Option<String>,
     #[serde(rename = "throttle_time_in_millis")]
     pub throttle_time_in_millis: String,
@@ -27,8 +29,11 @@ pub struct RecoveryStats {  /// A duration. Units can be `nanos`, `micros`, `ms`
 }
 
 impl RecoveryStats {
-    
-    pub fn new(throttle_time_in_millis: String, current_as_source: u32, current_as_target: u32) -> RecoveryStats {
+    pub fn new(
+        throttle_time_in_millis: String,
+        current_as_source: u32,
+        current_as_target: u32,
+    ) -> RecoveryStats {
         RecoveryStats {
             throttle_time: None,
             throttle_time_in_millis,

@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TermvectorsResponse {
     #[serde(rename = "found")]
@@ -22,7 +19,11 @@ pub struct TermvectorsResponse {
     pub index: String,
     #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    #[serde(rename = "term_vectors", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "term_vectors",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub term_vectors: Option<serde_json::Value>,
     #[serde(rename = "took")]
     pub took: u32,
@@ -31,7 +32,6 @@ pub struct TermvectorsResponse {
 }
 
 impl TermvectorsResponse {
-    
     pub fn new(found: bool, index: String, took: u32, version: u32) -> TermvectorsResponse {
         TermvectorsResponse {
             found,

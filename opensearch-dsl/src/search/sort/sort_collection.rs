@@ -69,7 +69,7 @@ impl SortCollection {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{util::assert_serialize_sort, SortSpecialField};
+    use crate::{SortSpecialField, util::assert_serialize_sort};
 
     #[test]
     fn serializes_correctly() {

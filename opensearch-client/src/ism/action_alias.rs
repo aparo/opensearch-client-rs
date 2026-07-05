@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ActionAlias {
     #[serde(rename = "actions", default, skip_serializing_if = "Option::is_none")]
@@ -21,10 +18,7 @@ pub struct ActionAlias {
 }
 
 impl ActionAlias {
-    
     pub fn new() -> ActionAlias {
-        ActionAlias {
-            actions: None,
-        }
+        ActionAlias { actions: None }
     }
 }

@@ -11,9 +11,6 @@
 use crate::sql;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Plugins {
     #[serde(rename = "ppl", default, skip_serializing_if = "Option::is_none")]
@@ -25,7 +22,6 @@ pub struct Plugins {
 }
 
 impl Plugins {
-    
     pub fn new() -> Plugins {
         Plugins {
             ppl: None,

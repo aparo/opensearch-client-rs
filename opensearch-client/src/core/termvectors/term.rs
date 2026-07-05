@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Term {
     #[serde(rename = "doc_freq", default, skip_serializing_if = "Option::is_none")]
@@ -29,7 +26,6 @@ pub struct Term {
 }
 
 impl Term {
-    
     pub fn new(term_freq: u32) -> Term {
         Term {
             doc_freq: None,

@@ -10,19 +10,23 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct IndexSchema {
-    #[serde(rename = "number_of_replicas", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "number_of_replicas",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub number_of_replicas: Option<u32>,
-    #[serde(rename = "number_of_shards", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "number_of_shards",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub number_of_shards: Option<u32>,
 }
 
 impl IndexSchema {
-    
     pub fn new() -> IndexSchema {
         IndexSchema {
             number_of_replicas: None,

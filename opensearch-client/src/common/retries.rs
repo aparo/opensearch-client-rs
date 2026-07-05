@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Retries {
     #[serde(rename = "bulk")]
@@ -22,11 +19,7 @@ pub struct Retries {
 }
 
 impl Retries {
-    
     pub fn new(bulk: u32, search: u32) -> Retries {
-        Retries {
-            bulk,
-            search,
-        }
+        Retries { bulk, search }
     }
 }

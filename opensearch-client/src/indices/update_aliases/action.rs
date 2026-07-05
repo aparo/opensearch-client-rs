@@ -11,21 +11,21 @@
 use crate::indices;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Action {
     #[serde(rename = "add", default, skip_serializing_if = "Option::is_none")]
     pub add: Option<indices::update_aliases::AddAction>,
     #[serde(rename = "remove", default, skip_serializing_if = "Option::is_none")]
     pub remove: Option<indices::update_aliases::RemoveAction>,
-    #[serde(rename = "remove_index", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "remove_index",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub remove_index: Option<indices::update_aliases::RemoveIndexAction>,
 }
 
 impl Action {
-    
     pub fn new() -> Action {
         Action {
             add: None,

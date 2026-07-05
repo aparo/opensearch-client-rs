@@ -10,13 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct WarmerStats {  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "total_time", default, skip_serializing_if = "Option::is_none")]
+pub struct WarmerStats {
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "total_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub total_time: Option<String>,
     #[serde(rename = "total")]
     pub total: u32,
@@ -27,7 +29,6 @@ pub struct WarmerStats {  /// A duration. Units can be `nanos`, `micros`, `ms` (
 }
 
 impl WarmerStats {
-    
     pub fn new(total: u32, current: u32, total_time_in_millis: String) -> WarmerStats {
         WarmerStats {
             total_time: None,

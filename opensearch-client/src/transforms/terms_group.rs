@@ -10,19 +10,23 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TermsGroup {
-    #[serde(rename = "source_field", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "source_field",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub source_field: Option<String>,
-    #[serde(rename = "target_field", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "target_field",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub target_field: Option<String>,
 }
 
 impl TermsGroup {
-    
     pub fn new() -> TermsGroup {
         TermsGroup {
             source_field: None,

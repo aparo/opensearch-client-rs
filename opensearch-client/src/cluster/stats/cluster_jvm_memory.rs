@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClusterJvmMemory {
     #[serde(rename = "heap_max", default, skip_serializing_if = "Option::is_none")]
@@ -26,7 +23,6 @@ pub struct ClusterJvmMemory {
 }
 
 impl ClusterJvmMemory {
-    
     pub fn new(heap_max_in_bytes: u32, heap_used_in_bytes: u32) -> ClusterJvmMemory {
         ClusterJvmMemory {
             heap_max: None,

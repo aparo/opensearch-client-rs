@@ -10,19 +10,19 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct FetchProfileDebug {
     #[serde(rename = "fast_path", default, skip_serializing_if = "Option::is_none")]
     pub fast_path: Option<u32>,
-    #[serde(rename = "stored_fields", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "stored_fields",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub stored_fields: Option<Vec<String>>,
 }
 
 impl FetchProfileDebug {
-    
     pub fn new() -> FetchProfileDebug {
         FetchProfileDebug {
             fast_path: None,

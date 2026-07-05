@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ScriptedHeuristic {
     #[serde(rename = "script")]
@@ -21,10 +18,7 @@ pub struct ScriptedHeuristic {
 }
 
 impl ScriptedHeuristic {
-    
     pub fn new(script: common::Script) -> ScriptedHeuristic {
-        ScriptedHeuristic {
-            script,
-        }
+        ScriptedHeuristic { script }
     }
 }

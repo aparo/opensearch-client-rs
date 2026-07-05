@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct GroupedByParents {
-}
+pub struct GroupedByParents {}
 
 impl GroupedByParents {
-    
     pub fn new() -> GroupedByParents {
-        GroupedByParents {
-        }
+        GroupedByParents {}
     }
 }

@@ -10,50 +10,73 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ThreadPoolRecord {  /// The maximum number of tasks permitted in the queue.
-    #[serde(rename = "queue_size", default, skip_serializing_if = "Option::is_none")]
-    pub queue_size: Option<String>,  /// The thread pool name.
+pub struct ThreadPoolRecord {
+    /// The maximum number of tasks permitted in the queue.
+    #[serde(
+        rename = "queue_size",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub queue_size: Option<String>,
+    /// The thread pool name.
     #[serde(rename = "name", default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,  /// The hostname for the current node.
+    pub name: Option<String>,
+    /// The hostname for the current node.
     #[serde(rename = "host", default, skip_serializing_if = "Option::is_none")]
     pub host: Option<String>,
     #[serde(rename = "node_id", default, skip_serializing_if = "Option::is_none")]
-    pub node_id: Option<String>,  /// The thread pool type.
-  /// Returned values include `fixed`, `fixed_auto_queue_size`, `direct`, and `scaling`.
+    pub node_id: Option<String>,
+    /// The thread pool type.
+    /// Returned values include `fixed`, `fixed_auto_queue_size`, `direct`, and `scaling`.
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
-    pub r#type: Option<String>,  /// The number of rejected tasks.
+    pub r#type: Option<String>,
+    /// The number of rejected tasks.
     #[serde(rename = "rejected", default, skip_serializing_if = "Option::is_none")]
-    pub rejected: Option<String>,  /// The number of active threads in the current thread pool.
+    pub rejected: Option<String>,
+    /// The number of active threads in the current thread pool.
     #[serde(rename = "active", default, skip_serializing_if = "Option::is_none")]
-    pub active: Option<String>,  /// The process identifier.
+    pub active: Option<String>,
+    /// The process identifier.
     #[serde(rename = "pid", default, skip_serializing_if = "Option::is_none")]
-    pub pid: Option<String>,  /// The number of completed tasks.
+    pub pid: Option<String>,
+    /// The number of completed tasks.
     #[serde(rename = "completed", default, skip_serializing_if = "Option::is_none")]
-    pub completed: Option<String>,  /// The number of threads in the current thread pool.
+    pub completed: Option<String>,
+    /// The number of threads in the current thread pool.
     #[serde(rename = "pool_size", default, skip_serializing_if = "Option::is_none")]
-    pub pool_size: Option<String>,  /// The highest number of active threads in the current thread pool.
+    pub pool_size: Option<String>,
+    /// The highest number of active threads in the current thread pool.
     #[serde(rename = "largest", default, skip_serializing_if = "Option::is_none")]
-    pub largest: Option<String>,  /// The IP address for the current node.
+    pub largest: Option<String>,
+    /// The IP address for the current node.
     #[serde(rename = "ip", default, skip_serializing_if = "Option::is_none")]
-    pub ip: Option<String>,  /// The number of tasks currently in queue.
+    pub ip: Option<String>,
+    /// The number of tasks currently in queue.
     #[serde(rename = "queue", default, skip_serializing_if = "Option::is_none")]
     pub queue: Option<String>,
-    #[serde(rename = "total_wait_time", default, skip_serializing_if = "Option::is_none")]
-    pub total_wait_time: Option<String>,  /// The ephemeral node identifier.
-    #[serde(rename = "ephemeral_node_id", default, skip_serializing_if = "Option::is_none")]
-    pub ephemeral_node_id: Option<String>,  /// The node name.
+    #[serde(
+        rename = "total_wait_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_wait_time: Option<String>,
+    /// The ephemeral node identifier.
+    #[serde(
+        rename = "ephemeral_node_id",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub ephemeral_node_id: Option<String>,
+    /// The node name.
     #[serde(rename = "node_name", default, skip_serializing_if = "Option::is_none")]
-    pub node_name: Option<String>,  /// The bound transport port for the current node.
+    pub node_name: Option<String>,
+    /// The bound transport port for the current node.
     #[serde(rename = "port", default, skip_serializing_if = "Option::is_none")]
     pub port: Option<String>,
 }
 
 impl ThreadPoolRecord {
-    
     pub fn new() -> ThreadPoolRecord {
         ThreadPoolRecord {
             queue_size: None,

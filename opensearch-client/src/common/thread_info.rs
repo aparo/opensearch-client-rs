@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ThreadInfo {
     #[serde(rename = "active_threads")]
@@ -22,7 +19,6 @@ pub struct ThreadInfo {
 }
 
 impl ThreadInfo {
-    
     pub fn new(active_threads: f64, thread_executions: f64) -> ThreadInfo {
         ThreadInfo {
             active_threads,

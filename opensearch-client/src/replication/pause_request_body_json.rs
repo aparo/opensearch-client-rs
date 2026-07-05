@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct PauseRequestBodyJson {
-}
+pub struct PauseRequestBodyJson {}
 
 impl PauseRequestBodyJson {
-    
     pub fn new() -> PauseRequestBodyJson {
-        PauseRequestBodyJson {
-        }
+        PauseRequestBodyJson {}
     }
 }

@@ -11,9 +11,6 @@
 use crate::transforms;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DeleteTransformResponseItem {
     #[serde(rename = "delete", default, skip_serializing_if = "Option::is_none")]
@@ -21,10 +18,7 @@ pub struct DeleteTransformResponseItem {
 }
 
 impl DeleteTransformResponseItem {
-    
     pub fn new() -> DeleteTransformResponseItem {
-        DeleteTransformResponseItem {
-            delete: None,
-        }
+        DeleteTransformResponseItem { delete: None }
     }
 }

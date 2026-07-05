@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Preview {
     #[serde(rename = "documents", default, skip_serializing_if = "Option::is_none")]
@@ -21,10 +18,7 @@ pub struct Preview {
 }
 
 impl Preview {
-    
     pub fn new() -> Preview {
-        Preview {
-            documents: None,
-        }
+        Preview { documents: None }
     }
 }

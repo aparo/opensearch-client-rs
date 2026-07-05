@@ -10,21 +10,25 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct IsmTemplate {
     #[serde(rename = "priority", default, skip_serializing_if = "Option::is_none")]
     pub priority: Option<f64>,
-    #[serde(rename = "index_patterns", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "index_patterns",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub index_patterns: Option<Vec<String>>,
-    #[serde(rename = "last_updated_time", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "last_updated_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub last_updated_time: Option<u32>,
 }
 
 impl IsmTemplate {
-    
     pub fn new() -> IsmTemplate {
         IsmTemplate {
             priority: None,

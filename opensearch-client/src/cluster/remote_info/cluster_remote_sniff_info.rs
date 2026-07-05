@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClusterRemoteSniffInfo {
     #[serde(rename = "num_nodes_connected")]
@@ -24,8 +21,9 @@ pub struct ClusterRemoteSniffInfo {
     #[serde(rename = "skip_unavailable")]
     pub skip_unavailable: bool,
     #[serde(rename = "mode")]
-    pub mode: String,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    pub mode: String,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
     #[serde(rename = "initial_connect_timeout")]
     pub initial_connect_timeout: String,
     #[serde(rename = "connected")]
@@ -33,8 +31,15 @@ pub struct ClusterRemoteSniffInfo {
 }
 
 impl ClusterRemoteSniffInfo {
-    
-    pub fn new(num_nodes_connected: u32, seeds: Vec<String>, max_connections_per_cluster: u32, skip_unavailable: bool, mode: String, initial_connect_timeout: String, connected: bool) -> ClusterRemoteSniffInfo {
+    pub fn new(
+        num_nodes_connected: u32,
+        seeds: Vec<String>,
+        max_connections_per_cluster: u32,
+        skip_unavailable: bool,
+        mode: String,
+        initial_connect_timeout: String,
+        connected: bool,
+    ) -> ClusterRemoteSniffInfo {
         ClusterRemoteSniffInfo {
             num_nodes_connected,
             seeds,

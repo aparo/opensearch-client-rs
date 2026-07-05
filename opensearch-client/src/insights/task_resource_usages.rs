@@ -11,25 +11,33 @@
 use crate::insights;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TaskResourceUsages {  /// The action type of the task.
+pub struct TaskResourceUsages {
+    /// The action type of the task.
     #[serde(rename = "action", default, skip_serializing_if = "Option::is_none")]
     pub action: Option<String>,
-    #[serde(rename = "taskResourceUsage", default, skip_serializing_if = "Option::is_none")]
-    pub task_resource_usage: Option<insights::TaskResourceUsage>,  /// The node ID where the task was executed.
+    #[serde(
+        rename = "taskResourceUsage",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub task_resource_usage: Option<insights::TaskResourceUsage>,
+    /// The node ID where the task was executed.
     #[serde(rename = "nodeId", default, skip_serializing_if = "Option::is_none")]
-    pub node_id: Option<String>,  /// The parent task ID.
-    #[serde(rename = "parentTaskId", default, skip_serializing_if = "Option::is_none")]
-    pub parent_task_id: Option<u32>,  /// The task ID.
+    pub node_id: Option<String>,
+    /// The parent task ID.
+    #[serde(
+        rename = "parentTaskId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub parent_task_id: Option<u32>,
+    /// The task ID.
     #[serde(rename = "taskId", default, skip_serializing_if = "Option::is_none")]
     pub task_id: Option<u32>,
 }
 
 impl TaskResourceUsages {
-    
     pub fn new() -> TaskResourceUsages {
         TaskResourceUsages {
             action: None,

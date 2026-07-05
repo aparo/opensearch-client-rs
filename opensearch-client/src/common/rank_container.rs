@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RankContainer {
     #[serde(rename = "rrf", default, skip_serializing_if = "Option::is_none")]
@@ -20,10 +17,7 @@ pub struct RankContainer {
 }
 
 impl RankContainer {
-    
     pub fn new() -> RankContainer {
-        RankContainer {
-            rrf: None,
-        }
+        RankContainer { rrf: None }
     }
 }

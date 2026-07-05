@@ -11,9 +11,6 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Memory {
     #[serde(rename = "name", default, skip_serializing_if = "Option::is_none")]
@@ -21,19 +18,34 @@ pub struct Memory {
     #[serde(rename = "memory_id", default, skip_serializing_if = "Option::is_none")]
     pub memory_id: Option<String>,
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
-    pub r#type: Option<String>,  /// Additional information query.
-    #[serde(rename = "additional_info", default, skip_serializing_if = "Option::is_none")]
-    pub additional_info: Option<ml::AdditionalInfo>,  /// The username of the user.
+    pub r#type: Option<String>,
+    /// Additional information query.
+    #[serde(
+        rename = "additional_info",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub additional_info: Option<ml::AdditionalInfo>,
+    /// The username of the user.
     #[serde(rename = "user", default, skip_serializing_if = "Option::is_none")]
-    pub user: Option<String>,  /// The updated time.
-    #[serde(rename = "updated_time", default, skip_serializing_if = "Option::is_none")]
-    pub updated_time: Option<String>,  /// The create time.
-    #[serde(rename = "create_time", default, skip_serializing_if = "Option::is_none")]
+    pub user: Option<String>,
+    /// The updated time.
+    #[serde(
+        rename = "updated_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub updated_time: Option<String>,
+    /// The create time.
+    #[serde(
+        rename = "create_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub create_time: Option<String>,
 }
 
 impl Memory {
-    
     pub fn new() -> Memory {
         Memory {
             name: None,

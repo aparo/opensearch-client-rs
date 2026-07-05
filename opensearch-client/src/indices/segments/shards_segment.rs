@@ -12,9 +12,6 @@ use crate::common;
 use crate::indices;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ShardsSegment {
     #[serde(rename = "num_committed_segments")]
@@ -28,8 +25,12 @@ pub struct ShardsSegment {
 }
 
 impl ShardsSegment {
-    
-    pub fn new(num_committed_segments: u32, segments: serde_json::Value, num_search_segments: u32, routing: indices::segments::ShardSegmentRouting) -> ShardsSegment {
+    pub fn new(
+        num_committed_segments: u32,
+        segments: serde_json::Value,
+        num_search_segments: u32,
+        routing: indices::segments::ShardSegmentRouting,
+    ) -> ShardsSegment {
         ShardsSegment {
             num_committed_segments,
             segments,

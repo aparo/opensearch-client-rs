@@ -11,27 +11,30 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Output {
     #[serde(rename = "data")]
-    pub data: Vec<f64>,  /// The output data type.
+    pub data: Vec<f64>,
+    /// The output data type.
     #[serde(rename = "data_type", default, skip_serializing_if = "Option::is_none")]
     pub data_type: Option<String>,
-    #[serde(rename = "byte_buffer", default, skip_serializing_if = "Option::is_none")]
-    pub byte_buffer: Option<ml::ByteBuffer>,  /// The output result.
+    #[serde(
+        rename = "byte_buffer",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub byte_buffer: Option<ml::ByteBuffer>,
+    /// The output result.
     #[serde(rename = "result", default, skip_serializing_if = "Option::is_none")]
     pub result: Option<String>,
     #[serde(rename = "shape", default, skip_serializing_if = "Option::is_none")]
-    pub shape: Option<Vec<i32>>,  /// The output name.
+    pub shape: Option<Vec<i32>>,
+    /// The output name.
     #[serde(rename = "name", default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
 }
 
 impl Output {
-    
     pub fn new(data: Vec<f64>) -> Output {
         Output {
             data,

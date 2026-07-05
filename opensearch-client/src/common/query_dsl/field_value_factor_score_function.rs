@@ -10,24 +10,23 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct FieldValueFactorScoreFunction {
     #[serde(rename = "modifier", default, skip_serializing_if = "Option::is_none")]
-    pub modifier: Option<String>,  /// Value used if the document doesn't have that field.
-  /// The modifier and factor are still applied to it as though it were read from the document.
+    pub modifier: Option<String>,
+    /// Value used if the document doesn't have that field.
+    /// The modifier and factor are still applied to it as though it were read from the document.
     #[serde(rename = "missing", default, skip_serializing_if = "Option::is_none")]
-    pub missing: Option<f64>,  /// Optional factor to multiply the field value with.
+    pub missing: Option<f64>,
+    /// Optional factor to multiply the field value with.
     #[serde(rename = "factor", default, skip_serializing_if = "Option::is_none")]
-    pub factor: Option<f64>,  /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
+    pub factor: Option<f64>,
+    /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
     #[serde(rename = "field")]
     pub field: String,
 }
 
 impl FieldValueFactorScoreFunction {
-    
     pub fn new(field: String) -> FieldValueFactorScoreFunction {
         FieldValueFactorScoreFunction {
             modifier: None,

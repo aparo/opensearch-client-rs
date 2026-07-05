@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct PercentageScoreHeuristic {
-}
+pub struct PercentageScoreHeuristic {}
 
 impl PercentageScoreHeuristic {
-    
     pub fn new() -> PercentageScoreHeuristic {
-        PercentageScoreHeuristic {
-        }
+        PercentageScoreHeuristic {}
     }
 }

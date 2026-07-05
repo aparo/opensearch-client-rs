@@ -14,7 +14,6 @@ use serde::{Deserialize, Serialize};
 /// ClearScroll
 /// Comma-separated list of scroll IDs to clear if none was specified using the `scroll_id` parameter
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClearScroll {
     #[serde(rename = "scroll_id", default, skip_serializing_if = "Option::is_none")]
@@ -22,10 +21,8 @@ pub struct ClearScroll {
 }
 
 impl ClearScroll {
-      /// Comma-separated list of scroll IDs to clear if none was specified using the `scroll_id` parameter
+    /// Comma-separated list of scroll IDs to clear if none was specified using the `scroll_id` parameter
     pub fn new() -> ClearScroll {
-        ClearScroll {
-            scroll_id: None,
-        }
+        ClearScroll { scroll_id: None }
     }
 }

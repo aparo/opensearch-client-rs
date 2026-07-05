@@ -11,17 +11,17 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DeleteObjectResponse {
-    #[serde(rename = "deleteResponseList", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "deleteResponseList",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub delete_response_list: Option<serde_json::Value>,
 }
 
 impl DeleteObjectResponse {
-    
     pub fn new() -> DeleteObjectResponse {
         DeleteObjectResponse {
             delete_response_list: None,

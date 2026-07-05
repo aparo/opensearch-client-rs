@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Explain {
-}
+pub struct Explain {}
 
 impl Explain {
-    
     pub fn new() -> Explain {
-        Explain {
-        }
+        Explain {}
     }
 }

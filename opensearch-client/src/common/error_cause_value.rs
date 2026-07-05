@@ -11,27 +11,38 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ErrorCauseValue {
     #[serde(rename = "caused_by", default, skip_serializing_if = "Option::is_none")]
     pub caused_by: Option<common::ErrorCause>,
-    #[serde(rename = "suppressed", default, skip_serializing_if = "Option::is_none")]
-    pub suppressed: Option<Vec<common::ErrorCause>>,  /// A human-readable explanation of the error, in English.
+    #[serde(
+        rename = "suppressed",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub suppressed: Option<Vec<common::ErrorCause>>,
+    /// A human-readable explanation of the error, in English.
     #[serde(rename = "reason", default, skip_serializing_if = "Option::is_none")]
     pub reason: Option<String>,
-    #[serde(rename = "root_cause", default, skip_serializing_if = "Option::is_none")]
-    pub root_cause: Option<Vec<common::ErrorCause>>,  /// The server stack trace, present only if the `error_trace=true` parameter was sent with the request.
-    #[serde(rename = "stack_trace", default, skip_serializing_if = "Option::is_none")]
-    pub stack_trace: Option<String>,  /// The type of error.
+    #[serde(
+        rename = "root_cause",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub root_cause: Option<Vec<common::ErrorCause>>,
+    /// The server stack trace, present only if the `error_trace=true` parameter was sent with the request.
+    #[serde(
+        rename = "stack_trace",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub stack_trace: Option<String>,
+    /// The type of error.
     #[serde(rename = "type")]
     pub r#type: String,
 }
 
 impl ErrorCauseValue {
-    
     pub fn new(r#type: String) -> ErrorCauseValue {
         ErrorCauseValue {
             caused_by: None,

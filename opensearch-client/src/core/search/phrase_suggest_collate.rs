@@ -12,9 +12,6 @@ use crate::common;
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PhraseSuggestCollate {
     #[serde(rename = "params", default, skip_serializing_if = "Option::is_none")]
@@ -26,7 +23,6 @@ pub struct PhraseSuggestCollate {
 }
 
 impl PhraseSuggestCollate {
-    
     pub fn new(query: core::search::PhraseSuggestCollateQuery) -> PhraseSuggestCollate {
         PhraseSuggestCollate {
             params: None,

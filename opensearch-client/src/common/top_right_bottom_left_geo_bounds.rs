@@ -11,28 +11,29 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TopRightBottomLeftGeoBounds {  /// A latitude/longitude as a two-dimensional point. It can be represented in the following ways:
-  /// - As a `{lat, long}` object.
-  /// - As a geohash value.
-  /// - As a `[lon, lat]` array.
-  /// - As a string in `"<lat>, <lon>"` or WKT point format.
+pub struct TopRightBottomLeftGeoBounds {
+    /// A latitude/longitude as a two-dimensional point. It can be represented in the following ways:
+    /// - As a `{lat, long}` object.
+    /// - As a geohash value.
+    /// - As a `[lon, lat]` array.
+    /// - As a string in `"<lat>, <lon>"` or WKT point format.
     #[serde(rename = "top_right")]
-    pub top_right: common::GeoLocation,  /// A latitude/longitude as a two-dimensional point. It can be represented in the following ways:
-  /// - As a `{lat, long}` object.
-  /// - As a geohash value.
-  /// - As a `[lon, lat]` array.
-  /// - As a string in `"<lat>, <lon>"` or WKT point format.
+    pub top_right: common::GeoLocation,
+    /// A latitude/longitude as a two-dimensional point. It can be represented in the following ways:
+    /// - As a `{lat, long}` object.
+    /// - As a geohash value.
+    /// - As a `[lon, lat]` array.
+    /// - As a string in `"<lat>, <lon>"` or WKT point format.
     #[serde(rename = "bottom_left")]
     pub bottom_left: common::GeoLocation,
 }
 
 impl TopRightBottomLeftGeoBounds {
-    
-    pub fn new(top_right: common::GeoLocation, bottom_left: common::GeoLocation) -> TopRightBottomLeftGeoBounds {
+    pub fn new(
+        top_right: common::GeoLocation,
+        bottom_left: common::GeoLocation,
+    ) -> TopRightBottomLeftGeoBounds {
         TopRightBottomLeftGeoBounds {
             top_right,
             bottom_left,

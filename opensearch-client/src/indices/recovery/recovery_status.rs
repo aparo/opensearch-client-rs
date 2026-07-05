@@ -11,9 +11,6 @@
 use crate::indices;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RecoveryStatus {
     #[serde(rename = "shards")]
@@ -21,10 +18,7 @@ pub struct RecoveryStatus {
 }
 
 impl RecoveryStatus {
-    
     pub fn new(shards: Vec<indices::recovery::ShardRecovery>) -> RecoveryStatus {
-        RecoveryStatus {
-            shards,
-        }
+        RecoveryStatus { shards }
     }
 }

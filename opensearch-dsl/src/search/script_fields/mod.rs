@@ -37,7 +37,7 @@ impl From<String> for ScriptField {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{util::assert_serialize, Search};
+    use crate::{Search, util::assert_serialize};
 
     #[test]
     fn serializes_correctly() {

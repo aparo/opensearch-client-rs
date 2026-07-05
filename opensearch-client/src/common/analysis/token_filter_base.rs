@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TokenFilterBase {
     #[serde(rename = "version", default, skip_serializing_if = "Option::is_none")]
@@ -20,10 +17,7 @@ pub struct TokenFilterBase {
 }
 
 impl TokenFilterBase {
-    
     pub fn new() -> TokenFilterBase {
-        TokenFilterBase {
-            version: None,
-        }
+        TokenFilterBase { version: None }
     }
 }

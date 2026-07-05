@@ -10,15 +10,17 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct FlushStats {
     #[serde(rename = "total_time_in_millis")]
-    pub total_time_in_millis: String,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "total_time", default, skip_serializing_if = "Option::is_none")]
+    pub total_time_in_millis: String,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "total_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub total_time: Option<String>,
     #[serde(rename = "periodic")]
     pub periodic: u32,
@@ -27,7 +29,6 @@ pub struct FlushStats {
 }
 
 impl FlushStats {
-    
     pub fn new(total_time_in_millis: String, periodic: u32, total: u32) -> FlushStats {
         FlushStats {
             total_time_in_millis,

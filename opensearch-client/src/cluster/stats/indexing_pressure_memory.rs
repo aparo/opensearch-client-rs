@@ -11,9 +11,6 @@
 use crate::cluster;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct IndexingPressureMemory {
     #[serde(rename = "current")]
@@ -25,8 +22,11 @@ pub struct IndexingPressureMemory {
 }
 
 impl IndexingPressureMemory {
-    
-    pub fn new(current: cluster::stats::IndexingPressureMemorySummary, total: cluster::stats::IndexingPressureMemorySummary, limit_in_bytes: u32) -> IndexingPressureMemory {
+    pub fn new(
+        current: cluster::stats::IndexingPressureMemorySummary,
+        total: cluster::stats::IndexingPressureMemorySummary,
+        limit_in_bytes: u32,
+    ) -> IndexingPressureMemory {
         IndexingPressureMemory {
             current,
             total,

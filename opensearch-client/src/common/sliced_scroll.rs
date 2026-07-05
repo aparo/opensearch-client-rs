@@ -10,21 +10,18 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SlicedScroll {
     #[serde(rename = "max")]
     pub max: u32,
     #[serde(rename = "id")]
-    pub id: u32,  /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
+    pub id: u32,
+    /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
     #[serde(rename = "field", default, skip_serializing_if = "Option::is_none")]
     pub field: Option<String>,
 }
 
 impl SlicedScroll {
-    
     pub fn new(max: u32, id: u32) -> SlicedScroll {
         SlicedScroll {
             max,

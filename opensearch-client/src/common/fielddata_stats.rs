@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct FielddataStats {
     #[serde(rename = "fields", default, skip_serializing_if = "Option::is_none")]
@@ -22,12 +19,15 @@ pub struct FielddataStats {
     pub memory_size_in_bytes: u32,
     #[serde(rename = "evictions", default, skip_serializing_if = "Option::is_none")]
     pub evictions: Option<u32>,
-    #[serde(rename = "memory_size", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "memory_size",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub memory_size: Option<String>,
 }
 
 impl FielddataStats {
-    
     pub fn new(memory_size_in_bytes: u32) -> FielddataStats {
         FielddataStats {
             fields: None,

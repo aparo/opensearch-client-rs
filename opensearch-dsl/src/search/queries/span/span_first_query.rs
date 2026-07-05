@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use crate::{util::*, Query, SpanQuery};
+use crate::{Query, SpanQuery, util::*};
 
 /// Matches spans near the beginning of a field. The span first query maps to
 /// Lucene `SpanFirstQuery`. <br/>

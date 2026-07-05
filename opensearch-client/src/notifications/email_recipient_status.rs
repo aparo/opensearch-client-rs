@@ -11,19 +11,19 @@
 use crate::notifications;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct EmailRecipientStatus {
     #[serde(rename = "recipient", default, skip_serializing_if = "Option::is_none")]
     pub recipient: Option<String>,
-    #[serde(rename = "delivery_status", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "delivery_status",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub delivery_status: Option<notifications::DeliveryStatus>,
 }
 
 impl EmailRecipientStatus {
-    
     pub fn new() -> EmailRecipientStatus {
         EmailRecipientStatus {
             recipient: None,

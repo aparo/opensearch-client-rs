@@ -11,52 +11,38 @@
 use crate::sql;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum settingsRequestBodyJson {
-    
+pub enum SettingsRequestBodyJson {
     SqlSettingsPlainValue,
-    
+
     SqlSettingsValue,
 }
 
-impl std::fmt::Display for settingsRequestBodyJson {
+impl std::fmt::Display for SettingsRequestBodyJson {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            
             Self::SqlSettingsPlainValue => write!(f, "0"),
             Self::SqlSettingsValue => write!(f, "0"),
         }
     }
 }
 
-impl Default for settingsRequestBodyJson {
-    fn default() -> settingsRequestBodyJson {
-        
+impl Default for SettingsRequestBodyJson {
+    fn default() -> SettingsRequestBodyJson {
         Self::SqlSettingsPlainValue
     }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum sql::settingsRequestBodyJson {
+pub enum SettingsRequestBodyJson {}
 
-}
-
-impl Default for sql::settingsRequestBodyJson {
-    fn default() -> sql::settingsRequestBodyJson {
-        
-    }
+impl Default for SettingsRequestBodyJson {
+    fn default() -> SettingsRequestBodyJson {}
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum sql::settingsRequestBodyJson {
+pub enum SettingsRequestBodyJson {}
 
-}
-
-impl Default for sql::settingsRequestBodyJson {
-    fn default() -> sql::settingsRequestBodyJson {
-        
-    }
+impl Default for SettingsRequestBodyJson {
+    fn default() -> SettingsRequestBodyJson {}
 }

@@ -11,50 +11,70 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct BulkByScrollTaskStatusValue {
     #[serde(rename = "throttled_until_millis")]
-    pub throttled_until_millis: String,  /// The number of requests per second effectively executed during the reindex operation.
+    pub throttled_until_millis: String,
+    /// The number of requests per second effectively executed during the reindex operation.
     #[serde(rename = "requests_per_second")]
-    pub requests_per_second: f64,  /// The number of version conflicts encountered by the reindex operation.
+    pub requests_per_second: f64,
+    /// The number of version conflicts encountered by the reindex operation.
     #[serde(rename = "version_conflicts")]
-    pub version_conflicts: u32,  /// The number of documents that were ignored.
+    pub version_conflicts: u32,
+    /// The number of documents that were ignored.
     #[serde(rename = "noops")]
     pub noops: u32,
     #[serde(rename = "throttled_millis")]
     pub throttled_millis: String,
     #[serde(rename = "slices", default, skip_serializing_if = "Option::is_none")]
-    pub slices: Option<Vec<common::BulkByScrollTaskStatusOrException>>,  /// The number of documents that were successfully created.
+    pub slices: Option<Vec<common::BulkByScrollTaskStatusOrException>>,
+    /// The number of documents that were successfully created.
     #[serde(rename = "created", default, skip_serializing_if = "Option::is_none")]
     pub created: Option<u32>,
     #[serde(rename = "canceled", default, skip_serializing_if = "Option::is_none")]
-    pub canceled: Option<String>,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "throttled_until", default, skip_serializing_if = "Option::is_none")]
-    pub throttled_until: Option<String>,  /// The number of scroll responses pulled back by the reindex operation.
+    pub canceled: Option<String>,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "throttled_until",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub throttled_until: Option<String>,
+    /// The number of scroll responses pulled back by the reindex operation.
     #[serde(rename = "batches")]
     pub batches: u32,
     #[serde(rename = "slice_id", default, skip_serializing_if = "Option::is_none")]
-    pub slice_id: Option<u32>,  /// The number of documents that were successfully processed.
+    pub slice_id: Option<u32>,
+    /// The number of documents that were successfully processed.
     #[serde(rename = "total")]
     pub total: u32,
     #[serde(rename = "retries")]
-    pub retries: common::Retries,  /// The number of documents that were successfully deleted.
+    pub retries: common::Retries,
+    /// The number of documents that were successfully deleted.
     #[serde(rename = "deleted")]
-    pub deleted: u32,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    pub deleted: u32,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
     #[serde(rename = "throttled", default, skip_serializing_if = "Option::is_none")]
-    pub throttled: Option<String>,  /// The number of documents that were successfully updated after the reindex operation.
+    pub throttled: Option<String>,
+    /// The number of documents that were successfully updated after the reindex operation.
     #[serde(rename = "updated", default, skip_serializing_if = "Option::is_none")]
     pub updated: Option<u32>,
 }
 
 impl BulkByScrollTaskStatusValue {
-    
-    pub fn new(throttled_until_millis: String, requests_per_second: f64, version_conflicts: u32, noops: u32, throttled_millis: String, batches: u32, total: u32, retries: common::Retries, deleted: u32) -> BulkByScrollTaskStatusValue {
+    pub fn new(
+        throttled_until_millis: String,
+        requests_per_second: f64,
+        version_conflicts: u32,
+        noops: u32,
+        throttled_millis: String,
+        batches: u32,
+        total: u32,
+        retries: common::Retries,
+        deleted: u32,
+    ) -> BulkByScrollTaskStatusValue {
         BulkByScrollTaskStatusValue {
             throttled_until_millis,
             requests_per_second,

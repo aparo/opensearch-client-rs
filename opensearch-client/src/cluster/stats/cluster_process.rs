@@ -11,9 +11,6 @@
 use crate::cluster;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClusterProcess {
     #[serde(rename = "cpu")]
@@ -23,8 +20,10 @@ pub struct ClusterProcess {
 }
 
 impl ClusterProcess {
-    
-    pub fn new(cpu: cluster::stats::ClusterProcessCpu, open_file_descriptors: cluster::stats::ClusterProcessOpenFileDescriptors) -> ClusterProcess {
+    pub fn new(
+        cpu: cluster::stats::ClusterProcessCpu,
+        open_file_descriptors: cluster::stats::ClusterProcessOpenFileDescriptors,
+    ) -> ClusterProcess {
         ClusterProcess {
             cpu,
             open_file_descriptors,

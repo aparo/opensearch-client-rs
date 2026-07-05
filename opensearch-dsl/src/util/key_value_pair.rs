@@ -1,9 +1,9 @@
 use std::fmt;
 
 use serde::{
+    Deserialize, Deserializer,
     de::{self, MapAccess, Visitor},
     ser::{Serialize, SerializeMap, Serializer},
-    Deserialize, Deserializer,
 };
 
 #[derive(Clone, PartialEq, Eq)]

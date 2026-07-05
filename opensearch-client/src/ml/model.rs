@@ -11,43 +11,91 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Model {  /// The algorithm.
+pub struct Model {
+    /// The algorithm.
     #[serde(rename = "algorithm", default, skip_serializing_if = "Option::is_none")]
-    pub algorithm: Option<String>,  /// The model group ID.
-    #[serde(rename = "model_group_id", default, skip_serializing_if = "Option::is_none")]
-    pub model_group_id: Option<String>,  /// The model content hash value.
-    #[serde(rename = "model_content_hash_value", default, skip_serializing_if = "Option::is_none")]
-    pub model_content_hash_value: Option<String>,  /// The total chunks.
-    #[serde(rename = "total_chunks", default, skip_serializing_if = "Option::is_none")]
-    pub total_chunks: Option<u32>,  /// The last registered time.
-    #[serde(rename = "last_registered_time", default, skip_serializing_if = "Option::is_none")]
-    pub last_registered_time: Option<u32>,  /// The model state.
+    pub algorithm: Option<String>,
+    /// The model group ID.
+    #[serde(
+        rename = "model_group_id",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub model_group_id: Option<String>,
+    /// The model content hash value.
+    #[serde(
+        rename = "model_content_hash_value",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub model_content_hash_value: Option<String>,
+    /// The total chunks.
+    #[serde(
+        rename = "total_chunks",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_chunks: Option<u32>,
+    /// The last registered time.
+    #[serde(
+        rename = "last_registered_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub last_registered_time: Option<u32>,
+    /// The model state.
     #[serde(rename = "model_state")]
-    pub model_state: String,  /// Whether the model is hidden.
+    pub model_state: String,
+    /// Whether the model is hidden.
     #[serde(rename = "is_hidden", default, skip_serializing_if = "Option::is_none")]
-    pub is_hidden: Option<bool>,  /// The last updated time.
-    #[serde(rename = "last_updated_time", default, skip_serializing_if = "Option::is_none")]
-    pub last_updated_time: Option<u32>,  /// The model name.
+    pub is_hidden: Option<bool>,
+    /// The last updated time.
+    #[serde(
+        rename = "last_updated_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub last_updated_time: Option<u32>,
+    /// The model name.
     #[serde(rename = "name", default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,  /// The model version.
-    #[serde(rename = "model_version", default, skip_serializing_if = "Option::is_none")]
-    pub model_version: Option<String>,  /// The model content size in bytes.
-    #[serde(rename = "model_content_size_in_bytes", default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    /// The model version.
+    #[serde(
+        rename = "model_version",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub model_version: Option<String>,
+    /// The model content size in bytes.
+    #[serde(
+        rename = "model_content_size_in_bytes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub model_content_size_in_bytes: Option<u32>,
-    #[serde(rename = "model_format", default, skip_serializing_if = "Option::is_none")]
-    pub model_format: Option<String>,  /// The created time.
-    #[serde(rename = "created_time", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "model_format",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub model_format: Option<String>,
+    /// The created time.
+    #[serde(
+        rename = "created_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub created_time: Option<u32>,
-    #[serde(rename = "model_config", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "model_config",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub model_config: Option<ml::ModelConfig>,
 }
 
 impl Model {
-    
     pub fn new(model_state: String) -> Model {
         Model {
             algorithm: None,

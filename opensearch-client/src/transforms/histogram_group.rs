@@ -10,21 +10,25 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct HistogramGroup {
-    #[serde(rename = "target_field", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "target_field",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub target_field: Option<String>,
-    #[serde(rename = "source_field", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "source_field",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub source_field: Option<String>,
     #[serde(rename = "interval", default, skip_serializing_if = "Option::is_none")]
     pub interval: Option<String>,
 }
 
 impl HistogramGroup {
-    
     pub fn new() -> HistogramGroup {
         HistogramGroup {
             target_field: None,

@@ -2,7 +2,7 @@ use serde::de::DeserializeOwned;
 use serde_json::Value;
 
 use super::{Explanation, NestedIdentity, Source};
-use crate::{util::ShouldSkip, InnerHitsResult, Map};
+use crate::{InnerHitsResult, Map, util::ShouldSkip};
 
 /// Represents a single matched document
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]

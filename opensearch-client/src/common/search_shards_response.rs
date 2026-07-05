@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SearchShardsResponse {
     #[serde(rename = "shards")]
@@ -25,8 +22,11 @@ pub struct SearchShardsResponse {
 }
 
 impl SearchShardsResponse {
-    
-    pub fn new(shards: Vec<Vec<common::NodeShard>>, nodes: serde_json::Value, indices: serde_json::Value) -> SearchShardsResponse {
+    pub fn new(
+        shards: Vec<Vec<common::NodeShard>>,
+        nodes: serde_json::Value,
+        indices: serde_json::Value,
+    ) -> SearchShardsResponse {
         SearchShardsResponse {
             shards,
             nodes,

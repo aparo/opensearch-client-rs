@@ -11,23 +11,27 @@
 use crate::notifications;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct NotificationsConfigsOutputItem {
-    #[serde(rename = "created_time_ms", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "created_time_ms",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub created_time_ms: Option<u32>,
     #[serde(rename = "config_id", default, skip_serializing_if = "Option::is_none")]
     pub config_id: Option<String>,
     #[serde(rename = "config", default, skip_serializing_if = "Option::is_none")]
     pub config: Option<notifications::NotificationsConfigItem>,
-    #[serde(rename = "last_updated_time_ms", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "last_updated_time_ms",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub last_updated_time_ms: Option<u32>,
 }
 
 impl NotificationsConfigsOutputItem {
-    
     pub fn new() -> NotificationsConfigsOutputItem {
         NotificationsConfigsOutputItem {
             created_time_ms: None,

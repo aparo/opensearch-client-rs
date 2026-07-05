@@ -10,25 +10,37 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DateHistogramGroup {
-    #[serde(rename = "target_field", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "target_field",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub target_field: Option<String>,
-    #[serde(rename = "fixed_interval", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "fixed_interval",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub fixed_interval: Option<String>,
-    #[serde(rename = "source_field", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "source_field",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub source_field: Option<String>,
-    #[serde(rename = "calendar_interval", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "calendar_interval",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub calendar_interval: Option<String>,
     #[serde(rename = "timezone", default, skip_serializing_if = "Option::is_none")]
     pub timezone: Option<String>,
 }
 
 impl DateHistogramGroup {
-    
     pub fn new() -> DateHistogramGroup {
         DateHistogramGroup {
             target_field: None,

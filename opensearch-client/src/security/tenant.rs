@@ -10,23 +10,23 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Tenant {
     #[serde(rename = "static", default, skip_serializing_if = "Option::is_none")]
     pub r#static: Option<bool>,
     #[serde(rename = "reserved", default, skip_serializing_if = "Option::is_none")]
     pub reserved: Option<bool>,
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
     #[serde(rename = "hidden", default, skip_serializing_if = "Option::is_none")]
     pub hidden: Option<bool>,
 }
 
 impl Tenant {
-    
     pub fn new() -> Tenant {
         Tenant {
             r#static: None,

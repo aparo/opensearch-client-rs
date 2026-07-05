@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ResourceStat {
     #[serde(rename = "cpu_time_in_nanos")]
@@ -22,7 +19,6 @@ pub struct ResourceStat {
 }
 
 impl ResourceStat {
-    
     pub fn new(cpu_time_in_nanos: String, memory_in_bytes: u32) -> ResourceStat {
         ResourceStat {
             cpu_time_in_nanos,

@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CoordsGeoBounds {
     #[serde(rename = "left")]
@@ -26,7 +23,6 @@ pub struct CoordsGeoBounds {
 }
 
 impl CoordsGeoBounds {
-    
     pub fn new(left: f64, right: f64, bottom: f64, top: f64) -> CoordsGeoBounds {
         CoordsGeoBounds {
             left,

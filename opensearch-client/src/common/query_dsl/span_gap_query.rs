@@ -13,15 +13,12 @@ use serde::{Deserialize, Serialize};
 /// SpanGapQuery
 /// Can only be used as a clause in a `span_near` query.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct SpanGapQuery {
-}
+pub struct SpanGapQuery {}
 
 impl SpanGapQuery {
-      /// Can only be used as a clause in a `span_near` query.
+    /// Can only be used as a clause in a `span_near` query.
     pub fn new() -> SpanGapQuery {
-        SpanGapQuery {
-        }
+        SpanGapQuery {}
     }
 }

@@ -11,20 +11,15 @@
 use crate::ism;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct PutPolicy {  /// A policy defines how an index is managed throughout its lifetime.
+pub struct PutPolicy {
+    /// A policy defines how an index is managed throughout its lifetime.
     #[serde(rename = "policy", default, skip_serializing_if = "Option::is_none")]
     pub policy: Option<ism::Policy>,
 }
 
 impl PutPolicy {
-    
     pub fn new() -> PutPolicy {
-        PutPolicy {
-            policy: None,
-        }
+        PutPolicy { policy: None }
     }
 }

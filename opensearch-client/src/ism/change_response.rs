@@ -11,21 +11,25 @@
 use crate::ism;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ChangeResponse {
-    #[serde(rename = "updated_indices", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "updated_indices",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub updated_indices: Option<f64>,
     #[serde(rename = "failures", default, skip_serializing_if = "Option::is_none")]
     pub failures: Option<bool>,
-    #[serde(rename = "failed_indices", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "failed_indices",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub failed_indices: Option<Vec<ism::FailedIndex>>,
 }
 
 impl ChangeResponse {
-    
     pub fn new() -> ChangeResponse {
         ChangeResponse {
             updated_indices: None,

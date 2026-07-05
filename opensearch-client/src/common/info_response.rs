@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InfoResponse {
     #[serde(rename = "cluster_name")]
@@ -29,8 +26,13 @@ pub struct InfoResponse {
 }
 
 impl InfoResponse {
-    
-    pub fn new(cluster_name: String, tagline: String, name: String, cluster_uuid: String, version: common::OpenSearchVersionInfo) -> InfoResponse {
+    pub fn new(
+        cluster_name: String,
+        tagline: String,
+        name: String,
+        cluster_uuid: String,
+        version: common::OpenSearchVersionInfo,
+    ) -> InfoResponse {
         InfoResponse {
             cluster_name,
             tagline,

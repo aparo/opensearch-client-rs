@@ -11,9 +11,6 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UnloadModelNode {
     #[serde(rename = "stats", default, skip_serializing_if = "Option::is_none")]
@@ -21,10 +18,7 @@ pub struct UnloadModelNode {
 }
 
 impl UnloadModelNode {
-    
     pub fn new() -> UnloadModelNode {
-        UnloadModelNode {
-            stats: None,
-        }
+        UnloadModelNode { stats: None }
     }
 }

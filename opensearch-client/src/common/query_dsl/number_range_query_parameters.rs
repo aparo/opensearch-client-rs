@@ -10,23 +10,23 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct NumberRangeQueryParameters {  /// Greater than.
+pub struct NumberRangeQueryParameters {
+    /// Greater than.
     #[serde(rename = "gt", default, skip_serializing_if = "Option::is_none")]
-    pub gt: Option<f64>,  /// Greater than or equal to.
+    pub gt: Option<f64>,
+    /// Greater than or equal to.
     #[serde(rename = "gte", default, skip_serializing_if = "Option::is_none")]
-    pub gte: Option<f64>,  /// Less than.
+    pub gte: Option<f64>,
+    /// Less than.
     #[serde(rename = "lt", default, skip_serializing_if = "Option::is_none")]
-    pub lt: Option<f64>,  /// Less than or equal to.
+    pub lt: Option<f64>,
+    /// Less than or equal to.
     #[serde(rename = "lte", default, skip_serializing_if = "Option::is_none")]
     pub lte: Option<f64>,
 }
 
 impl NumberRangeQueryParameters {
-    
     pub fn new() -> NumberRangeQueryParameters {
         NumberRangeQueryParameters {
             gt: None,

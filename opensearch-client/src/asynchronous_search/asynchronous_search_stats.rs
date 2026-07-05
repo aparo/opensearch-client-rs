@@ -10,18 +10,27 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AsynchronousSearchStats {
-    #[serde(rename = "initialized", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "initialized",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub initialized: Option<u32>,
-    #[serde(rename = "search_completed", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "search_completed",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub search_completed: Option<u32>,
     #[serde(rename = "rejected", default, skip_serializing_if = "Option::is_none")]
     pub rejected: Option<u32>,
-    #[serde(rename = "running_current", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "running_current",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub running_current: Option<u32>,
     #[serde(rename = "cancelled", default, skip_serializing_if = "Option::is_none")]
     pub cancelled: Option<u32>,
@@ -29,14 +38,21 @@ pub struct AsynchronousSearchStats {
     pub persisted: Option<u32>,
     #[serde(rename = "submitted", default, skip_serializing_if = "Option::is_none")]
     pub submitted: Option<u32>,
-    #[serde(rename = "persist_failed", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "persist_failed",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub persist_failed: Option<u32>,
-    #[serde(rename = "search_failed", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "search_failed",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub search_failed: Option<u32>,
 }
 
 impl AsynchronousSearchStats {
-    
     pub fn new() -> AsynchronousSearchStats {
         AsynchronousSearchStats {
             initialized: None,

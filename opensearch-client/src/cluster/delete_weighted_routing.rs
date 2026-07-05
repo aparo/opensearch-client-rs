@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DeleteWeightedRouting {
     #[serde(rename = "_version", default, skip_serializing_if = "Option::is_none")]
@@ -20,10 +17,7 @@ pub struct DeleteWeightedRouting {
 }
 
 impl DeleteWeightedRouting {
-    
     pub fn new() -> DeleteWeightedRouting {
-        DeleteWeightedRouting {
-            version: None,
-        }
+        DeleteWeightedRouting { version: None }
     }
 }

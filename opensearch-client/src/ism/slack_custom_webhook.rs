@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SlackCustomWebhook {
     #[serde(rename = "port", default, skip_serializing_if = "Option::is_none")]
@@ -24,7 +21,11 @@ pub struct SlackCustomWebhook {
     pub username: Option<String>,
     #[serde(rename = "password", default, skip_serializing_if = "Option::is_none")]
     pub password: Option<String>,
-    #[serde(rename = "header_params", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "header_params",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub header_params: Option<serde_json::Value>,
     #[serde(rename = "path", default, skip_serializing_if = "Option::is_none")]
     pub path: Option<String>,
@@ -32,12 +33,15 @@ pub struct SlackCustomWebhook {
     pub host: Option<String>,
     #[serde(rename = "scheme", default, skip_serializing_if = "Option::is_none")]
     pub scheme: Option<String>,
-    #[serde(rename = "query_params", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "query_params",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub query_params: Option<serde_json::Value>,
 }
 
 impl SlackCustomWebhook {
-    
     pub fn new() -> SlackCustomWebhook {
         SlackCustomWebhook {
             port: None,

@@ -551,7 +551,7 @@ impl<'de, T: Origin + DeserializeOwned> Deserialize<'de> for Decay<T> {
                             return Err(de::Error::unknown_field(
                                 key,
                                 &["function", "inner", "filter", "weight"],
-                            ))
+                            ));
                         }
                     }
                 }
@@ -648,7 +648,7 @@ impl<'de, O: Origin + DeserializeOwned> Deserialize<'de> for DecayInner<O> {
                             return Err(de::Error::unknown_field(
                                 key,
                                 &["origin", "scale", "offset", "decay"],
-                            ))
+                            ));
                         }
                     }
                 }

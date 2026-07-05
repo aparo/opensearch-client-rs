@@ -12,24 +12,31 @@ use crate::cluster;
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClusterIndices {
     #[serde(rename = "store", default, skip_serializing_if = "Option::is_none")]
-    pub store: Option<common::StoreStats>,  /// Total number of indexes with shards assigned to selected nodes.
+    pub store: Option<common::StoreStats>,
+    /// Total number of indexes with shards assigned to selected nodes.
     #[serde(rename = "count", default, skip_serializing_if = "Option::is_none")]
     pub count: Option<u32>,
     #[serde(rename = "mappings", default, skip_serializing_if = "Option::is_none")]
-    pub mappings: Option<cluster::stats::FieldTypesMappings>,  /// Contains statistics about analyzers and analyzer components used in selected nodes.
+    pub mappings: Option<cluster::stats::FieldTypesMappings>,
+    /// Contains statistics about analyzers and analyzer components used in selected nodes.
     #[serde(rename = "versions", default, skip_serializing_if = "Option::is_none")]
     pub versions: Option<Vec<cluster::stats::IndicesVersions>>,
-    #[serde(rename = "query_cache", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "query_cache",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub query_cache: Option<common::QueryCacheStats>,
     #[serde(rename = "docs", default, skip_serializing_if = "Option::is_none")]
     pub docs: Option<common::DocStats>,
-    #[serde(rename = "completion", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "completion",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub completion: Option<common::CompletionStats>,
     #[serde(rename = "fielddata", default, skip_serializing_if = "Option::is_none")]
     pub fielddata: Option<common::FielddataStats>,
@@ -42,7 +49,6 @@ pub struct ClusterIndices {
 }
 
 impl ClusterIndices {
-    
     pub fn new() -> ClusterIndices {
         ClusterIndices {
             store: None,

@@ -11,23 +11,28 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PermissionsInfo {
     #[serde(rename = "user_name", default, skip_serializing_if = "Option::is_none")]
     pub user_name: Option<String>,
     #[serde(rename = "user", default, skip_serializing_if = "Option::is_none")]
-    pub user: Option<String>,  /// An object with disabled APIs as keys and an array of HTTP methods as values.
-    #[serde(rename = "disabled_endpoints", default, skip_serializing_if = "Option::is_none")]
+    pub user: Option<String>,
+    /// An object with disabled APIs as keys and an array of HTTP methods as values.
+    #[serde(
+        rename = "disabled_endpoints",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub disabled_endpoints: Option<serde_json::Value>,
-    #[serde(rename = "has_api_access", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "has_api_access",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub has_api_access: Option<bool>,
 }
 
 impl PermissionsInfo {
-    
     pub fn new() -> PermissionsInfo {
         PermissionsInfo {
             user_name: None,

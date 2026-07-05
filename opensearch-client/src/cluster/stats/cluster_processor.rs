@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClusterProcessor {
     #[serde(rename = "count")]
@@ -22,14 +19,14 @@ pub struct ClusterProcessor {
     #[serde(rename = "failed")]
     pub failed: u32,
     #[serde(rename = "current")]
-    pub current: u32,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    pub current: u32,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
     #[serde(rename = "time", default, skip_serializing_if = "Option::is_none")]
     pub time: Option<String>,
 }
 
 impl ClusterProcessor {
-    
     pub fn new(count: u32, time_in_millis: String, failed: u32, current: u32) -> ClusterProcessor {
         ClusterProcessor {
             count,

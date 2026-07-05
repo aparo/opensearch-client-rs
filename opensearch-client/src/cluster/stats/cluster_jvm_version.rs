@@ -10,30 +10,39 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ClusterJvmVersion {  /// Total number of selected nodes using JVM.
+pub struct ClusterJvmVersion {
+    /// Total number of selected nodes using JVM.
     #[serde(rename = "count")]
-    pub count: u32,  /// If `true`, a bundled JDK is in use by JVM.
+    pub count: u32,
+    /// If `true`, a bundled JDK is in use by JVM.
     #[serde(rename = "using_bundled_jdk")]
     pub using_bundled_jdk: bool,
     #[serde(rename = "version")]
-    pub version: String,  /// Vendor of the JVM.
+    pub version: String,
+    /// Vendor of the JVM.
     #[serde(rename = "vm_vendor")]
     pub vm_vendor: String,
     #[serde(rename = "vm_version")]
-    pub vm_version: String,  /// Always `true`. All distributions come with a bundled Java Development Kit (JDK).
+    pub vm_version: String,
+    /// Always `true`. All distributions come with a bundled Java Development Kit (JDK).
     #[serde(rename = "bundled_jdk")]
-    pub bundled_jdk: bool,  /// Name of the JVM.
+    pub bundled_jdk: bool,
+    /// Name of the JVM.
     #[serde(rename = "vm_name")]
     pub vm_name: String,
 }
 
 impl ClusterJvmVersion {
-    
-    pub fn new(count: u32, using_bundled_jdk: bool, version: String, vm_vendor: String, vm_version: String, bundled_jdk: bool, vm_name: String) -> ClusterJvmVersion {
+    pub fn new(
+        count: u32,
+        using_bundled_jdk: bool,
+        version: String,
+        vm_vendor: String,
+        vm_version: String,
+        bundled_jdk: bool,
+        vm_name: String,
+    ) -> ClusterJvmVersion {
         ClusterJvmVersion {
             count,
             using_bundled_jdk,

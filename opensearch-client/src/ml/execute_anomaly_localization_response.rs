@@ -11,9 +11,6 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ExecuteAnomalyLocalizationResponse {
     #[serde(rename = "result", default, skip_serializing_if = "Option::is_none")]
@@ -23,7 +20,6 @@ pub struct ExecuteAnomalyLocalizationResponse {
 }
 
 impl ExecuteAnomalyLocalizationResponse {
-    
     pub fn new() -> ExecuteAnomalyLocalizationResponse {
         ExecuteAnomalyLocalizationResponse {
             result: None,

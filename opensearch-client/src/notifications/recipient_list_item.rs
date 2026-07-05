@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RecipientListItem {
     #[serde(rename = "recipient", default, skip_serializing_if = "Option::is_none")]
@@ -20,10 +17,7 @@ pub struct RecipientListItem {
 }
 
 impl RecipientListItem {
-    
     pub fn new() -> RecipientListItem {
-        RecipientListItem {
-            recipient: None,
-        }
+        RecipientListItem { recipient: None }
     }
 }

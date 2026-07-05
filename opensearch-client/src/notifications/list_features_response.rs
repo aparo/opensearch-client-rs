@@ -11,19 +11,23 @@
 use crate::notifications;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ListFeaturesResponse {
-    #[serde(rename = "plugin_features", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "plugin_features",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub plugin_features: Option<notifications::NotificationsPluginFeaturesMap>,
-    #[serde(rename = "allowed_config_type_list", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "allowed_config_type_list",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub allowed_config_type_list: Option<Vec<String>>,
 }
 
 impl ListFeaturesResponse {
-    
     pub fn new() -> ListFeaturesResponse {
         ListFeaturesResponse {
             plugin_features: None,

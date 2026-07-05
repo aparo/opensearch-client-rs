@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SnowballAnalyzer {
     #[serde(rename = "stopwords", default, skip_serializing_if = "Option::is_none")]
@@ -27,7 +24,6 @@ pub struct SnowballAnalyzer {
 }
 
 impl SnowballAnalyzer {
-    
     pub fn new(language: String, r#type: String) -> SnowballAnalyzer {
         SnowballAnalyzer {
             stopwords: None,

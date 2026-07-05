@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct PutWeightedRoutingResponse {
-}
+pub struct PutWeightedRoutingResponse {}
 
 impl PutWeightedRoutingResponse {
-    
     pub fn new() -> PutWeightedRoutingResponse {
-        PutWeightedRoutingResponse {
-        }
+        PutWeightedRoutingResponse {}
     }
 }

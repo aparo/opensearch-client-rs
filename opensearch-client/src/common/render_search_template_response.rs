@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RenderSearchTemplateResponse {
     #[serde(rename = "template_output")]
@@ -21,10 +18,7 @@ pub struct RenderSearchTemplateResponse {
 }
 
 impl RenderSearchTemplateResponse {
-    
     pub fn new(template_output: serde_json::Value) -> RenderSearchTemplateResponse {
-        RenderSearchTemplateResponse {
-            template_output,
-        }
+        RenderSearchTemplateResponse { template_output }
     }
 }

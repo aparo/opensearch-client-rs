@@ -11,21 +11,20 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct SearchTasks {  /// The number of tasks to return.
+pub struct SearchTasks {
+    /// The number of tasks to return.
     #[serde(rename = "size", default, skip_serializing_if = "Option::is_none")]
-    pub size: Option<u32>,  /// The sort order.
+    pub size: Option<u32>,
+    /// The sort order.
     #[serde(rename = "sort", default, skip_serializing_if = "Option::is_none")]
-    pub sort: Option<Vec<ml::Sort>>,  /// The query.
+    pub sort: Option<Vec<ml::Sort>>,
+    /// The query.
     #[serde(rename = "query", default, skip_serializing_if = "Option::is_none")]
     pub query: Option<ml::Query>,
 }
 
 impl SearchTasks {
-    
     pub fn new() -> SearchTasks {
         SearchTasks {
             size: None,

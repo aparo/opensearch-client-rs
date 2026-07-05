@@ -10,12 +10,13 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CustomNormalizer {
-    #[serde(rename = "char_filter", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "char_filter",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub char_filter: Option<Vec<String>>,
     #[serde(rename = "type")]
     pub r#type: String,
@@ -24,7 +25,6 @@ pub struct CustomNormalizer {
 }
 
 impl CustomNormalizer {
-    
     pub fn new(r#type: String) -> CustomNormalizer {
         CustomNormalizer {
             char_filter: None,

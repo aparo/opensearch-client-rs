@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ExplainEntities {
-}
+pub struct ExplainEntities {}
 
 impl ExplainEntities {
-    
     pub fn new() -> ExplainEntities {
-        ExplainEntities {
-        }
+        ExplainEntities {}
     }
 }

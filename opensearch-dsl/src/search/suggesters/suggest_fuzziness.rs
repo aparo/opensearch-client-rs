@@ -1,4 +1,4 @@
-use crate::{util::ShouldSkip, Fuzziness};
+use crate::{Fuzziness, util::ShouldSkip};
 
 /// Suggester fuzziness parameters
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]

@@ -11,23 +11,33 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UnassignedInformation {
-    #[serde(rename = "last_allocation_status", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "last_allocation_status",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub last_allocation_status: Option<String>,
     #[serde(rename = "delayed", default, skip_serializing_if = "Option::is_none")]
     pub delayed: Option<bool>,
-    #[serde(rename = "failed_allocation_attempts", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "failed_allocation_attempts",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub failed_allocation_attempts: Option<u32>,
     #[serde(rename = "reason")]
     pub reason: String,
-    #[serde(rename = "allocation_status", default, skip_serializing_if = "Option::is_none")]
-    pub allocation_status: Option<String>,  /// A date and time, either as a string whose format depends on the context (defaulting to ISO_8601) or the
-  /// number of milliseconds since the epoch. OpenSearch accepts both as an input but will generally output a string.
-  /// representation.
+    #[serde(
+        rename = "allocation_status",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub allocation_status: Option<String>,
+    /// A date and time, either as a string whose format depends on the context (defaulting to ISO_8601) or the
+    /// number of milliseconds since the epoch. OpenSearch accepts both as an input but will generally output a string.
+    /// representation.
     #[serde(rename = "at")]
     pub at: common::DateTime,
     #[serde(rename = "details", default, skip_serializing_if = "Option::is_none")]
@@ -35,7 +45,6 @@ pub struct UnassignedInformation {
 }
 
 impl UnassignedInformation {
-    
     pub fn new(reason: String, at: common::DateTime) -> UnassignedInformation {
         UnassignedInformation {
             last_allocation_status: None,

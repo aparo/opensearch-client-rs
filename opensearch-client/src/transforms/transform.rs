@@ -12,43 +12,75 @@ use crate::common;
 use crate::transforms;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Transform {
-    #[serde(rename = "updated_at", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "updated_at",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub updated_at: Option<f64>,
     #[serde(rename = "roles", default, skip_serializing_if = "Option::is_none")]
     pub roles: Option<Vec<String>>,
     #[serde(rename = "groups", default, skip_serializing_if = "Option::is_none")]
     pub groups: Option<Vec<transforms::GroupsConfigItem>>,
-    #[serde(rename = "target_index", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "target_index",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub target_index: Option<String>,
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
     #[serde(rename = "schedule", default, skip_serializing_if = "Option::is_none")]
     pub schedule: Option<transforms::Schedule>,
-    #[serde(rename = "source_index", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "source_index",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub source_index: Option<String>,
     #[serde(rename = "enabled", default, skip_serializing_if = "Option::is_none")]
     pub enabled: Option<bool>,
-    #[serde(rename = "continuous", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "continuous",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub continuous: Option<bool>,
-    #[serde(rename = "transform_id", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "transform_id",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub transform_id: Option<String>,
-    #[serde(rename = "aggregations", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "aggregations",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub aggregations: Option<serde_json::Value>,
-    #[serde(rename = "schema_version", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "schema_version",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub schema_version: Option<f64>,
     #[serde(rename = "page_size", default, skip_serializing_if = "Option::is_none")]
     pub page_size: Option<f64>,
-    #[serde(rename = "data_selection_query", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "data_selection_query",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub data_selection_query: Option<crate::dsl::Query>,
 }
 
 impl Transform {
-    
     pub fn new() -> Transform {
         Transform {
             updated_at: None,

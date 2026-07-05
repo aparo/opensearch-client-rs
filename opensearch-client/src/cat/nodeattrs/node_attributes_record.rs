@@ -10,31 +10,35 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct NodeAttributesRecord {  /// The attribute value.
+pub struct NodeAttributesRecord {
+    /// The attribute value.
     #[serde(rename = "value", default, skip_serializing_if = "Option::is_none")]
-    pub value: Option<String>,  /// The attribute name.
+    pub value: Option<String>,
+    /// The attribute name.
     #[serde(rename = "attr", default, skip_serializing_if = "Option::is_none")]
-    pub attr: Option<String>,  /// The process identifier.
+    pub attr: Option<String>,
+    /// The process identifier.
     #[serde(rename = "pid", default, skip_serializing_if = "Option::is_none")]
-    pub pid: Option<String>,  /// The bound transport port.
+    pub pid: Option<String>,
+    /// The bound transport port.
     #[serde(rename = "port", default, skip_serializing_if = "Option::is_none")]
-    pub port: Option<String>,  /// The node name.
+    pub port: Option<String>,
+    /// The node name.
     #[serde(rename = "node", default, skip_serializing_if = "Option::is_none")]
-    pub node: Option<String>,  /// The unique node identifier.
+    pub node: Option<String>,
+    /// The unique node identifier.
     #[serde(rename = "id", default, skip_serializing_if = "Option::is_none")]
-    pub id: Option<String>,  /// The hostname.
+    pub id: Option<String>,
+    /// The hostname.
     #[serde(rename = "host", default, skip_serializing_if = "Option::is_none")]
-    pub host: Option<String>,  /// The IP address.
+    pub host: Option<String>,
+    /// The IP address.
     #[serde(rename = "ip", default, skip_serializing_if = "Option::is_none")]
     pub ip: Option<String>,
 }
 
 impl NodeAttributesRecord {
-    
     pub fn new() -> NodeAttributesRecord {
         NodeAttributesRecord {
             value: None,

@@ -13,9 +13,9 @@
 use std::fmt;
 
 use serde::{
+    Deserialize, Deserializer,
     de::{Error, Unexpected, Visitor},
     ser::{Serialize, SerializeStruct, Serializer},
-    Deserialize, Deserializer,
 };
 
 /// A runtime data type that is used in a search request.

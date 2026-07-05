@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CommandCancelAction {
     #[serde(rename = "index")]
@@ -21,12 +18,15 @@ pub struct CommandCancelAction {
     pub node: String,
     #[serde(rename = "shard")]
     pub shard: u32,
-    #[serde(rename = "allow_primary", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "allow_primary",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub allow_primary: Option<bool>,
 }
 
 impl CommandCancelAction {
-    
     pub fn new(index: String, node: String, shard: u32) -> CommandCancelAction {
         CommandCancelAction {
             index,

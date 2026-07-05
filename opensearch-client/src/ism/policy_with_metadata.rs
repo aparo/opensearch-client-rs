@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct PolicyWithMetadata {
-}
+pub struct PolicyWithMetadata {}
 
 impl PolicyWithMetadata {
-    
     pub fn new() -> PolicyWithMetadata {
-        PolicyWithMetadata {
-        }
+        PolicyWithMetadata {}
     }
 }

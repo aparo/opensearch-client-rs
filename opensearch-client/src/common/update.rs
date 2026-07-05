@@ -15,29 +15,46 @@ use serde::{Deserialize, Serialize};
 /// Update
 /// The request definition requires either `script` or partial `doc`
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Update {  /// If the document does not already exist, the contents of 'upsert' are inserted as a
-  /// new document. If the document exists, the 'script' is executed.
+pub struct Update {
+    /// If the document does not already exist, the contents of 'upsert' are inserted as a
+    /// new document. If the document exists, the 'script' is executed.
     #[serde(rename = "upsert", default, skip_serializing_if = "Option::is_none")]
-    pub upsert: Option<serde_json::Value>,  /// Set to `true` to use the contents of 'doc' as the value of 'upsert'
-    #[serde(rename = "doc_as_upsert", default, skip_serializing_if = "Option::is_none")]
+    pub upsert: Option<serde_json::Value>,
+    /// Set to `true` to use the contents of 'doc' as the value of 'upsert'
+    #[serde(
+        rename = "doc_as_upsert",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub doc_as_upsert: Option<bool>,
     #[serde(rename = "script", default, skip_serializing_if = "Option::is_none")]
-    pub script: Option<common::Script>,  /// A partial update to an existing document.
+    pub script: Option<common::Script>,
+    /// A partial update to an existing document.
     #[serde(rename = "doc", default, skip_serializing_if = "Option::is_none")]
-    pub doc: Option<serde_json::Value>,  /// Set to `false` to disable setting `result` in the response
-  /// to `noop` if no change to the document occurred.
-    #[serde(rename = "detect_noop", default, skip_serializing_if = "Option::is_none")]
-    pub detect_noop: Option<bool>,  /// Set to `true` to execute the script whether or not the document exists.
-    #[serde(rename = "scripted_upsert", default, skip_serializing_if = "Option::is_none")]
-    pub scripted_upsert: Option<bool>,  /// Defines how to fetch a source. Fetching can be disabled entirely, or the source can be filtered.
+    pub doc: Option<serde_json::Value>,
+    /// Set to `false` to disable setting `result` in the response
+    /// to `noop` if no change to the document occurred.
+    #[serde(
+        rename = "detect_noop",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub detect_noop: Option<bool>,
+    /// Set to `true` to execute the script whether or not the document exists.
+    #[serde(
+        rename = "scripted_upsert",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub scripted_upsert: Option<bool>,
+    /// Defines how to fetch a source. Fetching can be disabled entirely, or the source can be filtered.
     #[serde(rename = "_source", default, skip_serializing_if = "Option::is_none")]
     pub source: Option<core::search::SourceConfig>,
 }
 
 impl Update {
-      /// The request definition requires either `script` or partial `doc`
+    /// The request definition requires either `script` or partial `doc`
     pub fn new() -> Update {
         Update {
             upsert: None,

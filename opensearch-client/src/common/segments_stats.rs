@@ -11,49 +11,89 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct SegmentsStats {  /// Statistics related to remote segment store operations.
-    #[serde(rename = "remote_store", default, skip_serializing_if = "Option::is_none")]
+pub struct SegmentsStats {
+    /// Statistics related to remote segment store operations.
+    #[serde(
+        rename = "remote_store",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub remote_store: Option<common::RemoteStoreStats>,
     #[serde(rename = "stored_fields_memory_in_bytes")]
     pub stored_fields_memory_in_bytes: u32,
-    #[serde(rename = "terms_memory", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "terms_memory",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub terms_memory: Option<String>,
     #[serde(rename = "terms_memory_in_bytes")]
     pub terms_memory_in_bytes: u32,
-    #[serde(rename = "norms_memory", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "norms_memory",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub norms_memory: Option<String>,
-    #[serde(rename = "term_vectors_memory", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "term_vectors_memory",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub term_vectors_memory: Option<String>,
     #[serde(rename = "term_vectors_memory_in_bytes")]
     pub term_vectors_memory_in_bytes: u32,
     #[serde(rename = "doc_values_memory_in_bytes")]
     pub doc_values_memory_in_bytes: u32,
-    #[serde(rename = "version_map_memory", default, skip_serializing_if = "Option::is_none")]
-    pub version_map_memory: Option<String>,  /// The total number of segments across all shards assigned to the selected nodes.
+    #[serde(
+        rename = "version_map_memory",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub version_map_memory: Option<String>,
+    /// The total number of segments across all shards assigned to the selected nodes.
     #[serde(rename = "count")]
     pub count: u32,
-    #[serde(rename = "stored_fields_memory", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "stored_fields_memory",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub stored_fields_memory: Option<String>,
     #[serde(rename = "index_writer_memory_in_bytes")]
     pub index_writer_memory_in_bytes: u32,
-    #[serde(rename = "index_writer_memory", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "index_writer_memory",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub index_writer_memory: Option<String>,
-    #[serde(rename = "index_writer_max_memory_in_bytes", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "index_writer_max_memory_in_bytes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub index_writer_max_memory_in_bytes: Option<u32>,
     #[serde(rename = "memory_in_bytes")]
     pub memory_in_bytes: u32,
     #[serde(rename = "fixed_bit_set_memory_in_bytes")]
     pub fixed_bit_set_memory_in_bytes: u32,
-    #[serde(rename = "doc_values_memory", default, skip_serializing_if = "Option::is_none")]
-    pub doc_values_memory: Option<String>,  /// This object is not populated by the cluster stats API.
-  /// To get information on segment files, use the node stats API.
+    #[serde(
+        rename = "doc_values_memory",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub doc_values_memory: Option<String>,
+    /// This object is not populated by the cluster stats API.
+    /// To get information on segment files, use the node stats API.
     #[serde(rename = "file_sizes")]
     pub file_sizes: serde_json::Value,
-    #[serde(rename = "fixed_bit_set", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "fixed_bit_set",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub fixed_bit_set: Option<String>,
     #[serde(rename = "max_unsafe_auto_id_timestamp")]
     pub max_unsafe_auto_id_timestamp: String,
@@ -65,13 +105,30 @@ pub struct SegmentsStats {  /// Statistics related to remote segment store opera
     pub points_memory_in_bytes: u32,
     #[serde(rename = "version_map_memory_in_bytes")]
     pub version_map_memory_in_bytes: u32,
-    #[serde(rename = "points_memory", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "points_memory",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub points_memory: Option<String>,
 }
 
 impl SegmentsStats {
-    
-    pub fn new(stored_fields_memory_in_bytes: u32, terms_memory_in_bytes: u32, term_vectors_memory_in_bytes: u32, doc_values_memory_in_bytes: u32, count: u32, index_writer_memory_in_bytes: u32, memory_in_bytes: u32, fixed_bit_set_memory_in_bytes: u32, file_sizes: serde_json::Value, max_unsafe_auto_id_timestamp: String, norms_memory_in_bytes: u32, points_memory_in_bytes: u32, version_map_memory_in_bytes: u32) -> SegmentsStats {
+    pub fn new(
+        stored_fields_memory_in_bytes: u32,
+        terms_memory_in_bytes: u32,
+        term_vectors_memory_in_bytes: u32,
+        doc_values_memory_in_bytes: u32,
+        count: u32,
+        index_writer_memory_in_bytes: u32,
+        memory_in_bytes: u32,
+        fixed_bit_set_memory_in_bytes: u32,
+        file_sizes: serde_json::Value,
+        max_unsafe_auto_id_timestamp: String,
+        norms_memory_in_bytes: u32,
+        points_memory_in_bytes: u32,
+        version_map_memory_in_bytes: u32,
+    ) -> SegmentsStats {
         SegmentsStats {
             remote_store: None,
             stored_fields_memory_in_bytes,

@@ -10,21 +10,21 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Measurement {
     #[serde(rename = "number", default, skip_serializing_if = "Option::is_none")]
     pub number: Option<u32>,
-    #[serde(rename = "aggregationType", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "aggregationType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub aggregation_type: Option<String>,
     #[serde(rename = "count", default, skip_serializing_if = "Option::is_none")]
     pub count: Option<u32>,
 }
 
 impl Measurement {
-    
     pub fn new() -> Measurement {
         Measurement {
             number: None,

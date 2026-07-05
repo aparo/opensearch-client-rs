@@ -10,21 +10,20 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct NodePackagingType {  /// Type of OpenSearch distribution. This is always `default`.
+pub struct NodePackagingType {
+    /// Type of OpenSearch distribution. This is always `default`.
     #[serde(rename = "flavor", default, skip_serializing_if = "Option::is_none")]
-    pub flavor: Option<String>,  /// File type (such as `tar` or `zip`) used for the distribution package.
+    pub flavor: Option<String>,
+    /// File type (such as `tar` or `zip`) used for the distribution package.
     #[serde(rename = "type")]
-    pub r#type: String,  /// Number of selected nodes using the distribution flavor and file type.
+    pub r#type: String,
+    /// Number of selected nodes using the distribution flavor and file type.
     #[serde(rename = "count")]
     pub count: u32,
 }
 
 impl NodePackagingType {
-    
     pub fn new(r#type: String, count: u32) -> NodePackagingType {
         NodePackagingType {
             flavor: None,

@@ -11,9 +11,6 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CreateConnector {
     #[serde(rename = "parameters")]
@@ -28,15 +25,26 @@ pub struct CreateConnector {
     pub version: u32,
     #[serde(rename = "description")]
     pub description: String,
-    #[serde(rename = "client_config", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "client_config",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub client_config: Option<ml::ClientConfig>,
     #[serde(rename = "name")]
     pub name: String,
 }
 
 impl CreateConnector {
-    
-    pub fn new(parameters: ml::Parameters, credential: ml::Credential, protocol: String, actions: Vec<ml::Action>, version: u32, description: String, name: String) -> CreateConnector {
+    pub fn new(
+        parameters: ml::Parameters,
+        credential: ml::Credential,
+        protocol: String,
+        actions: Vec<ml::Action>,
+        version: u32,
+        description: String,
+        name: String,
+    ) -> CreateConnector {
         CreateConnector {
             parameters,
             credential,

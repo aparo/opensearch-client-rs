@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AggregationProfile {
     #[serde(rename = "time_in_nanos")]
@@ -31,8 +28,12 @@ pub struct AggregationProfile {
 }
 
 impl AggregationProfile {
-    
-    pub fn new(time_in_nanos: String, breakdown: core::search::AggregationBreakdown, r#type: String, description: String) -> AggregationProfile {
+    pub fn new(
+        time_in_nanos: String,
+        breakdown: core::search::AggregationBreakdown,
+        r#type: String,
+        description: String,
+    ) -> AggregationProfile {
         AggregationProfile {
             time_in_nanos,
             breakdown,

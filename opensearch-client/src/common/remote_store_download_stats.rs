@@ -14,21 +14,29 @@ use serde::{Deserialize, Serialize};
 /// RemoteStoreDownloadStats
 /// Statistics related to downloads to the remote segment store.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RemoteStoreDownloadStats {  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "total_time_spent", default, skip_serializing_if = "Option::is_none")]
+pub struct RemoteStoreDownloadStats {
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "total_time_spent",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub total_time_spent: Option<String>,
     #[serde(rename = "total_time_spent_in_millis")]
-    pub total_time_spent_in_millis: String,  /// The amount of data, in bytes, uploaded or downloaded to/from the remote segment store.
+    pub total_time_spent_in_millis: String,
+    /// The amount of data, in bytes, uploaded or downloaded to/from the remote segment store.
     #[serde(rename = "total_download_size")]
     pub total_download_size: common::RemoteStoreUploadDownloadStats,
 }
 
 impl RemoteStoreDownloadStats {
-      /// Statistics related to downloads to the remote segment store.
-    pub fn new(total_time_spent_in_millis: String, total_download_size: common::RemoteStoreUploadDownloadStats) -> RemoteStoreDownloadStats {
+    /// Statistics related to downloads to the remote segment store.
+    pub fn new(
+        total_time_spent_in_millis: String,
+        total_download_size: common::RemoteStoreUploadDownloadStats,
+    ) -> RemoteStoreDownloadStats {
         RemoteStoreDownloadStats {
             total_time_spent: None,
             total_time_spent_in_millis,

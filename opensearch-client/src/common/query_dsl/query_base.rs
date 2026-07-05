@@ -10,14 +10,12 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct QueryBase {  /// Floating point number used to decrease or increase the relevance scores of the query.
-  /// Boost values are relative to the default value of 1.0.
-  /// A boost value between 0 and 1.0 decreases the relevance score.
-  /// A value greater than 1.0 increases the relevance score.
+pub struct QueryBase {
+    /// Floating point number used to decrease or increase the relevance scores of the query.
+    /// Boost values are relative to the default value of 1.0.
+    /// A boost value between 0 and 1.0 decreases the relevance score.
+    /// A value greater than 1.0 increases the relevance score.
     #[serde(rename = "boost", default, skip_serializing_if = "Option::is_none")]
     pub boost: Option<f64>,
     #[serde(rename = "_name", default, skip_serializing_if = "Option::is_none")]
@@ -25,7 +23,6 @@ pub struct QueryBase {  /// Floating point number used to decrease or increase t
 }
 
 impl QueryBase {
-    
     pub fn new() -> QueryBase {
         QueryBase {
             boost: None,

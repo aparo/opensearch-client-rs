@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GeoShape {
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
@@ -20,10 +17,7 @@ pub struct GeoShape {
 }
 
 impl GeoShape {
-    
     pub fn new() -> GeoShape {
-        GeoShape {
-            r#type: None,
-        }
+        GeoShape { r#type: None }
     }
 }

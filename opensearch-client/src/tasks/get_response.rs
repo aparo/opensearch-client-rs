@@ -12,9 +12,6 @@ use crate::common;
 use crate::tasks;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GetResponse {
     #[serde(rename = "task")]
@@ -28,7 +25,6 @@ pub struct GetResponse {
 }
 
 impl GetResponse {
-    
     pub fn new(task: String, completed: bool) -> GetResponse {
         GetResponse {
             task,

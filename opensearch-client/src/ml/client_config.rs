@@ -10,29 +10,53 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClientConfig {
-    #[serde(rename = "retry_backoff_policy", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "retry_backoff_policy",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub retry_backoff_policy: Option<String>,
-    #[serde(rename = "max_retry_times", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "max_retry_times",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub max_retry_times: Option<u32>,
-    #[serde(rename = "connection_timeout", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "connection_timeout",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub connection_timeout: Option<u32>,
-    #[serde(rename = "read_timeout", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "read_timeout",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub read_timeout: Option<u32>,
-    #[serde(rename = "retry_backoff_millis", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "retry_backoff_millis",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub retry_backoff_millis: Option<u32>,
-    #[serde(rename = "max_connection", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "max_connection",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub max_connection: Option<u32>,
-    #[serde(rename = "retry_timeout_seconds", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "retry_timeout_seconds",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub retry_timeout_seconds: Option<u32>,
 }
 
 impl ClientConfig {
-    
     pub fn new() -> ClientConfig {
         ClientConfig {
             retry_backoff_policy: None,

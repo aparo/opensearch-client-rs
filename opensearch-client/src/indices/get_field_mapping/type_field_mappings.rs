@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TypeFieldMappings {
     #[serde(rename = "mappings")]
@@ -21,10 +18,7 @@ pub struct TypeFieldMappings {
 }
 
 impl TypeFieldMappings {
-    
     pub fn new(mappings: serde_json::Value) -> TypeFieldMappings {
-        TypeFieldMappings {
-            mappings,
-        }
+        TypeFieldMappings { mappings }
     }
 }

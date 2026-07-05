@@ -11,16 +11,17 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct FingerprintAnalyzer {
     #[serde(rename = "separator")]
     pub separator: String,
     #[serde(rename = "max_output_size")]
     pub max_output_size: u32,
-    #[serde(rename = "stopwords_path", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "stopwords_path",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub stopwords_path: Option<String>,
     #[serde(rename = "preserve_original")]
     pub preserve_original: bool,
@@ -33,8 +34,12 @@ pub struct FingerprintAnalyzer {
 }
 
 impl FingerprintAnalyzer {
-    
-    pub fn new(separator: String, max_output_size: u32, preserve_original: bool, r#type: String) -> FingerprintAnalyzer {
+    pub fn new(
+        separator: String,
+        max_output_size: u32,
+        preserve_original: bool,
+        r#type: String,
+    ) -> FingerprintAnalyzer {
         FingerprintAnalyzer {
             separator,
             max_output_size,

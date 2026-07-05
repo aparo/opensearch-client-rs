@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct LikeDocument {
     #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
@@ -24,16 +21,23 @@ pub struct LikeDocument {
     pub version: Option<u32>,
     #[serde(rename = "_index", default, skip_serializing_if = "Option::is_none")]
     pub index: Option<String>,
-    #[serde(rename = "per_field_analyzer", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "per_field_analyzer",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub per_field_analyzer: Option<serde_json::Value>,
-    #[serde(rename = "version_type", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "version_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub version_type: Option<String>,
     #[serde(rename = "fields", default, skip_serializing_if = "Option::is_none")]
     pub fields: Option<Vec<String>>,
 }
 
 impl LikeDocument {
-    
     pub fn new() -> LikeDocument {
         LikeDocument {
             id: None,

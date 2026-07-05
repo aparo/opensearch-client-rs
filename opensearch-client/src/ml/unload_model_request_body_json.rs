@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UnloadModelRequestBodyJson {
     #[serde(rename = "model_ids", default, skip_serializing_if = "Option::is_none")]
@@ -22,7 +19,6 @@ pub struct UnloadModelRequestBodyJson {
 }
 
 impl UnloadModelRequestBodyJson {
-    
     pub fn new() -> UnloadModelRequestBodyJson {
         UnloadModelRequestBodyJson {
             model_ids: None,

@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ExplanationDetail {
     #[serde(rename = "description")]
@@ -23,7 +20,6 @@ pub struct ExplanationDetail {
 }
 
 impl ExplanationDetail {
-    
     pub fn new(description: String) -> ExplanationDetail {
         ExplanationDetail {
             description,

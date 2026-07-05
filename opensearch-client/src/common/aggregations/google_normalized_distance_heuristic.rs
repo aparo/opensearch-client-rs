@@ -10,17 +10,18 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct GoogleNormalizedDistanceHeuristic {  /// Set to `false` if you defined a custom background filter that represents a different set of documents that you want to compare to.
-    #[serde(rename = "background_is_superset", default, skip_serializing_if = "Option::is_none")]
+pub struct GoogleNormalizedDistanceHeuristic {
+    /// Set to `false` if you defined a custom background filter that represents a different set of documents that you want to compare to.
+    #[serde(
+        rename = "background_is_superset",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub background_is_superset: Option<bool>,
 }
 
 impl GoogleNormalizedDistanceHeuristic {
-    
     pub fn new() -> GoogleNormalizedDistanceHeuristic {
         GoogleNormalizedDistanceHeuristic {
             background_is_superset: None,

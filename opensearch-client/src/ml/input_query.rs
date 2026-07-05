@@ -11,21 +11,20 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct InputQuery {  /// The query.
+pub struct InputQuery {
+    /// The query.
     #[serde(rename = "query", default, skip_serializing_if = "Option::is_none")]
-    pub query: Option<ml::Query>,  /// The size of the query.
+    pub query: Option<ml::Query>,
+    /// The size of the query.
     #[serde(rename = "size", default, skip_serializing_if = "Option::is_none")]
-    pub size: Option<u32>,  /// The source fields
+    pub size: Option<u32>,
+    /// The source fields
     #[serde(rename = "_source", default, skip_serializing_if = "Option::is_none")]
     pub source: Option<Vec<String>>,
 }
 
 impl InputQuery {
-    
     pub fn new() -> InputQuery {
         InputQuery {
             query: None,

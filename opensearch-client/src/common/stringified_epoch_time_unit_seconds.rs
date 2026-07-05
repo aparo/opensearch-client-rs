@@ -11,7 +11,7 @@ use serde::{Deserialize, Serialize};
 
 /// Certain APIs may return values, including numbers such as epoch timestamps, as strings. This setting captures
 /// this behavior while keeping the semantics of the field type.
-/// 
+///
 /// Depending on the target language, code generators can keep the union or remove it and leniently parse
 /// strings to the target type.
 
@@ -30,7 +30,6 @@ impl std::fmt::Display for StringifiedEpochTimeUnitSeconds {
         }
     }
 }
-
 
 impl StringifiedEpochTimeUnitSeconds {
     pub fn as_str(&self) -> String {

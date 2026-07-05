@@ -10,23 +10,18 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct HitsTotal {  /// The total number of hits.
+pub struct HitsTotal {
+    /// The total number of hits.
     #[serde(rename = "value")]
-    pub value: u32,  /// The relation.
+    pub value: u32,
+    /// The relation.
     #[serde(rename = "relation")]
     pub relation: String,
 }
 
 impl HitsTotal {
-    
     pub fn new(value: u32, relation: String) -> HitsTotal {
-        HitsTotal {
-            value,
-            relation,
-        }
+        HitsTotal { value, relation }
     }
 }

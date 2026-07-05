@@ -11,21 +11,25 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Stats {
-    #[serde(rename = "circuit_breaker_triggered", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "circuit_breaker_triggered",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub circuit_breaker_triggered: Option<bool>,
-    #[serde(rename = "cluster_name", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "cluster_name",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub cluster_name: Option<String>,
     #[serde(rename = "nodes", default, skip_serializing_if = "Option::is_none")]
     pub nodes: Option<serde_json::Value>,
 }
 
 impl Stats {
-    
     pub fn new() -> Stats {
         Stats {
             circuit_breaker_triggered: None,

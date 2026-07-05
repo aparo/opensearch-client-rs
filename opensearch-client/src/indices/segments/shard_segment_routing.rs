@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ShardSegmentRouting {
     #[serde(rename = "state")]
@@ -24,7 +21,6 @@ pub struct ShardSegmentRouting {
 }
 
 impl ShardSegmentRouting {
-    
     pub fn new(state: String, node: String, primary: bool) -> ShardSegmentRouting {
         ShardSegmentRouting {
             state,

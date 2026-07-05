@@ -13,15 +13,12 @@ use serde::{Deserialize, Serialize};
 /// AdditionalInfo
 /// Additional information query.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct AdditionalInfo {
-}
+pub struct AdditionalInfo {}
 
 impl AdditionalInfo {
-      /// Additional information query.
+    /// Additional information query.
     pub fn new() -> AdditionalInfo {
-        AdditionalInfo {
-        }
+        AdditionalInfo {}
     }
 }

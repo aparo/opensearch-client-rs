@@ -10,16 +10,23 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RefreshStats {  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "total_time", default, skip_serializing_if = "Option::is_none")]
-    pub total_time: Option<String>,  /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
-  /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
-    #[serde(rename = "external_total_time", default, skip_serializing_if = "Option::is_none")]
+pub struct RefreshStats {
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "total_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_time: Option<String>,
+    /// A duration. Units can be `nanos`, `micros`, `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours) and
+    /// `d` (days). Also accepts "0" without a unit and "-1" to indicate an unspecified value.
+    #[serde(
+        rename = "external_total_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub external_total_time: Option<String>,
     #[serde(rename = "external_total")]
     pub external_total: u32,
@@ -34,8 +41,13 @@ pub struct RefreshStats {  /// A duration. Units can be `nanos`, `micros`, `ms` 
 }
 
 impl RefreshStats {
-    
-    pub fn new(external_total: u32, external_total_time_in_millis: String, total_time_in_millis: String, listeners: u32, total: u32) -> RefreshStats {
+    pub fn new(
+        external_total: u32,
+        external_total_time_in_millis: String,
+        total_time_in_millis: String,
+        listeners: u32,
+        total: u32,
+    ) -> RefreshStats {
         RefreshStats {
             total_time: None,
             external_total_time: None,

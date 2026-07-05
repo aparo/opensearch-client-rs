@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ActionCustom {
-}
+pub struct ActionCustom {}
 
 impl ActionCustom {
-    
     pub fn new() -> ActionCustom {
-        ActionCustom {
-        }
+        ActionCustom {}
     }
 }

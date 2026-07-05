@@ -10,27 +10,35 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CustomAnalyzer {
-    #[serde(rename = "char_filter", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "char_filter",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub char_filter: Option<Vec<String>>,
     #[serde(rename = "type")]
     pub r#type: String,
-    #[serde(rename = "position_increment_gap", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "position_increment_gap",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub position_increment_gap: Option<u32>,
     #[serde(rename = "filter", default, skip_serializing_if = "Option::is_none")]
     pub filter: Option<Vec<String>>,
     #[serde(rename = "tokenizer")]
     pub tokenizer: String,
-    #[serde(rename = "position_offset_gap", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "position_offset_gap",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub position_offset_gap: Option<u32>,
 }
 
 impl CustomAnalyzer {
-    
     pub fn new(r#type: String, tokenizer: String) -> CustomAnalyzer {
         CustomAnalyzer {
             char_filter: None,

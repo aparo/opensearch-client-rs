@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ResourceStats {
     #[serde(rename = "average")]
@@ -29,8 +26,13 @@ pub struct ResourceStats {
 }
 
 impl ResourceStats {
-    
-    pub fn new(average: common::ResourceStat, thread_info: common::ThreadInfo, min: common::ResourceStat, total: common::ResourceStat, max: common::ResourceStat) -> ResourceStats {
+    pub fn new(
+        average: common::ResourceStat,
+        thread_info: common::ThreadInfo,
+        min: common::ResourceStat,
+        total: common::ResourceStat,
+        max: common::ResourceStat,
+    ) -> ResourceStats {
         ResourceStats {
             average,
             thread_info,

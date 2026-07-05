@@ -13,18 +13,16 @@ use serde::{Deserialize, Serialize};
 /// SortOrder
 /// The order of the sort.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct SortOrder {  /// The order.
+pub struct SortOrder {
+    /// The order.
     #[serde(rename = "order", default, skip_serializing_if = "Option::is_none")]
     pub order: Option<String>,
 }
 
 impl SortOrder {
-      /// The order of the sort.
+    /// The order of the sort.
     pub fn new() -> SortOrder {
-        SortOrder {
-            order: None,
-        }
+        SortOrder { order: None }
     }
 }

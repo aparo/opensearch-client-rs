@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RankEvalHitItem {
     #[serde(rename = "rating", default, skip_serializing_if = "Option::is_none")]
@@ -23,11 +20,7 @@ pub struct RankEvalHitItem {
 }
 
 impl RankEvalHitItem {
-    
     pub fn new(hit: core::rank_eval::RankEvalHit) -> RankEvalHitItem {
-        RankEvalHitItem {
-            rating: None,
-            hit,
-        }
+        RankEvalHitItem { rating: None, hit }
     }
 }

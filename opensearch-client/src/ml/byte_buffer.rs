@@ -10,19 +10,17 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ByteBuffer {  /// The byte buffer order.
+pub struct ByteBuffer {
+    /// The byte buffer order.
     #[serde(rename = "order", default, skip_serializing_if = "Option::is_none")]
-    pub order: Option<String>,  /// The byte buffer array.
+    pub order: Option<String>,
+    /// The byte buffer array.
     #[serde(rename = "array", default, skip_serializing_if = "Option::is_none")]
     pub array: Option<String>,
 }
 
 impl ByteBuffer {
-    
     pub fn new() -> ByteBuffer {
         ByteBuffer {
             order: None,

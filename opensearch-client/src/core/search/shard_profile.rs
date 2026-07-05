@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ShardProfile {
     #[serde(rename = "aggregations")]
@@ -27,8 +24,11 @@ pub struct ShardProfile {
 }
 
 impl ShardProfile {
-    
-    pub fn new(aggregations: Vec<core::search::AggregationProfile>, id: String, searches: Vec<core::search::SearchProfile>) -> ShardProfile {
+    pub fn new(
+        aggregations: Vec<core::search::AggregationProfile>,
+        id: String,
+        searches: Vec<core::search::SearchProfile>,
+    ) -> ShardProfile {
         ShardProfile {
             aggregations,
             id,

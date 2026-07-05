@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SnsItem {
     #[serde(rename = "role_arn", default, skip_serializing_if = "Option::is_none")]
@@ -22,7 +19,6 @@ pub struct SnsItem {
 }
 
 impl SnsItem {
-    
     pub fn new(topic_arn: String) -> SnsItem {
         SnsItem {
             role_arn: None,

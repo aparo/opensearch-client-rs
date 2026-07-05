@@ -10,21 +10,25 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UserTenants {
-    #[serde(rename = "admin_tenant", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "admin_tenant",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub admin_tenant: Option<bool>,
-    #[serde(rename = "global_tenant", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "global_tenant",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub global_tenant: Option<bool>,
     #[serde(rename = "admin", default, skip_serializing_if = "Option::is_none")]
     pub admin: Option<bool>,
 }
 
 impl UserTenants {
-    
     pub fn new() -> UserTenants {
         UserTenants {
             admin_tenant: None,

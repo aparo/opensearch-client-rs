@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RankEvalQuery {
     #[serde(rename = "query")]
@@ -23,11 +20,7 @@ pub struct RankEvalQuery {
 }
 
 impl RankEvalQuery {
-    
     pub fn new(query: crate::dsl::Query) -> RankEvalQuery {
-        RankEvalQuery {
-            query,
-            size: None,
-        }
+        RankEvalQuery { query, size: None }
     }
 }

@@ -1,11 +1,11 @@
 use std::sync::Arc;
 
 use crate::{Error, OsClient};
-use opensearch_dsl::{util::ShouldSkip, InnerHitsResult, Map};
 use opensearch_dsl::{
     Explanation, NestedIdentity, Query, SearchResponse, ShardStatistics, SortCollection, Terms,
     TotalHits,
 };
+use opensearch_dsl::{InnerHitsResult, Map, util::ShouldSkip};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 

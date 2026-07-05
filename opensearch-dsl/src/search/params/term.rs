@@ -1,6 +1,6 @@
 use serde::{
-    ser::{self, Serialize},
     Deserialize,
+    ser::{self, Serialize},
 };
 
 /// OpenSearch term value

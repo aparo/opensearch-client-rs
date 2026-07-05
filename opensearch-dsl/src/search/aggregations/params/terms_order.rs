@@ -1,6 +1,6 @@
 use crate::{
-    util::{KeyValuePair, ShouldSkip},
     SortOrder,
+    util::{KeyValuePair, ShouldSkip},
 };
 
 /// Terms Aggregation sorting criterion

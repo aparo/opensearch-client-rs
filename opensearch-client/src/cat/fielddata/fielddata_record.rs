@@ -10,27 +10,29 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct FielddataRecord {  /// field name
+pub struct FielddataRecord {
+    /// field name
     #[serde(rename = "field", default, skip_serializing_if = "Option::is_none")]
-    pub field: Option<String>,  /// node name
+    pub field: Option<String>,
+    /// node name
     #[serde(rename = "node", default, skip_serializing_if = "Option::is_none")]
-    pub node: Option<String>,  /// field data usage
+    pub node: Option<String>,
+    /// field data usage
     #[serde(rename = "size", default, skip_serializing_if = "Option::is_none")]
-    pub size: Option<String>,  /// IP address
+    pub size: Option<String>,
+    /// IP address
     #[serde(rename = "ip", default, skip_serializing_if = "Option::is_none")]
-    pub ip: Option<String>,  /// node id
+    pub ip: Option<String>,
+    /// node id
     #[serde(rename = "id", default, skip_serializing_if = "Option::is_none")]
-    pub id: Option<String>,  /// hostname
+    pub id: Option<String>,
+    /// hostname
     #[serde(rename = "host", default, skip_serializing_if = "Option::is_none")]
     pub host: Option<String>,
 }
 
 impl FielddataRecord {
-    
     pub fn new() -> FielddataRecord {
         FielddataRecord {
             field: None,

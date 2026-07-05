@@ -10,23 +10,18 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ClusterOperatingSystemArchitecture {  /// Name of an architecture used by one or more selected nodes.
+pub struct ClusterOperatingSystemArchitecture {
+    /// Name of an architecture used by one or more selected nodes.
     #[serde(rename = "arch")]
-    pub arch: String,  /// Number of selected nodes using the architecture.
+    pub arch: String,
+    /// Number of selected nodes using the architecture.
     #[serde(rename = "count")]
     pub count: u32,
 }
 
 impl ClusterOperatingSystemArchitecture {
-    
     pub fn new(arch: String, count: u32) -> ClusterOperatingSystemArchitecture {
-        ClusterOperatingSystemArchitecture {
-            arch,
-            count,
-        }
+        ClusterOperatingSystemArchitecture { arch, count }
     }
 }

@@ -11,9 +11,6 @@
 use crate::observability;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SavedQuery {
     #[serde(rename = "selected_fields")]
@@ -31,8 +28,14 @@ pub struct SavedQuery {
 }
 
 impl SavedQuery {
-    
-    pub fn new(selected_fields: observability::SelectedFields, query: String, selected_date_range: observability::SelectedDateRange, description: String, selected_timestamp: observability::SelectedTimestamp, name: String) -> SavedQuery {
+    pub fn new(
+        selected_fields: observability::SelectedFields,
+        query: String,
+        selected_date_range: observability::SelectedDateRange,
+        description: String,
+        selected_timestamp: observability::SelectedTimestamp,
+        name: String,
+    ) -> SavedQuery {
         SavedQuery {
             selected_fields,
             query,

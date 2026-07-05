@@ -1,7 +1,7 @@
 use serde::Serialize;
 
 use super::SpanQuery;
-use crate::{util::*, Query};
+use crate::{Query, util::*};
 
 /// Returns matches which are enclosed inside another span query. The span
 /// within query maps to Lucene `SpanWithinQuery`.

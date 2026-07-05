@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GetScriptResponse {
     #[serde(rename = "found")]
@@ -25,7 +22,6 @@ pub struct GetScriptResponse {
 }
 
 impl GetScriptResponse {
-    
     pub fn new(found: bool, id: String) -> GetScriptResponse {
         GetScriptResponse {
             found,

@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct KeyedPercentilesValue {
-}
+pub struct KeyedPercentilesValue {}
 
 impl KeyedPercentilesValue {
-    
     pub fn new() -> KeyedPercentilesValue {
-        KeyedPercentilesValue {
-        }
+        KeyedPercentilesValue {}
     }
 }

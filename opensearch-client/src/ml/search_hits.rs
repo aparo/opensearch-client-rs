@@ -11,9 +11,6 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SearchHits {
     #[serde(rename = "hits")]
@@ -23,11 +20,7 @@ pub struct SearchHits {
 }
 
 impl SearchHits {
-    
     pub fn new(hits: Vec<ml::SearchHitsHit>, total: ml::HitsTotal) -> SearchHits {
-        SearchHits {
-            hits,
-            total,
-        }
+        SearchHits { hits, total }
     }
 }

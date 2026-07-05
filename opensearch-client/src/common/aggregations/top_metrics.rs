@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TopMetrics {
     #[serde(rename = "metrics")]
@@ -21,10 +18,7 @@ pub struct TopMetrics {
 }
 
 impl TopMetrics {
-    
     pub fn new(metrics: serde_json::Value) -> TopMetrics {
-        TopMetrics {
-            metrics,
-        }
+        TopMetrics { metrics }
     }
 }

@@ -14,17 +14,20 @@ use serde::{Deserialize, Serialize};
 /// FieldCapsRequestBodyJson
 /// An index filter specified with the Query DSL
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct FieldCapsRequestBodyJson {
     #[serde(rename = "fields", default, skip_serializing_if = "Option::is_none")]
     pub fields: Option<common::Fields>,
-    #[serde(rename = "index_filter", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "index_filter",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub index_filter: Option<crate::dsl::Query>,
 }
 
 impl FieldCapsRequestBodyJson {
-      /// An index filter specified with the Query DSL
+    /// An index filter specified with the Query DSL
     pub fn new() -> FieldCapsRequestBodyJson {
         FieldCapsRequestBodyJson {
             fields: None,

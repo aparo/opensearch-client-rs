@@ -10,20 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct IpRangeAggregationRange {  /// IP range defined as a CIDR mask.
+pub struct IpRangeAggregationRange {
+    /// IP range defined as a CIDR mask.
     #[serde(rename = "mask", default, skip_serializing_if = "Option::is_none")]
     pub mask: Option<String>,
 }
 
 impl IpRangeAggregationRange {
-    
     pub fn new() -> IpRangeAggregationRange {
-        IpRangeAggregationRange {
-            mask: None,
-        }
+        IpRangeAggregationRange { mask: None }
     }
 }

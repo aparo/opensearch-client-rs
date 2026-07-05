@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ErrorResponseBase {
     #[serde(rename = "status")]
@@ -23,11 +20,7 @@ pub struct ErrorResponseBase {
 }
 
 impl ErrorResponseBase {
-    
     pub fn new(status: f64, error: common::ErrorCause) -> ErrorResponseBase {
-        ErrorResponseBase {
-            status,
-            error,
-        }
+        ErrorResponseBase { status, error }
     }
 }

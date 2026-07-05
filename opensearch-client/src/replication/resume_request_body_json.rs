@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ResumeRequestBodyJson {
-}
+pub struct ResumeRequestBodyJson {}
 
 impl ResumeRequestBodyJson {
-    
     pub fn new() -> ResumeRequestBodyJson {
-        ResumeRequestBodyJson {
-        }
+        ResumeRequestBodyJson {}
     }
 }

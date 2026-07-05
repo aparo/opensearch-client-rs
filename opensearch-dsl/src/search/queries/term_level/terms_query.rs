@@ -1,4 +1,4 @@
-use serde::{de, Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de};
 
 use crate::{search::*, util::*};
 /// Returns documents that contain one or more **exact** terms in a provided

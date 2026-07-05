@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ReplicationTaskStatus {
     #[serde(rename = "phase")]
@@ -20,10 +17,7 @@ pub struct ReplicationTaskStatus {
 }
 
 impl ReplicationTaskStatus {
-    
     pub fn new(phase: String) -> ReplicationTaskStatus {
-        ReplicationTaskStatus {
-            phase,
-        }
+        ReplicationTaskStatus { phase }
     }
 }

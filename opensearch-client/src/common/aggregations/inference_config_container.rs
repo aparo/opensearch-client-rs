@@ -11,19 +11,23 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InferenceConfigContainer {
-    #[serde(rename = "regression", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "regression",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub regression: Option<common::aggregations::RegressionInferenceOptions>,
-    #[serde(rename = "classification", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "classification",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub classification: Option<common::aggregations::ClassificationInferenceOptions>,
 }
 
 impl InferenceConfigContainer {
-    
     pub fn new() -> InferenceConfigContainer {
         InferenceConfigContainer {
             regression: None,

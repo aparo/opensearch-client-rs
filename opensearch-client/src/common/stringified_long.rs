@@ -9,8 +9,6 @@
  */
 use serde::{Deserialize, Serialize};
 
-
-
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum StringifiedLong {
@@ -26,7 +24,6 @@ impl std::fmt::Display for StringifiedLong {
         }
     }
 }
-
 
 impl StringifiedLong {
     pub fn as_str(&self) -> String {

@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GeoDecayPlacement {
     #[serde(rename = "offset", default, skip_serializing_if = "Option::is_none")]
@@ -21,17 +18,17 @@ pub struct GeoDecayPlacement {
     #[serde(rename = "decay", default, skip_serializing_if = "Option::is_none")]
     pub decay: Option<f64>,
     #[serde(rename = "scale", default, skip_serializing_if = "Option::is_none")]
-    pub scale: Option<String>,  /// A latitude/longitude as a two-dimensional point. It can be represented in the following ways:
-  /// - As a `{lat, long}` object.
-  /// - As a geohash value.
-  /// - As a `[lon, lat]` array.
-  /// - As a string in `"<lat>, <lon>"` or WKT point format.
+    pub scale: Option<String>,
+    /// A latitude/longitude as a two-dimensional point. It can be represented in the following ways:
+    /// - As a `{lat, long}` object.
+    /// - As a geohash value.
+    /// - As a `[lon, lat]` array.
+    /// - As a string in `"<lat>, <lon>"` or WKT point format.
     #[serde(rename = "origin", default, skip_serializing_if = "Option::is_none")]
     pub origin: Option<common::GeoLocation>,
 }
 
 impl GeoDecayPlacement {
-    
     pub fn new() -> GeoDecayPlacement {
         GeoDecayPlacement {
             offset: None,

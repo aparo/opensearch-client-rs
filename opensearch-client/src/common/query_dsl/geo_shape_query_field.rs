@@ -11,21 +11,21 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GeoShapeQueryField {
     #[serde(rename = "relation", default, skip_serializing_if = "Option::is_none")]
     pub relation: Option<String>,
     #[serde(rename = "shape")]
     pub shape: common::query_dsl::GeoShape,
-    #[serde(rename = "indexed_shape", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "indexed_shape",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub indexed_shape: Option<common::query_dsl::FieldLookup>,
 }
 
 impl GeoShapeQueryField {
-    
     pub fn new(shape: common::query_dsl::GeoShape) -> GeoShapeQueryField {
         GeoShapeQueryField {
             relation: None,

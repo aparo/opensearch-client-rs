@@ -10,23 +10,21 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CommandMoveAction {
     #[serde(rename = "shard")]
     pub shard: u32,
     #[serde(rename = "index")]
-    pub index: String,  /// The node to move the shard to
+    pub index: String,
+    /// The node to move the shard to
     #[serde(rename = "to_node")]
-    pub to_node: String,  /// The node to move the shard from
+    pub to_node: String,
+    /// The node to move the shard from
     #[serde(rename = "from_node")]
     pub from_node: String,
 }
 
 impl CommandMoveAction {
-    
     pub fn new(shard: u32, index: String, to_node: String, from_node: String) -> CommandMoveAction {
         CommandMoveAction {
             shard,

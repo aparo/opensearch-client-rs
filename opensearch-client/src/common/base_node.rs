@@ -11,27 +11,32 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct BaseNode {
     #[serde(rename = "name")]
     pub name: String,
-    #[serde(rename = "attributes", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "attributes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub attributes: Option<serde_json::Value>,
-    #[serde(rename = "transport_address", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "transport_address",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub transport_address: Option<String>,
     #[serde(rename = "ip", default, skip_serializing_if = "Option::is_none")]
     pub ip: Option<String>,
     #[serde(rename = "host", default, skip_serializing_if = "Option::is_none")]
-    pub host: Option<String>,  /// Node roles.
+    pub host: Option<String>,
+    /// Node roles.
     #[serde(rename = "roles", default, skip_serializing_if = "Option::is_none")]
     pub roles: Option<Vec<common::NodeRole>>,
 }
 
 impl BaseNode {
-    
     pub fn new(name: String) -> BaseNode {
         BaseNode {
             name,

@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ContextMethodParam {
     #[serde(rename = "type")]
@@ -22,11 +19,7 @@ pub struct ContextMethodParam {
 }
 
 impl ContextMethodParam {
-    
     pub fn new(r#type: String, name: String) -> ContextMethodParam {
-        ContextMethodParam {
-            r#type,
-            name,
-        }
+        ContextMethodParam { r#type, name }
     }
 }

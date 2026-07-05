@@ -11,21 +11,21 @@
 use crate::security;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AuditConfig {
     #[serde(rename = "enabled", default, skip_serializing_if = "Option::is_none")]
     pub enabled: Option<bool>,
     #[serde(rename = "audit", default, skip_serializing_if = "Option::is_none")]
     pub audit: Option<security::AuditLogsConfig>,
-    #[serde(rename = "compliance", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "compliance",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub compliance: Option<security::ComplianceConfig>,
 }
 
 impl AuditConfig {
-    
     pub fn new() -> AuditConfig {
         AuditConfig {
             enabled: None,

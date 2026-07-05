@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TimeRange {
     #[serde(rename = "from")]
@@ -22,11 +19,7 @@ pub struct TimeRange {
 }
 
 impl TimeRange {
-    
     pub fn new(from: String, to: String) -> TimeRange {
-        TimeRange {
-            from,
-            to,
-        }
+        TimeRange { from, to }
     }
 }

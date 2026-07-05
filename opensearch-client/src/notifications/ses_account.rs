@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SesAccount {
     #[serde(rename = "region")]
@@ -24,7 +21,6 @@ pub struct SesAccount {
 }
 
 impl SesAccount {
-    
     pub fn new(region: String, from_address: String) -> SesAccount {
         SesAccount {
             region,

@@ -11,29 +11,45 @@
 use crate::observability;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ObservabilityObject {
-    #[serde(rename = "savedQuery", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "savedQuery",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub saved_query: Option<observability::SavedQuery>,
     #[serde(rename = "tenant", default, skip_serializing_if = "Option::is_none")]
     pub tenant: Option<String>,
-    #[serde(rename = "lastUpdatedTimeMs", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "lastUpdatedTimeMs",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub last_updated_time_ms: Option<u32>,
-    #[serde(rename = "createdTimeMs", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "createdTimeMs",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub created_time_ms: Option<u32>,
-    #[serde(rename = "operationalPanel", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "operationalPanel",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub operational_panel: Option<observability::OperationalPanel>,
     #[serde(rename = "objectId")]
     pub object_id: String,
-    #[serde(rename = "savedVisualization", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "savedVisualization",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub saved_visualization: Option<observability::SavedVisualization>,
 }
 
 impl ObservabilityObject {
-    
     pub fn new(object_id: String) -> ObservabilityObject {
         ObservabilityObject {
             saved_query: None,

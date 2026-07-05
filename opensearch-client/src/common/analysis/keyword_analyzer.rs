@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct KeywordAnalyzer {
     #[serde(rename = "type")]
@@ -22,7 +19,6 @@ pub struct KeywordAnalyzer {
 }
 
 impl KeywordAnalyzer {
-    
     pub fn new(r#type: String) -> KeywordAnalyzer {
         KeywordAnalyzer {
             r#type,

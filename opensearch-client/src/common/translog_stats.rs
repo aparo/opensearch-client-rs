@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TranslogStats {
     #[serde(rename = "size_in_bytes")]
@@ -26,17 +23,30 @@ pub struct TranslogStats {
     pub earliest_last_modified_age: u32,
     #[serde(rename = "size", default, skip_serializing_if = "Option::is_none")]
     pub size: Option<String>,
-    #[serde(rename = "uncommitted_size", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "uncommitted_size",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub uncommitted_size: Option<String>,
-    #[serde(rename = "remote_store", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "remote_store",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub remote_store: Option<common::RemoteStoreTranslogStats>,
     #[serde(rename = "uncommitted_size_in_bytes")]
     pub uncommitted_size_in_bytes: u32,
 }
 
 impl TranslogStats {
-    
-    pub fn new(size_in_bytes: u32, uncommitted_operations: u32, operations: u32, earliest_last_modified_age: u32, uncommitted_size_in_bytes: u32) -> TranslogStats {
+    pub fn new(
+        size_in_bytes: u32,
+        uncommitted_operations: u32,
+        operations: u32,
+        earliest_last_modified_age: u32,
+        uncommitted_size_in_bytes: u32,
+    ) -> TranslogStats {
         TranslogStats {
             size_in_bytes,
             uncommitted_operations,

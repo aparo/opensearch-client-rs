@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RequestCacheStats {
     #[serde(rename = "evictions")]
@@ -23,13 +20,21 @@ pub struct RequestCacheStats {
     pub memory_size_in_bytes: u32,
     #[serde(rename = "miss_count")]
     pub miss_count: u32,
-    #[serde(rename = "memory_size", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "memory_size",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub memory_size: Option<String>,
 }
 
 impl RequestCacheStats {
-    
-    pub fn new(evictions: u32, hit_count: u32, memory_size_in_bytes: u32, miss_count: u32) -> RequestCacheStats {
+    pub fn new(
+        evictions: u32,
+        hit_count: u32,
+        memory_size_in_bytes: u32,
+        miss_count: u32,
+    ) -> RequestCacheStats {
         RequestCacheStats {
             evictions,
             hit_count,

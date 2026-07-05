@@ -11,19 +11,19 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Rescore {
     #[serde(rename = "query")]
     pub query: core::search::RescoreQuery,
-    #[serde(rename = "window_size", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "window_size",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub window_size: Option<u32>,
 }
 
 impl Rescore {
-    
     pub fn new(query: core::search::RescoreQuery) -> Rescore {
         Rescore {
             query,

@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PhraseSuggestHighlight {
     #[serde(rename = "pre_tag")]
@@ -22,11 +19,7 @@ pub struct PhraseSuggestHighlight {
 }
 
 impl PhraseSuggestHighlight {
-    
     pub fn new(pre_tag: String, post_tag: String) -> PhraseSuggestHighlight {
-        PhraseSuggestHighlight {
-            pre_tag,
-            post_tag,
-        }
+        PhraseSuggestHighlight { pre_tag, post_tag }
     }
 }

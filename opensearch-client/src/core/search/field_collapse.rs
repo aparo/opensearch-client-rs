@@ -10,19 +10,21 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct FieldCollapse {  /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
+pub struct FieldCollapse {
+    /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
     #[serde(rename = "field")]
-    pub field: String,  /// The number of concurrent requests that are allowed to be retrieved by the `inner_hits` parameter per group.
-    #[serde(rename = "max_concurrent_group_searches", default, skip_serializing_if = "Option::is_none")]
+    pub field: String,
+    /// The number of concurrent requests that are allowed to be retrieved by the `inner_hits` parameter per group.
+    #[serde(
+        rename = "max_concurrent_group_searches",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub max_concurrent_group_searches: Option<u32>,
 }
 
 impl FieldCollapse {
-    
     pub fn new(field: String) -> FieldCollapse {
         FieldCollapse {
             field,

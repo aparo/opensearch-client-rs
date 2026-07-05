@@ -10,20 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RankEvalMetricBase {  /// Sets the maximum number of documents retrieved per query. This value replaces the `size` parameter in the query.
+pub struct RankEvalMetricBase {
+    /// Sets the maximum number of documents retrieved per query. This value replaces the `size` parameter in the query.
     #[serde(rename = "k", default, skip_serializing_if = "Option::is_none")]
     pub k: Option<u32>,
 }
 
 impl RankEvalMetricBase {
-    
     pub fn new() -> RankEvalMetricBase {
-        RankEvalMetricBase {
-            k: None,
-        }
+        RankEvalMetricBase { k: None }
     }
 }

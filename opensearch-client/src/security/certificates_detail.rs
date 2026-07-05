@@ -10,16 +10,21 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CertificatesDetail {
-    #[serde(rename = "not_before", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "not_before",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub not_before: Option<String>,
     #[serde(rename = "issuer_dn", default, skip_serializing_if = "Option::is_none")]
     pub issuer_dn: Option<String>,
-    #[serde(rename = "subject_dn", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "subject_dn",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub subject_dn: Option<String>,
     #[serde(rename = "not_after", default, skip_serializing_if = "Option::is_none")]
     pub not_after: Option<String>,
@@ -28,7 +33,6 @@ pub struct CertificatesDetail {
 }
 
 impl CertificatesDetail {
-    
     pub fn new() -> CertificatesDetail {
         CertificatesDetail {
             not_before: None,

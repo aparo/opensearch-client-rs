@@ -11,12 +11,13 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Action {
-    #[serde(rename = "request_body", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "request_body",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub request_body: Option<String>,
     #[serde(rename = "url", default, skip_serializing_if = "Option::is_none")]
     pub url: Option<String>,
@@ -24,16 +25,27 @@ pub struct Action {
     pub method: Option<String>,
     #[serde(rename = "headers", default, skip_serializing_if = "Option::is_none")]
     pub headers: Option<ml::Headers>,
-    #[serde(rename = "post_process_function", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "post_process_function",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub post_process_function: Option<String>,
-    #[serde(rename = "pre_process_function", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "pre_process_function",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub pre_process_function: Option<String>,
-    #[serde(rename = "action_type", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "action_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub action_type: Option<String>,
 }
 
 impl Action {
-    
     pub fn new() -> Action {
         Action {
             request_body: None,

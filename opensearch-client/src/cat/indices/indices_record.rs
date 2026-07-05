@@ -10,37 +10,64 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct IndicesRecord {  /// total used memory
-    #[serde(rename = "memory.total", default, skip_serializing_if = "Option::is_none")]
-    pub memory_total: Option<String>,  /// index UUID
+pub struct IndicesRecord {
+    /// total used memory
+    #[serde(
+        rename = "memory.total",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub memory_total: Option<String>,
+    /// index UUID
     #[serde(rename = "uuid", default, skip_serializing_if = "Option::is_none")]
-    pub uuid: Option<String>,  /// current health status
+    pub uuid: Option<String>,
+    /// current health status
     #[serde(rename = "health", default, skip_serializing_if = "Option::is_none")]
-    pub health: Option<String>,  /// index name
+    pub health: Option<String>,
+    /// index name
     #[serde(rename = "index", default, skip_serializing_if = "Option::is_none")]
-    pub index: Option<String>,  /// index creation date (as string)
-    #[serde(rename = "creation.date.string", default, skip_serializing_if = "Option::is_none")]
-    pub creation_date_string: Option<String>,  /// number of replica shards
+    pub index: Option<String>,
+    /// index creation date (as string)
+    #[serde(
+        rename = "creation.date.string",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub creation_date_string: Option<String>,
+    /// number of replica shards
     #[serde(rename = "rep", default, skip_serializing_if = "Option::is_none")]
-    pub rep: Option<String>,  /// index creation date (millisecond value)
-    #[serde(rename = "creation.date", default, skip_serializing_if = "Option::is_none")]
-    pub creation_date: Option<String>,  /// number of primary shards
+    pub rep: Option<String>,
+    /// index creation date (millisecond value)
+    #[serde(
+        rename = "creation.date",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub creation_date: Option<String>,
+    /// number of primary shards
     #[serde(rename = "pri", default, skip_serializing_if = "Option::is_none")]
-    pub pri: Option<String>,  /// open/close status
+    pub pri: Option<String>,
+    /// open/close status
     #[serde(rename = "status", default, skip_serializing_if = "Option::is_none")]
-    pub status: Option<String>,  /// total user memory
-    #[serde(rename = "pri.memory.total", default, skip_serializing_if = "Option::is_none")]
-    pub pri_memory_total: Option<String>,  /// indicates if the index is search throttled
-    #[serde(rename = "search.throttled", default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
+    /// total user memory
+    #[serde(
+        rename = "pri.memory.total",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub pri_memory_total: Option<String>,
+    /// indicates if the index is search throttled
+    #[serde(
+        rename = "search.throttled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub search_throttled: Option<String>,
 }
 
 impl IndicesRecord {
-    
     pub fn new() -> IndicesRecord {
         IndicesRecord {
             memory_total: None,

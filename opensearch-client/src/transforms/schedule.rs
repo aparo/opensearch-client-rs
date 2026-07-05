@@ -11,9 +11,6 @@
 use crate::transforms;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Schedule {
     #[serde(rename = "interval")]
@@ -21,10 +18,7 @@ pub struct Schedule {
 }
 
 impl Schedule {
-    
     pub fn new(interval: transforms::ScheduleInterval) -> Schedule {
-        Schedule {
-            interval,
-        }
+        Schedule { interval }
     }
 }

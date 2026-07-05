@@ -10,8 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum StringOrStringArray {
@@ -27,7 +25,6 @@ impl std::fmt::Display for StringOrStringArray {
         }
     }
 }
-
 
 impl StringOrStringArray {
     pub fn as_vec(&self) -> Vec<String> {

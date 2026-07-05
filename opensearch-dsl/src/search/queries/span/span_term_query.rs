@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use crate::{util::*, Query, Term};
+use crate::{Query, Term, util::*};
 
 /// Matches spans containing a term. The span term query maps to Lucene
 /// `SpanTermQuery`.

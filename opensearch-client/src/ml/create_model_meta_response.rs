@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CreateModelMetaResponse {
     #[serde(rename = "status")]
@@ -22,11 +19,7 @@ pub struct CreateModelMetaResponse {
 }
 
 impl CreateModelMetaResponse {
-    
     pub fn new(status: String, model_id: String) -> CreateModelMetaResponse {
-        CreateModelMetaResponse {
-            status,
-            model_id,
-        }
+        CreateModelMetaResponse { status, model_id }
     }
 }

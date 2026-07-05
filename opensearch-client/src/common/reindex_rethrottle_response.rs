@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ReindexRethrottleResponse {
     #[serde(rename = "nodes")]
@@ -21,10 +18,7 @@ pub struct ReindexRethrottleResponse {
 }
 
 impl ReindexRethrottleResponse {
-    
     pub fn new(nodes: serde_json::Value) -> ReindexRethrottleResponse {
-        ReindexRethrottleResponse {
-            nodes,
-        }
+        ReindexRethrottleResponse { nodes }
     }
 }

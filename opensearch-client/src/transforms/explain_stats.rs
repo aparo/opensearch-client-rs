@@ -10,25 +10,41 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ExplainStats {
-    #[serde(rename = "index_time_in_millis", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "index_time_in_millis",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub index_time_in_millis: Option<f64>,
-    #[serde(rename = "documents_processed", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "documents_processed",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub documents_processed: Option<f64>,
-    #[serde(rename = "documents_indexed", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "documents_indexed",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub documents_indexed: Option<f64>,
-    #[serde(rename = "pages_processed", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "pages_processed",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub pages_processed: Option<f64>,
-    #[serde(rename = "search_time_in_millis", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "search_time_in_millis",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub search_time_in_millis: Option<f64>,
 }
 
 impl ExplainStats {
-    
     pub fn new() -> ExplainStats {
         ExplainStats {
             index_time_in_millis: None,

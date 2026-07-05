@@ -11,12 +11,13 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Query {
-    #[serde(rename = "fetch_size", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "fetch_size",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub fetch_size: Option<u32>,
     #[serde(rename = "filter", default, skip_serializing_if = "Option::is_none")]
     pub filter: Option<serde_json::Value>,
@@ -25,7 +26,6 @@ pub struct Query {
 }
 
 impl Query {
-    
     pub fn new() -> Query {
         Query {
             fetch_size: None,

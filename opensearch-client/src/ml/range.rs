@@ -14,19 +14,21 @@ use serde::{Deserialize, Serialize};
 /// Range
 /// The filter range.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Range {  /// The key.
+pub struct Range {
+    /// The key.
     #[serde(rename = "k2", default, skip_serializing_if = "Option::is_none")]
-    pub k_2: Option<ml::Key>,  /// The key.
+    pub k_2: Option<ml::Key>,
+    /// The key.
     #[serde(rename = "k1", default, skip_serializing_if = "Option::is_none")]
-    pub k_1: Option<ml::Key>,  /// The key.
+    pub k_1: Option<ml::Key>,
+    /// The key.
     #[serde(rename = "k3", default, skip_serializing_if = "Option::is_none")]
     pub k_3: Option<ml::Key>,
 }
 
 impl Range {
-      /// The filter range.
+    /// The filter range.
     pub fn new() -> Range {
         Range {
             k_2: None,

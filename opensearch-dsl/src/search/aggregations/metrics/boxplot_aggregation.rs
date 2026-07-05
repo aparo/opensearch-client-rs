@@ -1,4 +1,4 @@
-use crate::{util::*, Aggregation, Number};
+use crate::{Aggregation, Number, util::*};
 
 /// A `boxplot` metrics aggregation that computes boxplot of numeric values
 /// extracted from the aggregated documents. These values can be generated from specific numeric or [histogram fields](https://www.elastic.co/guide/en/opensearch/reference/current/histogram.html)

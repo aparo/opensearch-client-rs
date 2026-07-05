@@ -10,21 +10,21 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RemoteStoreRestoreShardsInfo {
     #[serde(rename = "failed", default, skip_serializing_if = "Option::is_none")]
     pub failed: Option<u32>,
-    #[serde(rename = "successful", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "successful",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub successful: Option<u32>,
     #[serde(rename = "total", default, skip_serializing_if = "Option::is_none")]
     pub total: Option<u32>,
 }
 
 impl RemoteStoreRestoreShardsInfo {
-    
     pub fn new() -> RemoteStoreRestoreShardsInfo {
         RemoteStoreRestoreShardsInfo {
             failed: None,

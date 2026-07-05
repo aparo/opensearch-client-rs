@@ -10,16 +10,18 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Destination {  /// The name of the pipeline to use.
+pub struct Destination {
+    /// The name of the pipeline to use.
     #[serde(rename = "pipeline", default, skip_serializing_if = "Option::is_none")]
     pub pipeline: Option<String>,
     #[serde(rename = "routing", default, skip_serializing_if = "Option::is_none")]
     pub routing: Option<String>,
-    #[serde(rename = "version_type", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "version_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub version_type: Option<String>,
     #[serde(rename = "index")]
     pub index: String,
@@ -28,7 +30,6 @@ pub struct Destination {  /// The name of the pipeline to use.
 }
 
 impl Destination {
-    
     pub fn new(index: String) -> Destination {
         Destination {
             pipeline: None,

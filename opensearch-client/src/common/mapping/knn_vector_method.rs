@@ -11,23 +11,27 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct KnnVectorMethod {
     #[serde(rename = "engine", default, skip_serializing_if = "Option::is_none")]
     pub engine: Option<String>,
-    #[serde(rename = "space_type", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "space_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub space_type: Option<String>,
-    #[serde(rename = "parameters", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "parameters",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub parameters: Option<serde_json::Value>,
     #[serde(rename = "name")]
     pub name: String,
 }
 
 impl KnnVectorMethod {
-    
     pub fn new(name: String) -> KnnVectorMethod {
         KnnVectorMethod {
             engine: None,

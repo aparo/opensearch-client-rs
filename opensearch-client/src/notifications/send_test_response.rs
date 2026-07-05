@@ -11,19 +11,23 @@
 use crate::notifications;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SendTestResponse {
-    #[serde(rename = "event_source", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "event_source",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub event_source: Option<notifications::EventSource>,
-    #[serde(rename = "status_list", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "status_list",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub status_list: Option<Vec<notifications::EventStatus>>,
 }
 
 impl SendTestResponse {
-    
     pub fn new() -> SendTestResponse {
         SendTestResponse {
             event_source: None,

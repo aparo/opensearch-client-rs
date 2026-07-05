@@ -11,21 +11,25 @@
 use crate::replication;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Replication {
     #[serde(rename = "use_roles", default, skip_serializing_if = "Option::is_none")]
     pub use_roles: Option<replication::UseRoles>,
-    #[serde(rename = "leader_index", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "leader_index",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub leader_index: Option<String>,
-    #[serde(rename = "leader_alias", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "leader_alias",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub leader_alias: Option<String>,
 }
 
 impl Replication {
-    
     pub fn new() -> Replication {
         Replication {
             use_roles: None,

@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CommandAllocateReplicaAction {
     #[serde(rename = "node")]
@@ -24,12 +21,7 @@ pub struct CommandAllocateReplicaAction {
 }
 
 impl CommandAllocateReplicaAction {
-    
     pub fn new(node: String, shard: u32, index: String) -> CommandAllocateReplicaAction {
-        CommandAllocateReplicaAction {
-            node,
-            shard,
-            index,
-        }
+        CommandAllocateReplicaAction { node, shard, index }
     }
 }

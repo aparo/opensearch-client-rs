@@ -11,30 +11,37 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct NodeAttributes {
     #[serde(rename = "id", default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     #[serde(rename = "ephemeral_id")]
-    pub ephemeral_id: String,  /// Node roles.
+    pub ephemeral_id: String,
+    /// Node roles.
     #[serde(rename = "roles", default, skip_serializing_if = "Option::is_none")]
     pub roles: Option<Vec<common::NodeRole>>,
     #[serde(rename = "transport_address")]
-    pub transport_address: String,  /// Lists node attributes.
+    pub transport_address: String,
+    /// Lists node attributes.
     #[serde(rename = "attributes")]
     pub attributes: serde_json::Value,
-    #[serde(rename = "external_id", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "external_id",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub external_id: Option<String>,
     #[serde(rename = "name")]
     pub name: String,
 }
 
 impl NodeAttributes {
-    
-    pub fn new(ephemeral_id: String, transport_address: String, attributes: serde_json::Value, name: String) -> NodeAttributes {
+    pub fn new(
+        ephemeral_id: String,
+        transport_address: String,
+        attributes: serde_json::Value,
+        name: String,
+    ) -> NodeAttributes {
         NodeAttributes {
             id: None,
             ephemeral_id,

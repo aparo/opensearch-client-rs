@@ -1,9 +1,9 @@
 use std::fmt;
 
 use serde::{
+    Deserialize, Deserializer,
     de::{self, Unexpected, Visitor},
     ser::{Serialize, Serializer},
-    Deserialize, Deserializer,
 };
 
 /// Whenever durations need to be specified, e.g. for a `timeout` parameter,

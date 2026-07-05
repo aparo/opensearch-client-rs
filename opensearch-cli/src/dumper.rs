@@ -1,11 +1,11 @@
 use std::{path::PathBuf, sync::Arc};
 
 use async_compression::tokio::write::ZstdEncoder;
-use futures::{pin_mut, StreamExt};
+use futures::{StreamExt, pin_mut};
 use opensearch_client::OsClient;
 use opensearch_dsl::{
-    search::sort::{FieldSort, SortCollection},
     Query,
+    search::sort::{FieldSort, SortCollection},
 };
 use serde::{Deserialize, Serialize};
 use tokio::{

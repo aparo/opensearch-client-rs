@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RootCause {
     #[serde(rename = "type")]
@@ -22,11 +19,7 @@ pub struct RootCause {
 }
 
 impl RootCause {
-    
     pub fn new(r#type: String, reason: String) -> RootCause {
-        RootCause {
-            r#type,
-            reason,
-        }
+        RootCause { r#type, reason }
     }
 }

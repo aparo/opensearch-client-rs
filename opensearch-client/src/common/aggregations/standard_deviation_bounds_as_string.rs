@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct StandardDeviationBoundsAsString {
     #[serde(rename = "lower_population")]
@@ -30,8 +27,14 @@ pub struct StandardDeviationBoundsAsString {
 }
 
 impl StandardDeviationBoundsAsString {
-    
-    pub fn new(lower_population: String, upper: String, lower: String, upper_population: String, upper_sampling: String, lower_sampling: String) -> StandardDeviationBoundsAsString {
+    pub fn new(
+        lower_population: String,
+        upper: String,
+        lower: String,
+        upper_population: String,
+        upper_sampling: String,
+        lower_sampling: String,
+    ) -> StandardDeviationBoundsAsString {
         StandardDeviationBoundsAsString {
             lower_population,
             upper,

@@ -5,7 +5,7 @@ use std::{
     sync::Arc,
 };
 
-use futures::{pin_mut, StreamExt};
+use futures::{StreamExt, pin_mut};
 use opensearch_dsl::{FieldSort, Query, SortCollection};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -13,8 +13,8 @@ use tracing::info;
 use walkdir::WalkDir;
 
 use crate::{
-    indices::{GetIndexTemplateResponse, IndexTemplateMapping},
     OsClient,
+    indices::{GetIndexTemplateResponse, IndexTemplateMapping},
 };
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]

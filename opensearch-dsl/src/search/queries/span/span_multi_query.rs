@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use crate::{util::*, MultiTermQuery, Query};
+use crate::{MultiTermQuery, Query, util::*};
 
 /// The span_multi query allows you to wrap a `multi term query` (one of
 /// [`wildcard`](crate::WildcardQuery), [`fuzzy`](crate::FuzzyQuery),

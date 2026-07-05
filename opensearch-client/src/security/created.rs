@@ -10,20 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Created {  /// The message returned as part of a `CREATED` response.
+pub struct Created {
+    /// The message returned as part of a `CREATED` response.
     #[serde(rename = "message", default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
 }
 
 impl Created {
-    
     pub fn new() -> Created {
-        Created {
-            message: None,
-        }
+        Created { message: None }
     }
 }

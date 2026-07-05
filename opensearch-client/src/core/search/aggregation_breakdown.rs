@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AggregationBreakdown {
     #[serde(rename = "reduce_count")]
@@ -31,9 +28,17 @@ pub struct AggregationBreakdown {
     pub build_aggregation_count: u32,
     #[serde(rename = "initialize_count")]
     pub initialize_count: u32,
-    #[serde(rename = "post_collection", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "post_collection",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub post_collection: Option<u32>,
-    #[serde(rename = "post_collection_count", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "post_collection_count",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub post_collection_count: Option<u32>,
     #[serde(rename = "initialize")]
     pub initialize: u32,
@@ -42,8 +47,18 @@ pub struct AggregationBreakdown {
 }
 
 impl AggregationBreakdown {
-    
-    pub fn new(reduce_count: u32, collect_count: u32, build_aggregation: u32, build_leaf_collector_count: u32, build_leaf_collector: u32, collect: u32, build_aggregation_count: u32, initialize_count: u32, initialize: u32, reduce: u32) -> AggregationBreakdown {
+    pub fn new(
+        reduce_count: u32,
+        collect_count: u32,
+        build_aggregation: u32,
+        build_leaf_collector_count: u32,
+        build_leaf_collector: u32,
+        collect: u32,
+        build_aggregation_count: u32,
+        initialize_count: u32,
+        initialize: u32,
+        reduce: u32,
+    ) -> AggregationBreakdown {
         AggregationBreakdown {
             reduce_count,
             collect_count,

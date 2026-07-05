@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use crate::{util::*, Query, SpanQuery};
+use crate::{Query, SpanQuery, util::*};
 
 /// Matches spans which are near one another. One can specify _slop_, the
 /// maximum number of intervening unmatched positions, as well as whether

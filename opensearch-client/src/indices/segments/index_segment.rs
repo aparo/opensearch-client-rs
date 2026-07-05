@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct IndexSegment {
     #[serde(rename = "shards")]
@@ -21,10 +18,7 @@ pub struct IndexSegment {
 }
 
 impl IndexSegment {
-    
     pub fn new(shards: serde_json::Value) -> IndexSegment {
-        IndexSegment {
-            shards,
-        }
+        IndexSegment { shards }
     }
 }

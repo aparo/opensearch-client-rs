@@ -11,21 +11,25 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SmoothingModel {
     #[serde(rename = "laplace", default, skip_serializing_if = "Option::is_none")]
     pub laplace: Option<core::search::LaplaceSmoothingModel>,
-    #[serde(rename = "stupid_backoff", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "stupid_backoff",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub stupid_backoff: Option<core::search::StupidBackoffSmoothingModel>,
-    #[serde(rename = "linear_interpolation", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "linear_interpolation",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub linear_interpolation: Option<core::search::LinearInterpolationSmoothingModel>,
 }
 
 impl SmoothingModel {
-    
     pub fn new() -> SmoothingModel {
         SmoothingModel {
             laplace: None,

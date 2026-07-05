@@ -10,20 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct AggregationRange {  /// Custom key to return the range with.
+pub struct AggregationRange {
+    /// Custom key to return the range with.
     #[serde(rename = "key", default, skip_serializing_if = "Option::is_none")]
     pub key: Option<String>,
 }
 
 impl AggregationRange {
-    
     pub fn new() -> AggregationRange {
-        AggregationRange {
-            key: None,
-        }
+        AggregationRange { key: None }
     }
 }

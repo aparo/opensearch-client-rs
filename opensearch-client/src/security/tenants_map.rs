@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TenantsMap {
-}
+pub struct TenantsMap {}
 
 impl TenantsMap {
-    
     pub fn new() -> TenantsMap {
-        TenantsMap {
-        }
+        TenantsMap {}
     }
 }

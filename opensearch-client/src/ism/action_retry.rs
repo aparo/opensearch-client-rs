@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ActionRetry {
     #[serde(rename = "count", default, skip_serializing_if = "Option::is_none")]
@@ -24,7 +21,6 @@ pub struct ActionRetry {
 }
 
 impl ActionRetry {
-    
     pub fn new() -> ActionRetry {
         ActionRetry {
             count: None,

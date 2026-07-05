@@ -11,21 +11,21 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Query {
     #[serde(rename = "filter", default, skip_serializing_if = "Option::is_none")]
     pub filter: Option<serde_json::Value>,
-    #[serde(rename = "fetch_size", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "fetch_size",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub fetch_size: Option<u32>,
     #[serde(rename = "query", default, skip_serializing_if = "Option::is_none")]
     pub query: Option<String>,
 }
 
 impl Query {
-    
     pub fn new() -> Query {
         Query {
             filter: None,

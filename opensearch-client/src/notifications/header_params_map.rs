@@ -10,17 +10,11 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct HeaderParamsMap {
-}
+pub struct HeaderParamsMap {}
 
 impl HeaderParamsMap {
-    
     pub fn new() -> HeaderParamsMap {
-        HeaderParamsMap {
-        }
+        HeaderParamsMap {}
     }
 }

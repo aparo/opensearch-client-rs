@@ -1,7 +1,7 @@
 use serde::{Deserialize, Deserializer, Serialize};
 
 use super::{SortMode, SortOrder};
-use crate::{util::ShouldSkip, Term};
+use crate::{Term, util::ShouldSkip};
 
 /// Sorts search hits by other field values
 ///
@@ -236,7 +236,7 @@ impl<'de> Deserialize<'de> for FieldSort {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{util::assert_serialize, SortSpecialField};
+    use crate::{SortSpecialField, util::assert_serialize};
 
     #[test]
     fn serialization() {

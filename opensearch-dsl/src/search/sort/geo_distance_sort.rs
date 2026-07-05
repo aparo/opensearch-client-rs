@@ -2,8 +2,8 @@ use serde::{Deserialize, Deserializer, Serialize};
 
 use super::{SortMode, SortOrder};
 use crate::{
-    util::{KeyValuePair, ShouldSkip},
     DistanceUnit, GeoDistanceType, GeoLocation,
+    util::{KeyValuePair, ShouldSkip},
 };
 
 /// Sorts search hits by other field values

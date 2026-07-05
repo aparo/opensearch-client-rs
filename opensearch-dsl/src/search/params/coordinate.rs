@@ -1,8 +1,8 @@
 use std::{fmt, fmt::Display, str::FromStr};
 
 use serde::{
-    de::{self, SeqAccess, Visitor},
     Deserialize, Deserializer, Serialize,
+    de::{self, SeqAccess, Visitor},
 };
 
 /// Represents a point in two dimensional space

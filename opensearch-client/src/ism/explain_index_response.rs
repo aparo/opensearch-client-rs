@@ -10,17 +10,17 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ExplainIndexResponse {
-    #[serde(rename = "total_managed_indices", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "total_managed_indices",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub total_managed_indices: Option<f64>,
 }
 
 impl ExplainIndexResponse {
-    
     pub fn new() -> ExplainIndexResponse {
         ExplainIndexResponse {
             total_managed_indices: None,

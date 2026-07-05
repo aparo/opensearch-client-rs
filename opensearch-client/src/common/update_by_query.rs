@@ -14,11 +14,11 @@ use serde::{Deserialize, Serialize};
 /// UpdateByQuery
 /// The search definition using the Query DSL
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UpdateByQuery {
     #[serde(rename = "slice", default, skip_serializing_if = "Option::is_none")]
-    pub slice: Option<common::SlicedScroll>,  /// The maximum number of documents to update.
+    pub slice: Option<common::SlicedScroll>,
+    /// The maximum number of documents to update.
     #[serde(rename = "max_docs", default, skip_serializing_if = "Option::is_none")]
     pub max_docs: Option<u32>,
     #[serde(rename = "conflicts", default, skip_serializing_if = "Option::is_none")]
@@ -30,7 +30,7 @@ pub struct UpdateByQuery {
 }
 
 impl UpdateByQuery {
-      /// The search definition using the Query DSL
+    /// The search definition using the Query DSL
     pub fn new() -> UpdateByQuery {
         UpdateByQuery {
             slice: None,

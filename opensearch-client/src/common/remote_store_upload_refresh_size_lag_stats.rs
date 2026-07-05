@@ -13,7 +13,6 @@ use serde::{Deserialize, Serialize};
 /// RemoteStoreUploadRefreshSizeLagStats
 /// The amount of lag during upload between the remote segment store and the local store.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RemoteStoreUploadRefreshSizeLagStats {
     #[serde(rename = "total_bytes")]
@@ -27,7 +26,7 @@ pub struct RemoteStoreUploadRefreshSizeLagStats {
 }
 
 impl RemoteStoreUploadRefreshSizeLagStats {
-      /// The amount of lag during upload between the remote segment store and the local store.
+    /// The amount of lag during upload between the remote segment store and the local store.
     pub fn new(total_bytes: u32, max_bytes: u32) -> RemoteStoreUploadRefreshSizeLagStats {
         RemoteStoreUploadRefreshSizeLagStats {
             total_bytes,

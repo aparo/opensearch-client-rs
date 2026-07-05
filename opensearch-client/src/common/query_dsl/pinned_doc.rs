@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PinnedDoc {
     #[serde(rename = "_id")]
@@ -22,11 +19,7 @@ pub struct PinnedDoc {
 }
 
 impl PinnedDoc {
-    
     pub fn new(id: String, index: String) -> PinnedDoc {
-        PinnedDoc {
-            id,
-            index,
-        }
+        PinnedDoc { id, index }
     }
 }

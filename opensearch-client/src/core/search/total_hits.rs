@@ -11,9 +11,6 @@
 use crate::core;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TotalHits {
     #[serde(rename = "relation")]
@@ -23,11 +20,7 @@ pub struct TotalHits {
 }
 
 impl TotalHits {
-    
     pub fn new(relation: String, value: u32) -> TotalHits {
-        TotalHits {
-            relation,
-            value,
-        }
+        TotalHits { relation, value }
     }
 }

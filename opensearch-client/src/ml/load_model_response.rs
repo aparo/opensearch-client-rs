@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct LoadModelResponse {
     #[serde(rename = "task_id")]
@@ -24,7 +21,6 @@ pub struct LoadModelResponse {
 }
 
 impl LoadModelResponse {
-    
     pub fn new(task_id: String, status: String, task_type: String) -> LoadModelResponse {
         LoadModelResponse {
             task_id,

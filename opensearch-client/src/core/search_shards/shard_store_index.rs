@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ShardStoreIndex {
     #[serde(rename = "aliases", default, skip_serializing_if = "Option::is_none")]
@@ -23,7 +20,6 @@ pub struct ShardStoreIndex {
 }
 
 impl ShardStoreIndex {
-    
     pub fn new() -> ShardStoreIndex {
         ShardStoreIndex {
             aliases: None,

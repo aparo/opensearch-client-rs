@@ -11,34 +11,50 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CreateModelMeta {
     #[serde(rename = "version")]
-    pub version: String,  /// The model content hash value.
+    pub version: String,
+    /// The model content hash value.
     #[serde(rename = "model_content_hash_value")]
     pub model_content_hash_value: String,
     #[serde(rename = "model_config")]
-    pub model_config: ml::ModelConfig,  /// The model description.
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    pub model_config: ml::ModelConfig,
+    /// The model description.
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
-    #[serde(rename = "model_group_id", default, skip_serializing_if = "Option::is_none")]
-    pub model_group_id: Option<String>,  /// The model URL.
+    #[serde(
+        rename = "model_group_id",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub model_group_id: Option<String>,
+    /// The model URL.
     #[serde(rename = "url", default, skip_serializing_if = "Option::is_none")]
-    pub url: Option<String>,  /// The model name.
+    pub url: Option<String>,
+    /// The model name.
     #[serde(rename = "name")]
     pub name: String,
     #[serde(rename = "model_format")]
-    pub model_format: String,  /// Number of chunks the model is split into.
+    pub model_format: String,
+    /// Number of chunks the model is split into.
     #[serde(rename = "total_chunks")]
     pub total_chunks: u32,
 }
 
 impl CreateModelMeta {
-    
-    pub fn new(version: String, model_content_hash_value: String, model_config: ml::ModelConfig, name: String, model_format: String, total_chunks: u32) -> CreateModelMeta {
+    pub fn new(
+        version: String,
+        model_content_hash_value: String,
+        model_config: ml::ModelConfig,
+        name: String,
+        model_format: String,
+        total_chunks: u32,
+    ) -> CreateModelMeta {
         CreateModelMeta {
             version,
             model_content_hash_value,

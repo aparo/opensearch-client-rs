@@ -10,29 +10,24 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct ClusterProcessOpenFileDescriptors {  /// Maximum number of concurrently open file descriptors allowed across all selected nodes.
-  /// Returns `-1` if not supported.
+pub struct ClusterProcessOpenFileDescriptors {
+    /// Maximum number of concurrently open file descriptors allowed across all selected nodes.
+    /// Returns `-1` if not supported.
     #[serde(rename = "max")]
-    pub max: u32,  /// Minimum number of concurrently open file descriptors across all selected nodes.
-  /// Returns -1 if not supported.
+    pub max: u32,
+    /// Minimum number of concurrently open file descriptors across all selected nodes.
+    /// Returns -1 if not supported.
     #[serde(rename = "min")]
-    pub min: u32,  /// Average number of concurrently open file descriptors.
-  /// Returns `-1` if not supported.
+    pub min: u32,
+    /// Average number of concurrently open file descriptors.
+    /// Returns `-1` if not supported.
     #[serde(rename = "avg")]
     pub avg: u32,
 }
 
 impl ClusterProcessOpenFileDescriptors {
-    
     pub fn new(max: u32, min: u32, avg: u32) -> ClusterProcessOpenFileDescriptors {
-        ClusterProcessOpenFileDescriptors {
-            max,
-            min,
-            avg,
-        }
+        ClusterProcessOpenFileDescriptors { max, min, avg }
     }
 }

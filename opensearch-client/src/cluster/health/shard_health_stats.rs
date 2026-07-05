@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ShardHealthStats {
     #[serde(rename = "active_shards")]
@@ -31,8 +28,14 @@ pub struct ShardHealthStats {
 }
 
 impl ShardHealthStats {
-    
-    pub fn new(active_shards: u32, relocating_shards: u32, unassigned_shards: u32, initializing_shards: u32, primary_active: bool, status: common::HealthStatus) -> ShardHealthStats {
+    pub fn new(
+        active_shards: u32,
+        relocating_shards: u32,
+        unassigned_shards: u32,
+        initializing_shards: u32,
+        primary_active: bool,
+        status: common::HealthStatus,
+    ) -> ShardHealthStats {
         ShardHealthStats {
             active_shards,
             relocating_shards,

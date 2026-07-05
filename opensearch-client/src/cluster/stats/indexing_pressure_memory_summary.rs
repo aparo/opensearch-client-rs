@@ -10,16 +10,21 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct IndexingPressureMemorySummary {
-    #[serde(rename = "primary_rejections", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "primary_rejections",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub primary_rejections: Option<f64>,
     #[serde(rename = "coordinating_in_bytes")]
     pub coordinating_in_bytes: u32,
-    #[serde(rename = "coordinating_rejections", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "coordinating_rejections",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub coordinating_rejections: Option<f64>,
     #[serde(rename = "combined_coordinating_and_primary_in_bytes")]
     pub combined_coordinating_and_primary_in_bytes: u32,
@@ -29,13 +34,22 @@ pub struct IndexingPressureMemorySummary {
     pub primary_in_bytes: u32,
     #[serde(rename = "replica_in_bytes")]
     pub replica_in_bytes: u32,
-    #[serde(rename = "replica_rejections", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "replica_rejections",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub replica_rejections: Option<f64>,
 }
 
 impl IndexingPressureMemorySummary {
-    
-    pub fn new(coordinating_in_bytes: u32, combined_coordinating_and_primary_in_bytes: u32, all_in_bytes: u32, primary_in_bytes: u32, replica_in_bytes: u32) -> IndexingPressureMemorySummary {
+    pub fn new(
+        coordinating_in_bytes: u32,
+        combined_coordinating_and_primary_in_bytes: u32,
+        all_in_bytes: u32,
+        primary_in_bytes: u32,
+        replica_in_bytes: u32,
+    ) -> IndexingPressureMemorySummary {
         IndexingPressureMemorySummary {
             primary_rejections: None,
             coordinating_in_bytes,

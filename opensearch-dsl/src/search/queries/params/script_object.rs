@@ -12,11 +12,11 @@
 use std::fmt;
 
 use serde::{
-    de::{self, Deserialize, Deserializer, Visitor},
     Serialize, Serializer,
+    de::{self, Deserialize, Deserializer, Visitor},
 };
 
-use crate::{util::*, Map};
+use crate::{Map, util::*};
 
 /// Wherever scripting is supported in the OpenSearch APIs, the syntax follows
 /// the same pattern; you specify the language of your script, provide the

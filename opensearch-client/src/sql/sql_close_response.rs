@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SqlCloseResponse {
     #[serde(rename = "succeeded", default, skip_serializing_if = "Option::is_none")]
@@ -20,10 +17,7 @@ pub struct SqlCloseResponse {
 }
 
 impl SqlCloseResponse {
-    
     pub fn new() -> SqlCloseResponse {
-        SqlCloseResponse {
-            succeeded: None,
-        }
+        SqlCloseResponse { succeeded: None }
     }
 }

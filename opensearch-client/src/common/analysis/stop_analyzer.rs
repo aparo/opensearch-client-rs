@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct StopAnalyzer {
     #[serde(rename = "stopwords", default, skip_serializing_if = "Option::is_none")]
@@ -22,12 +19,15 @@ pub struct StopAnalyzer {
     pub version: Option<String>,
     #[serde(rename = "type")]
     pub r#type: String,
-    #[serde(rename = "stopwords_path", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "stopwords_path",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub stopwords_path: Option<String>,
 }
 
 impl StopAnalyzer {
-    
     pub fn new(r#type: String) -> StopAnalyzer {
         StopAnalyzer {
             stopwords: None,

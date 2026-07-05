@@ -11,11 +11,9 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TestPopulation {  /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
+pub struct TestPopulation {
+    /// The path to a field or an array of paths. Some APIs support wildcards in the path, which allows you to select multiple fields.
     #[serde(rename = "field")]
     pub field: String,
     #[serde(rename = "filter", default, skip_serializing_if = "Option::is_none")]
@@ -25,7 +23,6 @@ pub struct TestPopulation {  /// The path to a field or an array of paths. Some 
 }
 
 impl TestPopulation {
-    
     pub fn new(field: String) -> TestPopulation {
         TestPopulation {
             field,

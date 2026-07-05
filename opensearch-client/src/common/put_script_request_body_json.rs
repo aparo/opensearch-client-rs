@@ -14,7 +14,6 @@ use serde::{Deserialize, Serialize};
 /// PutScriptRequestBodyJson
 /// The document
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PutScriptRequestBodyJson {
     #[serde(rename = "script")]
@@ -22,10 +21,8 @@ pub struct PutScriptRequestBodyJson {
 }
 
 impl PutScriptRequestBodyJson {
-      /// The document
+    /// The document
     pub fn new(script: common::StoredScript) -> PutScriptRequestBodyJson {
-        PutScriptRequestBodyJson {
-            script,
-        }
+        PutScriptRequestBodyJson { script }
     }
 }

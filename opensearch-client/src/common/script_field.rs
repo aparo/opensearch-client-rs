@@ -11,19 +11,19 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ScriptField {
     #[serde(rename = "script")]
     pub script: common::Script,
-    #[serde(rename = "ignore_failure", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "ignore_failure",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub ignore_failure: Option<bool>,
 }
 
 impl ScriptField {
-    
     pub fn new(script: common::Script) -> ScriptField {
         ScriptField {
             script,

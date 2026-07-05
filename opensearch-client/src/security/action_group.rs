@@ -10,14 +10,15 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ActionGroup {
     #[serde(rename = "reserved", default, skip_serializing_if = "Option::is_none")]
     pub reserved: Option<bool>,
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
     #[serde(rename = "static", default, skip_serializing_if = "Option::is_none")]
     pub r#static: Option<bool>,
@@ -25,12 +26,15 @@ pub struct ActionGroup {
     pub r#type: Option<String>,
     #[serde(rename = "hidden", default, skip_serializing_if = "Option::is_none")]
     pub hidden: Option<bool>,
-    #[serde(rename = "allowed_actions", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "allowed_actions",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub allowed_actions: Option<Vec<String>>,
 }
 
 impl ActionGroup {
-    
     pub fn new() -> ActionGroup {
         ActionGroup {
             reserved: None,

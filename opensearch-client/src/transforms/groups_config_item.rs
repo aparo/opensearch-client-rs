@@ -11,12 +11,13 @@
 use crate::transforms;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GroupsConfigItem {
-    #[serde(rename = "date_histogram", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "date_histogram",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub date_histogram: Option<transforms::DateHistogramGroup>,
     #[serde(rename = "histogram", default, skip_serializing_if = "Option::is_none")]
     pub histogram: Option<transforms::HistogramGroup>,
@@ -25,7 +26,6 @@ pub struct GroupsConfigItem {
 }
 
 impl GroupsConfigItem {
-    
     pub fn new() -> GroupsConfigItem {
         GroupsConfigItem {
             date_histogram: None,

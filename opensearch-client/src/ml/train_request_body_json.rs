@@ -11,21 +11,30 @@
 use crate::ml;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TrainRequestBodyJson {
-    #[serde(rename = "input_query", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "input_query",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub input_query: Option<ml::InputQuery>,
-    #[serde(rename = "parameters", default, skip_serializing_if = "Option::is_none")]
-    pub parameters: Option<ml::TrainParameters>,  /// The input index.
-    #[serde(rename = "input_index", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "parameters",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub parameters: Option<ml::TrainParameters>,
+    /// The input index.
+    #[serde(
+        rename = "input_index",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub input_index: Option<Vec<String>>,
 }
 
 impl TrainRequestBodyJson {
-    
     pub fn new() -> TrainRequestBodyJson {
         TrainRequestBodyJson {
             input_query: None,

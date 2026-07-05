@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AllocationDecision {
     #[serde(rename = "explanation")]
@@ -24,7 +21,6 @@ pub struct AllocationDecision {
 }
 
 impl AllocationDecision {
-    
     pub fn new(explanation: String, decider: String, decision: String) -> AllocationDecision {
         AllocationDecision {
             explanation,

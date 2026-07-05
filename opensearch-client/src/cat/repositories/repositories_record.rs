@@ -10,19 +10,17 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct RepositoriesRecord {  /// The repository type.
+pub struct RepositoriesRecord {
+    /// The repository type.
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
-    pub r#type: Option<String>,  /// The unique repository identifier.
+    pub r#type: Option<String>,
+    /// The unique repository identifier.
     #[serde(rename = "id", default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
 }
 
 impl RepositoriesRecord {
-    
     pub fn new() -> RepositoriesRecord {
         RepositoriesRecord {
             r#type: None,

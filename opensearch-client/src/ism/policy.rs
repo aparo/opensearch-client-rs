@@ -14,25 +14,42 @@ use serde::{Deserialize, Serialize};
 /// Policy
 /// A policy defines how an index is managed throughout its lifetime.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Policy {  /// The default state an index is in.
-    #[serde(rename = "default_state", default, skip_serializing_if = "Option::is_none")]
+pub struct Policy {
+    /// The default state an index is in.
+    #[serde(
+        rename = "default_state",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub default_state: Option<String>,
     #[serde(rename = "policy_id", default, skip_serializing_if = "Option::is_none")]
     pub policy_id: Option<String>,
-    #[serde(rename = "schema_version", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "schema_version",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub schema_version: Option<f64>,
-    #[serde(rename = "last_updated_time", default, skip_serializing_if = "Option::is_none")]
-    pub last_updated_time: Option<u32>,  /// List of states for the index to transition between.
+    #[serde(
+        rename = "last_updated_time",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub last_updated_time: Option<u32>,
+    /// List of states for the index to transition between.
     #[serde(rename = "states", default, skip_serializing_if = "Option::is_none")]
     pub states: Option<Vec<ism::States>>,
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
 }
 
 impl Policy {
-      /// A policy defines how an index is managed throughout its lifetime.
+    /// A policy defines how an index is managed throughout its lifetime.
     pub fn new() -> Policy {
         Policy {
             default_state: None,

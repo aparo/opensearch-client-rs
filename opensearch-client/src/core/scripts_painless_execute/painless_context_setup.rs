@@ -11,13 +11,11 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PainlessContextSetup {
     #[serde(rename = "query", default, skip_serializing_if = "Option::is_none")]
-    pub query: Option<crate::dsl::Query>,  /// A document temporarily indexed in-memory and accessible from the Painless script.
+    pub query: Option<crate::dsl::Query>,
+    /// A document temporarily indexed in-memory and accessible from the Painless script.
     #[serde(rename = "document")]
     pub document: serde_json::Value,
     #[serde(rename = "index")]
@@ -25,7 +23,6 @@ pub struct PainlessContextSetup {
 }
 
 impl PainlessContextSetup {
-    
     pub fn new(document: serde_json::Value, index: String) -> PainlessContextSetup {
         PainlessContextSetup {
             query: None,

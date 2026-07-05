@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClusterDetails {
     #[serde(rename = "_shards", default, skip_serializing_if = "Option::is_none")]
@@ -31,7 +28,6 @@ pub struct ClusterDetails {
 }
 
 impl ClusterDetails {
-    
     pub fn new(status: String, timed_out: bool, indices: String) -> ClusterDetails {
         ClusterDetails {
             shards: None,

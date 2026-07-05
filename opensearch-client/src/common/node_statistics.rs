@@ -11,23 +11,22 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct NodeStatistics {
     #[serde(rename = "failures", default, skip_serializing_if = "Option::is_none")]
-    pub failures: Option<Vec<common::ErrorCause>>,  /// The number of nodes that responded successfully to the request.
+    pub failures: Option<Vec<common::ErrorCause>>,
+    /// The number of nodes that responded successfully to the request.
     #[serde(rename = "successful")]
-    pub successful: u32,  /// The total number of nodes selected by the request.
+    pub successful: u32,
+    /// The total number of nodes selected by the request.
     #[serde(rename = "total")]
-    pub total: u32,  /// The number of nodes that rejected the request or failed to respond. If this value is not 0, then a reason for the rejection or failure is included in the response.
+    pub total: u32,
+    /// The number of nodes that rejected the request or failed to respond. If this value is not 0, then a reason for the rejection or failure is included in the response.
     #[serde(rename = "failed")]
     pub failed: u32,
 }
 
 impl NodeStatistics {
-    
     pub fn new(successful: u32, total: u32, failed: u32) -> NodeStatistics {
         NodeStatistics {
             failures: None,

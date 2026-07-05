@@ -11,9 +11,6 @@
 use crate::cluster;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClusterIndicesShardsIndex {
     #[serde(rename = "shards")]
@@ -25,8 +22,11 @@ pub struct ClusterIndicesShardsIndex {
 }
 
 impl ClusterIndicesShardsIndex {
-    
-    pub fn new(shards: cluster::stats::ClusterShardMetrics, replication: cluster::stats::ClusterShardMetrics, primaries: cluster::stats::ClusterShardMetrics) -> ClusterIndicesShardsIndex {
+    pub fn new(
+        shards: cluster::stats::ClusterShardMetrics,
+        replication: cluster::stats::ClusterShardMetrics,
+        primaries: cluster::stats::ClusterShardMetrics,
+    ) -> ClusterIndicesShardsIndex {
         ClusterIndicesShardsIndex {
             shards,
             replication,

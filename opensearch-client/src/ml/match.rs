@@ -13,18 +13,20 @@ use serde::{Deserialize, Serialize};
 /// Match
 /// Match query.
 
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Match {  /// The description.
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+pub struct Match {
+    /// The description.
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
 }
 
 impl Match {
-      /// Match query.
+    /// Match query.
     pub fn new() -> Match {
-        Match {
-            description: None,
-        }
+        Match { description: None }
     }
 }

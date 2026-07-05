@@ -11,32 +11,54 @@
 use crate::notifications;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct NotificationsConfigItem {
-    #[serde(rename = "email_group", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "email_group",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub email_group: Option<notifications::EmailGroup>,
     #[serde(rename = "name")]
     pub name: String,
     #[serde(rename = "email", default, skip_serializing_if = "Option::is_none")]
     pub email: Option<notifications::Email>,
-    #[serde(rename = "ses_account", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "ses_account",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub ses_account: Option<notifications::SesAccount>,
     #[serde(rename = "chime", default, skip_serializing_if = "Option::is_none")]
-    pub chime: Option<notifications::Chime>,  /// Type of notification configuration.
+    pub chime: Option<notifications::Chime>,
+    /// Type of notification configuration.
     #[serde(rename = "config_type")]
     pub config_type: String,
-    #[serde(rename = "microsoft_teams", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "microsoft_teams",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub microsoft_teams: Option<notifications::MicrosoftTeamsItem>,
     #[serde(rename = "sns", default, skip_serializing_if = "Option::is_none")]
     pub sns: Option<notifications::SnsItem>,
-    #[serde(rename = "description", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "description",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<String>,
-    #[serde(rename = "smtp_account", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "smtp_account",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub smtp_account: Option<notifications::SmtpAccount>,
-    #[serde(rename = "is_enabled", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "is_enabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub is_enabled: Option<bool>,
     #[serde(rename = "webhook", default, skip_serializing_if = "Option::is_none")]
     pub webhook: Option<notifications::Webhook>,
@@ -45,7 +67,6 @@ pub struct NotificationsConfigItem {
 }
 
 impl NotificationsConfigItem {
-    
     pub fn new(name: String, config_type: String) -> NotificationsConfigItem {
         NotificationsConfigItem {
             email_group: None,

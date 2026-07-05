@@ -11,16 +11,17 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct WriteResponseBase {
     #[serde(rename = "_index")]
     pub index: String,
     #[serde(rename = "result")]
     pub result: String,
-    #[serde(rename = "forced_refresh", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "forced_refresh",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub forced_refresh: Option<bool>,
     #[serde(rename = "_primary_term")]
     pub primary_term: u32,
@@ -35,8 +36,15 @@ pub struct WriteResponseBase {
 }
 
 impl WriteResponseBase {
-    
-    pub fn new(index: String, result: String, primary_term: u32, seq_no: u32, version: u32, id: String, shards: common::ShardStatistics) -> WriteResponseBase {
+    pub fn new(
+        index: String,
+        result: String,
+        primary_term: u32,
+        seq_no: u32,
+        version: u32,
+        id: String,
+        shards: common::ShardStatistics,
+    ) -> WriteResponseBase {
         WriteResponseBase {
             index,
             result,

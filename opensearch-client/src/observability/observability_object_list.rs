@@ -11,9 +11,6 @@
 use crate::observability;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ObservabilityObjectList {
     #[serde(rename = "observabilityObjectList")]
@@ -27,8 +24,12 @@ pub struct ObservabilityObjectList {
 }
 
 impl ObservabilityObjectList {
-    
-    pub fn new(observability_object_list: Vec<observability::ObservabilityObject>, total_hits: u32, total_hit_relation: String, start_index: u32) -> ObservabilityObjectList {
+    pub fn new(
+        observability_object_list: Vec<observability::ObservabilityObject>,
+        total_hits: u32,
+        total_hit_relation: String,
+        start_index: u32,
+    ) -> ObservabilityObjectList {
         ObservabilityObjectList {
             observability_object_list,
             total_hits,

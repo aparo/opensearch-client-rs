@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ReservedSize {
     #[serde(rename = "total")]
@@ -26,7 +23,6 @@ pub struct ReservedSize {
 }
 
 impl ReservedSize {
-    
     pub fn new(total: u32, path: String, shards: Vec<String>, node_id: String) -> ReservedSize {
         ReservedSize {
             total,

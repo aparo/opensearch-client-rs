@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AllocationStore {
     #[serde(rename = "in_sync")]
@@ -30,8 +27,14 @@ pub struct AllocationStore {
 }
 
 impl AllocationStore {
-    
-    pub fn new(in_sync: bool, allocation_id: String, matching_size_in_bytes: u32, store_exception: String, found: bool, matching_sync_id: bool) -> AllocationStore {
+    pub fn new(
+        in_sync: bool,
+        allocation_id: String,
+        matching_size_in_bytes: u32,
+        store_exception: String,
+        found: bool,
+        matching_sync_id: bool,
+    ) -> AllocationStore {
         AllocationStore {
             in_sync,
             allocation_id,

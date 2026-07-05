@@ -10,9 +10,6 @@
 
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DeleteOperation {
     #[serde(rename = "if_seq_no", default, skip_serializing_if = "Option::is_none")]
@@ -25,14 +22,21 @@ pub struct DeleteOperation {
     pub routing: Option<String>,
     #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    #[serde(rename = "version_type", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "version_type",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub version_type: Option<String>,
-    #[serde(rename = "if_primary_term", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "if_primary_term",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub if_primary_term: Option<u32>,
 }
 
 impl DeleteOperation {
-    
     pub fn new() -> DeleteOperation {
         DeleteOperation {
             if_seq_no: None,

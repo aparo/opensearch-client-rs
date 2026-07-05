@@ -11,9 +11,6 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-
-
-
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct FieldMapping {
     #[serde(rename = "full_name")]
@@ -23,11 +20,7 @@ pub struct FieldMapping {
 }
 
 impl FieldMapping {
-    
     pub fn new(full_name: String, mapping: serde_json::Value) -> FieldMapping {
-        FieldMapping {
-            full_name,
-            mapping,
-        }
+        FieldMapping { full_name, mapping }
     }
 }

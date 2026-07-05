@@ -31,6 +31,7 @@ impl std::fmt::Display for RestoreMode {
     }
 }
 
+#[allow(dead_code)]
 pub struct Restorer {
     pub client: Arc<OsClient>,
     pub input: PathBuf,
@@ -89,6 +90,7 @@ impl Restorer {
         Ok(())
     }
 
+    #[allow(dead_code)]
     pub async fn restore_mapping(&self, file: &PathBuf, index: &str) -> anyhow::Result<()> {
         let file = File::open(file).await?;
         let mut reader = BufReader::new(file);

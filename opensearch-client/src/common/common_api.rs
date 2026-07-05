@@ -26,6 +26,7 @@ pub type ClearScrollSuccess = serde_json::Value;
 pub type SearchSuccess = opensearch_dsl::SearchResponse;
 
 pub struct CommonApi {
+    #[allow(dead_code)]
     configuration: Arc<crate::Configuration>,
 }
 
@@ -88,7 +89,7 @@ pub enum DeleteError {
 pub enum SearchWithIndexError {
     Status404(crate::query::ErrorResponse),
     Status400(crate::query::ErrorResponse),
-    DefaultResponse(crate::core::search::ResponseBody),
+    DefaultResponse(Box<crate::core::search::ResponseBody>),
     UnknownValue(serde_json::Value),
 }
 
@@ -105,7 +106,7 @@ pub enum ClearScrollError {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum SearchError {
-    DefaultResponse(crate::core::search::ResponseBody),
+    DefaultResponse(Box<crate::core::search::ResponseBody>),
     Status400(crate::query::ErrorResponse),
     Status404(crate::query::ErrorResponse),
     UnknownValue(serde_json::Value),

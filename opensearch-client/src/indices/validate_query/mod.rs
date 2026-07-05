@@ -10,5 +10,6 @@
 
 mod indices_validation_explanation;
 pub use self::indices_validation_explanation::IndicesValidationExplanation;
+#[allow(clippy::module_inception)]
 mod validate_query;
 pub use validate_query::ValidateQuery;

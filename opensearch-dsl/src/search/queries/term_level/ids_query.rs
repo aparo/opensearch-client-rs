@@ -29,7 +29,7 @@ impl Query {
     /// Creates an instance of [`IdsQuery`]
     ///
     /// - `values` - An array of
-    /// [document IDs](https://www.elastic.co/guide/en/opensearch/reference/current/mapping-id-field.html).
+    ///   [document IDs](https://www.elastic.co/guide/en/opensearch/reference/current/mapping-id-field.html).
     pub fn ids<I>(values: I) -> IdsQuery
     where
         I: IntoIterator,

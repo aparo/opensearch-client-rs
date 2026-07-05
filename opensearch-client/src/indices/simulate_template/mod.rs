@@ -14,5 +14,6 @@ pub use self::overlapping::Overlapping;
 mod template;
 pub use self::template::Template;
 
+#[allow(clippy::module_inception)]
 mod simulate_template;
 pub use self::simulate_template::SimulateTemplate;

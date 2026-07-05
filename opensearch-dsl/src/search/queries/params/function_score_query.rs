@@ -134,15 +134,15 @@ impl Function {
     /// - `field` - Field to apply function to
     /// - `origin` - The point of origin used for calculating distance. Must be
     ///   given as a number
-    /// for numeric field, date for date fields and geo point for geo fields.
-    /// Required for geo and numeric field. For date fields the default is
-    /// `now`. Date math (for example now-1h) is supported for origin.
+    ///   for numeric field, date for date fields and geo point for geo fields.
+    ///   Required for geo and numeric field. For date fields the default is
+    ///   `now`. Date math (for example now-1h) is supported for origin.
     /// - `scale` - Required for all types. Defines the distance from origin +
     ///   offset at which the
-    /// computed score will equal `decay` parameter. For geo fields: Can be
-    /// defined as number+unit (1km, 12m,…​). Default unit is meters. For date
-    /// fields: Can to be defined as a number+unit ("1h", "10d",…​). Default unit
-    /// is milliseconds. For numeric field: Any number.
+    ///   computed score will equal `decay` parameter. For geo fields: Can be
+    ///   defined as number+unit (1km, 12m,…​). Default unit is meters. For date
+    ///   fields: Can to be defined as a number+unit ("1h", "10d",…​). Default unit
+    ///   is milliseconds. For numeric field: Any number.
     pub fn decay<T, O>(
         function: DecayFunction,
         field: T,
@@ -407,9 +407,11 @@ pub enum FieldValueFactorModifier {
     Log,
 
     /// Add 1 to the field value and take the common logarithm
+    #[serde(rename = "log1p")]
     Log1P,
 
     /// Add 2 to the field value and take the common logarithm
+    #[serde(rename = "log2p")]
     Log2P,
 
     /// Take the [natural logarithm](https://en.wikipedia.org/wiki/Natural_logarithm) of the field
@@ -421,9 +423,11 @@ pub enum FieldValueFactorModifier {
     Ln,
 
     /// Add 1 to the field value and take the natural logarithm
+    #[serde(rename = "ln1p")]
     Ln1P,
 
     /// Add 2 to the field value and take the natural logarithm
+    #[serde(rename = "ln2p")]
     Ln2P,
 
     /// Square the field value (multiply it by itself)
@@ -677,15 +681,15 @@ where
     /// - `field` - Field to apply function to
     /// - `origin` - The point of origin used for calculating distance. Must be
     ///   given as a number
-    /// for numeric field, date for date fields and geo point for geo fields.
-    /// Required for geo and numeric field. For date fields the default is
-    /// `now`. Date math (for example now-1h) is supported for origin.
+    ///   for numeric field, date for date fields and geo point for geo fields.
+    ///   Required for geo and numeric field. For date fields the default is
+    ///   `now`. Date math (for example now-1h) is supported for origin.
     /// - `scale` - Required for all types. Defines the distance from origin +
     ///   offset at which the
-    /// computed score will equal `decay` parameter. For geo fields: Can be
-    /// defined as number+unit (1km, 12m,…​). Default unit is meters. For date
-    /// fields: Can to be defined as a number+unit ("1h", "10d",…​). Default unit
-    /// is milliseconds. For numeric field: Any number.
+    ///   computed score will equal `decay` parameter. For geo fields: Can be
+    ///   defined as number+unit (1km, 12m,…​). Default unit is meters. For date
+    ///   fields: Can to be defined as a number+unit ("1h", "10d",…​). Default unit
+    ///   is milliseconds. For numeric field: Any number.
     pub fn new<T>(function: DecayFunction, field: T, origin: O, scale: <O as Origin>::Scale) -> Self
     where
         T: ToString,

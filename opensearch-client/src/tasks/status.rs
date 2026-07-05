@@ -14,7 +14,6 @@ use serde::{Deserialize, Serialize};
 
 /// Status
 /// Task status information can vary wildly from task to task.
-
 /// Task status information can vary wildly from task to task.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(untagged)]

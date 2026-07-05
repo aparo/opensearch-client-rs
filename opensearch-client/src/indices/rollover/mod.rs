@@ -10,5 +10,6 @@
 
 mod rollover_conditions;
 pub use self::rollover_conditions::RolloverConditions;
+#[allow(clippy::module_inception)]
 mod rollover;
 pub use self::rollover::Rollover;

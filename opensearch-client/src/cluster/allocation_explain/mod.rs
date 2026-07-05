@@ -12,6 +12,7 @@ pub type UnassignedInformation = serde_json::Value;
 pub mod allocation_decision;
 pub use self::allocation_decision::AllocationDecision;
 
+#[allow(clippy::module_inception)]
 pub mod allocation_explain;
 pub use self::allocation_explain::AllocationExplain;
 

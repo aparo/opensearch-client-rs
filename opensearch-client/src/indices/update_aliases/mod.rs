@@ -19,5 +19,6 @@ pub use self::remove_action::RemoveAction;
 
 mod remove_index_action;
 pub use remove_index_action::RemoveIndexAction;
+#[allow(clippy::module_inception)]
 mod update_aliases;
 pub use update_aliases::UpdateAliases;

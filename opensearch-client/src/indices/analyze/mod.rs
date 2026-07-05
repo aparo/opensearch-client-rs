@@ -28,5 +28,6 @@ pub use self::explain_analyze_token::ExplainAnalyzeToken;
 
 pub mod token_detail;
 pub use self::token_detail::TokenDetail;
+#[allow(clippy::module_inception)]
 mod analyze;
 pub use analyze::Analyze;

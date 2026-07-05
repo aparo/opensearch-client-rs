@@ -870,6 +870,7 @@ impl IndicesApiClient {
     }
     ///
     /// Clones an index.
+    #[allow(clippy::should_implement_trait)]
     #[builder(on(String, into))]
     pub async fn clone(
         &self,

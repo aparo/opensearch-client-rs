@@ -12,7 +12,6 @@ use crate::common;
 use serde::{Deserialize, Serialize};
 
 /// GeoBounds
-
 /// A geo-bounding box. It can be represented in the following ways:
 /// - As 4 top/bottom/left/right coordinates.
 /// - As 2 top_left/bottom_right points.

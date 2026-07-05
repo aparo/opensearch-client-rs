@@ -111,10 +111,8 @@ impl FunctionScoreQuery {
     }
 
     /// By default, modifying the score does not change which documents match. To
-    /// exclude documents
-
-    /// that do not meet a certain score threshold the `min_score` parameter can
-    /// be set to the desired score threshold.
+    /// exclude documents that do not meet a certain score threshold the
+    /// `min_score` parameter can be set to the desired score threshold.
     pub fn min_score<T>(mut self, min_score: T) -> Self
     where
         T: Into<f32>,
@@ -140,7 +138,7 @@ impl FunctionScoreQuery {
 
 impl ShouldSkip for FunctionScoreQuery {
     fn should_skip(&self) -> bool {
-        self.query.should_skip() || self.functions.should_skip()
+        self.query.should_skip() && self.functions.should_skip()
     }
 }
 

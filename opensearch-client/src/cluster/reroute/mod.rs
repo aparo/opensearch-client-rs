@@ -32,5 +32,6 @@ pub use self::reroute_explanation::RerouteExplanation;
 mod reroute_parameters;
 pub use self::reroute_parameters::RerouteParameters;
 
+#[allow(clippy::module_inception)]
 mod reroute;
 pub use self::reroute::Reroute;

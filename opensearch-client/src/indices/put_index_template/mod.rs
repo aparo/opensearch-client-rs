@@ -11,5 +11,6 @@
 mod index_template_mapping;
 pub use self::index_template_mapping::IndexTemplateMapping;
 
+#[allow(clippy::module_inception)]
 mod put_index_template;
 pub use self::put_index_template::PutIndexTemplate;

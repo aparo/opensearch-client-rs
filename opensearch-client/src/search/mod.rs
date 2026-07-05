@@ -128,9 +128,9 @@ pub struct TypedHit<T> {
     pub fields: Map<String, serde_json::Value>,
 }
 
-impl<T> From<&TypedHit<T>> for TypedHit<T> {
+impl<T: Clone> From<&TypedHit<T>> for TypedHit<T> {
     fn from(value: &TypedHit<T>) -> Self {
-        value.into()
+        value.clone()
     }
 }
 
@@ -170,9 +170,9 @@ impl<T> TypedHitsMetadata<T> {
     }
 }
 
-impl<T> From<&TypedHitsMetadata<T>> for TypedHitsMetadata<T> {
+impl<T: Clone> From<&TypedHitsMetadata<T>> for TypedHitsMetadata<T> {
     fn from(value: &TypedHitsMetadata<T>) -> Self {
-        value.into()
+        value.clone()
     }
 }
 

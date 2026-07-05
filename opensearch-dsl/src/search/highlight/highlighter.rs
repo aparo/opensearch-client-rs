@@ -66,16 +66,16 @@ pub struct DefaultHighlighter {
 /// `with_positions_offsets` in the mapping. The fast vector highlighter:
 ///
 /// - Can be customized with a
-/// [boundary_scanner](https://www.elastic.co/guide/en/opensearch/reference/current/highlighting.html#boundary-scanners).
+///   [boundary_scanner](https://www.elastic.co/guide/en/opensearch/reference/current/highlighting.html#boundary-scanners).
 /// - Requires setting `term_vector` to `with_positions_offsets` which increases
 ///   the size of the
-/// index
+///   index
 /// - Can combine matches from multiple fields into one result. See
-/// [`matched_fields`](FastVectorHighlighter::matched_fields)
+///   [`matched_fields`](FastVectorHighlighter::matched_fields)
 /// - Can assign different weights to matches at different positions allowing
 ///   for things like
-/// phrase matches being sorted above term matches when highlighting a Boosting
-/// Query that boosts phrase matches over term matches
+///   phrase matches being sorted above term matches when highlighting a Boosting
+///   Query that boosts phrase matches over term matches
 ///
 /// > **Warning**<br/>
 /// > The `fvh` highlighter does not support span queries. If you need support

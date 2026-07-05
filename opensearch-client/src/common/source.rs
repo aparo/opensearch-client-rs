@@ -12,7 +12,6 @@ use crate::common;
 use serde::{Deserialize, Serialize};
 
 /// _source
-
 /// Defines how to fetch a source. Fetching can be disabled entirely, or the source can be filtered.
 /// Use this setting with the `source_includes` and `source_excludes` parameters.
 #[derive(Clone, Debug, Serialize, Deserialize)]

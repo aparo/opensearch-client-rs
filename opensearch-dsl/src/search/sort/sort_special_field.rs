@@ -1,3 +1,5 @@
+use std::fmt;
+
 /// Special sorting field variants
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
 pub enum SortSpecialField {
@@ -15,9 +17,9 @@ pub enum SortSpecialField {
     ShardDocumentOrder,
 }
 
-impl ToString for SortSpecialField {
-    fn to_string(&self) -> String {
-        String::from(match self {
+impl fmt::Display for SortSpecialField {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(match self {
             Self::Score => "_score",
             Self::DocumentIndexOrder => "_doc",
             Self::ShardDocumentOrder => "_shard_doc",

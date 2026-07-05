@@ -12,29 +12,27 @@
 //! in the original text. These offsets can be obtained from:
 //!
 //! - The postings list. If `index_options` is set to `offsets` in the mapping,
-//!   the
-//! [`unified` highlighter](UnifiedHighlighter) uses this information to
-//! highlight documents without re-analyzing the text. It re-runs the original
-//! query directly on the postings and extracts the matching offsets from the
-//! index, limiting the collection to the highlighted documents. This is
-//! important if you have large fields because it doesn’t require reanalyzing
-//! the text to be highlighted. It also requires less disk space than using
-//! `term_vectors`.
+//!   the [`unified` highlighter](UnifiedHighlighter) uses this information to
+//!   highlight documents without re-analyzing the text. It re-runs the original
+//!   query directly on the postings and extracts the matching offsets from the
+//!   index, limiting the collection to the highlighted documents. This is
+//!   important if you have large fields because it doesn’t require reanalyzing
+//!   the text to be highlighted. It also requires less disk space than using
+//!   `term_vectors`.
 //! - Term vectors. If `term_vector` information is provided by setting
-//!   `term_vector` to
-//! `with_positions_offsets` in the mapping, the [`unified`
-//! highlighter](UnifiedHighlighter) automatically uses the `term_vector` to
-//! highlight the field. It’s fast especially for large fields (> `1MB`) and for
-//! highlighting multi-term queries like `prefix` or `wildcard` because it
-//! can access the dictionary of terms for each document. The
-//! [`fvh` highlighter](FastVectorHighlighter) always uses term vectors.
+//!   `term_vector` to `with_positions_offsets` in the mapping, the
+//!   [`unified` highlighter](UnifiedHighlighter) automatically uses the
+//!   `term_vector` to highlight the field. It’s fast especially for large
+//!   fields (> `1MB`) and for highlighting multi-term queries like `prefix` or
+//!   `wildcard` because it can access the dictionary of terms for each document.
+//!   The [`fvh` highlighter](FastVectorHighlighter) always uses term vectors.
 //! - Plain highlighting. This mode is used by the
-//!   [`unified`](UnifiedHighlighter) when there is no
-//! other alternative. It creates a tiny in-memory index and re-runs the
-//! original query criteria through Lucene’s query execution planner to get
-//! access to low-level match information on the current document. This is
-//! repeated for every field and every document that needs highlighting.
-//! The [`plain` highlighter](PlainHighlighter) always uses plain highlighting.
+//!   [`unified`](UnifiedHighlighter) when there is no other alternative. It
+//!   creates a tiny in-memory index and re-runs the original query criteria
+//!   through Lucene’s query execution planner to get access to low-level match
+//!   information on the current document. This is repeated for every field and
+//!   every document that needs highlighting.
+//!   The [`plain` highlighter](PlainHighlighter) always uses plain highlighting.
 //!
 //! > **Warning**<br/>
 //! > Plain highlighting for large texts may require substantial amount of time

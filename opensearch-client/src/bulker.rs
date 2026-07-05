@@ -102,6 +102,7 @@ pub struct Bulker {
     // OPenSearch Client
     os_client: Arc<OsClient>,
     // Max items for bulk
+    #[allow(dead_code)]
     bulk_size: u32,
     // Max parallel bulks
     // max_concurrent_connections: u32,
@@ -231,7 +232,6 @@ impl Bulker {
         let action = BulkAction::Delete(DeleteAction {
             index: index.to_owned(),
             id: id.to_owned(),
-            ..Default::default()
         });
         self.sender
             .send(Action {
@@ -283,25 +283,28 @@ impl Bulker {
     pub async fn flush(&self) {
         loop {
             self.refresh_queue_size();
-            let statistics = self.statistics.lock().unwrap();
-            let status = format!(
-                "Bulker: Finished reqwest calls: {}, Total reqwest calls: {}, Queue size: {}, Running reqwest calls: {}, Error reqwest calls: {}, Success actions: {}, Error actions: {}, Error create actions: {}",
-                statistics.finished_reqwest_calls,
-                statistics.total_reqwest_calls,
-                statistics.queue_size,
-                statistics.running_reqwest_calls,
-                statistics.error_reqwest_calls,
-                statistics.success_actions,
-                statistics.error_actions,
-                statistics.error_create_actions
-            );
+            let (status, done) = {
+                let statistics = self.statistics.lock().unwrap();
+                let status = format!(
+                    "Bulker: Finished reqwest calls: {}, Total reqwest calls: {}, Queue size: {}, Running reqwest calls: {}, Error reqwest calls: {}, Success actions: {}, Error actions: {}, Error create actions: {}",
+                    statistics.finished_reqwest_calls,
+                    statistics.total_reqwest_calls,
+                    statistics.queue_size,
+                    statistics.running_reqwest_calls,
+                    statistics.error_reqwest_calls,
+                    statistics.success_actions,
+                    statistics.error_actions,
+                    statistics.error_create_actions
+                );
+                let done = statistics.finished_reqwest_calls == statistics.total_reqwest_calls
+                    && statistics.queue_size == 0;
+                (status, done)
+                // statistics guard dropped here
+            };
             println!("{}", status);
-            if statistics.finished_reqwest_calls == statistics.total_reqwest_calls
-                && statistics.queue_size == 0
-            {
+            if done {
                 break;
             }
-            drop(statistics);
             sleep(Duration::from_secs(1)).await;
         }
     }

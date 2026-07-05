@@ -19,5 +19,6 @@ pub use self::ingest::Ingest;
 
 mod pipeline_simulation;
 pub use self::pipeline_simulation::PipelineSimulation;
+#[allow(clippy::module_inception)]
 mod simulate;
 pub use self::simulate::Simulate;

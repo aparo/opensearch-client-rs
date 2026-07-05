@@ -11,7 +11,6 @@
 use serde::{Deserialize, Serialize};
 
 /// StringifiedVersionNumber
-
 /// Certain APIs may return values, including numbers such as epoch timestamps, as strings. This setting captures
 /// this behavior while keeping the semantics of the field type.
 ///

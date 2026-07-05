@@ -29,6 +29,7 @@ use serde::de::DeserializeOwned;
 use thiserror::Error;
 use url::Url;
 
+#[allow(dead_code)]
 pub trait Request {
     type Response: DeserializeOwned + Send + Sync;
     fn method(&self) -> reqwest::Method;
@@ -112,10 +113,12 @@ impl From<Error> for loco_rs::prelude::Error {
         }
     }
 }
+#[allow(dead_code)]
 pub fn urlencode<T: AsRef<str>>(s: T) -> String {
     ::url::form_urlencoded::byte_serialize(s.as_ref().as_bytes()).collect()
 }
 
+#[allow(dead_code)]
 pub fn parse_deep_object(prefix: &str, value: &serde_json::Value) -> Vec<(String, String)> {
     if let serde_json::Value::Object(object) = value {
         let mut params = vec![];
@@ -6315,25 +6318,23 @@ impl OsClient {
         body: Option<&serde_json::Value>,
     ) -> Result<(), Error> {
         let j = serde_json::to_string(&action)?;
-        let bulker_arc = Arc::clone(&self.configuration.bulker);
-        let mut bulker = bulker_arc.lock().unwrap();
-        bulker.push_str(j.as_str());
-        bulker.push('\n');
-        match body {
-            None => {}
-            Some(js) => {
+        let needs_flush = {
+            let bulker_arc = Arc::clone(&self.configuration.bulker);
+            let mut bulker = bulker_arc.lock().unwrap();
+            bulker.push_str(j.as_str());
+            bulker.push('\n');
+            if let Some(js) = body {
                 let j = serde_json::to_string(js)?;
                 bulker.push_str(j.as_str());
                 bulker.push('\n');
             }
-        }
-
-        let bulker_size_arc = Arc::clone(&self.configuration.bulker_size);
-        let mut bulker_size = bulker_size_arc.lock().unwrap();
-        *bulker_size += 1;
-        if *bulker_size >= self.configuration.max_bulk_size {
-            drop(bulker_size);
-            drop(bulker);
+            let bulker_size_arc = Arc::clone(&self.configuration.bulker_size);
+            let mut bulker_size = bulker_size_arc.lock().unwrap();
+            *bulker_size += 1;
+            *bulker_size >= self.configuration.max_bulk_size
+            // guards dropped here
+        };
+        if needs_flush {
             self.flush_bulk().await?;
         }
         Ok(())
@@ -6418,51 +6419,46 @@ impl OsClient {
     /// ```
     pub async fn flush_bulk(&self) -> Result<BulkResponse, Error> {
         let bulker_size_arc = Arc::clone(&self.configuration.bulker_size);
-        let mut bulker_size = bulker_size_arc.lock().unwrap();
-        if *bulker_size > 0 {
-            let bulker_arc = Arc::clone(&self.configuration.bulker);
-            let mut bulker = bulker_arc.lock().unwrap();
+        let bulker_arc = Arc::clone(&self.configuration.bulker);
 
-            // let request_url = format!("{}_bulk", self.server);
-
-            match self.bulk().body(bulker.to_owned()).call().await
-        // .client
-        // .post(request_url)
-        // .basic_auth(self.user.as_str(), Some(self.password.as_str()))
-        // .body()
-        // .header("Content-Type", "application/x-ndjson")
-        // .send()
-        // .await
-      {
-        Ok(result) => {
-          *bulker = String::new();
-          *bulker_size = 0;
-          // debug!("{:?}", &result);
-          if result.errors {
-            for map in &result.items {
-              for (_, value) in map.iter() {
-                if let Some(error) = &value.error
-                  && !error.kind.eq_ignore_ascii_case("version_conflict_engine_exception") {
-                    tracing::trace!("{:?}", &value);
-                  }
-              }
+        // Copy out the body and check size — drop guards before the await.
+        let body = {
+            let bulker_size = bulker_size_arc.lock().unwrap();
+            if *bulker_size == 0 {
+                return Ok(BulkResponse {
+                    took: 0,
+                    errors: false,
+                    items: vec![],
+                    ingest_took: None,
+                });
             }
-          }
+            bulker_arc.lock().unwrap().clone()
+            // guards dropped here
+        };
 
-          Ok(result)
-        }
-        Err(err) => {
-          println!("{:?}", &err);
-          Err(err)
-        }
-      }
-        } else {
-            Ok(BulkResponse {
-                took: 0,
-                errors: false,
-                items: vec![],
-                ingest_took: None,
-            })
+        match self.bulk().body(body).call().await {
+            Ok(result) => {
+                *bulker_arc.lock().unwrap() = String::new();
+                *bulker_size_arc.lock().unwrap() = 0;
+                if result.errors {
+                    for map in &result.items {
+                        for (_, value) in map.iter() {
+                            if let Some(error) = &value.error
+                                && !error
+                                    .kind
+                                    .eq_ignore_ascii_case("version_conflict_engine_exception")
+                            {
+                                tracing::trace!("{:?}", &value);
+                            }
+                        }
+                    }
+                }
+                Ok(result)
+            }
+            Err(err) => {
+                println!("{:?}", &err);
+                Err(err)
+            }
         }
     }
 

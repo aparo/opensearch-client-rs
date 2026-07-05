@@ -16,5 +16,5 @@ use serde::{Deserialize, Serialize};
 pub enum RequestItem {
     MultisearchHeaderValue(MultisearchHeader),
 
-    MultisearchBodyValue(MultisearchBody),
+    MultisearchBodyValue(Box<MultisearchBody>),
 }

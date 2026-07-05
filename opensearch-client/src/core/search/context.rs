@@ -12,7 +12,6 @@ use crate::common;
 use serde::{Deserialize, Serialize};
 
 /// Context
-
 /// Text or location that we want similar documents for or a lookup to a document's field for the text.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(untagged)]

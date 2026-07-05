@@ -232,37 +232,57 @@ impl Eq for N {}
 
 impl PartialOrd for N {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        match (self, other) {
-            // Positive
-            (N::Pos(value), N::Pos(other)) => value.partial_cmp(other),
-            (N::Pos(_), N::Neg(_)) => Some(Ordering::Greater),
-            (N::Pos(value), N::F32(other)) => (*value as f32).partial_cmp(other),
-            (N::Pos(value), N::F64(other)) => (*value as f64).partial_cmp(other),
-
-            // Negative
-            (N::Neg(_), N::Pos(_)) => Some(Ordering::Less),
-            (N::Neg(value), N::Neg(other)) => value.partial_cmp(other),
-            (N::Neg(value), N::F32(other)) => (*value as f32).partial_cmp(other),
-            (N::Neg(value), N::F64(other)) => (*value as f64).partial_cmp(other),
-
-            // 32-bit floats
-            (N::F32(value), N::Pos(other)) => value.partial_cmp(&(*other as f32)),
-            (N::F32(value), N::Neg(other)) => value.partial_cmp(&(*other as f32)),
-            (N::F32(value), N::F32(other)) => value.partial_cmp(other),
-            (N::F32(value), N::F64(other)) => value.partial_cmp(&(*other as f32)),
-
-            // 64-bit floats
-            (N::F64(value), N::Pos(other)) => value.partial_cmp(&(*other as f64)),
-            (N::F64(value), N::Neg(other)) => value.partial_cmp(&(*other as f64)),
-            (N::F64(value), N::F32(other)) => (*value as f32).partial_cmp(other),
-            (N::F64(value), N::F64(other)) => value.partial_cmp(other),
-        }
+        Some(self.cmp(other))
     }
 }
 
 impl Ord for N {
     fn cmp(&self, other: &Self) -> Ordering {
-        self.partial_cmp(other).unwrap_or(Ordering::Less)
+        match (self, other) {
+            // Positive
+            (N::Pos(value), N::Pos(other)) => value.cmp(other),
+            (N::Pos(_), N::Neg(_)) => Ordering::Greater,
+            (N::Pos(value), N::F32(other)) => {
+                (*value as f32).partial_cmp(other).unwrap_or(Ordering::Less)
+            }
+            (N::Pos(value), N::F64(other)) => {
+                (*value as f64).partial_cmp(other).unwrap_or(Ordering::Less)
+            }
+
+            // Negative
+            (N::Neg(_), N::Pos(_)) => Ordering::Less,
+            (N::Neg(value), N::Neg(other)) => value.cmp(other),
+            (N::Neg(value), N::F32(other)) => {
+                (*value as f32).partial_cmp(other).unwrap_or(Ordering::Less)
+            }
+            (N::Neg(value), N::F64(other)) => {
+                (*value as f64).partial_cmp(other).unwrap_or(Ordering::Less)
+            }
+
+            // 32-bit floats
+            (N::F32(value), N::Pos(other)) => value
+                .partial_cmp(&(*other as f32))
+                .unwrap_or(Ordering::Less),
+            (N::F32(value), N::Neg(other)) => value
+                .partial_cmp(&(*other as f32))
+                .unwrap_or(Ordering::Less),
+            (N::F32(value), N::F32(other)) => value.partial_cmp(other).unwrap_or(Ordering::Less),
+            (N::F32(value), N::F64(other)) => value
+                .partial_cmp(&(*other as f32))
+                .unwrap_or(Ordering::Less),
+
+            // 64-bit floats
+            (N::F64(value), N::Pos(other)) => value
+                .partial_cmp(&(*other as f64))
+                .unwrap_or(Ordering::Less),
+            (N::F64(value), N::Neg(other)) => value
+                .partial_cmp(&(*other as f64))
+                .unwrap_or(Ordering::Less),
+            (N::F64(value), N::F32(other)) => {
+                (*value as f32).partial_cmp(other).unwrap_or(Ordering::Less)
+            }
+            (N::F64(value), N::F64(other)) => value.partial_cmp(other).unwrap_or(Ordering::Less),
+        }
     }
 }
 

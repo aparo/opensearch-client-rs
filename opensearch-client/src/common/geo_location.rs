@@ -12,7 +12,6 @@ use crate::common;
 use serde::{Deserialize, Serialize};
 
 /// GeoLocation
-
 /// A latitude/longitude as a two-dimensional point. It can be represented in the following ways:
 /// - As a `{lat, long}` object.
 /// - As a geohash value.

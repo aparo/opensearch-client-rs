@@ -76,8 +76,8 @@ impl<'de> Deserialize<'de> for Fuzziness {
                     return Ok(Fuzziness::Auto);
                 }
 
-                if value.starts_with("AUTO:") {
-                    let parts: Vec<&str> = value[5..].split(',').collect();
+                if let Some(rest) = value.strip_prefix("AUTO:") {
+                    let parts: Vec<&str> = rest.split(',').collect();
                     if parts.len() == 2 {
                         let start = parts[0].parse::<u8>().map_err(E::custom)?;
                         let end = parts[1].parse::<u8>().map_err(E::custom)?;

@@ -34,7 +34,6 @@ pub enum FunctionScoreMode {
     Min,
 }
 
-
 /// The newly computed score is combined with the score of the query. The
 /// parameter `boost_mode` defines how.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Deserialize, Serialize)]
@@ -60,7 +59,6 @@ pub enum FunctionBoostMode {
     /// Min of query score and function score
     Min,
 }
-
 
 macro_rules! function {
     ($name:ident { $($variant:ident($query:ty)),+ $(,)? }) => {

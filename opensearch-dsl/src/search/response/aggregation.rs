@@ -143,15 +143,13 @@ impl AggregationTrait for AggregationResponse {
 }
 
 /// TopHitsResult equivalent
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-#[derive(Default)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Default)]
 pub struct TopHitsResult {
     pub total: i64,
     #[serde(rename = "max_score")]
     pub max_score: Option<f64>,
     pub hits: Vec<Hit>,
 }
-
 
 /// Simple aggregation
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -207,8 +205,7 @@ pub struct MultiBucketAggregation {
 }
 
 /// BucketAggregation
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-#[derive(Default)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Default)]
 pub struct BucketAggregation {
     pub buckets: Vec<Bucket>,
     #[serde(rename = "doc_count_error_upper_bound")]
@@ -219,7 +216,6 @@ pub struct BucketAggregation {
     pub source_aggregation: Option<RequestAggregation>,
     pub meta: Option<Value>,
 }
-
 
 impl BucketAggregation {
     pub fn buckets_count_as_list(&self) -> Vec<(String, i64)> {

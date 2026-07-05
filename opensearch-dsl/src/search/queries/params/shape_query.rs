@@ -20,7 +20,6 @@ pub enum SpatialRelation {
     Contains,
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;

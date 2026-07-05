@@ -21,19 +21,19 @@ fn get_opensearch_type(ty: &syn::Type) -> (String, String, bool, bool) {
                         // For Vec<T>, extract the inner type
                         if let syn::PathArguments::AngleBracketed(args) = &segment.arguments
                             && let Some(syn::GenericArgument::Type(inner_type)) = args.args.first()
-                            {
-                                let (os_type, field_type, _, _) = get_opensearch_type(inner_type);
-                                return (os_type, field_type, true, true);
-                            }
+                        {
+                            let (os_type, field_type, _, _) = get_opensearch_type(inner_type);
+                            return (os_type, field_type, true, true);
+                        }
                         ("text".to_string(), "string".to_string(), false, true)
                     }
                     "Option" => {
                         // For Option<T>, extract the inner type
                         if let syn::PathArguments::AngleBracketed(args) = &segment.arguments
                             && let Some(syn::GenericArgument::Type(inner_type)) = args.args.first()
-                            {
-                                return get_opensearch_type(inner_type);
-                            }
+                        {
+                            return get_opensearch_type(inner_type);
+                        }
                         ("text".to_string(), "string".to_string(), false, true)
                     }
                     _ => {
@@ -62,18 +62,18 @@ fn is_custom_document_type(ty: &syn::Type) -> bool {
                         // For Vec<T>, check if T is a custom type
                         if let syn::PathArguments::AngleBracketed(args) = &segment.arguments
                             && let Some(syn::GenericArgument::Type(inner_type)) = args.args.first()
-                            {
-                                return is_custom_document_type(inner_type);
-                            }
+                        {
+                            return is_custom_document_type(inner_type);
+                        }
                         false
                     }
                     "Option" => {
                         // For Option<T>, check if T is a custom type
                         if let syn::PathArguments::AngleBracketed(args) = &segment.arguments
                             && let Some(syn::GenericArgument::Type(inner_type)) = args.args.first()
-                            {
-                                return is_custom_document_type(inner_type);
-                            }
+                        {
+                            return is_custom_document_type(inner_type);
+                        }
                         false
                     }
                     _ => true, // Assume it's a custom type

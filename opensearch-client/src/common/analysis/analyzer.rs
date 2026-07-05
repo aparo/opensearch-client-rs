@@ -11,8 +11,9 @@
 use crate::common;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-#[derive(Default)]
+#[derive(
+    Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize, Default,
+)]
 pub enum Analyzer {
     #[default]
     StandardAnalyzerValue,
@@ -73,4 +74,3 @@ impl std::fmt::Display for Analyzer {
         }
     }
 }
-

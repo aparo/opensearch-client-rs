@@ -59,9 +59,10 @@ impl Restorer {
                 if file_name.ends_with(".json") {
                     let index = file_name.replace(".json", "");
                     if let Some(ref i) = self.index
-                        && !index.starts_with(i) {
-                            continue;
-                        }
+                        && !index.starts_with(i)
+                    {
+                        continue;
+                    }
                     // self.restore_mapping(&file, &index).await?;
                 }
             }
@@ -77,9 +78,10 @@ impl Restorer {
                 if file_name.ends_with("__data.zstd") {
                     let index = file_name.replace("__data.zstd", "");
                     if let Some(ref i) = self.index
-                        && !index.starts_with(i) {
-                            continue;
-                        }
+                        && !index.starts_with(i)
+                    {
+                        continue;
+                    }
                     self.restore_index(file, &index).await?;
                 }
             }

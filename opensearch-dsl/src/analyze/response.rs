@@ -75,8 +75,7 @@ pub struct CharFilter {
 }
 
 /// Type of token
-#[derive(Debug, Clone, PartialEq, Eq)]
-#[derive(Default)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub enum TokenType {
     /// Alphanumeric token
     #[default]
@@ -125,7 +124,6 @@ pub enum TokenType {
     /// Other token
     Other(String),
 }
-
 
 impl Serialize for TokenType {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>

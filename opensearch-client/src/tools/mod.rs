@@ -355,10 +355,9 @@ fn get_json_file_recursive(path: &PathBuf) -> anyhow::Result<Vec<PathBuf>> {
     let mut files = Vec::new();
     for entry in WalkDir::new(path) {
         let entry = entry?;
-        if entry.path().is_file()
-            && entry.path().extension().unwrap_or_default() == "json" {
-                files.push(entry.path().to_path_buf());
-            }
+        if entry.path().is_file() && entry.path().extension().unwrap_or_default() == "json" {
+            files.push(entry.path().to_path_buf());
+        }
     }
     Ok(files)
 }
@@ -402,35 +401,34 @@ pub async fn copy_index_remotely(
         info!("Deleted existing index: {}", target_index);
     }
 
-    if !target_exists
-        && copy_mappings {
-            let index_data = source_client
-                .indices()
-                .get()
-                .index(source_index)
-                .call()
-                .await?;
-            if let Some(index_template) = index_data.get(source_index) {
-                let mappings = index_template.mappings.clone();
-                if mappings.is_some() {
-                    let new_template = IndexTemplateMapping {
-                        mappings,
-                        aliases: index_template.aliases.clone(),
-                        ..Default::default()
-                    };
-                    info!("Copying mappings from source index: {}", source_index);
-                    target_client
-                        .indices()
-                        .create()
-                        .index(&target_index)
-                        .body(new_template)
-                        .call()
-                        .await?;
-                } else {
-                    info!("No mappings to copy from source index: {}", source_index);
-                }
+    if !target_exists && copy_mappings {
+        let index_data = source_client
+            .indices()
+            .get()
+            .index(source_index)
+            .call()
+            .await?;
+        if let Some(index_template) = index_data.get(source_index) {
+            let mappings = index_template.mappings.clone();
+            if mappings.is_some() {
+                let new_template = IndexTemplateMapping {
+                    mappings,
+                    aliases: index_template.aliases.clone(),
+                    ..Default::default()
+                };
+                info!("Copying mappings from source index: {}", source_index);
+                target_client
+                    .indices()
+                    .create()
+                    .index(&target_index)
+                    .body(new_template)
+                    .call()
+                    .await?;
+            } else {
+                info!("No mappings to copy from source index: {}", source_index);
             }
         }
+    }
 
     let query = Query::match_all();
     let sort = SortCollection::new().field(FieldSort::ascending("_id"));

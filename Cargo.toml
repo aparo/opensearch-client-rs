@@ -10,10 +10,10 @@ resolver = "2"
 
 [workspace.package]
 description = "OpenSearch Client"
-version = "0.3.2"
+version = "0.3.3"
 edition = "2024"
 authors = ["Alberto Paro"]
-documentation = "https://docs.rs/opensearch-client/0.3.2/opensearch_client/"
+documentation = "https://docs.rs/opensearch-client/0.3.3/opensearch_client/"
 license = "Apache-2.0"
 repository = "https://github.com/aparo/opensearch-client-rs"
 keywords = ["opensearch"]
@@ -21,10 +21,10 @@ readme = "README.md"
 
 [workspace.dependencies]
 # Internal crates
-opensearch-client = { path = "./opensearch-client/", version = "0.3.2" }
-opensearch-dsl = { path = "./opensearch-dsl/", version = "0.3.2" }
-opensearch-macro = { path = "./opensearch-macro/", version = "0.3.2" }
-opensearch-testcontainer = { path = "./opensearch-testcontainer/", version = "0.3.2" }
+opensearch-client = { path = "./opensearch-client/", version = "0.3.3" }
+opensearch-dsl = { path = "./opensearch-dsl/", version = "0.3.3" }
+opensearch-macro = { path = "./opensearch-macro/", version = "0.3.3" }
+opensearch-testcontainer = { path = "./opensearch-testcontainer/", version = "0.3.3" }
 
 # External crates
 anyhow = "1"

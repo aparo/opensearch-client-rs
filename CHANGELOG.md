@@ -15,6 +15,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.3.3] — 2026-09-26
+
+### Changed
+- Centralized all dependency versions in the root `Cargo.toml` under
+  `[workspace.dependencies]`; member crates now inherit them via
+  `{ workspace = true }`, adding only their own `features`/`optional`
+- Sorted all `Cargo.toml` dependencies alphabetically (`cargo sort -w`)
+- Upgraded workspace dependencies, including `testcontainers` to 0.28.0
+
+### Fixed
+- Publish conflict on `bollard-stubs` caused by `opensearch-client` requiring
+  two incompatible `testcontainers` versions (its own dev-dependency vs. the one
+  pinned by the previously published `opensearch-testcontainer`); resolved by
+  releasing all crates at 0.3.3 so the dependency tree resolves consistently
+
+---
+
 ## [0.3.2] — 2026-07-05
 
 ### Fixed

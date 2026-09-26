@@ -24,7 +24,12 @@ opensearch-client = { workspace = true, features = [
 opensearch-dsl = { workspace = true }
 serde = { workspace = true, features = ["derive", "std"] }
 serde_json = { workspace = true }
-tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+tokio = { workspace = true, features = [
+    "macros",
+    "rt-multi-thread",
+    "fs",
+    "io-util",
+] }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 url = { workspace = true }

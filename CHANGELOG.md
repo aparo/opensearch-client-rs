@@ -23,12 +23,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `{ workspace = true }`, adding only their own `features`/`optional`
 - Sorted all `Cargo.toml` dependencies alphabetically (`cargo sort -w`)
 - Upgraded workspace dependencies, including `testcontainers` to 0.28.0
+- Internal workspace dependencies now declare `registry = "kellnr-bdt"` so they
+  resolve from the publishing registry instead of the source-replaced
+  `crates-io`, enabling coordinated `cargo publish` of the whole workspace
 
 ### Fixed
 - Publish conflict on `bollard-stubs` caused by `opensearch-client` requiring
   two incompatible `testcontainers` versions (its own dev-dependency vs. the one
   pinned by the previously published `opensearch-testcontainer`); resolved by
   releasing all crates at 0.3.3 so the dependency tree resolves consistently
+- `opensearch-cli` failed to compile in isolation (e.g. during `cargo publish`
+  verification) because its `tokio` dependency was missing the `fs` and
+  `io-util` features it relies on; these were previously provided only via
+  workspace-wide feature unification
+- `opensearch-macro`'s cyclic dev-dependency on `opensearch-client` is now
+  declared path-only (no version) so `cargo publish` no longer tries to resolve
+  an unpublished version from the registry
+- `opensearch-client`'s `readme` pointed to `../README.md` (outside the package);
+  now points to the crate-local `README.md`, removing a packaging warning
 
 ---
 

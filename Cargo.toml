@@ -21,10 +21,10 @@ readme = "README.md"
 
 [workspace.dependencies]
 # Internal crates
-opensearch-client = { path = "./opensearch-client/", version = "0.3.3" }
-opensearch-dsl = { path = "./opensearch-dsl/", version = "0.3.3" }
-opensearch-macro = { path = "./opensearch-macro/", version = "0.3.3" }
-opensearch-testcontainer = { path = "./opensearch-testcontainer/", version = "0.3.3" }
+opensearch-client = { path = "./opensearch-client/", version = "0.3.3", registry = "kellnr-bdt" }
+opensearch-dsl = { path = "./opensearch-dsl/", version = "0.3.3", registry = "kellnr-bdt" }
+opensearch-macro = { path = "./opensearch-macro/", version = "0.3.3", registry = "kellnr-bdt" }
+opensearch-testcontainer = { path = "./opensearch-testcontainer/", version = "0.3.3", registry = "kellnr-bdt" }
 
 # External crates
 anyhow = "1"

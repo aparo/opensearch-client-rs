@@ -8,7 +8,6 @@ documentation = { workspace = true }
 license = { workspace = true }
 repository = { workspace = true }
 keywords = { workspace = true }
-readme = "../README.md"
 publish = true
 
 [lib]
@@ -22,5 +21,9 @@ quote = { workspace = true }
 syn = { workspace = true }
 
 [dev-dependencies]
-opensearch-client = { workspace = true }
+# Path-only (no version) on purpose: this is a cyclic dev-dependency within the
+# workspace. A version requirement would force registry resolution during
+# `cargo publish` before opensearch-client is published. Cargo strips
+# version-less dev-dependencies from the packaged manifest, breaking the cycle.
+opensearch-client = { path = "../opensearch-client" }
 serde = { workspace = true, features = ["derive", "std"] }

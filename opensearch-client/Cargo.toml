@@ -10,48 +10,42 @@ repository = { workspace = true }
 keywords = { workspace = true }
 readme = "../README.md"
 
-
 [dependencies]
-tokio = { version = "1.52.3", features = ["macros", "rt-multi-thread"] }
-serde = { version = "^1.0", features = ["derive", "std"] }
-serde_with = { version = "^3.21", default-features = false, features = [
-    "base64",
-    "std",
-    "macros",
-] }
-serde_json = "^1.0"
-serde_repr = "^0.1"
-url = "^2.5"
-async-trait = "^0.1"
-reqwest = { version = "^0.13", features = ["json", "multipart"] }
-reqwest-middleware = { version = "^0.5", features = [
+anyhow = { workspace = true }
+async-trait = { workspace = true }
+axum = { workspace = true, optional = true }
+base64 = { workspace = true }
+bon = { workspace = true, optional = true }
+futures = { workspace = true, optional = true }
+http = { workspace = true }
+# client stuff
+# task-local-extensions = "0.1.4"
+loco-rs = { workspace = true, optional = true }
+
+opensearch-dsl = { workspace = true, optional = true }
+opensearch-macro = { workspace = true }
+reqwest = { workspace = true, features = ["json", "multipart"] }
+reqwest-middleware = { workspace = true, features = [
     "json",
     "multipart",
     "query",
 ] }
-reqwest-retry = "0.9.1"
-reqwest-tracing = "0.7.1"
-http = "1.4.2"
-base64 = "0.22.1"
-anyhow = "1.0.103"
-thiserror = "2.0.18"
-tracing = { version = "0.1.44" }
-bon = { version = "3.9.3", optional = true }
-
-opensearch-dsl = { workspace = true, optional = true }
-opensearch-macro = { workspace = true }
-# client stuff
-# task-local-extensions = "0.1.4"
-loco-rs = { version = "0.16", optional = true, default-features = false }
-axum = { version = "0.8", optional = true, default-features = false }
-walkdir = { version = "2.5.0", optional = true }
-futures = { version = "0.3.32", optional = true }
-
+reqwest-retry = { workspace = true }
+reqwest-tracing = { workspace = true }
+serde = { workspace = true, features = ["derive", "std"] }
+serde_json = { workspace = true }
+serde_repr = { workspace = true }
+serde_with = { workspace = true, features = ["base64", "std", "macros"] }
+thiserror = { workspace = true }
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+tracing = { workspace = true }
+url = { workspace = true }
+walkdir = { workspace = true, optional = true }
 
 [dev-dependencies]
 opensearch-testcontainer = { workspace = true }
-testcontainers = "0.27.3"
-tracing-test = "0.2.6"
+testcontainers = { workspace = true }
+tracing-test = { workspace = true }
 
 [features]
 default = ["bon", "search", "indices", "ingest", "cluster", "ml"]
@@ -83,7 +77,6 @@ full = [
     "transforms",
     "tools",
 ]
-
 
 quickwit = []
 # loco RS error mangement 

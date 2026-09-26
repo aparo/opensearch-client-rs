@@ -1,12 +1,12 @@
 [package]
 name = "opensearch-testcontainer"
 description = "Testcontainer for OpenSearch"
-version.workspace = true
-edition.workspace = true
-authors.workspace = true
-documentation.workspace = true
-license.workspace = true
-repository.workspace = true
+version = { workspace = true }
+edition = { workspace = true }
+authors = { workspace = true }
+documentation = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
 keywords = [
     "docker",
     "testcontainers",
@@ -17,10 +17,10 @@ keywords = [
 readme = "README.md"
 
 [dependencies]
-testcontainers = "0.27.3"
+testcontainers = { workspace = true }
 
 [dev-dependencies]
-reqwest = { version = "0.13.4", features = ["blocking"] }
-serde = { version = "1.0.228", features = ["derive"] }
-serde_json = "1.0.150"
-tokio = { version = "1.52.3", features = ["full"] }
+reqwest = { workspace = true, features = ["blocking"] }
+serde = { workspace = true, features = ["derive", "std"] }
+serde_json = { workspace = true }
+tokio = { workspace = true, features = ["full"] }

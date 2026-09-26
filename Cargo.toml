@@ -1,10 +1,10 @@
 [workspace]
 members = [
-    "opensearch-testcontainer",
-    "opensearch-dsl",
-    "opensearch-client",
-    "opensearch-macro",
     "opensearch-cli",
+    "opensearch-client",
+    "opensearch-dsl",
+    "opensearch-macro",
+    "opensearch-testcontainer",
 ]
 resolver = "2"
 
@@ -20,11 +20,48 @@ keywords = ["opensearch"]
 readme = "README.md"
 
 [workspace.dependencies]
+# Internal crates
 opensearch-client = { path = "./opensearch-client/", version = "0.3.2" }
 opensearch-dsl = { path = "./opensearch-dsl/", version = "0.3.2" }
 opensearch-macro = { path = "./opensearch-macro/", version = "0.3.2" }
 opensearch-testcontainer = { path = "./opensearch-testcontainer/", version = "0.3.2" }
 
+# External crates
+anyhow = "1.0.103"
+async-compression = "0.4.48"
+async-trait = "0.1"
+axum = { version = "0.8", default-features = false }
+base64 = "0.22.1"
+bon = "3.9.3"
+chrono = { version = "0.4.45", default-features = false }
+clap = "4.6.7"
+darling = "0.23.0"
+dotenvy = "0.15.7"
+futures = "0.3.32"
+heck = "0.5.0"
+http = "1.4.2"
+loco-rs = { version = "0.16", default-features = false }
+num-traits = "0.2.19"
+pretty_assertions = "1.4.1"
+proc-macro2 = "1.0"
+quote = "1.0"
+reqwest = "0.13"
+reqwest-middleware = "0.5"
+reqwest-retry = "0.9.1"
+reqwest-tracing = "0.7.1"
+serde = { version = "1.0.229", default-features = false }
+serde_json = "1.0.151"
+serde_repr = "0.1"
+serde_with = { version = "3.21", default-features = false }
+syn = "2.0"
+testcontainers = "0.27.3"
+thiserror = "2.0.18"
+tokio = "1.52.3"
+tracing = "0.1.44"
+tracing-subscriber = "0.3.23"
+tracing-test = "0.2.6"
+url = "2.5.8"
+walkdir = "2.5.0"
 
 [workspace.metadata.precommit]
 fmt = "cargo fmt"

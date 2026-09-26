@@ -1,13 +1,13 @@
 [package]
 name = "opensearch-macro"
-version.workspace = true
-edition.workspace = true
-description.workspace = true
-authors.workspace = true
-documentation.workspace = true
-license.workspace = true
-repository.workspace = true
-keywords.workspace = true
+version = { workspace = true }
+edition = { workspace = true }
+description = { workspace = true }
+authors = { workspace = true }
+documentation = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+keywords = { workspace = true }
 readme = "../README.md"
 publish = true
 
@@ -15,12 +15,12 @@ publish = true
 proc-macro = true
 
 [dependencies]
-syn = "2.0"
-quote = "1.0"
-darling = "0.23.0"
-proc-macro2 = "1.0"
-heck = "0.5.0"
+darling = { workspace = true }
+heck = { workspace = true }
+proc-macro2 = { workspace = true }
+quote = { workspace = true }
+syn = { workspace = true }
 
 [dev-dependencies]
-opensearch-client = { path = "../opensearch-client" }
-serde = { version = "1.0", features = ["derive"] }
+opensearch-client = { workspace = true }
+serde = { workspace = true, features = ["derive", "std"] }

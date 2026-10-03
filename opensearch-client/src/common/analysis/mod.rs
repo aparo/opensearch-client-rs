@@ -15,6 +15,9 @@ pub type StopWords = StringOrStringArray;
 pub mod char_filter_base;
 pub use self::char_filter_base::CharFilterBase;
 
+pub mod language;
+pub use self::language::Language;
+
 pub mod cjk_analyzer;
 pub use self::cjk_analyzer::CjkAnalyzer;
 
@@ -40,7 +43,7 @@ pub mod kuromoji_analyzer;
 pub use self::kuromoji_analyzer::KuromojiAnalyzer;
 
 pub mod language_analyzer;
-pub use self::language_analyzer::LanguageAnalyzer;
+pub use self::language_analyzer::{LanguageAnalyzer, LanguageAnalyzerConfig};
 
 pub mod lowercase_normalizer;
 pub use self::lowercase_normalizer::LowercaseNormalizer;
@@ -81,6 +84,22 @@ pub use self::whitespace_analyzer::WhitespaceAnalyzer;
 pub mod analyzer;
 pub use self::analyzer::Analyzer;
 
+// Char filter structs
+pub mod html_strip_char_filter;
+pub use self::html_strip_char_filter::HtmlStripCharFilter;
+
+pub mod mapping_char_filter;
+pub use self::mapping_char_filter::MappingCharFilter;
+
+pub mod pattern_replace_char_filter;
+pub use self::pattern_replace_char_filter::PatternReplaceCharFilter;
+
+pub mod icu_normalizer_char_filter;
+pub use self::icu_normalizer_char_filter::IcuNormalizerCharFilter;
+
+pub mod kuromoji_iteration_mark_char_filter;
+pub use self::kuromoji_iteration_mark_char_filter::KuromojiIterationMarkCharFilter;
+
 pub mod char_filter;
 pub use self::char_filter::CharFilter;
 
@@ -89,6 +108,49 @@ pub use self::char_filter_definition::CharFilterDefinition;
 
 pub mod normalizer;
 pub use self::normalizer::Normalizer;
+
+// Tokenizer structs
+pub mod standard_tokenizer;
+pub use self::standard_tokenizer::StandardTokenizer;
+
+pub mod ngram_tokenizer;
+pub use self::ngram_tokenizer::NGramTokenizer;
+
+pub mod edge_ngram_tokenizer;
+pub use self::edge_ngram_tokenizer::EdgeNGramTokenizer;
+
+pub mod keyword_tokenizer;
+pub use self::keyword_tokenizer::KeywordTokenizer;
+
+pub mod pattern_tokenizer;
+pub use self::pattern_tokenizer::PatternTokenizer;
+
+pub mod whitespace_tokenizer;
+pub use self::whitespace_tokenizer::WhitespaceTokenizer;
+
+pub mod uax_url_email_tokenizer;
+pub use self::uax_url_email_tokenizer::UaxUrlEmailTokenizer;
+
+pub mod path_hierarchy_tokenizer;
+pub use self::path_hierarchy_tokenizer::PathHierarchyTokenizer;
+
+pub mod char_group_tokenizer;
+pub use self::char_group_tokenizer::CharGroupTokenizer;
+
+pub mod simple_pattern_tokenizer;
+pub use self::simple_pattern_tokenizer::SimplePatternTokenizer;
+
+pub mod simple_pattern_split_tokenizer;
+pub use self::simple_pattern_split_tokenizer::SimplePatternSplitTokenizer;
+
+pub mod icu_tokenizer;
+pub use self::icu_tokenizer::IcuTokenizer;
+
+pub mod kuromoji_tokenizer;
+pub use self::kuromoji_tokenizer::KuromojiTokenizer;
+
+pub mod nori_tokenizer;
+pub use self::nori_tokenizer::NoriTokenizer;
 
 pub mod token_filter;
 pub use self::token_filter::TokenFilter;
@@ -101,3 +163,145 @@ pub use self::tokenizer::Tokenizer;
 
 pub mod tokenizer_definition;
 pub use self::tokenizer_definition::TokenizerDefinition;
+
+// Token filter structs
+pub mod asciifolding_token_filter;
+pub use self::asciifolding_token_filter::AsciiFoldingTokenFilter;
+
+pub mod cjk_bigram_token_filter;
+pub use self::cjk_bigram_token_filter::CjkBigramTokenFilter;
+
+pub mod common_grams_token_filter;
+pub use self::common_grams_token_filter::CommonGramsTokenFilter;
+
+pub mod condition_token_filter;
+pub use self::condition_token_filter::ConditionTokenFilter;
+
+pub mod delimited_payload_token_filter;
+pub use self::delimited_payload_token_filter::DelimitedPayloadTokenFilter;
+
+pub mod delimited_term_freq_token_filter;
+pub use self::delimited_term_freq_token_filter::DelimitedTermFreqTokenFilter;
+
+pub mod dictionary_decompounder_token_filter;
+pub use self::dictionary_decompounder_token_filter::DictionaryDecompounderTokenFilter;
+
+pub mod edge_ngram_token_filter;
+pub use self::edge_ngram_token_filter::EdgeNGramTokenFilter;
+
+pub mod elision_token_filter;
+pub use self::elision_token_filter::ElisionTokenFilter;
+
+pub mod fingerprint_token_filter;
+pub use self::fingerprint_token_filter::FingerprintTokenFilter;
+
+pub mod hunspell_token_filter;
+pub use self::hunspell_token_filter::HunspellTokenFilter;
+
+pub mod hyphenation_decompounder_token_filter;
+pub use self::hyphenation_decompounder_token_filter::HyphenationDecompounderTokenFilter;
+
+pub mod icu_collation_token_filter;
+pub use self::icu_collation_token_filter::IcuCollationTokenFilter;
+
+pub mod icu_folding_token_filter;
+pub use self::icu_folding_token_filter::IcuFoldingTokenFilter;
+
+pub mod icu_normalizer_token_filter;
+pub use self::icu_normalizer_token_filter::IcuNormalizerTokenFilter;
+
+pub mod icu_transform_token_filter;
+pub use self::icu_transform_token_filter::IcuTransformTokenFilter;
+
+pub mod ja_stop_token_filter;
+pub use self::ja_stop_token_filter::JaStopTokenFilter;
+
+pub mod keep_types_token_filter;
+pub use self::keep_types_token_filter::KeepTypesTokenFilter;
+
+pub mod keep_words_token_filter;
+pub use self::keep_words_token_filter::KeepWordsTokenFilter;
+
+pub mod keyword_marker_token_filter;
+pub use self::keyword_marker_token_filter::KeywordMarkerTokenFilter;
+
+pub mod kuromoji_completion_token_filter;
+pub use self::kuromoji_completion_token_filter::KuromojiCompletionTokenFilter;
+
+pub mod kuromoji_part_of_speech_token_filter;
+pub use self::kuromoji_part_of_speech_token_filter::KuromojiPartOfSpeechTokenFilter;
+
+pub mod kuromoji_readingform_token_filter;
+pub use self::kuromoji_readingform_token_filter::KuromojiReadingFormTokenFilter;
+
+pub mod kuromoji_stemmer_token_filter;
+pub use self::kuromoji_stemmer_token_filter::KuromojiStemmerTokenFilter;
+
+pub mod length_token_filter;
+pub use self::length_token_filter::LengthTokenFilter;
+
+pub mod limit_token_filter;
+pub use self::limit_token_filter::LimitTokenFilter;
+
+pub mod lowercase_token_filter;
+pub use self::lowercase_token_filter::LowercaseTokenFilter;
+
+pub mod min_hash_token_filter;
+pub use self::min_hash_token_filter::MinHashTokenFilter;
+
+pub mod multiplexer_token_filter;
+pub use self::multiplexer_token_filter::MultiplexerTokenFilter;
+
+pub mod ngram_token_filter;
+pub use self::ngram_token_filter::NGramTokenFilter;
+
+pub mod nori_part_of_speech_token_filter;
+pub use self::nori_part_of_speech_token_filter::NoriPartOfSpeechTokenFilter;
+
+pub mod pattern_capture_token_filter;
+pub use self::pattern_capture_token_filter::PatternCaptureTokenFilter;
+
+pub mod pattern_replace_token_filter;
+pub use self::pattern_replace_token_filter::PatternReplaceTokenFilter;
+
+pub mod persian_stem_token_filter;
+pub use self::persian_stem_token_filter::PersianStemTokenFilter;
+
+pub mod phonetic_token_filter;
+pub use self::phonetic_token_filter::PhoneticTokenFilter;
+
+pub mod predicate_token_filter;
+pub use self::predicate_token_filter::PredicateTokenFilter;
+
+pub mod shingle_token_filter;
+pub use self::shingle_token_filter::ShingleTokenFilter;
+
+pub mod snowball_token_filter;
+pub use self::snowball_token_filter::SnowballTokenFilter;
+
+pub mod stemmer_token_filter;
+pub use self::stemmer_token_filter::StemmerTokenFilter;
+
+pub mod stemmer_override_token_filter;
+pub use self::stemmer_override_token_filter::StemmerOverrideTokenFilter;
+
+pub mod stop_token_filter;
+pub use self::stop_token_filter::StopTokenFilter;
+
+pub mod synonym_token_filter;
+pub use self::synonym_token_filter::SynonymTokenFilter;
+
+pub mod synonym_graph_token_filter;
+pub use self::synonym_graph_token_filter::SynonymGraphTokenFilter;
+
+pub mod truncate_token_filter;
+pub use self::truncate_token_filter::TruncateTokenFilter;
+
+pub mod unique_token_filter;
+pub use self::unique_token_filter::UniqueTokenFilter;
+
+pub mod word_delimiter_token_filter;
+pub use self::word_delimiter_token_filter::WordDelimiterTokenFilter;
+
+pub mod word_delimiter_graph_token_filter;
+pub use self::word_delimiter_graph_token_filter::WordDelimiterGraphTokenFilter;

@@ -1090,7 +1090,10 @@ mod tests {
             assert_eq!(p.source_ip_field, "source_ip");
             assert_eq!(p.destination_ip_field, "destination_ip");
             assert_eq!(p.source_port_field, Some("source_port".to_owned()));
-            assert_eq!(p.destination_port_field, Some("destination_port".to_owned()));
+            assert_eq!(
+                p.destination_port_field,
+                Some("destination_port".to_owned())
+            );
             assert_eq!(
                 p.iana_protocol_number_field,
                 Some("iana_protocol_number".to_owned())

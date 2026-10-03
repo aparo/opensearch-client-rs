@@ -1,0 +1,11 @@
+{
+  "description": "Sort tags in descending order",
+  "processors": [
+    {
+      "sort": {
+        "field": "tags",
+        "order": "desc"
+      }
+    }
+  ]
+}

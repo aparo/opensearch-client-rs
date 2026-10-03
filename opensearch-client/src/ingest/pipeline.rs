@@ -43,7 +43,7 @@ pub enum Processor {
     UserAgentProcessor(UserAgentProcessor),
     #[serde(rename = "remove")]
     RemoveProcessor(RemoveProcessor),
-    #[serde(rename = "url_decode")]
+    #[serde(rename = "urldecode")]
     UrlDecodeProcessor(UrlDecodeProcessor),
     #[serde(rename = "split")]
     SplitProcessor(SplitProcessor),
@@ -51,7 +51,6 @@ pub enum Processor {
     FailProcessor(FailProcessor),
     #[serde(rename = "sort")]
     SortProcessor(SortProcessor),
-    // CircleProcessor(CircleProcessor),
     #[serde(rename = "trim")]
     TrimProcessor(TrimProcessor),
     #[serde(rename = "script")]
@@ -94,6 +93,23 @@ pub enum Processor {
     TextEmbeddingProcessor(TextEmbeddingProcessor),
     #[serde(rename = "text_image_embedding")]
     TextImageEmbeddingProcessor(TextImageEmbeddingProcessor),
+    // New processors
+    #[serde(rename = "community_id")]
+    CommunityIdProcessor(CommunityIdProcessor),
+    #[serde(rename = "copy")]
+    CopyProcessor(CopyProcessor),
+    #[serde(rename = "fingerprint")]
+    FingerprintProcessor(FingerprintProcessor),
+    #[serde(rename = "html_strip")]
+    HtmlStripProcessor(HtmlStripProcessor),
+    #[serde(rename = "ip2geo")]
+    Ip2GeoProcessor(Ip2GeoProcessor),
+    #[serde(rename = "remove_by_pattern")]
+    RemoveByPatternProcessor(RemoveByPatternProcessor),
+    #[serde(rename = "text_chunking")]
+    TextChunkingProcessor(TextChunkingProcessor),
+    #[serde(rename = "ml_inference")]
+    MlInferenceProcessor(MlInferenceProcessor),
     #[serde(untagged)]
     CustomProcessor(CustomProcessor),
 }
@@ -176,6 +192,7 @@ pub struct JoinProcessor {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     tag: Option<String>,
 }
+
 #[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub struct AttachmentProcessor {
@@ -295,8 +312,6 @@ pub struct DissectProcessor {
 #[serde(rename_all = "snake_case")]
 pub struct UserAgentProcessor {
     field: String,
-    // #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    // options: Vec<UserAgentProperty>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     regex_file: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -395,8 +410,8 @@ pub struct FailProcessor {
 #[serde(rename_all = "snake_case")]
 pub struct SortProcessor {
     field: String,
-    // #[serde(default, skip_serializing_if = "Option::is_none")]
-    // order: Option<SortOrder>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    order: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     target_field: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -410,28 +425,6 @@ pub struct SortProcessor {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     tag: Option<String>,
 }
-
-// #[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
-// #[serde(rename_all = "snake_case")]
-// pub struct CircleProcessor {
-//   field: String,
-//   error_distance: f64,
-//   shape_type: ShapeType,
-//   #[serde(default, skip_serializing_if = "Option::is_none")]
-//   target_field: Option<String>,
-//   #[serde(default, skip_serializing_if = "Option::is_none")]
-//   ignore_missing: Option<bool>,
-//   #[serde(default, skip_serializing_if = "Option::is_none")]
-//   description: Option<String>,
-//   #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
-//   if_field: Option<String>,
-//   #[serde(default, skip_serializing_if = "Option::is_none")]
-//   ignore_failure: Option<bool>,
-//   #[serde(default, skip_serializing_if = "Vec::is_empty")]
-//   on_failure: Vec<Processor>,
-//   #[serde(default, skip_serializing_if = "Option::is_none")]
-//   tag: Option<String>,
-// }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
@@ -484,8 +477,6 @@ pub struct JsonProcessor {
     target_field: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     add_to_root: Option<bool>,
-    // #[serde(default, skip_serializing_if = "Option::is_none")]
-    // add_to_root_conflict_strategy: Option<JsonProcessorConflictStrategy>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     allow_duplicate_keys: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -648,6 +639,7 @@ pub struct GsubProcessor {
 #[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct ConvertProcessor {
     field: String,
+    #[serde(rename = "type")]
     type_field: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     ignore_missing: Option<bool>,
@@ -844,6 +836,196 @@ pub struct TextImageEmbeddingProcessor {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     tag: Option<String>,
 }
+
+/// Generates the Community ID flow hash for network flow tuples using SHA-1.
+/// Supports TCP, UDP, SCTP, ICMP, and IPv6-ICMP protocols.
+#[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
+pub struct CommunityIdProcessor {
+    source_ip_field: String,
+    destination_ip_field: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    source_port_field: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    destination_port_field: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    iana_protocol_number_field: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    protocol_field: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    icmp_type_field: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    icmp_code_field: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    seed: Option<u16>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    target_field: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    ignore_missing: Option<bool>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    description: Option<String>,
+    #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+    if_field: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    ignore_failure: Option<bool>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    on_failure: Vec<Processor>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    tag: Option<String>,
+}
+
+/// Copies an entire object in an existing field to another field.
+#[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
+pub struct CopyProcessor {
+    source_field: String,
+    target_field: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    ignore_missing: Option<bool>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    override_target: Option<bool>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    remove_source: Option<bool>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    description: Option<String>,
+    #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+    if_field: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    ignore_failure: Option<bool>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    on_failure: Vec<Processor>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    tag: Option<String>,
+}
+
+/// Generates a hash value for either certain specified fields or all fields in a document.
+#[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
+pub struct FingerprintProcessor {
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    fields: Vec<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    exclude_fields: Vec<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    hash_method: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    target_field: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    ignore_missing: Option<bool>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    description: Option<String>,
+    #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+    if_field: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    ignore_failure: Option<bool>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    on_failure: Vec<Processor>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    tag: Option<String>,
+}
+
+/// Removes HTML tags from string fields; replaced with newline characters.
+#[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
+pub struct HtmlStripProcessor {
+    field: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    target_field: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    ignore_missing: Option<bool>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    description: Option<String>,
+    #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+    if_field: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    ignore_failure: Option<bool>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    on_failure: Vec<Processor>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    tag: Option<String>,
+}
+
+/// Adds geographical location information for an IPv4 or IPv6 address using an external GeoIP data source.
+#[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
+pub struct Ip2GeoProcessor {
+    field: String,
+    datasource: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    ignore_missing: Option<bool>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    properties: Vec<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    target_field: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    description: Option<String>,
+    #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+    if_field: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    ignore_failure: Option<bool>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    on_failure: Vec<Processor>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    tag: Option<String>,
+}
+
+/// Removes root-level fields from a document using wildcard patterns.
+#[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
+pub struct RemoveByPatternProcessor {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    field_pattern: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    exclude_field_pattern: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    description: Option<String>,
+    #[serde(rename = "if", default, skip_serializing_if = "Option::is_none")]
+    if_field: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    ignore_failure: Option<bool>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    on_failure: Vec<Processor>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    tag: Option<String>,
+}
+
+/// Splits a long document into shorter passages using fixed_token_length, fixed_char_length, or delimiter algorithms.
+#[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
+pub struct TextChunkingProcessor {
+    field_map: HashMap<String, serde_json::Value>,
+    algorithm: HashMap<String, serde_json::Value>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    ignore_missing: Option<bool>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    description: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    tag: Option<String>,
+}
+
+/// Invokes ML models registered in the OpenSearch ML Commons plugin.
+#[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
+pub struct MlInferenceProcessor {
+    model_id: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    function_name: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    model_config: Option<HashMap<String, serde_json::Value>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    model_input: Option<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    input_map: Vec<HashMap<String, String>>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    output_map: Vec<HashMap<String, String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    full_response_path: Option<bool>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    ignore_missing: Option<bool>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    ignore_failure: Option<bool>,
+    #[serde(rename = "override", default, skip_serializing_if = "Option::is_none")]
+    override_field: Option<bool>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    max_prediction_tasks: Option<u32>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    description: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    tag: Option<String>,
+}
+
 #[cfg(test)]
 mod tests {
 
@@ -852,6 +1034,7 @@ mod tests {
     use serde::de::DeserializeOwned;
 
     use super::*;
+
     fn load_entity<T: DeserializeOwned>(name: &str) -> T {
         let filename = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .join(format!("tests/ingest/pipeline.{name}.json"));
@@ -891,8 +1074,172 @@ mod tests {
             ],
             ..Default::default()
         };
-        // println!("{}", serde_json::to_string(&expected).unwrap());
         assert_eq!(decoded.description, Some("A ml pipeline".to_owned()));
         assert_eq!(decoded, expected);
+    }
+
+    #[test]
+    fn test_community_id_processor() {
+        let decoded: Pipeline = load_entity("community_id");
+        assert_eq!(
+            decoded.description,
+            Some("Generate community ID for network flows".to_owned())
+        );
+        assert_eq!(decoded.processors.len(), 1);
+        if let Processor::CommunityIdProcessor(p) = &decoded.processors[0] {
+            assert_eq!(p.source_ip_field, "source_ip");
+            assert_eq!(p.destination_ip_field, "destination_ip");
+            assert_eq!(p.source_port_field, Some("source_port".to_owned()));
+            assert_eq!(p.destination_port_field, Some("destination_port".to_owned()));
+            assert_eq!(
+                p.iana_protocol_number_field,
+                Some("iana_protocol_number".to_owned())
+            );
+            assert_eq!(p.target_field, Some("community_id".to_owned()));
+        } else {
+            panic!("Expected CommunityIdProcessor");
+        }
+    }
+
+    #[test]
+    fn test_copy_processor() {
+        let decoded: Pipeline = load_entity("copy");
+        assert_eq!(
+            decoded.description,
+            Some("Pipeline that copies object.".to_owned())
+        );
+        assert_eq!(decoded.processors.len(), 1);
+        if let Processor::CopyProcessor(p) = &decoded.processors[0] {
+            assert_eq!(p.source_field, "message.content");
+            assert_eq!(p.target_field, "content");
+            assert_eq!(p.ignore_missing, Some(true));
+            assert_eq!(p.override_target, Some(true));
+            assert_eq!(p.remove_source, Some(true));
+        } else {
+            panic!("Expected CopyProcessor");
+        }
+    }
+
+    #[test]
+    fn test_fingerprint_processor() {
+        let decoded: Pipeline = load_entity("fingerprint");
+        assert_eq!(
+            decoded.description,
+            Some("Generate hash value for some specified fields".to_owned())
+        );
+        assert_eq!(decoded.processors.len(), 1);
+        if let Processor::FingerprintProcessor(p) = &decoded.processors[0] {
+            assert_eq!(p.fields, vec!["foo", "bar"]);
+            assert_eq!(p.hash_method, Some("SHA-1@2.16.0".to_owned()));
+            assert_eq!(p.target_field, Some("fingerprint".to_owned()));
+        } else {
+            panic!("Expected FingerprintProcessor");
+        }
+    }
+
+    #[test]
+    fn test_html_strip_processor() {
+        let decoded: Pipeline = load_entity("html_strip");
+        assert_eq!(
+            decoded.description,
+            Some("A pipeline to strip HTML from description field".to_owned())
+        );
+        assert_eq!(decoded.processors.len(), 1);
+        if let Processor::HtmlStripProcessor(p) = &decoded.processors[0] {
+            assert_eq!(p.field, "description");
+            assert_eq!(p.target_field, Some("cleaned_description".to_owned()));
+        } else {
+            panic!("Expected HtmlStripProcessor");
+        }
+    }
+
+    #[test]
+    fn test_ip2geo_processor() {
+        let decoded: Pipeline = load_entity("ip2geo");
+        assert_eq!(
+            decoded.description,
+            Some("Convert IP to geo location".to_owned())
+        );
+        assert_eq!(decoded.processors.len(), 1);
+        if let Processor::Ip2GeoProcessor(p) = &decoded.processors[0] {
+            assert_eq!(p.field, "ip");
+            assert_eq!(p.datasource, "my-datasource");
+            assert_eq!(p.target_field, Some("ip2geo".to_owned()));
+        } else {
+            panic!("Expected Ip2GeoProcessor");
+        }
+    }
+
+    #[test]
+    fn test_remove_by_pattern_processor() {
+        let decoded: Pipeline = load_entity("remove_by_pattern");
+        assert_eq!(
+            decoded.description,
+            Some("Pipeline that removes the fields by patterns.".to_owned())
+        );
+        assert_eq!(decoded.processors.len(), 1);
+        if let Processor::RemoveByPatternProcessor(p) = &decoded.processors[0] {
+            assert_eq!(p.field_pattern, Some("foo*".to_owned()));
+        } else {
+            panic!("Expected RemoveByPatternProcessor");
+        }
+    }
+
+    #[test]
+    fn test_text_chunking_processor() {
+        let decoded: Pipeline = load_entity("text_chunking");
+        assert_eq!(
+            decoded.description,
+            Some("A text chunking ingest pipeline".to_owned())
+        );
+        assert_eq!(decoded.processors.len(), 1);
+        if let Processor::TextChunkingProcessor(p) = &decoded.processors[0] {
+            assert!(p.field_map.contains_key("passage_text"));
+            assert!(p.algorithm.contains_key("fixed_token_length"));
+        } else {
+            panic!("Expected TextChunkingProcessor");
+        }
+    }
+
+    #[test]
+    fn test_ml_inference_processor() {
+        let decoded: Pipeline = load_entity("ml_inference");
+        assert_eq!(
+            decoded.description,
+            Some("Generate passage_embedding for ingested documents".to_owned())
+        );
+        assert_eq!(decoded.processors.len(), 1);
+        if let Processor::MlInferenceProcessor(p) = &decoded.processors[0] {
+            assert_eq!(p.model_id, "my-model-id");
+            assert_eq!(p.input_map.len(), 1);
+            assert_eq!(p.output_map.len(), 1);
+        } else {
+            panic!("Expected MlInferenceProcessor");
+        }
+    }
+
+    #[test]
+    fn test_sort_processor_with_order() {
+        let decoded: Pipeline = load_entity("sort");
+        assert_eq!(decoded.processors.len(), 1);
+        if let Processor::SortProcessor(p) = &decoded.processors[0] {
+            assert_eq!(p.field, "tags");
+            assert_eq!(p.order, Some("desc".to_owned()));
+        } else {
+            panic!("Expected SortProcessor");
+        }
+    }
+
+    #[test]
+    fn test_convert_processor_type_field() {
+        let decoded: Pipeline = load_entity("convert");
+        assert_eq!(decoded.processors.len(), 1);
+        if let Processor::ConvertProcessor(p) = &decoded.processors[0] {
+            assert_eq!(p.field, "price");
+            assert_eq!(p.type_field, "float");
+            assert_eq!(p.target_field, Some("price_float".to_owned()));
+        } else {
+            panic!("Expected ConvertProcessor");
+        }
     }
 }

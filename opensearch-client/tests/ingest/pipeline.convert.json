@@ -1,0 +1,12 @@
+{
+  "description": "Convert price field to float",
+  "processors": [
+    {
+      "convert": {
+        "field": "price",
+        "type": "float",
+        "target_field": "price_float"
+      }
+    }
+  ]
+}

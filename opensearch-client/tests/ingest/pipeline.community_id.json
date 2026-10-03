@@ -1,0 +1,15 @@
+{
+  "description": "Generate community ID for network flows",
+  "processors": [
+    {
+      "community_id": {
+        "source_ip_field": "source_ip",
+        "source_port_field": "source_port",
+        "destination_ip_field": "destination_ip",
+        "destination_port_field": "destination_port",
+        "iana_protocol_number_field": "iana_protocol_number",
+        "target_field": "community_id"
+      }
+    }
+  ]
+}

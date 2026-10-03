@@ -1,0 +1,14 @@
+{
+  "description": "Pipeline that copies object.",
+  "processors": [
+    {
+      "copy": {
+        "source_field": "message.content",
+        "target_field": "content",
+        "ignore_missing": true,
+        "override_target": true,
+        "remove_source": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "description": "Pipeline that removes the fields by patterns.",
+  "processors": [
+    {
+      "remove_by_pattern": {
+        "field_pattern": "foo*"
+      }
+    }
+  ]
+}

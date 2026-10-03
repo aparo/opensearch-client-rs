@@ -1,0 +1,11 @@
+{
+  "description": "A pipeline to strip HTML from description field",
+  "processors": [
+    {
+      "html_strip": {
+        "field": "description",
+        "target_field": "cleaned_description"
+      }
+    }
+  ]
+}

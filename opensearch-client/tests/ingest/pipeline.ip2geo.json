@@ -1,0 +1,12 @@
+{
+  "description": "Convert IP to geo location",
+  "processors": [
+    {
+      "ip2geo": {
+        "field": "ip",
+        "datasource": "my-datasource",
+        "target_field": "ip2geo"
+      }
+    }
+  ]
+}

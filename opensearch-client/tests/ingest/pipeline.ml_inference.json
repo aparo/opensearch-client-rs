@@ -1,0 +1,20 @@
+{
+  "description": "Generate passage_embedding for ingested documents",
+  "processors": [
+    {
+      "ml_inference": {
+        "model_id": "my-model-id",
+        "input_map": [
+          {
+            "input": "passage_text"
+          }
+        ],
+        "output_map": [
+          {
+            "passage_embedding": "data"
+          }
+        ]
+      }
+    }
+  ]
+}

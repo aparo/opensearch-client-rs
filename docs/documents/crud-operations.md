@@ -25,17 +25,21 @@ println!("Saved user with ID: {}", response.id);
 
 ### Bulk Operations
 
-For creating multiple documents efficiently:
+For creating multiple documents efficiently, use the streaming `Bulker` created
+from the client. Enqueue actions, then `flush()`:
 
 ```rust
-use opensearch_client::bulk::*;
+let bulker = client.bulker()
+    .bulk_size(1000)
+    .max_concurrent_connections(10)
+    .build();
 
-let mut bulk = BulkOperation::new();
-bulk.index("users", "1", json!({"name": "Alice", "age": 25}));
-bulk.index("users", "2", json!({"name": "Bob", "age": 30}));
-bulk.index("users", "3", json!({"name": "Charlie", "age": 35}));
+bulker.index("users", &json!({"name": "Alice", "age": 25}), Some("1".to_string())).await?;
+bulker.index("users", &json!({"name": "Bob", "age": 30}), Some("2".to_string())).await?;
+bulker.index("users", &json!({"name": "Charlie", "age": 35}), Some("3".to_string())).await?;
 
-let response = client.bulk(bulk).await?;
+bulker.flush().await;                 // wait for all queued actions to be sent
+let stats = bulker.statistics();      // index_actions, create_actions, ...
 ```
 
 ## Read Operations
@@ -142,18 +146,21 @@ println!("Deleted: {}", delete_response.result);
 Delete documents matching specific criteria:
 
 ```rust
-// This requires using the lower-level client
-let query = Query::bool()
-    .must(Query::term("active", false))
-    .must(Query::range("last_login").lt("2023-01-01"));
+// This requires using the lower-level client. `bool` clauses take iterables.
+use opensearch_client::common::DeleteByQuery;
 
-let response = client
+let query = Query::bool()
+    .must([Query::term("active", false)])
+    .must([Query::range("last_login").lt("2023-01-01")]);
+
+client
     .delete_by_query()
     .index(User::index_name())
-    .query(query)
+    .delete_by_query(DeleteByQuery { query: Some(query.into()), ..Default::default() })
+    .call()
     .await?;
 
-println!("Deleted {} documents", response.deleted);
+println!("Delete-by-query completed");
 ```
 
 ## Error Handling
@@ -172,9 +179,9 @@ match User::get("user123").await {
         // Document doesn't exist
         println!("User {} not found in {}", id, index);
     }
-    Err(Error::ConnectionError(msg)) => {
+    Err(Error::CommunicationError(err)) => {
         // Network or connection issue
-        eprintln!("Connection error: {}", msg);
+        eprintln!("Communication error: {}", err);
     }
     Err(e) => {
         // Other errors
@@ -195,12 +202,13 @@ for user in users {
     user.save().await?;  // ❌ Slow
 }
 
-// Use bulk operations
-let mut bulk = BulkOperation::new();
-for user in users {
-    bulk.index(User::index_name(), &user.id(), serde_json::to_value(user)?);
+// Use the streaming Bulker
+let bulker = client.bulker().bulk_size(1000).build();
+let index = User::index_name();
+for user in &users {
+    bulker.index(&index, user, Some(user.id())).await?;
 }
-let response = client.bulk(bulk).await?;  // ✅ Fast
+bulker.flush().await;  // ✅ Fast
 ```
 
 ### Projection

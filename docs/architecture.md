@@ -42,16 +42,16 @@ The central crate. It provides:
 Every API operation follows the same shape:
 
 ```
-OsClient::<group>()::<operation>()   →  request builder
-    .send() / .await?                →  typed response struct
+OsClient::<group>()::<operation>()   →  bon request builder
+    .call().await?                   →  typed response struct
 ```
 
 For example:
 
 ```rust
-// client.search() returns a SearchRequest builder
-// .send() executes the HTTP call
-let resp = client.search().index("my_index").body(&search).send().await?;
+// client.search() returns a bon builder
+// .call() executes the HTTP call
+let resp = client.search().index("my_index").search(search).call().await?;
 ```
 
 ### Global Client
@@ -105,7 +105,9 @@ Everything serializes to JSON via `serde`. No runtime reflection — all types a
 A `proc-macro` crate that expands `#[derive(OpenSearch)]` at compile time. It reads:
 
 - **Struct-level attributes** — `#[os(index = "name")]`
-- **Field-level attributes** — `#[os(id)]`, `#[os(skip)]`, `#[os(skip_sort)]`, `#[os(none_value = "...")]`
+- **Field-level attributes** — `#[os(id)]`, `#[os(skip)]`
+  (only `index`, `id`, and `skip` are implemented; `skip_sort` and `none_value`
+  are not yet supported)
 
 And generates:
 - `impl Document for MyStruct { ... }` — providing `index_name()`, `columns()`, `save()`, `get()`, `delete()`, `update()`, `find()`, `find_all()`, `find_one()`, `count()`, `upsert_doc()`, and `upsert_value()`.
@@ -127,9 +129,12 @@ The CLI supports both local (`OPENSEARCH_*`) and remote (`OPENSEARCH_REMOTE_*`) 
 Thin wrapper around the `testcontainers` crate. Provides a pre-configured `OpenSearch` image descriptor so integration tests can start an ephemeral OpenSearch instance with a single call:
 
 ```rust
-let docker = testcontainers::clients::Cli::default();
-let node = docker.run(opensearch_testcontainer::OpenSearch::default());
-let port = node.get_host_port_ipv4(9200);
+use opensearch_testcontainer::OpenSearch;
+use testcontainers::runners::AsyncRunner;
+
+let image = OpenSearch::default();
+let node = image.clone().start().await?;
+let port = node.get_host_port_ipv4(9200).await?;
 ```
 
 ## Design Principles

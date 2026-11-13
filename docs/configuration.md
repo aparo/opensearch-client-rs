@@ -8,27 +8,24 @@ This guide covers all configuration options for the OpenSearch Client for Rust.
 
 ```rust
 use opensearch_client::{ConfigurationBuilder, OsClient};
-use url::Url;
-use std::time::Duration;
 
-let url = Url::parse("http://localhost:9200")?;
-let config = ConfigurationBuilder::new()
-    .base_url(url)
-    .basic_auth("admin".to_string(), "admin".to_string())
+// `build()` returns an `OsClient` directly — do not wrap it in `OsClient::new`.
+// `base_url` must be called before the auth setters.
+let client: OsClient = ConfigurationBuilder::new()
+    .base_url("http://localhost:9200")
+    .basic_auth("admin", "admin")
     .build();
-
-let client = OsClient::new(config);
 ```
 
 ### Advanced Configuration
 
 ```rust
-let config = ConfigurationBuilder::new()
-    .base_url(url)
+let client: OsClient = ConfigurationBuilder::new()
+    .base_url("http://localhost:9200")
     .basic_auth(username, password)
-    .timeout(Duration::from_secs(30))
-    .retry_attempts(3)
-    .connection_pool_size(10)
+    .retries(3)                 // transient-error retries (exponential backoff)
+    .max_bulk_size(1000)        // default batch size for client.bulker()
+    .accept_invalid_certificates(false)
     .build();
 ```
 
@@ -37,96 +34,84 @@ let config = ConfigurationBuilder::new()
 ### Basic Authentication
 
 ```rust
-let config = ConfigurationBuilder::new()
-    .base_url(url)
-    .basic_auth("username".to_string(), "password".to_string())
+let client: OsClient = ConfigurationBuilder::new()
+    .base_url("http://localhost:9200")
+    .basic_auth("username", "password")
     .build();
 ```
 
-### API Key Authentication
+### Token (Bearer) Authentication
 
 ```rust
-let config = ConfigurationBuilder::new()
-    .base_url(url)
-    .api_key("your-api-key".to_string())
+let client: OsClient = ConfigurationBuilder::new()
+    .base_url("http://localhost:9200")
+    .token_auth("your-bearer-token")   // sent as `Authorization: Bearer ...`
     .build();
 ```
 
-### Custom Headers
+### Legacy Authentication
+
+For a pre-encoded `Authorization` header value:
 
 ```rust
-use std::collections::HashMap;
+let client: OsClient = ConfigurationBuilder::new()
+    .base_url("http://localhost:9200")
+    .legacy_auth("Basic dXNlcjpwYXNz")
+    .build();
+```
 
-let mut headers = HashMap::new();
-headers.insert("Authorization".to_string(), "Bearer token".to_string());
-headers.insert("X-Custom-Header".to_string(), "value".to_string());
+### User Agent
 
-let config = ConfigurationBuilder::new()
-    .base_url(url)
-    .custom_headers(headers)
+```rust
+let client: OsClient = ConfigurationBuilder::new()
+    .base_url("http://localhost:9200")
+    .user_agent("my-app/1.0")
     .build();
 ```
 
 ## Connection Settings
 
-### Timeout Configuration
-
-```rust
-let config = ConfigurationBuilder::new()
-    .base_url(url)
-    .timeout(Duration::from_secs(30))          // Request timeout
-    .connect_timeout(Duration::from_secs(10))  // Connection timeout
-    .build();
-```
-
 ### Retry Configuration
 
+Transient errors are retried with exponential backoff:
+
 ```rust
-let config = ConfigurationBuilder::new()
-    .base_url(url)
-    .retry_attempts(3)                         // Number of retries
-    .retry_delay(Duration::from_millis(500))   // Delay between retries
+let client: OsClient = ConfigurationBuilder::new()
+    .base_url("http://localhost:9200")
+    .retries(3)                                // Number of retries
     .build();
 ```
 
-### Connection Pool
+### Proxy Configuration
 
 ```rust
-let config = ConfigurationBuilder::new()
-    .base_url(url)
-    .connection_pool_size(20)                  // Max connections
-    .connection_pool_idle_timeout(Duration::from_secs(30))
+let client: OsClient = ConfigurationBuilder::new()
+    .base_url("http://localhost:9200")
+    .proxy_url("http://proxy.internal:8080")?  // returns Result
+    .no_proxy_domain("internal.example.com")
     .build();
 ```
 
 ## TLS/SSL Configuration
 
-### Basic TLS
+### Verify Certificates (default)
+
+By default certificates are verified — no setter is required:
 
 ```rust
-let config = ConfigurationBuilder::new()
-    .base_url(Url::parse("https://localhost:9200")?)
-    .tls_verify(true)                          // Verify certificates
-    .build();
-```
-
-### Custom Certificate
-
-```rust
-let config = ConfigurationBuilder::new()
-    .base_url(url)
-    .tls_cert_path("/path/to/cert.pem")
-    .tls_key_path("/path/to/key.pem")
-    .tls_ca_cert_path("/path/to/ca.pem")
+let client: OsClient = ConfigurationBuilder::new()
+    .base_url("https://localhost:9200")
     .build();
 ```
 
 ### Disable Certificate Verification (Development Only)
 
+Use `accept_invalid_certificates(true)` for local/dev self-signed certs:
+
 ```rust
-let config = ConfigurationBuilder::new()
-    .base_url(url)
-    .tls_verify(false)                         // ⚠️ Only for development!
+let client: OsClient = ConfigurationBuilder::new()
+    .base_url("https://localhost:9200")
+    .accept_invalid_certificates(true)         // ⚠️ Only for development!
     .build();
 ```
 
@@ -192,30 +177,40 @@ Set configuration through environment variables:
 
 ```bash
 export OPENSEARCH_URL="https://my-cluster.example.com:9200"
-export OPENSEARCH_USERNAME="admin"
+export OPENSEARCH_USER="admin"
 export OPENSEARCH_PASSWORD="password"
-export OPENSEARCH_TIMEOUT="30"
-export OPENSEARCH_RETRY_ATTEMPTS="3"
+export OPENSEARCH_SSL_VERIFY="true"
+export OPENSEARCH_MAX_BULK_SIZE="1000"
 ```
 
 ### Loading from Environment
+
+The simplest option reads `OPENSEARCH_URL`, `OPENSEARCH_USER`,
+`OPENSEARCH_PASSWORD`, `OPENSEARCH_SSL_VERIFY`, and `OPENSEARCH_MAX_BULK_SIZE`
+(defaults: `https://localhost:9200`, `admin`/`admin`):
+
+```rust
+let client = OsClient::from_environment()?;
+```
+
+Or build it manually from your own variables:
 
 ```rust
 use std::env;
 
 let url = env::var("OPENSEARCH_URL")
     .unwrap_or_else(|_| "http://localhost:9200".to_string());
-let username = env::var("OPENSEARCH_USERNAME").ok();
+let username = env::var("OPENSEARCH_USER").ok();
 let password = env::var("OPENSEARCH_PASSWORD").ok();
 
 let mut builder = ConfigurationBuilder::new()
-    .base_url(Url::parse(&url)?);
+    .base_url(url);
 
 if let (Some(user), Some(pass)) = (username, password) {
     builder = builder.basic_auth(user, pass);
 }
 
-let config = builder.build();
+let client = builder.build();
 ```
 
 ## Configuration Files
@@ -272,17 +267,17 @@ let config_str = fs::read_to_string("opensearch.toml")?;
 let config: OpenSearchConfig = toml::from_str(&config_str)?;
 
 let mut builder = ConfigurationBuilder::new()
-    .base_url(Url::parse(&config.opensearch.url)?);
+    .base_url(config.opensearch.url.clone());
 
 if let (Some(user), Some(pass)) = (&config.opensearch.username, &config.opensearch.password) {
     builder = builder.basic_auth(user.clone(), pass.clone());
 }
 
-if let Some(timeout) = config.opensearch.timeout_seconds {
-    builder = builder.timeout(Duration::from_secs(timeout));
+if let Some(retries) = config.opensearch.retry_attempts {
+    builder = builder.retries(retries as u32);
 }
 
-let client_config = builder.build();
+let client = builder.build();
 ```
 
 ## Logging Configuration
@@ -302,7 +297,7 @@ use tracing_subscriber;
 tracing_subscriber::fmt::init();
 
 // Client operations will now be logged
-let response = client.search(&query).await?;
+let response = client.search().index("my_index").search(query).call().await?;
 ```
 
 ### Log Levels
@@ -315,32 +310,21 @@ tracing_subscriber::fmt()
     .init();
 ```
 
-### Request/Response Logging
-
-Enable detailed HTTP logging:
-
-```rust
-let config = ConfigurationBuilder::new()
-    .base_url(url)
-    .log_requests(true)
-    .log_responses(true)
-    .build();
-```
+The client emits `tracing` spans/events for its HTTP operations, so raising the
+log level above surfaces request/response detail — there are no `log_requests` /
+`log_responses` builder setters.
 
 ## Production Configuration
 
 ### Recommended Production Settings
 
 ```rust
-let config = ConfigurationBuilder::new()
-    .base_url(production_url)
+let client: OsClient = ConfigurationBuilder::new()
+    .base_url("https://my-cluster.example.com:9200")
     .basic_auth(username, password)
-    .timeout(Duration::from_secs(30))          // Reasonable timeout
-    .connect_timeout(Duration::from_secs(10))  // Connection timeout
-    .retry_attempts(3)                         // Retry failed requests
-    .retry_delay(Duration::from_millis(1000))  // Backoff between retries
-    .connection_pool_size(20)                  // Connection pooling
-    .tls_verify(true)                          // Always verify in production
+    .retries(3)                                // Retry failed requests
+    .max_bulk_size(1000)                       // Default bulk batch size
+    .accept_invalid_certificates(false)        // Always verify in production
     .build();
 ```
 
@@ -348,17 +332,14 @@ let config = ConfigurationBuilder::new()
 
 ```rust
 use std::time::Instant;
+use opensearch_client::Error;
 
 async fn health_check(client: &OsClient) -> Result<(), Error> {
     let start = Instant::now();
-    let health = client.cluster().health().await?;
+    let health = client.cluster().health().call().await?;
     let duration = start.elapsed();
     
     println!("Cluster health: {:?} ({}ms)", health.status, duration.as_millis());
-    
-    if health.status == "red" {
-        return Err(Error::ClusterHealthError("Cluster is unhealthy".to_string()));
-    }
     
     Ok(())
 }
@@ -366,9 +347,19 @@ async fn health_check(client: &OsClient) -> Result<(), Error> {
 
 ### Circuit Breaker Pattern
 
+The client `Error` enum has no circuit-breaker variant, so the wrapper below
+uses its own error type (`CbError`) to signal an open circuit:
+
 ```rust
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
+use opensearch_client::Error;
+
+#[derive(Debug)]
+enum CbError {
+    Open,
+    Client(Error),
+}
 
 struct CircuitBreaker {
     failure_count: Arc<AtomicUsize>,
@@ -383,14 +374,14 @@ impl CircuitBreaker {
         }
     }
     
-    async fn call<F, T>(&self, operation: F) -> Result<T, Error>
+    async fn call<F, T>(&self, operation: F) -> Result<T, CbError>
     where
         F: std::future::Future<Output = Result<T, Error>>,
     {
         let current_failures = self.failure_count.load(Ordering::Relaxed);
         
         if current_failures >= self.threshold {
-            return Err(Error::CircuitBreakerOpen);
+            return Err(CbError::Open);
         }
         
         match operation.await {
@@ -400,7 +391,7 @@ impl CircuitBreaker {
             }
             Err(e) => {
                 self.failure_count.fetch_add(1, Ordering::Relaxed);
-                Err(e)
+                Err(CbError::Client(e))
             }
         }
     }

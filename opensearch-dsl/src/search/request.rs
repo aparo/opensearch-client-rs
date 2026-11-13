@@ -317,7 +317,7 @@ impl Search {
     /// Extra fields for something not yet supported.
     ///
     /// ```
-    /// # use elasticsearch_dsl::Search;
+    /// # use opensearch_dsl::Search;
     /// # use serde_json::json;
     /// # let search =
     /// Search::new()

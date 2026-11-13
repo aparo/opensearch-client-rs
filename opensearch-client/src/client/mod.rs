@@ -6246,8 +6246,9 @@ impl OsClient {
     ///
     /// # Example
     ///
-    /// ```
-    /// use opensearch_client::OpenSearchClient;
+    /// ```no_run
+    /// use serde::Serialize;
+    /// use opensearch_client::ConfigurationBuilder;
     ///
     /// #[derive(Serialize)]
     /// struct MyDocument {
@@ -6257,7 +6258,7 @@ impl OsClient {
     ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    ///   let client = OpenSearchClient::new("http://localhost:9200");
+    ///   let client = ConfigurationBuilder::new().base_url("http://localhost:9200").build();
     ///   let document = MyDocument {
     ///     title: "My Title".to_string(),
     ///     content: "My Content".to_string(),
@@ -6298,17 +6299,18 @@ impl OsClient {
     ///
     /// # Examples
     ///
-    /// ```
-    /// use opensearch_client::{BulkAction, OpenSearchClient};
+    /// ```no_run
+    /// use opensearch_client::{BulkAction, IndexAction, ConfigurationBuilder};
     ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    ///   let client = OpenSearchClient::new("http://localhost:9200")?;
-    ///   let action = BulkAction::Index {
+    ///   let client = ConfigurationBuilder::new().base_url("http://localhost:9200").build();
+    ///   let action = BulkAction::Index(IndexAction {
     ///     index: "my_index".to_string(),
     ///     id: Some("1".to_string()),
-    ///   };
-    ///   let response = client.bulk_action("index", action, None).await?;
+    ///     ..Default::default()
+    ///   });
+    ///   let response = client.bulk_action(action, None).await?;
     ///   Ok(())
     /// }
     /// ```
@@ -6407,11 +6409,14 @@ impl OsClient {
     /// # Examples
     ///
     /// ```no_run
-    /// use opensearch_client::OpenSearchClient;
+    /// use opensearch_client::ConfigurationBuilder;
     ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    ///   let client = OpenSearchClient::new("http://localhost:9200", "user", "password");
+    ///   let client = ConfigurationBuilder::new()
+    ///     .base_url("http://localhost:9200")
+    ///     .basic_auth("user", "password")
+    ///     .build();
     ///   let response = client.flush_bulk().await?;
     ///   println!("{:?}", response);
     ///   Ok(())
@@ -6481,8 +6486,9 @@ impl OsClient {
     ///
     /// # Examples
     ///
-    /// ```
-    /// use opensearch_client::Client;
+    /// ```no_run
+    /// use serde::Serialize;
+    /// use opensearch_client::ConfigurationBuilder;
     ///
     /// #[derive(Serialize)]
     /// struct MyDocument {
@@ -6492,7 +6498,7 @@ impl OsClient {
     ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    ///   let client = Client::new("http://localhost:9200")?;
+    ///   let client = ConfigurationBuilder::new().base_url("http://localhost:9200").build();
     ///
     ///   let document = MyDocument {
     ///     title: "My Title".to_string(),
@@ -6501,7 +6507,7 @@ impl OsClient {
     ///
     ///   let response = client.index_document("my_index", &document, None).await?;
     ///
-    ///   println!("Document ID: {}", response._id);
+    ///   println!("Document ID: {}", response.id);
     ///
     ///   Ok(())
     /// }
@@ -6534,8 +6540,9 @@ impl OsClient {
     ///
     /// # Examples
     ///
-    /// ```rust
-    /// use opensearch_client::OpenSearchClient;
+    /// ```no_run
+    /// use serde::Serialize;
+    /// use opensearch_client::ConfigurationBuilder;
     ///
     /// #[derive(Serialize)]
     /// struct MyDocument {
@@ -6545,7 +6552,7 @@ impl OsClient {
     ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    ///   let client = OpenSearchClient::new("http://localhost:9200")?;
+    ///   let client = ConfigurationBuilder::new().base_url("http://localhost:9200").build();
     ///
     ///   let document = MyDocument {
     ///     title: "My Title".to_string(),
@@ -6623,16 +6630,17 @@ impl OsClient {
     ///
     /// # Example
     ///
-    /// ```rust
-    /// use opensearch_client::{Client, UpdateAction};
+    /// ```no_run
+    /// use serde_json::json;
+    /// use opensearch_client::{ConfigurationBuilder, UpdateActionBody};
     ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    ///     let client = Client::new("http://localhost:9200")?;
+    ///     let client = ConfigurationBuilder::new().base_url("http://localhost:9200").build();
     ///
     ///     let index = "my_index";
     ///     let id = "1";
-    ///     let action = UpdateAction::new().doc(json!({"foo": "bar"}));
+    ///     let action = UpdateActionBody::new(json!({"foo": "bar"}));
     ///
     ///     let response = client.update_document(index, id, &action).await?;
     ///
@@ -6698,15 +6706,19 @@ impl OsClient {
     ///
     /// # Examples
     ///
-    /// ```rust
-    /// use opensearch_client::{Client, Query, SortCollection};
+    /// ```no_run
+    /// use opensearch_client::ConfigurationBuilder;
+    /// use opensearch_client::dsl::{Query, SortCollection};
+    /// use futures::StreamExt;
     ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    ///   let client = Client::new("http://localhost:9200")?;
-    ///   let query = Query::match_all();
-    ///   let sort = SortCollection::new().add_field("_doc", "asc");
-    ///   let stream = client.search_stream("my_index", &query, &sort, 10).await?;
+    ///   let client = ConfigurationBuilder::new().base_url("http://localhost:9200").build();
+    ///   let query: Query = Query::match_all().into();
+    ///   let sort = SortCollection::new().ascending("_doc");
+    ///   let stream = client
+    ///     .search_stream::<serde_json::Value>("my_index", &query, &sort, 10)
+    ///     .await?;
     ///   stream
     ///     .for_each(|hit| {
     ///       println!("{:?}", hit);

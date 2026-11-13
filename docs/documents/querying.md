@@ -7,20 +7,21 @@ The `Document` trait provides high-level query methods that work directly on you
 `find` accepts any `Search` value and returns typed results:
 
 ```rust
-use opensearch_dsl::{Search, Query, Sort, SortOrder};
+use opensearch_dsl::{Search, Query, FieldSort};
 
 let results = BlogPost::find(
     Search::new()
         .query(Query::term("published", true))
-        .sort([Sort::field("created_at").order(SortOrder::Desc)])
+        .sort([FieldSort::descending("created_at")])
         .size(20)
         .from(0),
 )
 .await?;
 
-println!("total: {}", results.hits.total.value);
+// `hits.total` is Option<TotalHits>; `get_total_value()` returns Option<u64>
+println!("total: {:?}", results.hits.get_total_value());
 for hit in results.hits.hits {
-    if let Some(post) = hit.source_ {
+    if let Some(post) = hit.source {
         println!("{}: {}", post.id, post.title);
     }
 }
@@ -79,7 +80,7 @@ let results = BlogPost::find(
     Search::new()
         .query(
             Query::bool()
-                .must(Query::multi_match(["title^2", "content"], "async rust"))
+                .must([Query::multi_match(["title^2", "content"], "async rust")])
                 .filter([
                     Query::term("published", true),
                     Query::terms("tags", ["rust", "programming"]),
@@ -102,7 +103,7 @@ let recent = BlogPost::find(
                     Query::range("created_at").gte("now-30d/d"),
                 ])
         )
-        .sort([Sort::field("created_at").order(SortOrder::Desc)])
+        .sort([FieldSort::descending("created_at")])
         .size(5),
 )
 .await?;
@@ -117,7 +118,7 @@ async fn paginate(page: usize, per_page: usize) -> anyhow::Result<Vec<BlogPost>>
             .query(Query::term("published", true))
             .from((page.saturating_sub(1)) * per_page)
             .size(per_page)
-            .sort([Sort::field("created_at").order(SortOrder::Desc)]),
+            .sort([FieldSort::descending("created_at")]),
     )
     .await?;
 
@@ -125,29 +126,38 @@ async fn paginate(page: usize, per_page: usize) -> anyhow::Result<Vec<BlogPost>>
         .hits
         .hits
         .into_iter()
-        .filter_map(|h| h.source_)
+        .filter_map(|h| h.source)
         .collect())
 }
 ```
 
 ### Aggregations
 
-The `find` return value carries aggregations alongside hits:
+Aggregations are returned by the raw `SearchResponse`, not by the typed
+`find` result (`TypedSearchResult` carries only hits). Run the search through the
+client and read `response.aggregations`:
 
 ```rust
-let results = BlogPost::find(
-    Search::new()
-        .size(0)
-        .aggregations([
-            ("by_tag", Aggregation::terms("tags").size(20)),
-            ("posts_per_month",
-                Aggregation::date_histogram("created_at").calendar_interval("month")),
-        ]),
-)
-.await?;
+use opensearch_dsl::{Aggregation, CalendarInterval};
 
-if let Some(aggs) = results.aggregations {
-    // Process aggregation buckets
+let response = client
+    .search()
+    .index(BlogPost::index_name())
+    .search(
+        Search::new()
+            .size(0)
+            .aggregate("by_tag", Aggregation::terms("tags").size(20))
+            .aggregate(
+                "posts_per_month",
+                Aggregation::date_histogram("created_at")
+                    .calendar_interval(CalendarInterval::Month),
+            ),
+    )
+    .call()
+    .await?;
+
+if !response.aggregations.is_empty() {
+    // Process aggregation buckets from response.aggregations
 }
 ```
 
@@ -158,7 +168,7 @@ Hit objects include relevance score and OpenSearch metadata:
 ```rust
 let results = BlogPost::find(
     Search::new()
-        .query(Query::match_("title", "rust tutorial"))
+        .query(Query::r#match("title", "rust tutorial"))
         .size(5),
 )
 .await?;
@@ -166,10 +176,10 @@ let results = BlogPost::find(
 for hit in results.hits.hits {
     println!(
         "id={} score={:.2}",
-        hit.id_,
-        hit.score_.unwrap_or(0.0)
+        hit.id,
+        hit.score.unwrap_or(0.0)
     );
-    if let Some(post) = hit.source_ {
+    if let Some(post) = hit.source {
         println!("  title: {}", post.title);
     }
 }
@@ -192,7 +202,7 @@ After a write, newly indexed documents are not immediately visible to search (du
 ```rust
 post.save().await?;
 // In production, avoid this — let the refresh happen naturally
-client.indices().refresh("blog_posts").send().await?;
+client.indices().refresh().index("blog_posts").call().await?;
 
 let found = BlogPost::find_one(
     Search::new().query(Query::term("id", &post.id))

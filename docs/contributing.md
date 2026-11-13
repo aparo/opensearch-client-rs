@@ -232,7 +232,7 @@ When adding new derive macro features:
 
 1. **Update the derive macro**
    ```rust
-   // In opensearch-client-derive/src/lib.rs
+   // In opensearch-macro/src/lib.rs
    match &field.attrs.iter().find(|attr| attr.path.is_ident("os")) {
        Some(attr) => parse_os_attribute(attr),
        None => default_field_config(),
@@ -329,31 +329,27 @@ Any other relevant information
 
 Example:
 ```rust
-/// Performs a bulk operation on multiple documents.
+/// Queues a document to be indexed in the next bulk flush.
 ///
-/// This method is more efficient than individual operations when
-/// working with many documents.
+/// Actions are batched and sent by a background flusher; call `flush().await`
+/// to force the queue to drain before reading data back.
 ///
 /// # Arguments
-/// * `operations` - Vector of bulk operations to execute
-///
-/// # Returns
-/// * `BulkResponse` - Response containing results for each operation
+/// * `index` - Target index name
+/// * `body`  - Serializable document body
+/// * `id`    - Optional document id
 ///
 /// # Errors
-/// * `Error::Connection` - If connection to OpenSearch fails
-/// * `Error::Serialization` - If request serialization fails
+/// * `Error::CommunicationError` - If connection to OpenSearch fails
+/// * `Error::Serde` - If request serialization fails
 ///
 /// # Example
 /// ```rust
-/// let operations = vec![
-///     BulkOperation::index(doc1),
-///     BulkOperation::update("id2", update_doc),
-/// ];
-/// 
-/// let response = bulker.execute(operations).await?;
+/// let bulker = client.bulker().bulk_size(1000).build();
+/// bulker.index("docs", &doc1, Some("id1".to_string())).await?;
+/// bulker.flush().await;
 /// ```
-pub async fn execute(&self, operations: Vec<BulkOperation>) -> Result<BulkResponse, Error>
+pub async fn index<T: Serialize>(&self, index: &str, body: &T, id: Option<String>) -> Result<(), Error>
 ```
 
 ### Guide Documentation

@@ -42,21 +42,17 @@ Available features:
 
 ```rust
 use opensearch_client::{ConfigurationBuilder, OsClient};
-use url::Url;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Create client configuration
-    let url = Url::parse("http://localhost:9200")?;
-    let config = ConfigurationBuilder::new()
-        .base_url(url)
-        .basic_auth("admin".to_string(), "admin".to_string())
+    // `build()` returns an `OsClient` directly. `base_url` must precede auth.
+    let client: OsClient = ConfigurationBuilder::new()
+        .base_url("http://localhost:9200")
+        .basic_auth("admin", "admin")
         .build();
     
-    let client = OsClient::new(config);
-    
     // Get cluster health
-    let health = client.cluster().health().await?;
+    let health = client.cluster().health().call().await?;
     println!("Cluster status: {:?}", health);
     
     Ok(())
@@ -74,21 +70,21 @@ let query = Search::new()
     .size(10)
     .query(
         Query::bool()
-            .must(Query::term("status", "published"))
-            .filter(Query::range("date").gte("2023-01-01"))
+            .must([Query::term("status", "published")])
+            .filter([Query::range("date").gte("2023-01-01")])
     )
-    .aggregations([
-        ("status_count", Aggregation::terms("status")),
-        ("avg_score", Aggregation::avg("score"))
-    ]);
+    .aggregate("status_count", Aggregation::terms("status"))
+    .aggregate("avg_score", Aggregation::avg("score"));
 
 // Execute the search
-let response = client.search(&query).index("my_index").await?;
+let response = client.search().index("my_index").search(query).call().await?;
 ```
 
 ### Index Management
 
 ```rust
+use serde_json::json;
+
 // Create an index
 client.indices()
     .create("my_index")
@@ -98,16 +94,17 @@ client.indices()
             "timestamp": {"type": "date"}
         }
     }))
-    .await?;
+    .call().await?;
 
 // Index a document
-client.index("my_index")
+client.index()
+    .index("my_index")
     .id("1")
     .body(json!({
         "title": "Hello OpenSearch",
         "timestamp": "2023-10-08T12:00:00Z"
     }))
-    .await?;
+    .call().await?;
 ```
 
 ## 🚀 Next Steps

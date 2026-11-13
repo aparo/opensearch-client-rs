@@ -18,7 +18,7 @@ use crate::{search::*, util::*};
 ///
 /// To create a knn query:
 /// ```
-/// # use elasticsearch_dsl::queries::*;
+/// # use opensearch_dsl::*;
 /// # let query =
 /// Query::knn("test", vec![1.0, 2.0, 3.0]);
 /// ```

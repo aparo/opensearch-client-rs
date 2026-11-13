@@ -67,9 +67,12 @@ pub struct Comment {
 Create the index with the nested mapping:
 
 ```rust
+// The `create` builder's `body` is typed (`IndexTemplateMapping`); deserialize a
+// JSON body into it with `serde_json::from_value`, then finish with `.call()`.
 client.indices()
-    .create("blog_posts")
-    .body(serde_json::json!({
+    .create()
+    .index("blog_posts")
+    .body(serde_json::from_value(serde_json::json!({
         "mappings": {
             "properties": {
                 "title": { "type": "text" },
@@ -84,8 +87,8 @@ client.indices()
                 }
             }
         }
-    }))
-    .send()
+    }))?)
+    .call()
     .await?;
 ```
 
@@ -95,13 +98,13 @@ Query nested objects — each clause applies to the same array element:
 let results = BlogPost::find(
     Search::new()
         .query(
-            Query::nested("comments")
-                .query(
-                    Query::bool()
-                        .must(Query::match_("comments.body", "great article"))
-                        .filter(Query::term("comments.approved", true))
-                )
-                .score_mode("avg")
+            Query::nested(
+                "comments",
+                Query::bool()
+                    .must([Query::r#match("comments.body", "great article")])
+                    .filter([Query::term("comments.approved", true)]),
+            )
+            .score_mode(NestedQueryScoreMode::Average)
         )
 ).await?;
 ```
@@ -202,18 +205,18 @@ Nested aggregations require a `nested` aggregation wrapper:
 ```rust
 let search = Search::new()
     .size(0)
-    .aggregations([
-        ("comments_agg",
-            Aggregation::nested("comments")
-                .aggregations([
-                    ("avg_rating", Aggregation::avg("comments.rating")),
-                    ("approved_count",
-                        Aggregation::filter(Query::term("comments.approved", true))
-                    ),
-                ])
-        ),
-    ]);
+    .aggregate(
+        "comments_agg",
+        Aggregation::nested("comments")
+            .aggregate("avg_rating", Aggregation::avg("comments.rating"))
+            .aggregate(
+                "approved_count",
+                Aggregation::filter(Query::term("comments.approved", true)),
+            ),
+    );
 
+// Aggregation buckets are exposed on the raw `SearchResponse` (via
+// `client.search()`), not on the typed `find` result.
 let results = BlogPost::find(search).await?;
 ```
 

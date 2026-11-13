@@ -348,7 +348,10 @@ impl User {
     }
     
     pub async fn save_validated(&self) -> Result<IndexResponse, Error> {
-        self.validate().map_err(|msg| Error::ValidationError(msg))?;
+        // The `Error` enum has no validation variant — validate first and map
+        // a validation failure onto `Error::InternalError` (or return your own
+        // error type / `Result<(), String>` from `validate`).
+        self.validate().map_err(Error::InternalError)?;
         self.save().await
     }
 }

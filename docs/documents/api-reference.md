@@ -50,10 +50,12 @@ match User::get("nonexistent").await {
 Search for documents using a complex query.
 
 ```rust
+use opensearch_dsl::FieldSort;
+
 let results = User::find(
     Search::new()
         .query(Query::term("active", true))
-        .sort([("name.keyword", "asc")])
+        .sort([FieldSort::ascending("name.keyword")])
         .from(0)
         .size(10)
 ).await?;
@@ -235,25 +237,25 @@ match User::get("nonexistent").await {
 }
 ```
 
-### `ConnectionError`
+### `CommunicationError`
 
 ```rust
 match user.save().await {
     Ok(response) => { /* success */ }
-    Err(Error::ConnectionError(msg)) => {
-        eprintln!("Failed to connect to OpenSearch: {}", msg);
+    Err(Error::CommunicationError(err)) => {
+        eprintln!("Failed to connect to OpenSearch: {}", err);
     }
     Err(e) => { /* other errors */ }
 }
 ```
 
-### `SerializationError`
+### `Serde`
 
 ```rust
 match User::update("123", &invalid_json).await {
     Ok(response) => { /* success */ }
-    Err(Error::SerializationError(msg)) => {
-        eprintln!("Invalid JSON data: {}", msg);
+    Err(Error::Serde(err)) => {
+        eprintln!("Invalid JSON data: {}", err);
     }
     Err(e) => { /* other errors */ }
 }
@@ -267,16 +269,17 @@ For multiple document operations, prefer batch methods:
 
 ```rust
 // ❌ Inefficient - multiple individual operations
-for user in users {
+for user in &users {
     user.save().await?;
 }
 
-// ✅ Efficient - use bulk operations
-let mut bulk = BulkOperation::new();
-for user in users {
-    bulk.index(User::index_name(), &user.id(), serde_json::to_value(user)?);
+// ✅ Efficient - use the streaming Bulker
+let bulker = client.bulker().bulk_size(1000).build();
+let index = User::index_name();
+for user in &users {
+    bulker.index(&index, user, Some(user.id())).await?;
 }
-client.bulk(bulk).await?;
+bulker.flush().await;
 ```
 
 ### Projection with Source Filtering
@@ -339,7 +342,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         Search::new().query(Query::term("active", true))
     ).await?;
     
-    println!("Found {} active users", active_users.hits.total.value);
+    println!("Found {:?} active users", active_users.hits.get_total_value());
     
     // Delete
     User::delete("user123").await?;

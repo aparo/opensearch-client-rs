@@ -6,32 +6,41 @@ This guide covers testing strategies and patterns for applications using the Ope
 
 ### Basic Test Configuration
 
+The client builder is `ConfigurationBuilder` and `.build()` returns an `OsClient`
+directly. For a one-off cluster you can start an ephemeral container with
+`opensearch-testcontainer`, or reuse a running cluster via `OPENSEARCH_URL`:
+
 ```rust
 // tests/common.rs
-use opensearch_client::{OpenSearch, ClientBuilder};
-use serde_json::json;
+use opensearch_client::{ConfigurationBuilder, OsClient};
+use opensearch_testcontainer::OpenSearch;
+use testcontainers::runners::AsyncRunner;
 
-pub async fn setup_test_client() -> OpenSearch {
-    let client = ClientBuilder::new()
-        .host("http://localhost:9200")
-        .build()
-        .expect("Failed to create test client");
-
-    // Wait for OpenSearch to be ready
-    for _ in 0..30 {
-        if client.ping().await.is_ok() {
-            return client;
-        }
-        tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
+pub async fn setup_test_client() -> OsClient {
+    // Reuse a running cluster in CI when OPENSEARCH_URL is set.
+    if std::env::var("OPENSEARCH_URL").is_ok() {
+        return OsClient::from_environment().unwrap();
     }
 
-    panic!("OpenSearch not available for testing");
+    // Otherwise start a throwaway container (Docker must be available).
+    // Keep `node` alive for the duration of the test (e.g. store it alongside
+    // the client) so the container is not stopped early.
+    let image = OpenSearch::default();
+    let node = image.clone().start().await.unwrap();
+    let port = node.get_host_port_ipv4(9200).await.unwrap();
+    std::mem::forget(node); // simplest way to keep the container up for the test run
+
+    ConfigurationBuilder::new()
+        .accept_invalid_certificates(true)
+        .base_url(format!("https://127.0.0.1:{port}"))
+        .basic_auth(image.username(), image.password())
+        .build()
 }
 
-pub async fn cleanup_test_indices(client: &OpenSearch) {
+pub async fn cleanup_test_indices(client: &OsClient) {
     let indices = ["test_posts", "test_users", "test_*"];
     for index in &indices {
-        let _ = client.indices().delete(index).await;
+        let _ = client.indices().delete().index(*index).call().await;
     }
 }
 
@@ -315,19 +324,17 @@ async fn test_bulk_operations() {
         .map(|i| test_blog_post(&format!("bulk_{}", i)))
         .collect();
     
-    let operations: Vec<BulkOperation> = posts
-        .into_iter()
-        .map(|post| BulkOperation::index(post))
-        .collect();
+    let bulker = client.bulker().bulk_size(1000).build();
+    for post in &posts {
+        bulker.index("blog_posts", post, Some(post.id())).await.unwrap();
+    }
+    bulker.flush().await;
     
-    let bulker = Bulker::new();
-    let response = bulker.execute(operations).await.unwrap();
+    let stats = bulker.statistics();
+    assert_eq!(stats.index_actions, 10);
     
-    assert!(!response.errors);
-    assert_eq!(response.items.len(), 10);
-    
-    // Wait for indexing
-    tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
+    // Make the new documents searchable
+    client.indices().refresh().call().await.unwrap();
     
     // Verify documents were created
     let count = BlogPost::count(None).await.unwrap();
@@ -376,7 +383,7 @@ impl TestDataGenerator {
 
 ```rust
 // tests/assertions.rs
-use opensearch_client::SearchResults;
+use opensearch_client::search::TypedSearchResult;
 
 pub trait SearchAssertions<T> {
     fn assert_has_hits(&self, min_count: usize);
@@ -384,7 +391,7 @@ pub trait SearchAssertions<T> {
     fn assert_all_match<F>(&self, predicate: F) where F: Fn(&T) -> bool;
 }
 
-impl<T> SearchAssertions<T> for SearchResults<T> 
+impl<T> SearchAssertions<T> for TypedSearchResult<T> 
 where 
     T: serde::de::DeserializeOwned + Clone 
 {

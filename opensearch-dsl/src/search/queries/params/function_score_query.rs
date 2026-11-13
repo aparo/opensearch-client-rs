@@ -289,7 +289,8 @@ impl RandomScore {
 ///
 /// As an example, imagine you have a document indexed with a numeric `my-int`
 /// field and wish to influence the score of a document with this field, an
-/// example doing so would look like: ```
+/// example doing so would look like:
+/// ```
 /// # use opensearch_dsl::{FieldValueFactor, FieldValueFactorModifier};
 /// # fn main() {
 /// # let _ =

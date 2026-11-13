@@ -12,10 +12,10 @@ use opensearch_dsl::*;
 let search = Search::new()
     .query(
         Query::bool()
-            .must(Query::match_("title", "rust async"))
-            .filter(Query::term("published", true))
+            .must([Query::r#match("title", "rust async")])
+            .filter([Query::term("published", true)])
     )
-    .sort([Sort::field("created_at").order(SortOrder::Desc)])
+    .sort([FieldSort::descending("created_at")])
     .size(10);
 
 let results = BlogPost::find(search).await?;
@@ -33,7 +33,7 @@ let search = Search::new()
     .source(false)            // Disable _source entirely
     .source(["id", "title"]) // Return only specific fields
     .sort([...])              // Sorting (see Sorting section)
-    .aggregations([...])      // Aggregations (see Aggregations section)
+    .aggregate("name", agg)   // Aggregations, chained (see Aggregations section)
     .highlight(...)           // Highlighting
     .search_after([...])      // Cursor-based deep pagination
     .min_score(0.5);          // Filter by relevance score
@@ -47,10 +47,10 @@ Standard full-text search. The query string is analyzed before matching.
 
 ```rust
 // Basic match
-Query::match_("content", "opensearch tutorial")
+Query::r#match("content", "opensearch tutorial")
 
 // With options
-Query::match_("content", "opensearch tutorial")
+Query::r#match("content", "opensearch tutorial")
     .operator("and")       // All terms must match (default: "or")
     .fuzziness("AUTO")     // Allow typos
     .minimum_should_match("75%")
@@ -198,7 +198,7 @@ The workhorse of compound queries. Combines multiple clauses:
 ```rust
 Query::bool()
     .must([
-        Query::match_("title", "opensearch"),
+        Query::r#match("title", "opensearch"),
         Query::range("view_count").gte(100),
     ])
     .filter([
@@ -207,7 +207,7 @@ Query::bool()
     ])
     .should([
         Query::term("featured", true),
-        Query::match_("tags", "tutorial"),
+        Query::r#match("tags", "tutorial"),
     ])
     .must_not([
         Query::term("archived", true),
@@ -222,10 +222,11 @@ Query::bool()
 Return documents matching `positive`, downgrade documents that also match `negative`:
 
 ```rust
-Query::boosting()
-    .positive(Query::match_("content", "opensearch tutorial"))
-    .negative(Query::term("quality", "low"))
-    .negative_boost(0.2)
+Query::boosting(
+    Query::r#match("content", "opensearch tutorial"),  // positive
+    Query::term("quality", "low"),                     // negative
+    0.2,                                               // negative_boost
+)
 ```
 
 ### `constant_score`
@@ -247,11 +248,12 @@ Query::constant_score(
 Return the highest score from any matching sub-query (useful for multi-field search):
 
 ```rust
-Query::dis_max([
-    Query::match_("title", "quick brown fox"),
-    Query::match_("content", "quick brown fox"),
-])
-.tie_breaker(0.3)  // Add fraction of other matches' scores
+Query::dis_max()
+    .query([
+        Query::r#match("title", "quick brown fox"),
+        Query::r#match("content", "quick brown fox"),
+    ])
+    .tie_breaker(0.3)  // Add fraction of other matches' scores
 ```
 
 ## Geo Queries
@@ -259,23 +261,21 @@ Query::dis_max([
 Requires a `geo_point` or `geo_shape` field mapping.
 
 ```rust
-// Documents within a radius
-Query::geo_distance("location")
-    .point(GeoLocation::new(40.7128, -74.0060))
-    .distance("10km")
+// Documents within a radius (field, origin, distance)
+Query::geo_distance(
+    "location",
+    GeoLocation::new(40.7128, -74.0060),
+    "10km",
+)
 
-// Documents within a bounding box
-Query::geo_bounding_box("location")
-    .top_left(GeoLocation::new(40.8, -74.1))
-    .bottom_right(GeoLocation::new(40.6, -73.9))
-
-// Documents within a polygon
-Query::geo_polygon("location")
-    .points([
-        GeoLocation::new(40.73, -74.1),
-        GeoLocation::new(40.01, -71.12),
-        GeoLocation::new(50.56, -90.58),
-    ])
+// Documents within a bounding box (field, bounding_box)
+Query::geo_bounding_box(
+    "location",
+    GeoBoundingBox::MainDiagonal {
+        top_left: GeoLocation::new(40.8, -74.1),
+        bottom_right: GeoLocation::new(40.6, -73.9),
+    },
+)
 ```
 
 ## Nested and Join Queries
@@ -285,15 +285,15 @@ Query::geo_polygon("location")
 Query nested objects (mapped as `"type": "nested"`):
 
 ```rust
-Query::nested("comments")
-    .query(
-        Query::bool()
-            .must([
-                Query::match_("comments.body", "great article"),
-                Query::term("comments.approved", true),
-            ])
-    )
-    .score_mode("avg")  // "avg", "sum", "min", "max", "none"
+Query::nested(
+    "comments",
+    Query::bool()
+        .must([
+            Query::r#match("comments.body", "great article"),
+            Query::term("comments.approved", true),
+        ]),
+)
+.score_mode(NestedQueryScoreMode::Average)  // Average, Sum, Minimum, Maximum, None
 ```
 
 ### `has_child` / `has_parent`
@@ -301,37 +301,43 @@ Query::nested("comments")
 For parent-join field mappings:
 
 ```rust
-// Documents that have a child matching the query
-Query::has_child("comment")
-    .query(Query::term("approved", true))
+// Documents that have a child matching the query (type, query)
+Query::has_child("comment", Query::term("approved", true))
     .min_children(1)
-    .score_mode("sum")
+    .score_mode(HasChildScoreMode::Sum)
 
-// Documents whose parent matches the query
-Query::has_parent("blog")
-    .query(Query::term("featured", true))
+// Documents whose parent matches the query (parent_type, query)
+Query::has_parent("blog", Query::term("featured", true))
     .score(true)
 ```
 
 ## Sorting
 
 ```rust
-use opensearch_dsl::{Sort, SortOrder};
+use opensearch_dsl::FieldSort;
 
 Search::new()
     .sort([
-        Sort::score(),                                    // _score desc (default)
-        Sort::field("created_at").order(SortOrder::Desc),
-        Sort::field("title.keyword").order(SortOrder::Asc),
+        FieldSort::descending("_score"),        // _score desc (default)
+        FieldSort::descending("created_at"),
+        FieldSort::ascending("title.keyword"),
     ])
 ```
 
-Sort by nested field:
+`SortCollection` offers the same thing with a fluent chain, and bare field-name
+strings also work as a shorthand:
 
 ```rust
-Sort::field("ratings.value")
-    .order(SortOrder::Desc)
-    .nested(NestedSort::new("ratings").filter(Query::term("ratings.verified", true)))
+use opensearch_dsl::SortCollection;
+
+Search::new().sort(SortCollection::new().descending("created_at").ascending("id"));
+Search::new().sort(["created_at"]);   // string shorthand
+```
+
+Sort by a field inside a nested object using its dotted path:
+
+```rust
+FieldSort::descending("ratings.value")
 ```
 
 ## Source Filtering
@@ -343,39 +349,37 @@ Search::new().source(false)
 // Include only specific fields
 Search::new().source(["id", "title", "created_at"])
 
-// Exclude specific fields
-Search::new().source_excludes(["internal_notes", "raw_html"])
+// Include some fields and exclude others via an (includes, excludes) tuple
+Search::new().source((["*"], ["internal_notes", "raw_html"]))
 ```
 
 ## Highlighting
 
 ```rust
-use opensearch_dsl::{Highlight, HighlightField};
+use opensearch_dsl::{Highlight, Highlighter};
 
 Search::new()
-    .query(Query::match_("content", "rust async"))
+    .query(Query::r#match("content", "rust async"))
     .highlight(
         Highlight::new()
-            .fields([
-                ("title", HighlightField::new()),
-                ("content", HighlightField::new()
+            .highlighter(
+                Highlighter::new()
                     .fragment_size(150)
                     .number_of_fragments(3)
-                ),
-            ])
-            .pre_tags(["<mark>"])
-            .post_tags(["</mark>"])
+                    .tags((["<mark>"], ["</mark>"]))
+            )
+            .field("title")
+            .field("content")
     )
 ```
 
-Access highlights in results:
+Access highlights in results. On a `TypedHit`, `highlight` is a
+`Map<String, Vec<String>>` (not an `Option`):
 
 ```rust
 for hit in results.hits.hits {
-    if let Some(highlights) = &hit.highlight {
-        if let Some(fragments) = highlights.get("content") {
-            println!("{}", fragments.join(" ... "));
-        }
+    if let Some(fragments) = hit.highlight.get("content") {
+        println!("{}", fragments.join(" ... "));
     }
 }
 ```
@@ -385,28 +389,22 @@ for hit in results.hits.hits {
 See the dedicated sections in [`search-queries.md`](../examples/search-queries.md) for extensive aggregation examples. A quick reference:
 
 ```rust
-use opensearch_dsl::Aggregation;
+use opensearch_dsl::{Aggregation, CalendarInterval};
 
 Search::new()
     .size(0)  // Don't return documents when only aggregations are needed
-    .aggregations([
-        // Metrics
-        ("avg_price",   Aggregation::avg("price")),
-        ("max_views",   Aggregation::max("view_count")),
-        ("total",       Aggregation::value_count("id")),
-        ("price_stats", Aggregation::stats("price")),
-
-        // Bucket
-        ("by_status",   Aggregation::terms("status").size(10)),
-        ("by_month",    Aggregation::date_histogram("created_at")
-                            .calendar_interval("month")),
-
-        // Nested bucket + metric
-        ("by_category", Aggregation::terms("category").size(20)
-                            .aggregations([
-                                ("avg_price", Aggregation::avg("price")),
-                            ])),
-    ])
+    // Metrics — add one aggregation per `.aggregate(..)` call
+    .aggregate("avg_price",     Aggregation::avg("price"))
+    .aggregate("max_views",     Aggregation::max("view_count"))
+    .aggregate("min_price",     Aggregation::min("price"))
+    .aggregate("unique_authors", Aggregation::cardinality("author_id"))
+    // Bucket
+    .aggregate("by_status",   Aggregation::terms("status").size(10))
+    .aggregate("by_month",    Aggregation::date_histogram("created_at")
+                                  .calendar_interval(CalendarInterval::Month))
+    // Nested bucket + metric (sub-aggregations also use `.aggregate(..)`)
+    .aggregate("by_category", Aggregation::terms("category").size(20)
+                                  .aggregate("avg_price", Aggregation::avg("price")))
 ```
 
 ## Pagination Patterns
@@ -428,21 +426,21 @@ Requires a stable sort with a unique tiebreaker field:
 // First page
 let search = Search::new()
     .sort([
-        Sort::field("created_at").order(SortOrder::Desc),
-        Sort::field("id").order(SortOrder::Asc),  // tiebreaker
+        FieldSort::descending("created_at"),
+        FieldSort::ascending("id"),  // tiebreaker
     ])
     .size(20);
 
 let page1 = BlogPost::find(search).await?;
 let last_hit = page1.hits.hits.last().unwrap();
 
-// Next page — use sort values from last hit
+// Next page — use sort values from last hit (`sort` is a Vec, not an Option)
 let search = Search::new()
     .sort([
-        Sort::field("created_at").order(SortOrder::Desc),
-        Sort::field("id").order(SortOrder::Asc),
+        FieldSort::descending("created_at"),
+        FieldSort::ascending("id"),
     ])
-    .search_after(last_hit.sort.clone().unwrap())
+    .search_after(last_hit.sort.clone())
     .size(20);
 ```
 
@@ -452,8 +450,8 @@ Since `opensearch-dsl` is pure `serde`, you can serialize any query to JSON for 
 
 ```rust
 let query = Query::bool()
-    .must(Query::match_("title", "rust"))
-    .filter(Query::term("published", true));
+    .must([Query::r#match("title", "rust")])
+    .filter([Query::term("published", true)]);
 
 let json = serde_json::to_string_pretty(&Search::new().query(query))?;
 println!("{}", json);

@@ -15,9 +15,8 @@ This directory contains practical examples demonstrating various features of the
 ### Simple Document CRUD
 
 ```rust
-use opensearch_client::{Document, OpenSearch, ConfigurationBuilder, OsClient};
+use opensearch_client::{Document, OpenSearch, ConfigurationBuilder};
 use serde::{Deserialize, Serialize};
-use url::Url;
 
 #[derive(Debug, Clone, Serialize, Deserialize, OpenSearch)]
 #[os(index = "users")]
@@ -31,11 +30,12 @@ pub struct User {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Setup client
-    let config = ConfigurationBuilder::new()
-        .base_url(Url::parse("http://localhost:9200")?)
+    // Setup client — `build()` returns an `OsClient` directly.
+    let client = ConfigurationBuilder::new()
+        .base_url("http://localhost:9200")
         .build();
-    let _client = OsClient::new(config);
+    // Register the global client so the Document ORM methods can use it.
+    opensearch_client::set_opensearch(client).ok();
 
     // Create user
     let user = User {
@@ -73,11 +73,11 @@ async fn search_example() -> Result<(), Box<dyn std::error::Error>> {
         Search::new()
             .query(
                 Query::bool()
-                    .must(Query::range("age").gte(18).lte(65))
-                    .filter(Query::term("active", true))
-                    .should(Query::match_query("name", "john"))
+                    .must([Query::range("age").gte(18).lte(65)])
+                    .filter([Query::term("active", true)])
+                    .should([Query::r#match("name", "john")])
             )
-            .sort([("name.keyword", "asc")])
+            .sort([FieldSort::ascending("name.keyword")])
             .from(0)
             .size(10)
     ).await?;
@@ -95,24 +95,24 @@ async fn search_example() -> Result<(), Box<dyn std::error::Error>> {
 ### Bulk Operations
 
 ```rust
-use opensearch_client::bulk::*;
+use opensearch_client::{get_opensearch, UpdateActionBody};
+use serde_json::{json, Value};
 
 async fn bulk_example() -> Result<(), Box<dyn std::error::Error>> {
-    let mut bulk = BulkOperation::new();
-    
-    // Add multiple operations
-    bulk.index("users", "1", serde_json::json!({"name": "Alice", "age": 25}));
-    bulk.index("users", "2", serde_json::json!({"name": "Bob", "age": 30}));
-    bulk.update("users", "3", serde_json::json!({"age": 31}));
-    bulk.delete("users", "4");
+    // The `Bulker` is a background, batched, streaming indexer created from a
+    // client. Enqueue actions, then `flush().await` to wait for them to be sent.
+    let client = get_opensearch();
+    let bulker = client.bulker().bulk_size(1000).build();
 
-    // Execute all operations at once
-    let response = client.bulk(bulk).await?;
-    
-    println!("Processed {} items", response.items.len());
-    for item in response.items {
-        println!("Operation result: {:?}", item);
-    }
+    // Queue multiple actions — each returns once QUEUED, not once indexed.
+    bulker.index("users", &json!({"name": "Alice", "age": 25}), Some("1".to_string())).await?;
+    bulker.index("users", &json!({"name": "Bob", "age": 30}), Some("2".to_string())).await?;
+    bulker.update("users", "3", &UpdateActionBody::new(json!({"age": 31}))).await?;
+    bulker.delete::<Value>("users", "4").await?;
+
+    bulker.flush().await;              // wait for all queued actions to be sent
+    let stats = bulker.statistics();
+    println!("Index actions: {}, errors: {}", stats.index_actions, stats.error_actions);
 
     Ok(())
 }

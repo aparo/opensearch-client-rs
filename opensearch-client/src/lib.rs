@@ -12,32 +12,30 @@
 //!
 //! ## Quick Start
 //!
-//! ```rust
+//! ```no_run
 //! use opensearch_client::{ConfigurationBuilder, OsClient};
 //! use opensearch_dsl::*;
-//! use url::Url;
 //!
 //! #[tokio::main]
 //! async fn main() -> Result<(), Box<dyn std::error::Error>> {
-//!     // Create client configuration
-//!     let config = ConfigurationBuilder::new()
-//!         .base_url(Url::parse("http://localhost:9200")?)
-//!         .basic_auth("admin".to_string(), "admin".to_string())
+//!     // Build the client — `build()` returns an `OsClient` directly.
+//!     // Call `base_url` before the auth setters.
+//!     let client: OsClient = ConfigurationBuilder::new()
+//!         .base_url("http://localhost:9200")
+//!         .basic_auth("admin", "admin")
 //!         .build();
-//!     
-//!     let client = OsClient::new(config);
-//!     
+//!
 //!     // Perform a search
 //!     let search = Search::new()
-//!         .query(Query::match_("title", "opensearch"))
+//!         .query(Query::r#match("title", "opensearch"))
 //!         .size(10);
-//!     
-//!     let response = client.search(&search).index("my_index").await?;
-//!     
+//!
+//!     let response = client.search().index("my_index").search(search).call().await?;
+//!
 //!     for hit in response.hits.hits {
 //!         println!("Document: {:?}", hit.source);
 //!     }
-//!     
+//!
 //!     Ok(())
 //! }
 //! ```

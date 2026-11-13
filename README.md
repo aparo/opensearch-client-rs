@@ -41,26 +41,24 @@ Macro support is bundled with `opensearch-client` — no extra dependency needed
 ```rust
 use opensearch_client::{ConfigurationBuilder, OsClient};
 use opensearch_dsl::*;
-use url::Url;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let config = ConfigurationBuilder::new()
-        .base_url(Url::parse("http://localhost:9200")?)
-        .basic_auth("admin".to_string(), "admin".to_string())
+    // `build()` returns an `OsClient` directly. `base_url` must precede auth.
+    let client: OsClient = ConfigurationBuilder::new()
+        .base_url("http://localhost:9200")
+        .basic_auth("admin", "admin")
         .build();
-
-    let client = OsClient::new(config);
 
     // Build a typed query
     let query = Search::new()
         .query(Query::bool()
-            .must(Query::term("status", "published"))
-            .filter(Query::range("date").gte("2024-01-01")))
+            .must([Query::term("status", "published")])
+            .filter([Query::range("date").gte("2024-01-01")]))
         .size(10);
 
-    let response = client.search(&query).index("my_index").await?;
-    println!("Hits: {}", response.hits.total.value);
+    let response = client.search().index("my_index").search(query).call().await?;
+    println!("Hits: {:?}", response.hits.total.map(|t| t.value));
     Ok(())
 }
 ```
@@ -122,10 +120,58 @@ Full reference: [docs/documents/](docs/documents/)
 | — Document modeling | [docs/examples/document-modeling.md](docs/examples/document-modeling.md) |
 | — Search queries | [docs/examples/search-queries.md](docs/examples/search-queries.md) |
 | — Real-world patterns | [docs/examples/real-world.md](docs/examples/real-world.md) |
+| Agent skill (Claude & AI agents) | [.claude/skills/opensearch-client/SKILL.md](.claude/skills/opensearch-client/SKILL.md) |
 | Contributing | [docs/contributing.md](docs/contributing.md) |
 | Changelog | [CHANGELOG.md](CHANGELOG.md) |
 
 API docs for the latest release are published at [docs.rs/opensearch-client](https://docs.rs/opensearch-client).
+
+## Agent Skill (Claude & other AI agents)
+
+This repository ships a ready-made **agent skill** that teaches Claude Code (and
+other skill-aware agents) how to integrate these crates correctly — client setup,
+the `#[derive(OpenSearch)]` document ORM, the query DSL, the streaming bulker, and
+testing — with the verified, non-obvious details baked in.
+
+The skill lives at [`.claude/skills/opensearch-client/SKILL.md`](.claude/skills/opensearch-client/SKILL.md).
+
+### Using it inside this repository
+
+Nothing to do. Claude Code auto-discovers skills under `.claude/skills/`, so the
+skill is active whenever you run Claude Code from the repo root.
+
+### Installing it into your own project
+
+Copy the skill directory into your project's (or your user-level) skills folder:
+
+```bash
+# Per-project: available when running an agent from that project
+mkdir -p /path/to/your-project/.claude/skills
+cp -r .claude/skills/opensearch-client /path/to/your-project/.claude/skills/
+
+# Or user-wide: available in every project for your user
+mkdir -p ~/.claude/skills
+cp -r .claude/skills/opensearch-client ~/.claude/skills/
+```
+
+Then verify it is picked up:
+
+```bash
+claude                      # start Claude Code in the target project
+/skills                     # the list should include "opensearch-client"
+```
+
+The agent invokes the skill automatically when a task mentions OpenSearch in Rust
+(e.g. "add an OpenSearch client", "model this struct as an OpenSearch document",
+"build this search query") — or you can trigger it explicitly with
+`/opensearch-client`.
+
+### Other agents
+
+Any agent runtime that reads Markdown skills can use the same file. Point your
+runtime at `.claude/skills/opensearch-client/SKILL.md`, or paste its contents into
+the agent's system/context prompt. The skill is self-contained and version-aligned
+with the `docs/` tree, so it needs no extra files to work.
 
 ## CLI Tools
 
@@ -149,14 +195,17 @@ See [docs/cli.md](docs/cli.md) for all subcommands and flags.
 # Unit tests
 cargo test
 
-# Integration tests (requires a running OpenSearch instance)
+# Integration tests also run under plain `cargo test`: they auto-start an
+# OpenSearch testcontainer (Docker must be available). To reuse an already
+# running cluster instead, set OPENSEARCH_URL before running the tests:
 docker run -d --name opensearch-test \
   -p 9200:9200 \
   -e "discovery.type=single-node" \
   -e "DISABLE_SECURITY_PLUGIN=true" \
   opensearchproject/opensearch:latest
 
-cargo test --features integration-tests
+export OPENSEARCH_URL=http://localhost:9200
+cargo test
 ```
 
 See [docs/testing.md](docs/testing.md) for the full testing guide.

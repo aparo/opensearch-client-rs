@@ -81,10 +81,8 @@ let active_users = User::find(
 
 // Boolean aggregations
 let stats = Search::new()
-    .aggregations([
-        ("active_count", Aggregation::terms("active")),
-        ("premium_ratio", Aggregation::avg("premium"))
-    ]);
+    .aggregate("active_count", Aggregation::terms("active"))
+    .aggregate("premium_ratio", Aggregation::avg("premium"));
 ```
 
 ### Array Types (Vec<T>)
@@ -150,7 +148,7 @@ let profiles_with_bio = Profile::find(
 
 // Find profiles without age
 let profiles_without_age = Profile::find(
-    Search::new().query(Query::bool().must_not(Query::exists("age")))
+    Search::new().query(Query::bool().must_not([Query::exists("age")]))
 ).await?;
 ```
 

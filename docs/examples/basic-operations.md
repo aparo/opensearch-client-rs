@@ -19,13 +19,12 @@ url = "2"
 
 ```rust
 use opensearch_client::{ConfigurationBuilder, OsClient};
-use url::Url;
 
 fn build_client() -> OsClient {
-    let config = ConfigurationBuilder::new()
-        .base_url(Url::parse("http://localhost:9200").unwrap())
-        .build();
-    OsClient::new(config)
+    // `build()` returns an `OsClient` directly — there is no `OsClient::new` wrapper.
+    ConfigurationBuilder::new()
+        .base_url("http://localhost:9200")
+        .build()
 }
 ```
 
@@ -35,7 +34,7 @@ fn build_client() -> OsClient {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = build_client();
-    let health = client.cluster().health().send().await?;
+    let health = client.cluster().health().call().await?;
     println!("status: {:?}", health.status);
     Ok(())
 }
@@ -49,6 +48,7 @@ use serde_json::json;
 let client = build_client();
 
 let resp = client
+    .index()
     .index("blog_posts")
     .id("post-1")
     .body(json!({
@@ -57,22 +57,24 @@ let resp = client
         "published": true,
         "created_at": "2024-01-15T10:00:00Z"
     }))
-    .send()
+    .call()
     .await?;
 
-println!("indexed: {} result={}", resp.id_, resp.result);
+println!("indexed: {} result={}", resp.id, resp.result);
 ```
 
 ## Getting a Document by ID
 
 ```rust
 let resp = client
-    .get("blog_posts", "post-1")
-    .send()
+    .get()
+    .index("blog_posts")
+    .id("post-1")
+    .call()
     .await?;
 
 if resp.found {
-    let doc: serde_json::Value = resp.source_.unwrap();
+    let doc = resp.source.unwrap();  // source: Option<serde_json::Value>
     println!("title: {}", doc["title"]);
 }
 ```
@@ -82,15 +84,22 @@ if resp.found {
 ### Partial update (only change specific fields)
 
 ```rust
+use opensearch_client::common::Update;
+
+// The update body is a typed `common::Update`; build it from JSON (it derives Deserialize).
+let body: Update = serde_json::from_value(json!({
+    "doc": {
+        "view_count": 42,
+        "updated_at": "2024-01-16T08:00:00Z"
+    }
+})).unwrap();
+
 let resp = client
-    .update("blog_posts", "post-1")
-    .body(json!({
-        "doc": {
-            "view_count": 42,
-            "updated_at": "2024-01-16T08:00:00Z"
-        }
-    }))
-    .send()
+    .update()
+    .index("blog_posts")
+    .id("post-1")
+    .update(body)
+    .call()
     .await?;
 
 println!("result: {}", resp.result);
@@ -99,15 +108,21 @@ println!("result: {}", resp.result);
 ### Script update (increment a counter)
 
 ```rust
+use opensearch_client::common::Update;
+
+let body: Update = serde_json::from_value(json!({
+    "script": {
+        "source": "ctx._source.view_count += params.increment",
+        "params": { "increment": 1 }
+    }
+})).unwrap();
+
 let resp = client
-    .update("blog_posts", "post-1")
-    .body(json!({
-        "script": {
-            "source": "ctx._source.view_count += params.increment",
-            "params": { "increment": 1 }
-        }
-    }))
-    .send()
+    .update()
+    .index("blog_posts")
+    .id("post-1")
+    .update(body)
+    .call()
     .await?;
 ```
 
@@ -115,8 +130,10 @@ let resp = client
 
 ```rust
 let resp = client
-    .delete("blog_posts", "post-1")
-    .send()
+    .delete()
+    .index("blog_posts")
+    .id("post-1")
+    .call()
     .await?;
 
 println!("result: {}", resp.result);  // "deleted"
@@ -128,19 +145,20 @@ println!("result: {}", resp.result);  // "deleted"
 use opensearch_dsl::{Search, Query};
 
 let search = Search::new()
-    .query(Query::match_("title", "opensearch"))
+    .query(Query::r#match("title", "opensearch"))
     .size(10);
 
 let resp = client
     .search()
     .index("blog_posts")
-    .body(&search)
-    .send()
+    .search(search)
+    .call()
     .await?;
 
-println!("total: {}", resp.hits.total.value);
-for hit in resp.hits.hits {
-    let doc: serde_json::Value = hit.source_.unwrap();
+// `resp` is a raw `SearchResponse`: total is `Option<TotalHits>`.
+let total = resp.hits.total.map(|t| t.value).unwrap_or(0);
+println!("total: {}", total);
+for doc in resp.documents::<serde_json::Value>()? {
     println!("  - {}", doc["title"]);
 }
 ```
@@ -148,17 +166,23 @@ for hit in resp.hits.hits {
 ## Upsert (insert or update)
 
 ```rust
+use opensearch_client::common::Update;
+
 // Insert the document if it doesn't exist, update it if it does
+let body: Update = serde_json::from_value(json!({
+    "doc": {
+        "title": "New or Updated Post",
+        "view_count": 0
+    },
+    "doc_as_upsert": true
+})).unwrap();
+
 let resp = client
-    .update("blog_posts", "post-99")
-    .body(json!({
-        "doc": {
-            "title": "New or Updated Post",
-            "view_count": 0
-        },
-        "doc_as_upsert": true
-    }))
-    .send()
+    .update()
+    .index("blog_posts")
+    .id("post-99")
+    .update(body)
+    .call()
     .await?;
 
 println!("result: {}", resp.result); // "created" or "updated"
@@ -167,17 +191,23 @@ println!("result: {}", resp.result); // "created" or "updated"
 ## Delete by Query
 
 ```rust
+use opensearch_client::common::DeleteByQuery;
+
+let body: DeleteByQuery = serde_json::from_value(json!({
+    "query": {
+        "term": { "published": false }
+    }
+})).unwrap();
+
 let resp = client
-    .delete_by_query("blog_posts")
-    .body(json!({
-        "query": {
-            "term": { "published": false }
-        }
-    }))
-    .send()
+    .delete_by_query()
+    .index("blog_posts")
+    .delete_by_query(body)
+    .call()
     .await?;
 
-println!("deleted: {} documents", resp.deleted);
+// `resp` is a `TypedOrJson` and implements `Display`.
+println!("delete-by-query response: {resp}");
 ```
 
 ## Count Documents
@@ -186,13 +216,11 @@ println!("deleted: {} documents", resp.deleted);
 let resp = client
     .count()
     .index("blog_posts")
-    .body(json!({
-        "query": { "term": { "published": true } }
-    }))
-    .send()
+    .query(opensearch_dsl::Query::term("published", true))
+    .call()
     .await?;
 
-println!("published posts: {}", resp.count);
+println!("published posts: {}", resp.count);  // resp.count: u32
 ```
 
 ## Using the Document Trait (ORM style)
@@ -214,7 +242,7 @@ pub struct BlogPost {
 }
 
 // Set the global client once at startup
-opensearch_client::set_opensearch(build_client());
+opensearch_client::set_opensearch(build_client()).ok();
 
 // Create
 let post = BlogPost {
@@ -239,5 +267,5 @@ BlogPost::delete("post-1").await?;
 let results = BlogPost::find(
     Search::new().query(Query::term("published", true)).size(5)
 ).await?;
-println!("{} results", results.hits.total.value);
+println!("{} results", results.hits.get_total_value().unwrap_or(0));
 ```

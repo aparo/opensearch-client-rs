@@ -30,9 +30,9 @@ impl IndicesApiClient {
     /// # Example
     ///
     /// ```
-    /// # use opensearch_client::OpenSearchClient;
+    /// # use opensearch_client::ConfigurationBuilder;
     /// # pub async fn dox() -> Result<(), Box<dyn std::error::Error>> {
-    /// # let client = OpenSearchClient::new("http://localhost:9200")?;
+    /// # let client = ConfigurationBuilder::new().base_url("http://localhost:9200").build();
     /// let indices = client.indices().list_indices().await?;
     /// # Ok(())
     /// # }

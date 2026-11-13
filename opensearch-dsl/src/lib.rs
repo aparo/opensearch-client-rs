@@ -38,45 +38,51 @@
 //!     .from(0)
 //!     .size(10)
 //!     .query(Query::match_all())
-//!     .sort(vec![Sort::field("timestamp").desc()]);
+//!     .sort([FieldSort::descending("timestamp")]);
 //!
 //! // Generates valid OpenSearch JSON
-//! let json = serde_json::to_string(&search)?;
+//! let json = serde_json::to_string(&search).unwrap();
 //! ```
 //!
 //! ### Complex Boolean Query
 //!
+//! `.must`/`.should`/`.filter`/`.must_not` each take an iterable of clauses and
+//! can be called more than once; an array must be homogeneous, so put
+//! differently-typed clauses in separate calls.
+//!
 //! ```rust
+//! use opensearch_dsl::*;
+//!
 //! let search = Search::new()
 //!     .query(
 //!         Query::bool()
-//!             .must(vec![
-//!                 Query::match_("title", "OpenSearch"),
-//!                 Query::range("date").gte("2023-01-01")
-//!             ])
-//!             .should(vec![
+//!             .must([Query::r#match("title", "OpenSearch")])
+//!             .must([Query::range("date").gte("2023-01-01")])
+//!             .should([
 //!                 Query::term("category", "tutorial"),
-//!                 Query::term("featured", true)
+//!                 Query::term("featured", true),
 //!             ])
-//!             .filter(vec![
-//!                 Query::term("status", "published")
-//!             ])
-//!             .minimum_should_match(1)
+//!             .filter([Query::term("status", "published")])
+//!             .minimum_should_match("1")
 //!     );
 //! ```
 //!
 //! ### Aggregations
 //!
 //! ```rust
+//! use opensearch_dsl::*;
+//!
 //! let search = Search::new()
 //!     .size(0)
-//!     .aggregations(vec![
-//!         ("categories", Aggregation::terms("category")),
-//!         ("monthly_sales",
-//!             Aggregation::date_histogram("date", "month")
-//!                 .sub_aggregation("total_revenue", Aggregation::sum("price"))
-//!         )
-//!     ]);
+//!     // Aggregations are added one at a time with `.aggregate(name, agg)`;
+//!     // nest sub-aggregations the same way.
+//!     .aggregate("categories", Aggregation::terms("category"))
+//!     .aggregate(
+//!         "monthly_sales",
+//!         Aggregation::date_histogram("date")
+//!             .calendar_interval(CalendarInterval::Month)
+//!             .aggregate("total_revenue", Aggregation::sum("price")),
+//!     );
 //! ```
 //!
 //! ## Module Organization
@@ -91,13 +97,16 @@
 //!
 //! This DSL works seamlessly with the opensearch-client:
 //!
-//! ```rust
+//! ```ignore
 //! use opensearch_client::*;
 //! use opensearch_dsl::*;
 //!
-//! let client = OsClient::new(/* configuration */);
-//! let search = Search::new().query(Query::match_("title", "rust"));
-//! let response = client.search(&search).index("articles").await?;
+//! let client = ConfigurationBuilder::new()
+//!     .base_url("http://localhost:9200")
+//!     .basic_auth("admin", "admin")
+//!     .build();
+//! let search = Search::new().query(Query::r#match("title", "rust"));
+//! let response = client.search().index("articles").search(search).call().await?;
 //! ```
 //!
 //! ## Examples
@@ -105,6 +114,7 @@
 //! For comprehensive examples including e-commerce search, log analytics, and time series analysis,
 //! see the [examples directory](https://github.com/aparo/opensearch-client-rs/tree/main/examples).
 //!
+//! ```ignore
 //! use opensearch_dsl::*;
 //!
 //! fn main() {
@@ -115,12 +125,12 @@
 //!     .size(30)
 //!     .query(
 //!       Query::bool()
-//!         .must(Query::multi_match(
+//!         .must([Query::multi_match(
 //!           ["title", "description"],
 //!           "you know, for search",
-//!         ))
-//!         .filter(Query::terms("tags", ["opensearch"]))
-//!         .should(Query::term("verified", true).boost(10)),
+//!         )])
+//!         .filter([Query::terms("tags", ["opensearch"])])
+//!         .should([Query::term("verified", true).boost(10.0)]),
 //!     )
 //!     .aggregate(
 //!       "country_ids",

@@ -63,8 +63,10 @@ pub struct Product {
 ```
 
 **Requirements:**
-- Exactly one field must have `#[os(id)]`
-- ID field must be of type `String`
+- Mark the id field with `#[os(id)]`. If omitted, the macro falls back to a
+  field literally named `id`; if neither exists, `id()` returns an empty string,
+  so always provide one.
+- The ID field must be of type `String`
 - ID field provides the unique identifier for OpenSearch documents
 
 **ID Field Examples:**
@@ -172,7 +174,8 @@ pub struct InvalidDoc {
     pub id: String,
 }
 
-// ❌ This won't compile - missing ID field
+// ⚠️ Compiles, but is misconfigured - no `#[os(id)]` and no field named `id`,
+//    so `id()` returns an empty string. Always provide an id field.
 #[derive(Debug, Clone, Serialize, Deserialize, OpenSearch)]
 #[os(index = "invalid")]
 pub struct InvalidDoc2 {

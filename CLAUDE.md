@@ -31,8 +31,9 @@ cargo test --package opensearch-cli
 # Single test by name
 cargo test --package opensearch-dsl test_name
 
-# Integration tests (requires running OpenSearch)
-cargo test --features integration-tests
+# Integration tests (run under plain `cargo test`; auto-start a testcontainer
+# when Docker is available, or set OPENSEARCH_URL to reuse a running cluster)
+cargo test
 ```
 
 ### Running OpenSearch for Integration Tests
@@ -89,7 +90,6 @@ Proc-macro crate that generates `Document` trait impls. Struct attributes:
 - `#[os(index = "index_name")]` — required, sets the index name
 - `#[os(id)]` — marks the document ID field
 - `#[os(skip)]` — exclude from document
-- `#[os(none_value = "...")]` — default for Option fields
 
 ### `opensearch-cli`
 
@@ -100,5 +100,5 @@ CLI with subcommands: `dump-metadata`, `restore-metadata`, `list-indices`. Suppo
 - **Feature flags**: API modules are gated; when adding features, check which feature flag they belong to and keep the pattern consistent.
 - **Builder pattern**: Queries, search requests, and client configuration all use fluent builder APIs.
 - **Async throughout**: All I/O uses `tokio`; avoid blocking calls in async context.
-- **Integration tests**: Gated by `#[cfg(feature = "integration-tests")]` and require a live OpenSearch instance.
+- **Integration tests**: Run under plain `cargo test`; they auto-start an OpenSearch testcontainer when Docker is available, or reuse a running cluster when `OPENSEARCH_URL` is set. There is no `integration-tests` cargo feature.
 - **Pre-commit hooks**: `cargo fmt` and `cargo sort -w` are configured as pre-commit steps (see `[workspace.metadata.precommit]` in root `Cargo.toml`).

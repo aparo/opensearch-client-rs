@@ -28,7 +28,7 @@ pub struct UpdateActionBody {
 ///
 /// ```
 /// use serde_json::json;
-/// use opensearch_client::types::bulk::UpdateActionBody;
+/// use opensearch_client::UpdateActionBody;
 ///
 /// let doc = json!({
 ///     "name": "John Doe",
@@ -41,7 +41,7 @@ pub struct UpdateActionBody {
 /// Creating an update action with a script:
 ///
 /// ```
-/// use opensearch_client::types::bulk::UpdateActionBody;
+/// use opensearch_client::UpdateActionBody;
 ///
 /// let script = r#"ctx._source.age += params.age"#;
 ///
@@ -52,7 +52,7 @@ pub struct UpdateActionBody {
 ///
 /// ```
 /// use serde_json::json;
-/// use opensearch_client::types::bulk::UpdateActionBody;
+/// use opensearch_client::UpdateActionBody;
 ///
 /// let script = r#"ctx._source.age += params.age"#;
 /// let params = json!({
@@ -65,7 +65,8 @@ pub struct UpdateActionBody {
 /// Creating an update action with a pre-defined script:
 ///
 /// ```
-/// use opensearch_client::types::bulk::{UpdateActionBody, Script};
+/// use serde_json::json;
+/// use opensearch_client::{UpdateActionBody, Script};
 ///
 /// let script = Script {
 ///     source: r#"ctx._source.age += params.age"#.to_string(),

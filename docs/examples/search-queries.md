@@ -137,75 +137,61 @@ let search = Search::new()
 ### Metrics Aggregations
 
 ```rust
-use opensearch_dsl::Aggregation;
+use opensearch_dsl::{Aggregation, CalendarInterval};
 
-// Simple aggregations
+// Simple aggregations — chain `.aggregate(name, agg)`, one per call.
+// NOTE: `value_count`/`stats`/`range` aggregations are not implemented; use
+// `avg`/`max`/`min`/`sum`/`cardinality`.
 let search = Search::new()
     .query(Query::match_all())
-    .aggregations([
-        ("avg_price", Aggregation::avg("price")),
-        ("max_views", Aggregation::max("view_count")),
-        ("total_posts", Aggregation::value_count("id")),
-        ("price_stats", Aggregation::stats("price"))
-    ])
+    .aggregate("avg_price", Aggregation::avg("price"))
+    .aggregate("max_views", Aggregation::max("view_count"))
+    .aggregate("min_price", Aggregation::min("price"))
+    .aggregate("unique_authors", Aggregation::cardinality("author_id"))
     .size(0);  // Don't return documents, just aggregations
 
-// Date histogram
+// Date histogram — the interval is a `CalendarInterval` enum (not a string).
 let search = Search::new()
-    .aggregations([
-        ("posts_per_month", 
-            Aggregation::date_histogram("created_at")
-                .calendar_interval("month")
-                .format("yyyy-MM")
-        )
-    ])
+    .aggregate(
+        "posts_per_month",
+        Aggregation::date_histogram("created_at").calendar_interval(CalendarInterval::Month),
+    )
     .size(0);
 ```
 
 ### Bucket Aggregations
 
 ```rust
-// Terms aggregation (top categories)
+use opensearch_dsl::{Aggregation, FieldSort, TermsOrder};
+
+// Terms aggregation (top categories) — order via `TermsOrder`.
 let search = Search::new()
-    .aggregations([
-        ("top_categories",
-            Aggregation::terms("category")
-                .size(10)
-                .order([("_count", "desc")])
-        )
-    ])
+    .aggregate(
+        "top_categories",
+        Aggregation::terms("category").size(10).order(TermsOrder::count_descending()),
+    )
     .size(0);
 
-// Nested aggregations
+// Nested aggregations — sub-aggregations are chained with `.aggregate(..)` too.
 let search = Search::new()
-    .aggregations([
-        ("categories",
-            Aggregation::terms("category")
-                .size(10)
-                .aggregations([
-                    ("avg_price_in_category", Aggregation::avg("price")),
-                    ("top_products",
-                        Aggregation::top_hits()
-                            .size(3)
-                            .sort([("price", "desc")])
-                    )
-                ])
-        )
-    ])
+    .aggregate(
+        "categories",
+        Aggregation::terms("category")
+            .size(10)
+            .aggregate("avg_price_in_category", Aggregation::avg("price"))
+            .aggregate(
+                "top_products",
+                Aggregation::top_hits().size(3).sort([FieldSort::descending("price")]),
+            ),
+    )
     .size(0);
 
-// Range aggregation
+// Bucketing a numeric field into ranges: the `range` aggregation is not
+// implemented, so use one `filter` aggregation per range.
 let search = Search::new()
-    .aggregations([
-        ("price_ranges",
-            Aggregation::range("price")
-                .ranges([
-                    ("cheap", None, Some(50.0)),
-                    ("medium", Some(50.0), Some(200.0)),
-                    ("expensive", Some(200.0), None)
-                ])
-        )
-    ])
+    .aggregate("cheap", Aggregation::filter(Query::range("price").lt(50.0)))
+    .aggregate("medium", Aggregation::filter(Query::range("price").gte(50.0).lt(200.0)))
+    .aggregate("expensive", Aggregation::filter(Query::range("price").gte(200.0)))
     .size(0);
 ```
 
@@ -234,17 +220,18 @@ let search = Search::new()
 ### Nested and Object Queries
 
 ```rust
-// Nested object query
+// Nested object query — `Query::nested(path, query)` takes the query as its
+// second argument.
 let search = Search::new()
     .query(
-        Query::nested("comments")
-            .query(
-                Query::bool()
-                    .must([
-                        Query::r#match("comments.content", "great article"),
-                        Query::term("comments.approved", true)
-                    ])
-            )
+        Query::nested(
+            "comments",
+            Query::bool()
+                .must([
+                    Query::r#match("comments.content", "great article"),
+                    Query::term("comments.approved", true)
+                ])
+        )
     );
 
 // Object field query
@@ -261,21 +248,25 @@ let search = Search::new()
 ### Geo Queries (if using geo fields)
 
 ```rust
-// Geo distance
-let search = Search::new()
-    .query(
-        Query::geo_distance("location")
-            .distance("10km")
-            .lat_lon(40.7128, -74.0060)  // New York coordinates
-    );
+use opensearch_dsl::{GeoLocation, GeoBoundingBox};
 
-// Geo bounding box
+// Geo distance — `geo_distance(field, origin, distance)`.
 let search = Search::new()
-    .query(
-        Query::geo_bounding_box("location")
-            .top_left(40.8, -74.1)
-            .bottom_right(40.7, -73.9)
-    );
+    .query(Query::geo_distance(
+        "location",
+        GeoLocation::new(40.7128, -74.0060),  // (latitude, longitude) — New York
+        "10km",
+    ));
+
+// Geo bounding box — `geo_bounding_box(field, bounding_box)`.
+let search = Search::new()
+    .query(Query::geo_bounding_box(
+        "location",
+        GeoBoundingBox::MainDiagonal {
+            top_left: GeoLocation::new(40.8, -74.1),
+            bottom_right: GeoLocation::new(40.7, -73.9),
+        },
+    ));
 ```
 
 ## Sorting and Pagination
@@ -283,26 +274,24 @@ let search = Search::new()
 ### Complex Sorting
 
 ```rust
+use opensearch_dsl::FieldSort;
+
 // Multiple sort criteria
 let search = Search::new()
     .query(Query::match_all())
     .sort([
-        ("_score", "desc"),          // Relevance first
-        ("created_at", "desc"),      // Then by date
-        ("title.keyword", "asc")     // Finally by title
+        FieldSort::descending("_score"),         // Relevance first
+        FieldSort::descending("created_at"),     // Then by date
+        FieldSort::ascending("title.keyword"),   // Finally by title
     ]);
 
 // Sort with missing values
 let search = Search::new()
-    .sort([
-        ("price", "asc", Some("_last"))  // Put items with no price at the end
-    ]);
+    .sort([FieldSort::ascending("price").missing("_last")]);  // no-price items last
 
 // Sort by nested field
 let search = Search::new()
-    .sort([
-        ("comments.created_at", "desc")
-    ]);
+    .sort([FieldSort::descending("comments.created_at")]);
 ```
 
 ### Pagination Patterns
@@ -319,7 +308,10 @@ let search = Search::new()
 // Search after for deep pagination
 let search = Search::new()
     .query(Query::match_all())
-    .sort([("created_at", "desc"), ("id", "desc")])
+    .sort([
+        opensearch_dsl::FieldSort::descending("created_at"),
+        opensearch_dsl::FieldSort::descending("id"),
+    ])
     .search_after([
         serde_json::Value::String("2024-01-15T10:30:00Z".to_string()),
         serde_json::Value::String("doc_id_123".to_string())
@@ -332,20 +324,14 @@ let search = Search::new()
 ### Highlighting
 
 ```rust
-// Highlight matching terms
+// Highlight matching terms. `Highlight` builds up fields with `.field(name)`
+// (or `.field_highlighter(name, highlighter)` for per-field options).
 let search = Search::new()
     .query(Query::r#match("content", "rust programming"))
     .highlight(
         opensearch_dsl::Highlight::new()
-            .fields([
-                ("title", opensearch_dsl::HighlightField::new()),
-                ("content", opensearch_dsl::HighlightField::new()
-                    .fragment_size(150)
-                    .number_of_fragments(3)
-                )
-            ])
-            .pre_tags(["<mark>"])
-            .post_tags(["</mark>"])
+            .field("title")
+            .field("content")
     );
 ```
 
@@ -357,10 +343,11 @@ let search = Search::new()
     .query(Query::match_all())
     .source(["title", "summary", "created_at"]);
 
-// Exclude sensitive fields
+// Exclude sensitive fields — `.source((includes, excludes))` sets both lists;
+// pass an empty includes list to exclude only.
 let search = Search::new()
     .query(Query::match_all())
-    .source_excludes(["internal_notes", "admin_data"]);
+    .source((Vec::<&str>::new(), vec!["internal_notes", "admin_data"]));
 ```
 
 ## Real-world Search Examples
@@ -377,7 +364,9 @@ async fn search_blog_posts(
     date_to: Option<&str>,
     page: usize,
     per_page: usize,
-) -> Result<SearchResults<BlogPost>, opensearch_client::Error> {
+) -> Result<opensearch_client::search::TypedSearchResult<BlogPost>, opensearch_client::Error> {
+    use opensearch_dsl::{FieldSort, Highlight, Query, Search};
+
     let mut bool_query = Query::bool();
 
     // Main search query
@@ -418,18 +407,13 @@ async fn search_blog_posts(
 
     let search = Search::new()
         .query(bool_query)
-        .sort([("_score", "desc"), ("created_at", "desc")])
+        .sort([FieldSort::descending("_score"), FieldSort::descending("created_at")])
         .from((page - 1) * per_page)
         .size(per_page)
         .highlight(
-            opensearch_dsl::Highlight::new()
-                .fields([
-                    ("title", opensearch_dsl::HighlightField::new()),
-                    ("content", opensearch_dsl::HighlightField::new()
-                        .fragment_size(200)
-                        .number_of_fragments(2)
-                    )
-                ])
+            Highlight::new()
+                .field("title")
+                .field("content")
         );
 
     BlogPost::find(search).await
@@ -448,7 +432,9 @@ async fn search_products(
     sort_by: &str,  // "relevance", "price_asc", "price_desc", "newest"
     page: usize,
     per_page: usize,
-) -> Result<SearchResults<Product>, opensearch_client::Error> {
+) -> Result<opensearch_client::search::TypedSearchResult<Product>, opensearch_client::Error> {
+    use opensearch_dsl::{Aggregation, FieldSort, Query, Search};
+
     let mut bool_query = Query::bool();
 
     // Search query
@@ -489,34 +475,26 @@ async fn search_products(
     bool_query = bool_query.filter(filters);
 
     // Sorting
-    let sort_criteria = match sort_by {
-        "price_asc" => vec![("price", "asc"), ("name.keyword", "asc")],
-        "price_desc" => vec![("price", "desc"), ("name.keyword", "asc")],
-        "newest" => vec![("created_at", "desc"), ("name.keyword", "asc")],
-        _ => vec![("_score", "desc"), ("name.keyword", "asc")],
+    let sort_criteria: Vec<FieldSort> = match sort_by {
+        "price_asc" => vec![FieldSort::ascending("price"), FieldSort::ascending("name.keyword")],
+        "price_desc" => vec![FieldSort::descending("price"), FieldSort::ascending("name.keyword")],
+        "newest" => vec![FieldSort::descending("created_at"), FieldSort::ascending("name.keyword")],
+        _ => vec![FieldSort::descending("_score"), FieldSort::ascending("name.keyword")],
     };
 
+    // Facets — `range` aggregation is not implemented, so each price bucket is a
+    // `filter` aggregation.
     let search = Search::new()
         .query(bool_query)
         .sort(sort_criteria)
         .from((page - 1) * per_page)
         .size(per_page)
-        .aggregations([
-            ("categories",
-                Aggregation::terms("category_id")
-                    .size(20)
-            ),
-            ("price_ranges",
-                Aggregation::range("price")
-                    .ranges([
-                        ("under_50", None, Some(50.0)),
-                        ("50_to_100", Some(50.0), Some(100.0)),
-                        ("100_to_200", Some(100.0), Some(200.0)),
-                        ("over_200", Some(200.0), None)
-                    ])
-            ),
-            ("avg_price", Aggregation::avg("price"))
-        ]);
+        .aggregate("categories", Aggregation::terms("category_id").size(20))
+        .aggregate("under_50", Aggregation::filter(Query::range("price").lt(50.0)))
+        .aggregate("50_to_100", Aggregation::filter(Query::range("price").gte(50.0).lt(100.0)))
+        .aggregate("100_to_200", Aggregation::filter(Query::range("price").gte(100.0).lt(200.0)))
+        .aggregate("over_200", Aggregation::filter(Query::range("price").gte(200.0)))
+        .aggregate("avg_price", Aggregation::avg("price"));
 
     Product::find(search).await
 }

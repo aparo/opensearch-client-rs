@@ -32,37 +32,37 @@ pub struct Post {
 ### Full-Text Search with Filters
 
 ```rust
-use opensearch_dsl::{Search, Query, Aggregation, Sort, SortOrder};
+use opensearch_dsl::{Search, Query, FieldSort};
 
 pub async fn search_posts(
     text: &str,
     tags: &[String],
     page: usize,
     per_page: usize,
-) -> Result<opensearch_dsl::SearchResponse<Post>, opensearch_client::Error> {
+) -> Result<opensearch_client::search::TypedSearchResult<Post>, opensearch_client::Error> {
     let per_page = per_page.min(100);
 
     let mut bool_query = Query::bool()
-        .filter(Query::term("published", true));
+        .filter([Query::term("published", true)]);
 
     if !text.is_empty() {
-        bool_query = bool_query.must(
+        bool_query = bool_query.must([
             Query::multi_match(["title^3", "content", "tags"], text)
                 .ty("best_fields")
                 .fuzziness("AUTO"),
-        );
+        ]);
     }
 
     if !tags.is_empty() {
-        bool_query = bool_query.filter(Query::terms("tags", tags));
+        bool_query = bool_query.filter([Query::terms("tags", tags)]);
     }
 
     Post::find(
         Search::new()
             .query(bool_query)
             .sort([
-                Sort::score(),
-                Sort::field("created_at").order(SortOrder::Desc),
+                FieldSort::descending("_score"),
+                FieldSort::descending("created_at"),
             ])
             .from(page.saturating_sub(1) * per_page)
             .size(per_page)
@@ -76,20 +76,32 @@ pub async fn search_posts(
 
 ```rust
 pub async fn popular_tags(limit: usize) -> Result<Vec<(String, u64)>, opensearch_client::Error> {
+    use opensearch_dsl::{Aggregation, AggregationResponse, Search, TermsOrder};
+
+    // The typed ORM result (`TypedSearchResult`) does not carry aggregations, so
+    // run the aggregation through the raw client search, which returns a
+    // `SearchResponse` with an `aggregations` map.
     let search = Search::new()
         .size(0)  // No documents — only aggregations
-        .aggregations([
-            ("tags", Aggregation::terms("tags").size(limit).order([("_count", "desc")])),
-        ]);
+        .aggregate(
+            "tags",
+            Aggregation::terms("tags").size(limit as u64).order(TermsOrder::count_descending()),
+        );
 
-    let resp = Post::find(search).await?;
-    let buckets = resp
-        .aggregations
-        .and_then(|a| a.get("tags").cloned())
-        .and_then(|a| a.buckets)
-        .unwrap_or_default();
+    let resp = opensearch_client::get_opensearch()
+        .search()
+        .index("posts")
+        .search(search)
+        .call()
+        .await?;
 
-    Ok(buckets.into_iter().map(|b| (b.key, b.doc_count)).collect())
+    let mut tags = Vec::new();
+    if let Some(AggregationResponse::Bucket(agg)) = resp.aggregations.get("tags") {
+        for bucket in &agg.buckets {
+            tags.push((bucket.key_to_string(), bucket.doc_count as u64));
+        }
+    }
+    Ok(tags)
 }
 ```
 
@@ -138,19 +150,16 @@ pub struct LogEvent {
 ### Bulk Ingestion
 
 ```rust
-use opensearch_client::Bulker;
-
 pub async fn ingest_batch(events: Vec<LogEvent>) -> Result<(), Box<dyn std::error::Error>> {
+    // `client.bulker()` returns a builder that spawns a background flusher.
     let client = opensearch_client::get_opensearch();
-
-    let bulker = Bulker::builder(client.clone(), events.len())
-        .bulk_size(500)
-        .build();
+    let bulker = client.bulker().bulk_size(500).build();
 
     for event in events {
-        bulker.index(event).await?;
+        // index(index, &body, id) — enqueues the action (returns once queued).
+        bulker.index("logs", &event, Some(event.id.clone())).await?;
     }
-    bulker.flush().await?;
+    bulker.flush().await;   // wait for all queued actions to be sent
 
     Ok(())
 }
@@ -163,6 +172,8 @@ pub async fn error_rate_by_hour(
     service: &str,
     since: &str,  // RFC3339
 ) -> Result<Vec<(String, u64, u64)>, opensearch_client::Error> {
+    use opensearch_dsl::{Aggregation, AggregationResponse, CalendarInterval, Query, Search};
+
     let search = Search::new()
         .size(0)
         .query(
@@ -172,38 +183,32 @@ pub async fn error_rate_by_hour(
                     Query::range("timestamp").gte(since),
                 ]),
         )
-        .aggregations([
-            ("by_hour",
-                Aggregation::date_histogram("timestamp")
-                    .calendar_interval("hour")
-                    .format("yyyy-MM-dd'T'HH:mm:ss'Z'")
-                    .aggregations([
-                        ("errors",
-                            Aggregation::filter(Query::term("level", "error")),
-                        ),
-                    ]),
-            ),
-        ]);
+        .aggregate(
+            "by_hour",
+            Aggregation::date_histogram("timestamp")
+                .calendar_interval(CalendarInterval::Hour)
+                .aggregate("errors", Aggregation::filter(Query::term("level", "error"))),
+        );
 
-    let resp = LogEvent::find(search).await?;
-    let buckets = resp
-        .aggregations
-        .and_then(|a| a.get("by_hour").cloned())
-        .and_then(|a| a.buckets)
-        .unwrap_or_default();
+    let resp = opensearch_client::get_opensearch()
+        .search()
+        .index("logs")
+        .search(search)
+        .call()
+        .await?;
 
-    Ok(buckets
-        .into_iter()
-        .map(|b| {
-            let errors = b
-                .aggregations
-                .as_ref()
-                .and_then(|a| a.get("errors"))
-                .and_then(|a| a.doc_count)
-                .unwrap_or(0);
-            (b.key_as_string.unwrap_or_default(), b.doc_count, errors)
-        })
-        .collect())
+    let mut out = Vec::new();
+    if let Some(AggregationResponse::Bucket(by_hour)) = resp.aggregations.get("by_hour") {
+        for bucket in &by_hour.buckets {
+            // A `filter` sub-aggregation deserializes as a doc-count aggregation.
+            let errors = match bucket.sub_aggs.get("errors") {
+                Some(AggregationResponse::DocCount(dc)) => dc.doc_count as u64,
+                _ => 0,
+            };
+            out.push((bucket.key_to_string(), bucket.doc_count as u64, errors));
+        }
+    }
+    Ok(out)
 }
 ```
 
@@ -220,7 +225,7 @@ pub async fn slow_requests(threshold_ms: u64, limit: usize) -> Result<Vec<LogEve
                         Query::range("duration_ms").gte(threshold_ms),
                     ]),
             )
-            .sort([Sort::field("duration_ms").order(SortOrder::Desc)])
+            .sort([opensearch_dsl::FieldSort::descending("duration_ms")])
             .size(limit),
     )
     .await?;
@@ -229,7 +234,7 @@ pub async fn slow_requests(threshold_ms: u64, limit: usize) -> Result<Vec<LogEve
         .hits
         .hits
         .into_iter()
-        .filter_map(|h| h.source_)
+        .filter_map(|h| h.source)
         .collect())
 }
 ```
@@ -276,7 +281,9 @@ pub async fn search_products(
     filters: &SearchFilters,
     page: usize,
     per_page: usize,
-) -> Result<opensearch_dsl::SearchResponse<Product>, opensearch_client::Error> {
+) -> Result<opensearch_dsl::SearchResponse, opensearch_client::Error> {
+    use opensearch_dsl::{Aggregation, FieldSort, Query, Search};
+
     let mut filter_clauses: Vec<Query> = vec![];
 
     if let Some(cat) = &filters.category_id {
@@ -300,36 +307,39 @@ pub async fn search_products(
 
     let mut bool_query = Query::bool();
     if !filters.query.is_empty() {
-        bool_query = bool_query.must(
+        bool_query = bool_query.must([
             Query::multi_match(["name^4", "description", "tags"], filters.query.as_str())
                 .ty("cross_fields")
                 .operator("and"),
-        );
+        ]);
     }
     if !filter_clauses.is_empty() {
         bool_query = bool_query.filter(filter_clauses);
     }
 
-    Product::find(
-        Search::new()
-            .query(bool_query)
-            .sort([Sort::score(), Sort::field("rating").order(SortOrder::Desc)])
-            .from((page.saturating_sub(1)) * per_page)
-            .size(per_page)
-            // Aggregations for facets — returned alongside results
-            .aggregations([
-                ("categories", Aggregation::terms("category_id").size(50)),
-                ("price_ranges", Aggregation::range("price").ranges([
-                    (None, Some(25.0)),
-                    (Some(25.0), Some(100.0)),
-                    (Some(100.0), Some(500.0)),
-                    (Some(500.0), None),
-                ])),
-                ("avg_price", Aggregation::avg("price")),
-                ("in_stock_count", Aggregation::filter(Query::term("in_stock", true))),
-            ]),
-    )
-    .await
+    // Aggregations (facets) are only exposed on the raw `SearchResponse`, so run
+    // the search through the client rather than the typed ORM `find`.
+    let search = Search::new()
+        .query(bool_query)
+        .sort([FieldSort::descending("_score"), FieldSort::descending("rating")])
+        .from((page.saturating_sub(1)) * per_page)
+        .size(per_page)
+        // Facets — the `range` aggregation is not implemented, so each price
+        // bucket is expressed as a `filter` aggregation.
+        .aggregate("categories", Aggregation::terms("category_id").size(50))
+        .aggregate("under_25", Aggregation::filter(Query::range("price").lt(25.0)))
+        .aggregate("25_to_100", Aggregation::filter(Query::range("price").gte(25.0).lt(100.0)))
+        .aggregate("100_to_500", Aggregation::filter(Query::range("price").gte(100.0).lt(500.0)))
+        .aggregate("over_500", Aggregation::filter(Query::range("price").gte(500.0)))
+        .aggregate("avg_price", Aggregation::avg("price"))
+        .aggregate("in_stock_count", Aggregation::filter(Query::term("in_stock", true)));
+
+    opensearch_client::get_opensearch()
+        .search()
+        .index("products")
+        .search(search)
+        .call()
+        .await
 }
 ```
 
@@ -343,17 +353,23 @@ Isolate tenant data using filtered aliases so application code never needs to ad
 
 ```rust
 pub async fn create_tenant_alias(
-    client: &OsClient,
+    client: &opensearch_client::OsClient,
     tenant_id: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
+    use opensearch_client::indices::PutAlias;
+    use opensearch_dsl::Query;
+
     client
         .indices()
-        .put_alias("documents", &format!("docs_{}", tenant_id))
-        .body(serde_json::json!({
-            "filter": { "term": { "tenant_id": tenant_id } },
-            "is_write_index": false
-        }))
-        .send()
+        .put_alias()
+        .index("documents")
+        .put_alias(PutAlias {
+            alias: Some(format!("docs_{}", tenant_id)),
+            filter: Some(Query::term("tenant_id", tenant_id).into()),
+            is_write_index: Some(false),
+            ..Default::default()
+        })
+        .call()
         .await?;
     Ok(())
 }

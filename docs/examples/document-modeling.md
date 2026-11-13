@@ -104,7 +104,7 @@ impl BlogPost {
         let results = Comment::find(
             opensearch_dsl::Search::new()
                 .query(opensearch_dsl::Query::term("post_id", &self.id))
-                .sort([("created_at", "desc")])
+                .sort([opensearch_dsl::FieldSort::descending("created_at")])
         ).await?;
 
         Ok(results.hits.hits.into_iter()
@@ -135,7 +135,7 @@ impl Author {
         let results = BlogPost::find(
             opensearch_dsl::Search::new()
                 .query(opensearch_dsl::Query::term("author_id", &self.id))
-                .sort([("created_at", "desc")])
+                .sort([opensearch_dsl::FieldSort::descending("created_at")])
         ).await?;
 
         Ok(results.hits.hits.into_iter()
@@ -145,7 +145,7 @@ impl Author {
 
     pub async fn update_post_count(&mut self) -> Result<(), opensearch_client::Error> {
         let count = BlogPost::count(Some(
-            opensearch_dsl::Query::term("author_id", &self.id)
+            opensearch_dsl::Query::term("author_id", &self.id).into()
         )).await?;
         
         self.post_count = count;
@@ -362,7 +362,7 @@ impl Product {
         let results = Review::find(
             opensearch_dsl::Search::new()
                 .query(opensearch_dsl::Query::term("product_sku", &self.sku))
-                .sort([("created_at", "desc")])
+                .sort([opensearch_dsl::FieldSort::descending("created_at")])
         ).await?;
 
         Ok(results.hits.hits.into_iter()
@@ -375,9 +375,7 @@ impl Product {
 
         let search = Search::new()
             .query(Query::term("product_sku", &self.sku))
-            .aggregations([
-                ("avg_rating", Aggregation::avg("rating"))
-            ])
+            .aggregate("avg_rating", Aggregation::avg("rating"))
             .size(0);
 
         // This would require implementing aggregation result parsing
@@ -520,10 +518,10 @@ impl LogEntry {
             opensearch_dsl::Search::new()
                 .query(
                     opensearch_dsl::Query::bool()
-                        .must(opensearch_dsl::Query::term("service", service))
-                        .filter(opensearch_dsl::Query::range("timestamp").gte(since.to_rfc3339()))
+                        .must([opensearch_dsl::Query::term("service", service)])
+                        .filter([opensearch_dsl::Query::range("timestamp").gte(since.to_rfc3339())])
                 )
-                .sort([("timestamp", "desc")])
+                .sort([opensearch_dsl::FieldSort::descending("timestamp")])
                 .size(1000)
         ).await?;
 

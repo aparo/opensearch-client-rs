@@ -29,7 +29,7 @@ use crate::{search::*, util::*};
 ///
 /// To create a knn search with a query vector or query vector builder:
 /// ```
-/// # use elasticsearch_dsl::*;
+/// # use opensearch_dsl::*;
 /// # let search =
 /// Search::new()
 ///   .knn(Knn::query_vector("test1", vec![1.0, 2.0, 3.0]))

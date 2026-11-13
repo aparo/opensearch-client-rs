@@ -39,7 +39,8 @@ use crate::{search::*, util::*};
 /// Query::more_like_this(["test"]).fields(["title"]);
 /// ```
 /// To create a `more_like_this` query with string and document id fields on
-/// title and description with optional fields: ```
+/// title and description with optional fields:
+/// ```
 /// # use opensearch_dsl::queries::*;
 /// # use opensearch_dsl::queries::params::*;
 /// # let query =
